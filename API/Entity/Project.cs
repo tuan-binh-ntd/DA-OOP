@@ -11,6 +11,6 @@ namespace API.Entity
         [StringLength(50)]
         public string ProjectName { get; set; }
         public string Description { get; set; }
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<Task> Task { get; set; }
     }
 }

@@ -19,6 +19,46 @@ namespace API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.16")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("API.Entity.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("Account");
+                });
+
             modelBuilder.Entity("API.Entity.AppUser", b =>
                 {
                     b.Property<int>("Id")
@@ -30,6 +70,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -46,29 +89,33 @@ namespace API.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PassWord")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("AppUser");
+                });
+
+            modelBuilder.Entity("API.Entity.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PermissionId");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("AppUsers");
+                    b.ToTable("Department");
                 });
 
             modelBuilder.Entity("API.Entity.Permission", b =>
@@ -85,7 +132,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("API.Entity.Priority", b =>
@@ -122,7 +169,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("API.Entity.Status", b =>
@@ -186,17 +233,30 @@ namespace API.Migrations
                     b.ToTable("Task");
                 });
 
-            modelBuilder.Entity("API.Entity.AppUser", b =>
+            modelBuilder.Entity("API.Entity.Account", b =>
                 {
+                    b.HasOne("API.Entity.AppUser", null)
+                        .WithMany("Account")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("API.Entity.Permission", null)
-                        .WithMany("AppUsers")
+                        .WithMany("Account")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entity.Task", null)
-                        .WithMany("AppUsers")
+                        .WithMany("Account")
                         .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Entity.AppUser", b =>
+                {
+                    b.HasOne("API.Entity.Department", null)
+                        .WithMany("AppUser")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -204,47 +264,57 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entity.Task", b =>
                 {
                     b.HasOne("API.Entity.Priority", null)
-                        .WithMany("Tasks")
+                        .WithMany("Task")
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entity.Project", null)
-                        .WithMany("Tasks")
+                        .WithMany("Task")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entity.Status", null)
-                        .WithMany("Tasks")
+                        .WithMany("Task")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Entity.AppUser", b =>
+                {
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("API.Entity.Department", b =>
+                {
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("API.Entity.Permission", b =>
                 {
-                    b.Navigation("AppUsers");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("API.Entity.Priority", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("API.Entity.Project", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("API.Entity.Status", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("API.Entity.Task", b =>
                 {
-                    b.Navigation("AppUsers");
+                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }

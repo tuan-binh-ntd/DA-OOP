@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entity
 {
-    [Table("AppUsers")]
     public class AppUser
     {
         [Key]
@@ -25,12 +24,8 @@ namespace API.Entity
         [StringLength(11)]
         public string Phone { get; set; }
         [Required]
-        [ForeignKey("Permission")]
-        public int PermissionId { get; set; }
-        [ForeignKey("Task")]
-        public int TaskId { get; set; }
-        [Required]
-        [StringLength(50)]
-        public string PassWord { get; set; }
+        [ForeignKey("Department")]
+        public int DepartmentId { get; set; }
+        public ICollection<Account> Account { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace API.Entity
         [Required]
         [StringLength(10)]
         public string PriorityName { get; set; }
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<Task> Task { get; set; }
     }
 }

@@ -29,6 +29,6 @@ namespace API.Entity
         [Required]
         [ForeignKey("Status")]
         public int StatusId { get; set; }
-        public ICollection<AppUser> AppUsers { get; set; }
+        public ICollection<Account> Account { get; set; }
     }
 }

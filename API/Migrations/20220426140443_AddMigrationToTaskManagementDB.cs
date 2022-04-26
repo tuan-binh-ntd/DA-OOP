@@ -3,12 +3,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class TaskManagementDB : Migration
+    public partial class AddMigrationToTaskManagementDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Permissions",
+                name: "Department",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DepartmentName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Department", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permission",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,7 +30,7 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                    table.PrimaryKey("PK_Permission", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,7 +47,7 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
+                name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -44,7 +57,7 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.PrimaryKey("PK_Project", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,6 +71,30 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Status", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUser_Department_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Department",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,9 +122,9 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Task_Projects_ProjectId",
+                        name: "FK_Task_Project_ProjectId",
                         column: x => x.ProjectId,
-                        principalTable: "Projects",
+                        principalTable: "Project",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -99,31 +136,35 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppUsers",
+                name: "Account",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     PermissionId = table.Column<int>(type: "int", nullable: false),
                     TaskId = table.Column<int>(type: "int", nullable: false),
-                    PassWord = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    AppUserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppUsers", x => x.Id);
+                    table.PrimaryKey("PK_Account", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppUsers_Permissions_PermissionId",
+                        name: "FK_Account_AppUser_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AppUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Account_Permission_PermissionId",
                         column: x => x.PermissionId,
-                        principalTable: "Permissions",
+                        principalTable: "Permission",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AppUsers_Task_TaskId",
+                        name: "FK_Account_Task_TaskId",
                         column: x => x.TaskId,
                         principalTable: "Task",
                         principalColumn: "Id",
@@ -131,14 +172,24 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUsers_PermissionId",
-                table: "AppUsers",
+                name: "IX_Account_AppUserId",
+                table: "Account",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_PermissionId",
+                table: "Account",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUsers_TaskId",
-                table: "AppUsers",
+                name: "IX_Account_TaskId",
+                table: "Account",
                 column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUser_DepartmentId",
+                table: "AppUser",
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Task_PriorityId",
@@ -159,19 +210,25 @@ namespace API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AppUsers");
+                name: "Account");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "AppUser");
+
+            migrationBuilder.DropTable(
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "Task");
 
             migrationBuilder.DropTable(
+                name: "Department");
+
+            migrationBuilder.DropTable(
                 name: "Priority");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "Project");
 
             migrationBuilder.DropTable(
                 name: "Status");

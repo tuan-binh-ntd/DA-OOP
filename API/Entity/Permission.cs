@@ -10,6 +10,6 @@ namespace API.Entity
         [Required]
         [StringLength(20)]
         public string PermissionName { get; set; }
-        public ICollection<AppUser> AppUsers { get; set; }
+        public ICollection<Account> Account { get; set; }
     }
 }
