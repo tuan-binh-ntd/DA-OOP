@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using API.Enum;
 namespace API.Entity
 {
     public class AppUser
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         [StringLength(20)]
         public string FirstName { get; set; }
@@ -24,8 +25,14 @@ namespace API.Entity
         [StringLength(11)]
         public string Phone { get; set; }
         [Required]
+        [StringLength(100)]
+        public string Password { get; set; }
+        [Required]
         [ForeignKey("Department")]
-        public int DepartmentId { get; set; }
-        public ICollection<Account> Account { get; set; }
+        public Guid DepartmentId { get; set; }
+        [Required]
+        [StringLength(50)]
+        public Permission PermissionCode { get; set; }
+        public ICollection<Task> Task { get; set; }
     }
 }
