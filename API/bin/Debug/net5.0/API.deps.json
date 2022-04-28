@@ -695,13 +695,13 @@
           "System.Xml.XmlDocument": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/Newtonsoft.Json.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.1.20720"
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.2.23222"
           }
         },
         "compile": {
-          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.native.System/4.3.0": {

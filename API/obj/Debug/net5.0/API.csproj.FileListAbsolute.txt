@@ -58,3 +58,6 @@ D:\DA-OOP\API\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.
 D:\DA-OOP\API\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\DA-OOP\API\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\DA-OOP\API\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\DA-OOP\API\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

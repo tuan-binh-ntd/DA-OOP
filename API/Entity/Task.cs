@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,27 +9,28 @@ namespace API.Entity
     public class Task
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         [StringLength(50)]
         public string TaskName { get; set; }
         [Required]
-        public int CreateUserId { get; set; }
+        public Guid CreateUserId { get; set; }
         [Required]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = new DateTime();
         [Required]
         public DateTime DeadlineDate { get; set; }
+        public DateTime? CompleteDate { get; set; }
         [Required]
-        public DateTime CompleteDate { get; set; }
+        [StringLength(50)]
+        public Priority PriorityCode { get; set; }
         [Required]
-        [ForeignKey("Priority")]
-        public int PriorityId { get; set; }
-        [Required]
+        public StatusCode StatusCode { get; set; }
+        public string Description { get; set; }
+        /*[Required]
         [ForeignKey("Project")]
-        public int ProjectId { get; set; }
+        public int ProjectId { get; set; }*/
         [Required]
-        [ForeignKey("Status")]
-        public int StatusId { get; set; }
-        public ICollection<Account> Account { get; set; }
+        [ForeignKey("AppUser")]
+        public Guid AppUserId { get; set; }
     }
 }
