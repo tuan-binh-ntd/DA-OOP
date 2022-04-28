@@ -11,11 +11,7 @@ export class AppComponent implements OnInit {
   objs: any;
   constructor(private http: HttpClient) { }
   ngOnInit(): void {
-    this.getData();
-    console.log(this.objs);
   }
 
-  getData() {
-    this.http.get('https://localhost:5001/weatherforecast').subscribe(response => this.objs = response);
-  }
+
 }
