@@ -139,10 +139,8 @@ namespace API.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreateUserName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                    b.Property<Guid>("CreateUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DeadlineDate")
                         .HasColumnType("datetime2");

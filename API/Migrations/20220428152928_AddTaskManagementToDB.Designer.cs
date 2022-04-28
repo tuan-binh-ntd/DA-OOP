@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220428134846_AddTaskManagementToDB")]
+    [Migration("20220428152928_AddTaskManagementToDB")]
     partial class AddTaskManagementToDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,10 +141,8 @@ namespace API.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreateUserName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                    b.Property<Guid>("CreateUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DeadlineDate")
                         .HasColumnType("datetime2");

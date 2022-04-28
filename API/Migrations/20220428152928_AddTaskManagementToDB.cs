@@ -75,7 +75,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TaskName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreateUserName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    CreateUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeadlineDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
