@@ -41,9 +41,9 @@ namespace API.Controllers
                 DepartmentId = input.DepartmentId,
                 PermissionCode = input.PermissionCode
             };
-            var data = _dataContext.AppUser.Add(user);
+            _dataContext.AppUser.Add(user);
             _dataContext.SaveChanges();
-            return Ok(data);
+            return Ok(user);
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto input)
