@@ -30,11 +30,12 @@ namespace API.Controllers
                 Id = new Guid(),
                 TaskName = input.TaskName,
                 CreateUserId = input.CreateUserId,
-                CreateDate = new DateTime(),
+                CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
                 PriorityCode = input.PriorityCode,
                 StatusCode = input.StatusCode,
                 Description = input.Description,
+                ProjectId = input.ProjectId,
                 AppUserId = input.AppUserId
             };
             _dataContext.Task.Add(newTask);
@@ -43,7 +44,7 @@ namespace API.Controllers
         }
 
         [HttpPost("update/task")]
-        public async Task<ActionResult> CreateTask(UpdateTaskDto input)
+        public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
@@ -56,6 +57,7 @@ namespace API.Controllers
                 task.PriorityCode = input.PriorityCode;
                 task.StatusCode = input.StatusCode;
                 task.Description = input.Description;
+                task.ProjectId = input.ProjectId;
                 task.AppUserId = input.AppUserId;
             }
             _dataContext.Task.Add(task);

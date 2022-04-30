@@ -15,7 +15,7 @@ namespace API.Entity
         public string ProjectName { get; set; }
         public string Description { get; set; }
         [Required]
-        public DateTime CreateDate { get; set; } = new DateTime();
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         [Required]
         public DateTime DeadlineDate { get; set; }
         public DateTime? CompleteDate { get; set; }

@@ -2,6 +2,7 @@
 using API.DTO;
 using API.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -18,17 +19,19 @@ namespace API.Controllers
         }
 
         [HttpPost("create/project")]
-        public async Task<ActionResult> CreateProject(ProjectDto input)
+        public async Task<ActionResult> CreateProject(CreateProjectDto input)
         {
-            var project = await _dataContext.Project.FindAsync(input.ProjectName);
+            var projectNameNull = string.IsNullOrWhiteSpace(input.ProjectName);
+            if (projectNameNull) return BadRequest("ProjectName not null");
+            var project = await _dataContext.Project.FirstOrDefaultAsync(e => e.ProjectName == input.ProjectName);
             if (project != null) return BadRequest("ProjectName is taken");
             var data = new Project
             {
                 Id = new Guid(),
                 ProjectName = input.ProjectName,
                 Description = input.Description,
+                CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
-                CreateDate = new DateTime(),
                 PriorityCode = input.PriorityCode,
                 StatusCode = input.StatusCode,
                 DepartmentId = input.DepartmentId,
@@ -46,8 +49,8 @@ namespace API.Controllers
             {
                 project.ProjectName = project.ProjectName;
                 project.Description = input.Description;
-                project.DeadlineDate = input.DeadlineDate;
                 project.CreateDate = input.CreateDate;
+                project.DeadlineDate = input.DeadlineDate;
                 project.CompleteDate = input.CompleteDate;
                 project.PriorityCode = input.PriorityCode;
                 project.StatusCode = input.StatusCode;
