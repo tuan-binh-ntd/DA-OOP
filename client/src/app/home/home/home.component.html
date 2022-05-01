@@ -32,14 +32,33 @@
     </nav>
 <div class="container-fluid">
     <div class="row ">
-      <div class="col col-6">
-        <h1 class="home-header  font-italic">Work on big ideas, without the busywork</h1>
-        <p class="home-description">Bring your team's work together in one shared space</p>
-        <i class="fa-solid fa-circle-user" ></i>
-        <button class="home-btn" (click)="navigateToTask()">Your Projects</button>
+      <div class="col col-6 home-des-wrap text-center">
+        <div class="vertical-center">
+          <h1 class="home-header  font-italic">Work on big ideas, without the busywork</h1>
+          <p class="home-description">Bring your team's work together in one shared space</p>
+            <button class="home__btn-project" (click)="navigateToTask()">Your Projects</button>
+          <div class="row home-counter  mt-4">
+            <div class="col col-4 text-center">
+              <span class="mb-2 count">{{enterpriseCount}}</span>
+              <br>
+              
+              <span>Enterprises</span>
+            </div>
+            <div class="col col-4 text-center">
+              <span class="mb-2 count">{{userCount}}</span>
+              <br>
+              <span>Users</span>
+            </div>
+            <div class="col col-4 text-center">
+              <span class="mb-2 count">{{percentCount}}%</span>
+              <br>
+              <span>Experience</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col col-6">
-        <img class="d-block ml-auto mr-auto" src="assets/homepage.png" width="700px" height="700px" alt="Logo">
+        <img class="d-block ml-auto mr-auto" src="assets/homeimg.png" width="580px" height="700px" alt="Logo">
       </div>
     </div>
 </div>
