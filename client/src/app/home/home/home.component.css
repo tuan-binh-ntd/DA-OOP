@@ -13,7 +13,7 @@
 .vertical-center {
   margin: 0;
   position: absolute;
-  top: 40%;
+  top:40%;
   -ms-transform: translateY(-40%);
   transform: translateY(-40%);
 }
@@ -27,7 +27,7 @@
 }
 
 /* CSS */
-.home__btn-project{
+.home__btn{
   appearance: none;
   background-color: transparent;
   border: 2px solid #1A1A1A;
@@ -54,18 +54,18 @@
   will-change: transform;
 }
 
-.home__btn-project:disabled {
+.home__btn:disabled {
   pointer-events: none;
 }
 
-.home__btn-project:hover {
+.home__btn:hover {
   color: #fff;
   background-color: #1A1A1A;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(-2px);
 }
 
-.home__btn-project:active {
+.home__btn:active {
   box-shadow: none;
   transform: translateY(0);
 }
@@ -93,4 +93,8 @@
 
 .count:hover::after {
   width: 100%;
+}
+
+.dropdown-item:active{
+  background-color: #3B3B3B;
 }
