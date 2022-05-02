@@ -2,15 +2,8 @@
 using System;
 using API.DTO;
 using API.Entity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -52,12 +45,19 @@ namespace API.Controllers
             if (user == null) return Unauthorized("Invalid username");
             var pass = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
             if (pass == null) return Unauthorized("Invalid password");
-            return new UserDto
+            return Ok(new UserDto
             {
                 Name = input.Email,
                 Password = input.Password
-            };
+            });
         }
 
+        [HttpDelete("delete/user")]
+        public async Task<ActionResult> DeteleUser(Guid id)
+        {
+            _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(id));
+            _dataContext.SaveChanges();
+            return Ok("Removed");
+        }
     }
 }

@@ -51,18 +51,34 @@ namespace API.Controllers
             {
                 task.TaskName = input.TaskName;
                 task.CreateUserId = input.CreateUserId;
-                task.CreateDate = input.CreateDate;
                 task.DeadlineDate = input.DeadlineDate;
-                task.CompleteDate = input.CompleteDate;
                 task.PriorityCode = input.PriorityCode;
                 task.StatusCode = input.StatusCode;
                 task.Description = input.Description;
                 task.ProjectId = input.ProjectId;
                 task.AppUserId = input.AppUserId;
+                return CheckCompleteDate(input, task);
             }
             _dataContext.Task.Add(task);
             _dataContext.SaveChanges();
             return Ok(task);
+        }
+
+        private ActionResult CheckCompleteDate(UpdateTaskDto input, Task task)
+        {
+            if (input.CompleteDate >= task.CompleteDate)
+            {
+                 task.CompleteDate = input.CompleteDate;
+            } 
+            return BadRequest("CompleteDate can not less than CreateDate");
+        }
+
+        [HttpDelete("delete/task")]
+        public async Task<ActionResult> DeleteTask(Guid id)
+        {
+            _dataContext.Task.Remove(await _dataContext.Task.FindAsync(id));
+            _dataContext.SaveChanges();
+            return Ok("Removed");
         }
     }
 }

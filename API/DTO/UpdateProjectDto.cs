@@ -8,7 +8,6 @@ namespace API.DTO
         public Guid Id { get; set; }
         public string ProjectName { get; set; }
         public string Description { get; set; }
-        public DateTime CreateDate { get; set; }
         public DateTime DeadlineDate { get; set; }
         public DateTime? CompleteDate { get; set; }
         public Priority PriorityCode { get; set; }
