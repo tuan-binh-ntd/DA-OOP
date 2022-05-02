@@ -17,10 +17,10 @@
             <input
               [ngClass]="{
                 'border-danger':
-                  loginForm.controls['name'].invalid &&
-                  loginForm.controls['name'].dirty
+                  loginForm.controls['email'].invalid &&
+                  loginForm.controls['email'].dirty
               }"
-              formControlName="name"
+              formControlName="email"
               type="email"
               id="form3Example3"
               class="form-control form-control-lg"
@@ -30,10 +30,10 @@
               <span
                 class="text-danger"
                 *ngIf="
-                  loginForm.controls['name'].invalid &&
-                  loginForm.controls['name'].dirty
+                  loginForm.controls['email'].invalid &&
+                  loginForm.controls['email'].dirty
                 "
-                >Account is required</span
+                >Email is required</span
               >
             </div>
           </div>
@@ -90,3 +90,5 @@
     </div>
   </div>
 </section>
+
+
