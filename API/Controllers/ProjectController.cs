@@ -49,16 +49,33 @@ namespace API.Controllers
             {
                 project.ProjectName = project.ProjectName;
                 project.Description = input.Description;
-                project.CreateDate = input.CreateDate;
+                project.Description = input.Description;
                 project.DeadlineDate = input.DeadlineDate;
-                project.CompleteDate = input.CompleteDate;
                 project.PriorityCode = input.PriorityCode;
                 project.StatusCode = input.StatusCode;
                 project.DepartmentId = input.DepartmentId;
+                return CheckCompleteDate(input, project);
             }
             _dataContext.Project.Update(project);
             _dataContext.SaveChanges();
             return Ok(project);
+        }
+
+        private ActionResult CheckCompleteDate(UpdateProjectDto input, Project project)
+        {
+            if(input.CompleteDate >= project.CreateDate)
+            {
+                 project.CompleteDate = input.CompleteDate;
+            }
+            return BadRequest("CompleteDate can not less than CreateDate");
+        }
+        [HttpDelete("delete/project")]
+        public async Task<ActionResult> DeleteProject(Guid id)
+        {
+            _dataContext.Task.Remove(await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == id));
+            _dataContext.Project.Remove(await _dataContext.Project.FindAsync(id));
+            _dataContext.SaveChanges();
+            return Ok("Removed");
         }
     }
 }
