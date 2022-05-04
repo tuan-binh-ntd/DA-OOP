@@ -18,6 +18,13 @@ namespace API.Controllers
             _dataContext=dataContext;
         }
 
+        [HttpGet("getall/project")]
+        public async Task<ActionResult> GetAllProject()
+        {
+            var projectList = await _dataContext.Project.ToListAsync();
+            return Ok(projectList);
+        }
+
         [HttpPost("create/project")]
         public async Task<ActionResult> CreateProject(CreateProjectDto input)
         {
