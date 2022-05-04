@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,13 +32,16 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
         this.authenticationService.login(this.loginForm.value).subscribe(response=>{
           if(response){
-            this.toastr.success('Đăng nhập thành công!');
+            this.toastr.success('Login success!','',{
+              timeOut: 1000,
+            });
+        
             setTimeout(()=>{
               this.router.navigateByUrl('home');
             }, 800)
           }
         }, error=>{
-          this.toastr.error('Sai thông tin đăng nhập');
+          this.toastr.error('Email or password not correct!');
         })
   }
 }

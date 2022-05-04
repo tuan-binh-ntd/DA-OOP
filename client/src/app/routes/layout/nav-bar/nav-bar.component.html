@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">UDaily</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div
+      class="collapse navbar-collapse justify-content-md-center mx-auto"
+      id="collapsibleNavbar"
+    >
+      <ul class="navbar-nav col-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="projects">My Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="tasks">My Tasks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="tasks">Employees</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fa fa-user-circle" aria-hidden="true"></i>
+            <span>{{ userName }}</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="profile">Profile</a>
+            <a class="dropdown-item" href="change-password">Change Password</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="login">Sign Out</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>

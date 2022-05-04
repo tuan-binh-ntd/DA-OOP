@@ -1,25 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { HomeComponent } from './home/home/home.component';
-import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { TasksComponent } from './tasks/tasks.component';
+import { ChangePasswordComponent } from './routes/change-password/change-password.component';
+import { HomeComponent } from './routes/home/home.component';
+import { LoginComponent } from './routes/login/login.component';
+import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
+import { ProfileComponent } from './routes/profile/profile.component';
+import { ProjectsComponent } from './routes/projects/projects.component';
+import { TasksComponent } from './routes/tasks/tasks.component';
+import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'tasks', component: TasksComponent},
-  {path: 'projects', component: ProjectsComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'change-password', component: ChangePasswordComponent},
-
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  {
+    path: '',
+    component: SiteLayoutComponent,
+    children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'tasks', component: TasksComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'change-password', component: ChangePasswordComponent },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

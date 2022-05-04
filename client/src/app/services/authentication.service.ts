@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationService {
   baseUrl = "https://localhost:5001/api/Account";
-  data!: Observable<any>
   constructor(private http: HttpClient) { }
   login(payload: any):Observable<any>{
     return this.http.post(this.baseUrl + '/login', payload);
