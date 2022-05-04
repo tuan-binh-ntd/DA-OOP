@@ -19,6 +19,13 @@ namespace API.Controllers
             _dataContext=dataContext;
         }
 
+        [HttpGet("getall/task")]
+        public async Task<ActionResult> GetAllTask()
+        {
+            var taskList = await _dataContext.Task.ToListAsync();
+            return Ok(taskList);
+        }
+
         [HttpPost("create/task")]
         public async Task<ActionResult> CreateTask(CreateTaskDto input)
         {
@@ -47,7 +54,7 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.Id);
-            if (task != null)
+            if (task != null && input.CompleteDate >= task.CompleteDate)
             {
                 task.TaskName = input.TaskName;
                 task.CreateUserId = input.CreateUserId;
@@ -57,20 +64,15 @@ namespace API.Controllers
                 task.Description = input.Description;
                 task.ProjectId = input.ProjectId;
                 task.AppUserId = input.AppUserId;
-                return CheckCompleteDate(input, task);
+                task.CompleteDate = input.CompleteDate;
+                _dataContext.Task.Add(task);
+                await _dataContext.SaveChangesAsync();
+                return Ok(task);
             }
-            _dataContext.Task.Add(task);
-            _dataContext.SaveChanges();
-            return Ok(task);
-        }
-
-        private ActionResult CheckCompleteDate(UpdateTaskDto input, Task task)
-        {
-            if (input.CompleteDate >= task.CompleteDate)
+            else
             {
-                 task.CompleteDate = input.CompleteDate;
-            } 
-            return BadRequest("CompleteDate can not less than CreateDate");
+                return BadRequest("CompleteDate can not less than CreateDate");
+            }
         }
 
         [HttpDelete("delete/task")]

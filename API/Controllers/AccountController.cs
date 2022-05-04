@@ -17,6 +17,14 @@ namespace API.Controllers
         {
             _dataContext=dataContext;
         }
+
+        [HttpGet("getall/user")]
+        public async Task<ActionResult> GetAllUser()
+        {
+            var appUserList = await _dataContext.AppUser.ToListAsync();
+            return Ok(appUserList);
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto input)
         {
