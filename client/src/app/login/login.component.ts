@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from '../services/authentication.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router) { }
+  @ViewChild('toast') toast: any;
+  constructor(private fb: FormBuilder, private router: Router, private authenticationService: AuthenticationService,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -17,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   initForm(){
     this.loginForm = this.fb.group({
-      name: [null, Validators.required],
+      email: [null, Validators.required],
       password: [null, Validators.required]
     })
   }
@@ -28,8 +30,16 @@ export class LoginComponent implements OnInit {
       this.loginForm.controls[i].updateValueAndValidity();
     }
     if (this.loginForm.valid) {
-      this.router.navigateByUrl('home')
+        this.authenticationService.login(this.loginForm.value).subscribe(response=>{
+          if(response){
+            this.toastr.success('Đăng nhập thành công!');
+            setTimeout(()=>{
+              this.router.navigateByUrl('home');
+            }, 800)
+          }
+        }, error=>{
+          this.toastr.error('Sai thông tin đăng nhập');
+        })
   }
 }
-
 }
