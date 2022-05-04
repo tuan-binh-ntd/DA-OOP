@@ -52,7 +52,7 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.Id);
-            if (project != null)
+            if (project != null && input.CompleteDate >= project.CreateDate)
             {
                 project.ProjectName = project.ProjectName;
                 project.Description = input.Description;
@@ -61,21 +61,17 @@ namespace API.Controllers
                 project.PriorityCode = input.PriorityCode;
                 project.StatusCode = input.StatusCode;
                 project.DepartmentId = input.DepartmentId;
-                return CheckCompleteDate(input, project);
+                project.CompleteDate = input.CompleteDate;
+                _dataContext.Project.Update(project);
+                await _dataContext.SaveChangesAsync();
+                return Ok(project);
+            } 
+            else
+            {
+                return BadRequest("CompleteDate can not less than CreateDate");
             }
-            _dataContext.Project.Update(project);
-            _dataContext.SaveChanges();
-            return Ok(project);
         }
 
-        private ActionResult CheckCompleteDate(UpdateProjectDto input, Project project)
-        {
-            if(input.CompleteDate >= project.CreateDate)
-            {
-                 project.CompleteDate = input.CompleteDate;
-            }
-            return BadRequest("CompleteDate can not less than CreateDate");
-        }
         [HttpDelete("delete/project")]
         public async Task<ActionResult> DeleteProject(Guid id)
         {
