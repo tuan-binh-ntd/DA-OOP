@@ -14,10 +14,10 @@ namespace API.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private readonly DataContext _dataContext; 
+        private readonly DataContext _dataContext;
         public ProjectController(DataContext dataContext)
         {
-            _dataContext=dataContext;
+            _dataContext = dataContext;
         }
 
         [HttpGet("getall")]
@@ -47,35 +47,37 @@ namespace API.Controllers
         [HttpGet("getprojectfordepartment")]
         public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForDepartment(Guid departmentId, Permission permission)
         {
-            if(permission != Permission.ProjectManager || permission != Permission.Leader)
+            if (permission == Permission.ProjectManager || permission == Permission.Leader)
             {
-                return BadRequest("You not permission");
+                var departmentIdNotFound = await _dataContext.Project.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
+                if (departmentIdNotFound == null)
+                {
+                    return BadRequest("Department not existed");
+                }
+                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId).Join(_dataContext.AppUser,
+                        p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
+                        {
+                            Id = p.Id,
+                            ProjectName = p.ProjectName,
+                            Description = p.Description,
+                            ProjectType = p.ProjectType,
+                            ProjectCode = p.ProjectCode,
+                            CreateDate = p.CreateDate,
+                            DeadlineDate = p.DeadlineDate,
+                            CompleteDate = p.CompleteDate,
+                            DayLefts = p.DeadlineDate - DateTime.Now,
+                            PriorityCode = p.PriorityCode,
+                            StatusCode = p.StatusCode,
+                            DepartmentId = p.DepartmentId,
+                            AppUserId = u.Id,
+                            LeaderName = u.FirstName + " " + u.LastName,
+                        }).AsNoTracking().ToListAsync();
+                return Ok(projectList);
             }
-            var departmentIdNotFound = await _dataContext.Project.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
-            if (departmentIdNotFound == null)
-            {
-                return BadRequest("Department not existed");
-            }
-            var projectList = await _dataContext.Project.Join(_dataContext.AppUser, 
-                    p => p.DepartmentId == departmentId, u => u.DepartmentId == departmentId, (p, u) => new GetAllProjectForViewDto 
-                    { 
-                        Id = p.Id,
-                        ProjectName = p.ProjectName,
-                        Description = p.Description,
-                        ProjectType = p.ProjectType,
-                        ProjectCode = p.ProjectCode,
-                        CreateDate = p.CreateDate,
-                        DeadlineDate = p.DeadlineDate,
-                        CompleteDate = p.CompleteDate,
-                        DayLefts = p.DeadlineDate - DateTime.Now,
-                        PriorityCode = p.PriorityCode,
-                        StatusCode = p.StatusCode,
-                        DepartmentId = p.DepartmentId,
-                        AppUserId = u.Id,
-                        LeaderName = u.FirstName + " " + u.LastName,
-                    }).AsNoTracking().ToListAsync();
-            return Ok(projectList);
+            return BadRequest("You not permission");
         }
+
+
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateProject(CreateProjectDto input)
@@ -120,7 +122,7 @@ namespace API.Controllers
                 _dataContext.Project.Update(project);
                 await _dataContext.SaveChangesAsync();
                 return Ok(project);
-            } 
+            }
             else
             {
                 return BadRequest("CompleteDate can not less than CreateDate");
