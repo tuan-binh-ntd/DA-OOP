@@ -8,7 +8,7 @@ namespace API.Data
         {
         }
         public DbSet<AppUser> AppUser { get; set; }
-        public DbSet<Task> Task { get; set; }
+        public DbSet<Tasks> Task { get; set; }
         public DbSet<Project> Project { get; set; }
         public DbSet<Department> Department { get; set; }
     }
