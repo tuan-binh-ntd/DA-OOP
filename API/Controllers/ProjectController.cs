@@ -47,7 +47,7 @@ namespace API.Controllers
         [HttpGet("getprojectfordepartment")]
         public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForDepartment(Guid departmentId, Permission permission)
         {
-            if(permission != Permission.Admin || permission != Permission.Leader)
+            if(permission != Permission.ProjectManager || permission != Permission.Leader)
             {
                 return BadRequest("You not permission");
             }
