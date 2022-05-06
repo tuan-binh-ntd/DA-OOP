@@ -54,8 +54,15 @@ namespace API.Controllers
                 {
                     return BadRequest("Department not existed");
                 }
-                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId).Join(_dataContext.AppUser,
-                        p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
+                var taskList = await _dataContext.Project.Join(_dataContext.Task, p => p.Id, t => t.ProjectId, (p, t) =>
+                    new
+                    {
+                        ProjectId = t.ProjectId
+                    }).AsNoTracking().ToListAsync();
+                var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId && e.Id == count.ElementAt(0).ProjectId)
+                    .Join(_dataContext.AppUser,p => p.DepartmentId, u => u.DepartmentId, (p, u) => 
+                        new GetAllProjectForViewDto
                         {
                             Id = p.Id,
                             ProjectName = p.ProjectName,
@@ -63,7 +70,7 @@ namespace API.Controllers
                             ProjectType = p.ProjectType,
                             ProjectCode = p.ProjectCode,
                             CreateDate = p.CreateDate,
-                            DeadlineDate = p.DeadlineDate,
+                            DeadlineDate = p.DeadlineDate, 
                             CompleteDate = p.CompleteDate,
                             DayLefts = p.DeadlineDate - DateTime.Now,
                             PriorityCode = p.PriorityCode,
@@ -71,13 +78,13 @@ namespace API.Controllers
                             DepartmentId = p.DepartmentId,
                             AppUserId = u.Id,
                             LeaderName = u.FirstName + " " + u.LastName,
-                        }).AsNoTracking().ToListAsync();
+                            TaskCount = count.ElementAt(0).Count,
+                        })
+                    .AsNoTracking().ToListAsync();
                 return Ok(projectList);
             }
             return BadRequest("You not permission");
         }
-
-
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateProject(CreateProjectDto input)
