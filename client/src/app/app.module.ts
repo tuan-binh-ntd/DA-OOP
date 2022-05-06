@@ -14,19 +14,27 @@ import { ChangePasswordComponent } from './routes/change-password/change-passwor
 import { ToastrModule } from 'ngx-toastr';
 import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
+import { CommonModule } from '@angular/common';
+import { ProjectsComponent } from './routes/projects/projects.component';
+import { SharedModuleModule } from './routes/shared/priority-icon/shared-module.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     TasksComponent,
+    ProjectsComponent,
     LoginComponent,
     ProfileComponent,
     ChangePasswordComponent,
     NavBarComponent,
-    SiteLayoutComponent
+    SiteLayoutComponent,
+    
   ],
   imports: [
     BrowserModule,
+    SharedModuleModule,
+    CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
