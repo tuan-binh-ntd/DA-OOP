@@ -9,30 +9,22 @@ namespace API.Entity
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(20)]
+        [Required, StringLength(20)]
         public string FirstName { get; set; }
-        [Required]
-        [StringLength(20)]
+        [Required, StringLength(20)]
         public string LastName { get; set; }
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string Address { get; set; }
-        [Required]
-        [StringLength(50)]
+        [Required, StringLength(50)]
         public string Email { get; set; }
-        [Required]
-        [StringLength(11)]
+        [Required, StringLength(11)]
         public string Phone { get; set; }
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string Password { get; set; }
-        [Required]
-        [ForeignKey("Department")]
+        [Required, ForeignKey("Department")]
         public Guid DepartmentId { get; set; }
-        [Required]
-        [StringLength(50)]
+        [Required, StringLength(50)]
         public Permission PermissionCode { get; set; }
-        public ICollection<Task> Task { get; set; }
+        public ICollection<Tasks> Task { get; set; }
     }
 }

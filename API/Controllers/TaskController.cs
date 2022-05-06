@@ -1,14 +1,15 @@
 ﻿using API.Data;
 using API.DTO;
+using API.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Task = API.Entity.Task;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/task")]
     [ApiController]
     public class TaskController : ControllerBase
     {
@@ -19,20 +20,27 @@ namespace API.Controllers
             _dataContext=dataContext;
         }
 
-        [HttpGet("getall/task")]
-        public async Task<ActionResult> GetAllTask()
+        [HttpGet("getforid")]
+        public async Task<ActionResult> GetTaskForUser(Guid userId)
         {
-            var taskList = await _dataContext.Task.ToListAsync();
+            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId).ToListAsync();
             return Ok(taskList);
         }
 
-        [HttpPost("create/task")]
+        [HttpGet("getall")]
+        public async Task<ActionResult> GetAllTask()
+        {
+            var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
+            return Ok(taskList);
+        }
+
+        [HttpPost("create")]
         public async Task<ActionResult> CreateTask(CreateTaskDto input)
         {
-            var task = await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId 
+            var task = await _dataContext.Task.AsNoTracking().FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId 
                 && e.TaskName.ToLower() == input.TaskName.ToLower());
             if (task != null) return BadRequest("TaskName was existed");
-            var newTask = new Task
+            var newTask = new Tasks
             {
                 Id = new Guid(),
                 TaskName = input.TaskName,
@@ -42,6 +50,7 @@ namespace API.Controllers
                 PriorityCode = input.PriorityCode,
                 StatusCode = input.StatusCode,
                 Description = input.Description,
+                TaskType = input.TaskType,
                 ProjectId = input.ProjectId,
                 AppUserId = input.AppUserId
             };
@@ -50,7 +59,7 @@ namespace API.Controllers
             return Ok(newTask);
         }
 
-        [HttpPost("update/task")]
+        [HttpPut("update")]
         public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.Id);
@@ -62,6 +71,7 @@ namespace API.Controllers
                 task.PriorityCode = input.PriorityCode;
                 task.StatusCode = input.StatusCode;
                 task.Description = input.Description;
+                task.TaskType = input.TaskType;
                 task.ProjectId = input.ProjectId;
                 task.AppUserId = input.AppUserId;
                 task.CompleteDate = input.CompleteDate;
@@ -75,7 +85,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("delete/task")]
+        [HttpDelete("delete")]
         public async Task<ActionResult> DeleteTask(Guid id)
         {
             _dataContext.Task.Remove(await _dataContext.Task.FindAsync(id));

@@ -10,10 +10,13 @@ namespace API.Entity
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(50)]
+        [Required, StringLength(50)]
         public string ProjectName { get; set; }
         public string Description { get; set; }
+        [Required, StringLength(50)]
+        public string ProjectType { get; set; }
+        [Required, StringLength(50)]
+        public string ProjectCode { get; set; }
         [Required]
         public DateTime CreateDate { get; set; } = DateTime.Now;
         [Required]
@@ -23,9 +26,8 @@ namespace API.Entity
         public Priority PriorityCode { get; set; }
         [Required]
         public StatusCode StatusCode { get; set; }
-        [Required]
-        [ForeignKey("Department")]
+        [Required, ForeignKey("Department")]
         public Guid DepartmentId { get; set; }
-        public ICollection<Task> Task { get; set; }
+        public ICollection<Tasks> Task { get; set; }
     }
 }

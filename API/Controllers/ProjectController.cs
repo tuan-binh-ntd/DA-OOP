@@ -1,31 +1,85 @@
 ﻿using API.Data;
 using API.DTO;
 using API.Entity;
+using API.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/project")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
         private readonly DataContext _dataContext;
         public ProjectController(DataContext dataContext)
         {
-            _dataContext=dataContext;
+            _dataContext = dataContext;
         }
 
-        [HttpGet("getall/project")]
+        [HttpGet("getall")]
         public async Task<ActionResult> GetAllProject()
         {
-            var projectList = await _dataContext.Project.ToListAsync();
+            var projectList = await _dataContext.Project.Join(_dataContext.AppUser,
+                    p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
+                    {
+                        Id = p.Id,
+                        ProjectName = p.ProjectName,
+                        Description = p.Description,
+                        ProjectType = p.ProjectType,
+                        ProjectCode = p.ProjectCode,
+                        CreateDate = p.CreateDate,
+                        DeadlineDate = p.DeadlineDate,
+                        CompleteDate = p.CompleteDate,
+                        DayLefts = p.DeadlineDate - DateTime.Now,
+                        PriorityCode = p.PriorityCode,
+                        StatusCode = p.StatusCode,
+                        DepartmentId = p.DepartmentId,
+                        AppUserId = u.Id,
+                        LeaderName = u.FirstName + " " + u.LastName,
+                    }).AsNoTracking().ToListAsync();
             return Ok(projectList);
         }
 
-        [HttpPost("create/project")]
+        [HttpGet("getprojectfordepartment")]
+        public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForDepartment(Guid departmentId, Permission permission)
+        {
+            if (permission == Permission.ProjectManager || permission == Permission.Leader)
+            {
+                var departmentIdNotFound = await _dataContext.Project.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
+                if (departmentIdNotFound == null)
+                {
+                    return BadRequest("Department not existed");
+                }
+                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId).Join(_dataContext.AppUser,
+                        p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
+                        {
+                            Id = p.Id,
+                            ProjectName = p.ProjectName,
+                            Description = p.Description,
+                            ProjectType = p.ProjectType,
+                            ProjectCode = p.ProjectCode,
+                            CreateDate = p.CreateDate,
+                            DeadlineDate = p.DeadlineDate,
+                            CompleteDate = p.CompleteDate,
+                            DayLefts = p.DeadlineDate - DateTime.Now,
+                            PriorityCode = p.PriorityCode,
+                            StatusCode = p.StatusCode,
+                            DepartmentId = p.DepartmentId,
+                            AppUserId = u.Id,
+                            LeaderName = u.FirstName + " " + u.LastName,
+                        }).AsNoTracking().ToListAsync();
+                return Ok(projectList);
+            }
+            return BadRequest("You not permission");
+        }
+
+
+
+        [HttpPost("create")]
         public async Task<ActionResult> CreateProject(CreateProjectDto input)
         {
             var projectNameNull = string.IsNullOrWhiteSpace(input.ProjectName);
@@ -37,6 +91,8 @@ namespace API.Controllers
                 Id = new Guid(),
                 ProjectName = input.ProjectName,
                 Description = input.Description,
+                ProjectCode = input.ProjectCode,
+                ProjectType = input.ProjectType,
                 CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
                 PriorityCode = input.PriorityCode,
@@ -48,7 +104,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
-        [HttpPost("update/project")]
+        [HttpPut("update")]
         public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.Id);
@@ -56,7 +112,8 @@ namespace API.Controllers
             {
                 project.ProjectName = project.ProjectName;
                 project.Description = input.Description;
-                project.Description = input.Description;
+                project.ProjectCode = input.ProjectCode;
+                project.ProjectType = input.ProjectType;
                 project.DeadlineDate = input.DeadlineDate;
                 project.PriorityCode = input.PriorityCode;
                 project.StatusCode = input.StatusCode;
@@ -65,14 +122,14 @@ namespace API.Controllers
                 _dataContext.Project.Update(project);
                 await _dataContext.SaveChangesAsync();
                 return Ok(project);
-            } 
+            }
             else
             {
                 return BadRequest("CompleteDate can not less than CreateDate");
             }
         }
 
-        [HttpDelete("delete/project")]
+        [HttpDelete("delete")]
         public async Task<ActionResult> DeleteProject(Guid id)
         {
             _dataContext.Task.Remove(await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == id));

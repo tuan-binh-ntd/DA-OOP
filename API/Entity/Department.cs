@@ -9,8 +9,7 @@ namespace API.Entity
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string DepartmentName { get; set; }
         public ICollection<AppUser> AppUser { get; set; }
         public ICollection<Project> Project { get; set; }
