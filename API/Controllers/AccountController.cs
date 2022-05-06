@@ -21,14 +21,14 @@ namespace API.Controllers
         [HttpGet("getall")]
         public async Task<ActionResult> GetAllUser()
         {
-            var appUserList = await _dataContext.AppUser.ToListAsync();
+            var appUserList = await _dataContext.AppUser.AsNoTracking().ToListAsync();
             return Ok(appUserList);
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto input)
         {
-            var newUser = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.Email == input.Email);
+            var newUser = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (newUser != null) return BadRequest("Username is taken");
             var user = new AppUser
             {
@@ -49,9 +49,9 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto input)
         {
-            var user = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.Email == input.Email);
+            var user = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (user == null) return Unauthorized("Invalid username");
-            var pass = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
+            var pass = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
             if (pass == null) return Unauthorized("Invalid password");
             return Ok(user);
         }

@@ -23,21 +23,21 @@ namespace API.Controllers
         [HttpGet("getforid")]
         public async Task<ActionResult> GetTaskForUser(Guid userId)
         {
-            var taskList = await _dataContext.Task.Where(e => e.AppUserId == userId).ToListAsync();
+            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId).ToListAsync();
             return Ok(taskList);
         }
 
         [HttpGet("getall")]
         public async Task<ActionResult> GetAllTask()
         {
-            var taskList = await _dataContext.Task.ToListAsync();
+            var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
             return Ok(taskList);
         }
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateTask(CreateTaskDto input)
         {
-            var task = await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId 
+            var task = await _dataContext.Task.AsNoTracking().FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId 
                 && e.TaskName.ToLower() == input.TaskName.ToLower());
             if (task != null) return BadRequest("TaskName was existed");
             var newTask = new Tasks

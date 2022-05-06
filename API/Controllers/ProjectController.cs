@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTO;
 using API.Entity;
+using API.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,19 +34,24 @@ namespace API.Controllers
                         CreateDate = p.CreateDate,
                         DeadlineDate = p.DeadlineDate,
                         CompleteDate = p.CompleteDate,
+                        DayLefts = p.DeadlineDate - DateTime.Now,
                         PriorityCode = p.PriorityCode,
                         StatusCode = p.StatusCode,
                         DepartmentId = p.DepartmentId,
                         AppUserId = u.Id,
                         LeaderName = u.FirstName + " " + u.LastName,
-                    }).ToListAsync();
+                    }).AsNoTracking().ToListAsync();
             return Ok(projectList);
         }
 
         [HttpGet("getprojectfordepartment")]
-        public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForDepartment(Guid departmentId)
+        public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForDepartment(Guid departmentId, Permission permission)
         {
-            var departmentIdNotFound = _dataContext.Project.FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
+            if(permission != Permission.Admin || permission != Permission.Leader)
+            {
+                return BadRequest("You not permission");
+            }
+            var departmentIdNotFound = await _dataContext.Project.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
             if (departmentIdNotFound == null)
             {
                 return BadRequest("Department not existed");
@@ -61,12 +67,13 @@ namespace API.Controllers
                         CreateDate = p.CreateDate,
                         DeadlineDate = p.DeadlineDate,
                         CompleteDate = p.CompleteDate,
+                        DayLefts = p.DeadlineDate - DateTime.Now,
                         PriorityCode = p.PriorityCode,
                         StatusCode = p.StatusCode,
                         DepartmentId = p.DepartmentId,
                         AppUserId = u.Id,
                         LeaderName = u.FirstName + " " + u.LastName,
-                    }).ToListAsync();
+                    }).AsNoTracking().ToListAsync();
             return Ok(projectList);
         }
 
