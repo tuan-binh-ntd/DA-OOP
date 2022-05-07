@@ -19,6 +19,6 @@ namespace API.DTO
         public Guid DepartmentId { get; set; }
         public Guid AppUserId { get; set; }
         public string LeaderName { get; set; }
-        public int TaskCount { get; set; }
+        public int TaskCount { get; set; } = 0;
     }
 }
