@@ -5,17 +5,16 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
-  baseUrl = "https://localhost:5001/api/project";
-  constructor(private http: HttpClient) {
+export class TaskService {
+  baseUrl = "https://localhost:5001/api/task";
+  constructor(private http: HttpClient) { }
+  getAllTask():Observable<any>{
+    return this.http.get(this.baseUrl + '/getall');
   }
-  getAllProject():Observable<any>{
-   return this.http.get(this.baseUrl + '/getall');
-  }
-  createProject(payload:any):Observable<any>{
+  createTask(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }
-  updateProject(payload:any):Observable<any>{
+  updateTask(payload:any):Observable<any>{
     return this.http.put(this.baseUrl + '/update', payload);
   }
 }

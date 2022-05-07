@@ -115,7 +115,7 @@ namespace API.Controllers
                 DepartmentId = input.DepartmentId,
             };
             _dataContext.Project.Add(data);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok(data);
         }
 
@@ -149,7 +149,7 @@ namespace API.Controllers
         {
             _dataContext.Task.Remove(await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == id));
             _dataContext.Project.Remove(await _dataContext.Project.FindAsync(id));
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok("Removed");
         }
     }
