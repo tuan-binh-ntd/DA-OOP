@@ -10,6 +10,6 @@ export class ProjectService {
   constructor(private http: HttpClient) {
   }
   getAllProject():Observable<any>{
-   return this.http.get(this.baseUrl + '/getall/project');
+   return this.http.get(this.baseUrl + '/getall');
   }
 }
