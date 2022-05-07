@@ -29,7 +29,7 @@
         <div class="row">
           <div class="col col-6" style="line-height: 16px">
             <span class="font-weight-light" style="line-height: 32px">
-              30 Tasks
+              {{item.taskCount}} Tasks
             </span>
           </div>
           <div class="col col-6">
@@ -54,12 +54,7 @@
             <ng-template #notComplete>
               <p class="card-text">
                 <i class="fa fa-clock-o  mr-2" aria-hidden="true"></i>
-                {{
-                  getTimeLeft(
-                    item.createDate | date: "dd/MM/yyyy",
-                    item.deadlineDate | date: "dd/MM/yyyy"
-                  )
-                }} Days
+                {{item.dayLefts.days}} Days
               </p>
             </ng-template>
           </div>
@@ -102,7 +97,102 @@
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="createForm"></form>
+        <form [formGroup]="modalForm">
+          <div class="form-group row">
+            <label class="form-label col-2"  for="name">Name</label>
+            <div class="col-10">
+              <input
+                [ngClass]="{
+                  'border-danger':
+                  modalForm.controls['projectName'].invalid &&
+                  modalForm.controls['projectName'].dirty
+                }"
+                formControlName="projectName"
+                type="text"
+                id="name"
+                class="form-control "
+                placeholder="Enter a valid project name"
+              />
+              <div class="mt-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                  modalForm.controls['projectName'].invalid &&
+                  modalForm.controls['projectName'].dirty
+                  "
+                  >Project name is required</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-2"  for="type">Type</label>
+            <div class="col-10">
+              <select
+                [ngClass]="{
+                  'border-danger':
+                  modalForm.controls['projectType'].invalid &&
+                  modalForm.controls['projectType'].dirty
+                }"
+                formControlName="projectType"
+                type="text"
+                id="type"
+                class="form-control "
+                placeholder="Enter a valid project name"
+              >
+              <option selected>Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option></select>
+              <div class="mt-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                  modalForm.controls['projectType'].invalid &&
+                  modalForm.controls['projectType'].dirty
+                  "
+                  >Project type is required</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-2"  for="name">Code</label>
+            <div class="col-10">
+              <input
+                [ngClass]="{
+                  'border-danger':
+                  modalForm.controls['projectCode'].invalid &&
+                  modalForm.controls['projectCode'].dirty
+                }"
+                formControlName="projectCode"
+                type="text"
+                id="name"
+                class="form-control "
+                placeholder="Enter a valid project code"
+              />
+              <div class="mt-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                  modalForm.controls['projectCode'].invalid &&
+                  modalForm.controls['projectCode'].dirty
+                  "
+                  >Project code is required</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

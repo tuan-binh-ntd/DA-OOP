@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
+import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { DeparmentService } from 'src/app/services/deparment.service';
 import { ProjectService } from '../../services/project.service';
+import { Priority } from '../shared/priority-icon/priority-icon.component';
 
 @Component({
   selector: 'app-projects',
@@ -10,8 +12,8 @@ import { ProjectService } from '../../services/project.service';
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
-  constructor(private projectService: ProjectService, private departmentService: DeparmentService) {}
-  createForm!:FormGroup
+  constructor(private fb: FormBuilder,private projectService: ProjectService, private departmentService: DeparmentService) {}
+  modalForm!:FormGroup
   data: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
@@ -25,6 +27,20 @@ export class ProjectsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchDepartmentData();
     this.fetchProjectData();
+    this.initForm();
+  }
+
+  initForm(){
+    this.modalForm = this.fb.group({
+      projectName: [null, Validators.required],
+      description: [null],
+      projectType: [null, Validators.required],
+      projectCode: [null, Validators.required],
+      deadlineDate: [null, Validators.required],
+      priorityCode: [Priority.Medium],
+      statusCode: [StatusCode.Open],
+      departmentId: [null, Validators.required],
+    })
   }
 
   fetchDepartmentData(){

@@ -145,3 +145,12 @@ hr {
   .card:hover {
     box-shadow: 0 0 15px rgba(33,33,33,.5); 
   }
+
+  .form-control:focus {
+    box-shadow: none;
+  }
+
+  .form-floating > .bi-calendar-date + .datepicker_input + label {
+    padding-left: 3.5rem;
+    z-index: 3;
+  }
