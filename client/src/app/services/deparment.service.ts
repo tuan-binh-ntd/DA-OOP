@@ -6,10 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DeparmentService {
-  baseUrl = "https://localhost:5001/api/Department";
+  baseUrl = "https://localhost:5001/api/department";
   constructor(private http: HttpClient) { }
 
   getAllDepartment():Observable<any>{
     return this.http.get(this.baseUrl + '/getall/department');
    }
+  createDepartment(payload:any):Observable<any>{
+    return this.http.post(this.baseUrl + '/create', payload);
+  }
 }

@@ -27,6 +27,13 @@ namespace API.Controllers
             return Ok(taskList);
         }
 
+        [HttpGet("gettaskforproject")]
+        public async Task<ActionResult> GetAllTaskForProject(Guid projectId)
+        {
+            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.ProjectId == projectId).ToListAsync();
+            return Ok(taskList);
+        }
+
         [HttpGet("getall")]
         public async Task<ActionResult> GetAllTask()
         {
@@ -55,7 +62,7 @@ namespace API.Controllers
                 AppUserId = input.AppUserId
             };
             _dataContext.Task.Add(newTask);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok(newTask);
         }
 
@@ -89,7 +96,7 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteTask(Guid id)
         {
             _dataContext.Task.Remove(await _dataContext.Task.FindAsync(id));
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok("Removed");
         }
     }

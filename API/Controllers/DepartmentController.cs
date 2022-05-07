@@ -43,7 +43,7 @@ namespace API.Controllers
                DepartmentName = input.DepartmentName
             };
             _dataContext.Department.Add(department);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok(department);
         }
     }

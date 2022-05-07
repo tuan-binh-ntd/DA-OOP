@@ -43,7 +43,7 @@ namespace API.Controllers
                 PermissionCode = input.PermissionCode
             };
             _dataContext.AppUser.Add(user);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok(user);
         }
         [HttpPost("login")]
@@ -60,7 +60,7 @@ namespace API.Controllers
         public async Task<ActionResult> DeteleUser(Guid id)
         {
             _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(id));
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
             return Ok("Removed");
         }
     }
