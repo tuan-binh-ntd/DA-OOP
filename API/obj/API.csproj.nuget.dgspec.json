@@ -1,20 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DA-OOP\\API\\API.csproj": {}
+    "D:\\S\\DA-OOP\\DA-OOP\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\DA-OOP\\API\\API.csproj": {
+    "D:\\S\\DA-OOP\\DA-OOP\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DA-OOP\\API\\API.csproj",
+        "projectUniqueName": "D:\\S\\DA-OOP\\DA-OOP\\API\\API.csproj",
         "projectName": "API",
+<<<<<<< HEAD
         "projectPath": "D:\\DA-OOP\\API\\API.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
         "outputPath": "D:\\DA-OOP\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "projectPath": "D:\\S\\DA-OOP\\DA-OOP\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\linhd\\.nuget\\packages\\",
+        "outputPath": "D:\\S\\DA-OOP\\DA-OOP\\API\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\linhd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 8a5aee23962f612e294cf97e441142f1f0c13203
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -84,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
