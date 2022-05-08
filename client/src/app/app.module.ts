@@ -38,7 +38,6 @@ import * as bootstrap from "bootstrap";
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),

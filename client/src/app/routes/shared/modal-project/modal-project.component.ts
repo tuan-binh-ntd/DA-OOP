@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -13,12 +13,13 @@ import { Priority } from '../priority-icon/priority-icon.component';
   styleUrls: ['./modal-project.component.css']
 })
 export class ModalProjectComponent implements OnInit {
+  @Input() departments: any[]  = []
+  @Output() onCreateProject = new EventEmitter();
   mode:string = 'create';
   title: string = 'New Project'
   constructor(private fb: FormBuilder, private projectService: ProjectService,
     private toastr: ToastrService
     ) { }
-  @Input() departments: any[]  = []
   modalForm!:FormGroup
   projectTypes:any[]  = [
     {value: 'MRP', viewValue: 'Manufacturing Projects'},
@@ -74,8 +75,7 @@ export class ModalProjectComponent implements OnInit {
         })).subscribe(response =>{
           if(response){
             this.toastr.success('Successfully!');
-            var myModal = new bootstrap.Modal(document.getElementById('createProjectModal')!)
-            myModal.hide();
+            this.onCreateProject.emit();
           }
           else{
             this.toastr.error('Failed');
