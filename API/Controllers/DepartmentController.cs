@@ -42,7 +42,7 @@ namespace API.Controllers
                Id = new Guid(),
                DepartmentName = input.DepartmentName
             };
-            _dataContext.Department.Add(department);
+            await _dataContext.Department.AddAsync(department);
             await _dataContext.SaveChangesAsync();
             return Ok(department);
         }
