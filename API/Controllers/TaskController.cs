@@ -17,27 +17,34 @@ namespace API.Controllers
 
         public TaskController(DataContext dataContext)
         {
-            _dataContext=dataContext;
-        }
-
-        [HttpGet("gettaskforuserofproject")]
-        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId)
-        {
-            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId || e.ProjectId == projectId).ToListAsync();
-            return Ok(taskList);
+            _dataContext = dataContext;
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetAllTask()
+        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId)
         {
-            var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
-            return Ok(taskList);
+            if (userId == null && projectId == null)
+            {
+                var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
+                return Ok(taskList);
+            }
+            if(userId != null && projectId != null)
+            {
+                var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.ProjectId == projectId && e.AppUserId == userId).ToListAsync();
+                return Ok(taskList);
+            }
+            if(userId != null || projectId != null)
+            {
+                var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId || e.ProjectId == projectId).ToListAsync();
+                return Ok(taskList);
+            }
+            return null;
         }
 
         [HttpPost("create")]
         public async Task<ActionResult> CreateTask(CreateTaskDto input)
         {
-            var task = await _dataContext.Task.AsNoTracking().FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId 
+            var task = await _dataContext.Task.AsNoTracking().FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId
                 && e.TaskName.ToLower() == input.TaskName.ToLower());
             if (task != null) return BadRequest("TaskName was existed");
             var newTask = new Tasks
