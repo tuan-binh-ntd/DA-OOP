@@ -16,8 +16,8 @@ import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
 import { CommonModule } from '@angular/common';
 import { ProjectsComponent } from './routes/projects/projects.component';
-import { SharedModuleModule } from './routes/shared/priority-icon/shared-module.module';
-
+import { SharedModuleModule } from './routes/shared/shared-module.module';
+import * as bootstrap from "bootstrap";
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +29,6 @@ import { SharedModuleModule } from './routes/shared/priority-icon/shared-module.
     ChangePasswordComponent,
     NavBarComponent,
     SiteLayoutComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -39,12 +38,13 @@ import { SharedModuleModule } from './routes/shared/priority-icon/shared-module.
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

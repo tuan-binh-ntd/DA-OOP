@@ -1,3 +1,4 @@
+
 .has-search .form-control {
     padding-left: 2.375rem;
 }
@@ -150,7 +151,6 @@ hr {
     box-shadow: none;
   }
 
-  .form-floating > .bi-calendar-date + .datepicker_input + label {
-    padding-left: 3.5rem;
-    z-index: 3;
-  }
+  .mat-form-field-appearance-outline .mat-form-field-outline-start { background-color: white!important; }
+  .mat-form-field-appearance-outline .mat-form-field-outline-gap { background-color: white!important; }
+  .mat-form-field-appearance-outline .mat-form-field-outline-end { background-color: white!important; }

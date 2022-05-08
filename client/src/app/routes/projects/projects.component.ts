@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { DeparmentService } from 'src/app/services/deparment.service';
 import { ProjectService } from '../../services/project.service';
+import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
 import { Priority } from '../shared/priority-icon/priority-icon.component';
-
+import * as $ from "jquery";
+import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
-  constructor(private fb: FormBuilder,private projectService: ProjectService, private departmentService: DeparmentService) {}
-  modalForm!:FormGroup
+  constructor(private projectService: ProjectService, private departmentService: DeparmentService) {}
+  @ViewChild('modalProject') modalProject!: ModalProjectComponent
+  $: any;
   data: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
@@ -24,24 +27,13 @@ export class ProjectsComponent implements OnInit {
   isResolvedRecord: boolean = false;
   isInProgressRecord: boolean = false;
   isClosedRecord: boolean = false;
+
   ngOnInit(): void {
     this.fetchDepartmentData();
     this.fetchProjectData();
-    this.initForm();
   }
 
-  initForm(){
-    this.modalForm = this.fb.group({
-      projectName: [null, Validators.required],
-      description: [null],
-      projectType: [null, Validators.required],
-      projectCode: [null, Validators.required],
-      deadlineDate: [null, Validators.required],
-      priorityCode: [Priority.Medium],
-      statusCode: [StatusCode.Open],
-      departmentId: [null, Validators.required],
-    })
-  }
+ 
 
   fetchDepartmentData(){
     this.departmentService
@@ -66,20 +58,15 @@ export class ProjectsComponent implements OnInit {
    return this.departments.find(department => department.id === id)?.departmentName
   }
 
-  getTimeLeft(createDate: any, deadlineDate: any){
-      return this.datediff(this.parseDate(deadlineDate), this.parseDate(new Date().toLocaleDateString()))
+  openDetailModal(data:any, mode: string){
+    var myModal = new bootstrap.Modal(document.getElementById('createProjectModal')!)
+    myModal.show()
+    this.modalProject.openModal(data, mode);
   }
 
-   parseDate = (str:any) => {
-    const [month, day, year] = str.split('/');
-    return new Date(year, month - 1, day);
+  onViewTask(data:any){
+    
   }
-  
-   datediff = (first:any, second:any) => {
-    return Math.round((second - first) / (1000 * 60 * 60 * 24));
-  }
-
-
-  
  
 }
+
