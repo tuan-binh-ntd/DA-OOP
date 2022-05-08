@@ -1,3 +1,4 @@
+
 .has-search .form-control {
     padding-left: 2.375rem;
 }
@@ -145,3 +146,11 @@ hr {
   .card:hover {
     box-shadow: 0 0 15px rgba(33,33,33,.5); 
   }
+
+  .form-control:focus {
+    box-shadow: none;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline-start { background-color: white!important; }
+  .mat-form-field-appearance-outline .mat-form-field-outline-gap { background-color: white!important; }
+  .mat-form-field-appearance-outline .mat-form-field-outline-end { background-color: white!important; }

@@ -4,7 +4,14 @@
       <h2>Projects</h2>
     </div>
     <div class="col col-6">
-      <button class="button-create float-right" data-toggle="modal" data-target="#createProjectModal">Create Project</button>
+      <button
+        class="button-create float-right"
+        data-toggle="modal"
+        data-target="#createProjectModal"
+        (click)="modalProject.openModal(null, 'create')"
+      >
+        Create Project
+      </button>
     </div>
   </div>
 
@@ -15,21 +22,35 @@
         <input type="text" class="form-control" placeholder="Search" />
       </div>
       <div class="mb-3">
-        <button class="btn ml-2" [ngClass]="{'btn-primary' : isAllRecord}">All: {{ allRecord }}</button>
-        <button class="btn ml-2" [ngClass]="{'btn-primary' : isResolvedRecord}">InProgress: {{ resolvedRecord }}</button>
-        <button class="btn ml-2" [ngClass]="{'btn-primary' : isInProgressRecord}">Resolved: {{ inProgressRecord }}</button>
-        <button class="btn ml-2" [ngClass]="{'btn-primary' : isClosedRecord}">Closed: {{ closedRecord }}</button>
+        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
+          All: {{ allRecord }}
+        </button>
+        <button
+          class="btn ml-2"
+          [ngClass]="{ 'btn-primary': isResolvedRecord }"
+        >
+          InProgress: {{ resolvedRecord }}
+        </button>
+        <button
+          class="btn ml-2"
+          [ngClass]="{ 'btn-primary': isInProgressRecord }"
+        >
+          Resolved: {{ inProgressRecord }}
+        </button>
+        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isClosedRecord }">
+          Closed: {{ closedRecord }}
+        </button>
       </div>
     </div>
   </div>
 
   <div class="card-columns">
-    <div class="card" *ngFor="let item of data" style="display: inline-block">
-      <div class="card-body">
+    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block">
+      <div class="card-body" (click)="onViewTask(item.id)">
         <div class="row">
           <div class="col col-6" style="line-height: 16px">
             <span class="font-weight-light" style="line-height: 32px">
-              30 Tasks
+              {{ item.taskCount }} Tasks
             </span>
           </div>
           <div class="col col-6">
@@ -44,24 +65,27 @@
         <div class="row">
           <div class="col col-6">
             <p class="card-text">
-            <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-              {{ getDepartmentName(item.departmentId) }}</p>
-
-            <p *ngIf="item.completeDate; else notComplete" class="card-text">
+              <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+              {{ getDepartmentName(item.departmentId) }}
+            </p>
+            <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
               <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
               {{ item.completeDate | date: "dd/MM/yyyy" }}
             </p>
             <ng-template #notComplete>
-              <p class="card-text">
-                <i class="fa fa-clock-o  mr-2" aria-hidden="true"></i>
-                {{
-                  getTimeLeft(
-                    item.createDate | date: "dd/MM/yyyy",
-                    item.deadlineDate | date: "dd/MM/yyyy"
-                  )
-                }} Days
+              <ng-container *ngIf="item.dayLefts.days >0; else overtime" class="card-text">
+                <i class="fa fa-clock-o mr-2" aria-hidden="true"></i>
+                {{ item.dayLefts.days }} Days
+              </ng-container>
+            </ng-template>
+            <ng-template #overtime>
+              <p *ngIf="item.dayLefts.days <= 0" class="card-text text-danger">
+               <i class="fa fa-times-circle mr-2" aria-hidden="true">
+              </i>
+             <span> Overtime</span>
               </p>
             </ng-template>
+            
           </div>
           <div class="col col-6"></div>
         </div>
@@ -70,45 +94,27 @@
         <div class="row text-center">
           <div class="col col-6">
             <h6>Leader</h6>
+            <span>{{item.leaderName}}</span>
           </div>
           <div class="col col-6">
-            <h6>Progress</h6>
-            <div class="progress">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: 25%"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
+            <button class="button-create float-right" (click)="openDetailModal(item, 'detail')">Update</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createProjectModal">New Project</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="createForm"></form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="createProjectModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg " role="document">
+    <app-modal-project #modalProject [departments]="departments"></app-modal-project>
     </div>
   </div>
-</div>
 </div>
