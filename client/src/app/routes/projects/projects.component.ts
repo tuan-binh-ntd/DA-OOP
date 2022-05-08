@@ -6,15 +6,15 @@ import { DeparmentService } from 'src/app/services/deparment.service';
 import { ProjectService } from '../../services/project.service';
 import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
 import { Priority } from '../shared/priority-icon/priority-icon.component';
-import * as $ from "jquery";
 import * as bootstrap from 'bootstrap';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
-  constructor(private projectService: ProjectService, private departmentService: DeparmentService) {}
+  constructor(private projectService: ProjectService, private departmentService: DeparmentService, private router: Router) {}
   @ViewChild('modalProject') modalProject!: ModalProjectComponent
   $: any;
   data: any[] = [];
@@ -63,9 +63,9 @@ export class ProjectsComponent implements OnInit {
     myModal.show()
     this.modalProject.openModal(data, mode);
   }
-
-  onViewTask(data:any){
-    
+ 
+  onViewTask(projectId: string): any {
+    this.router.navigate([`tasks`, { projectId}]);
   }
  
 }

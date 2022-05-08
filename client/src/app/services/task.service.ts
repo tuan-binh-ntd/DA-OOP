@@ -8,16 +8,17 @@ import { Observable } from 'rxjs';
 export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
-  getAllTask(  projectId?: string,
+  getAllTask(projectId?: string,
     userId?: string,):Observable<any>{
       let userIdString = '';
       let projectIdString = '';
+      debugger
       if(userId || projectId){
         if(userId){
            userIdString = 'userId=' + userId;
         } 
         if(projectId){
-          projectIdString = 'projectId=' + projectIdString;
+          projectIdString = 'projectId=' + projectId;
         }
         return this.http.get(this.baseUrl + '/getall' + '?' + userIdString + projectIdString);
       }else if(userId && projectId){

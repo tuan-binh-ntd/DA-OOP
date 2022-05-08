@@ -56,12 +56,34 @@
           </mat-form-field>
         </div>
       </div>
+
+      <div class="form-group row">
+        <label class="form-label col-2">Department</label>
+        <div class="col-10">
+          <mat-form-field class="w-100">
+            
+            <mat-select
+              placeholder="Enter project department"
+              formControlName="departmentId"
+              (ngModelChange)="onChangeDepartment()"
+            >
+              <mat-option
+                *ngFor="let department of departments"
+                [value]="department.id"
+              >
+                {{ department.departmentName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
   
       <div class="form-group row">
         <label class="form-label col-2" for="name">Leader</label>
         <div class="col-10">
           <mat-form-field class="w-100">
             <mat-select
+            [disabled]="true"
             placeholder="Enter project leader"
             formControlName="appUserId"
           >
@@ -76,24 +98,7 @@
         </div>
       </div>
       
-      <div class="form-group row">
-        <label class="form-label col-2">Department</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-select
-              placeholder="Enter project department"
-              formControlName="departmentId"
-            >
-              <mat-option
-                *ngFor="let department of departments"
-                [value]="department.id"
-              >
-                {{ department.departmentName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
+    
   
       <div class="form-group row">
         <label class="form-label col-2">Priority</label>
