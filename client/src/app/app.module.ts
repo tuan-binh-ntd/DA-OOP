@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectsComponent } from './routes/projects/projects.component';
 import { SharedModuleModule } from './routes/shared/shared-module.module';
 import * as bootstrap from "bootstrap";
+import { UsersComponent } from './routes/users/users.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +30,7 @@ import * as bootstrap from "bootstrap";
     ChangePasswordComponent,
     NavBarComponent,
     SiteLayoutComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,

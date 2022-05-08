@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row mt-4">
+      <div class="col col-6">
+        <h2>Employees</h2>
+      </div>
+      <div class="col col-6">
+        <button
+          class="button-create float-right"
+          data-toggle="modal"
+          data-target="#createProjectModal"
+        >
+          Create user
+        </button>
+      </div>
+    </div>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Password</th>
+                <th>Department</th>
+                <th>Permission</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ getDepartmentName(user.departmentId) }}</td>
+                <td>{{ user.permissionCode }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
