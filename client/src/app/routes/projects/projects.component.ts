@@ -14,8 +14,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
-  constructor(private projectService: ProjectService, private departmentService: DeparmentService, private router: Router) {}
-  @ViewChild('modalProject') modalProject!: ModalProjectComponent
+  constructor(
+    private projectService: ProjectService,
+    private departmentService: DeparmentService,
+    private router: Router
+  ) {}
+  @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
   data: any[] = [];
   departments: any[] = [];
@@ -27,21 +31,19 @@ export class ProjectsComponent implements OnInit {
   isResolvedRecord: boolean = false;
   isInProgressRecord: boolean = false;
   isClosedRecord: boolean = false;
-
+  isShowModal: boolean = false;
   ngOnInit(): void {
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
 
- 
-
-  fetchDepartmentData(){
+  fetchDepartmentData() {
     this.departmentService
-    .getAllDepartment()
-    .pipe(catchError((err) => of(err)))
-    .subscribe((response) => {
-      this.departments = response;
-    });
+      .getAllDepartment()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.departments = response;
+      });
   }
 
   fetchProjectData() {
@@ -54,19 +56,37 @@ export class ProjectsComponent implements OnInit {
       });
   }
 
-  getDepartmentName(id: string){
-   return this.departments.find(department => department.id === id)?.departmentName
+  getDepartmentName(id: string) {
+    return this.departments.find((department) => department.id === id)
+      ?.departmentName;
   }
 
-  openDetailModal(data:any, mode: string){
-    var myModal = new bootstrap.Modal(document.getElementById('createProjectModal')!)
-    myModal.show()
+  openDetailModal(data: any, mode: string) {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('createProjectModal')!
+    );
+    myModal.show();
+    this.isShowModal = true;
     this.modalProject.openModal(data, mode);
   }
- 
+
   onViewTask(projectId: string): any {
-    this.router.navigate([`tasks`, { projectId}]);
+    this.router.navigate([`tasks`, { projectId }]);
   }
+
+  onChangeProject() {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('createProjectModal')!
+    );
+    
+    // $('#createProjectModal').modal('hide')
+    // $('#createProjectModal').hide;
+    myModal.hide();
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
+      this.isShowModal = false;
+    this.fetchProjectData();
+  }
+
  
 }
-

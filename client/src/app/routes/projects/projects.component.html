@@ -8,7 +8,7 @@
         class="button-create float-right"
         data-toggle="modal"
         data-target="#createProjectModal"
-        (click)="modalProject.openModal(null, 'create')"
+        (click)="modalProject.openModal(null, 'create');this.isShowModal = true"
       >
         Create Project
       </button>
@@ -108,13 +108,14 @@
   <div
     class="modal fade"
     id="createProjectModal"
+    [hidden]="!isShowModal"
     tabindex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-lg " role="document">
-    <app-modal-project #modalProject [departments]="departments"></app-modal-project>
+    <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()"></app-modal-project>
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@ import { Priority } from '../priority-icon/priority-icon.component';
 })
 export class ModalProjectComponent implements OnInit {
   @Input() departments: any[] = [];
-  @Output() onCreateProject = new EventEmitter();
+  @Output() onChangeProject = new EventEmitter();
   mode: string = 'create';
   title: string = 'New Project';
   users: any[] = [];
@@ -61,8 +61,8 @@ export class ModalProjectComponent implements OnInit {
 
   initForm() {
     this.modalForm = this.fb.group({
+      id: [null],
       projectName: [null, Validators.required],
-      description: [null],
       projectType: [null, Validators.required],
       projectCode: [null, Validators.required],
       deadlineDate: [null, Validators.required],
@@ -70,6 +70,8 @@ export class ModalProjectComponent implements OnInit {
       statusCode: [StatusCode.Open],
       departmentId: [null, Validators.required],
       appUserId: [null, Validators.required],
+      createDate: [null, Validators.required],
+      completeDate: [null],
     });
   }
 
@@ -80,6 +82,7 @@ export class ModalProjectComponent implements OnInit {
       this.title = 'New Project';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
+      this.modalForm.get('createDate')?.setValue(new Date())
     } else {
       this.modalForm.patchValue(data);
       this.title = data.projectName;
@@ -91,8 +94,26 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      this.projectService
-        .createProject(this.modalForm.value)
+      if(this.mode === 'create'){
+        this.projectService
+          .createProject(this.modalForm.value)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+              this.onChangeProject.emit();
+            } else {
+              this.toastr.error('Failed');
+            }
+          });
+      }
+      else{
+        this.projectService
+        .updateProject(this.modalForm.value)
         .pipe(
           catchError((err) => {
             return of(err);
@@ -101,11 +122,12 @@ export class ModalProjectComponent implements OnInit {
         .subscribe((response) => {
           if (response) {
             this.toastr.success('Successfully!');
-            this.onCreateProject.emit();
+            this.onChangeProject.emit();
           } else {
             this.toastr.error('Failed');
           }
         });
+      }
     }
   }
 
