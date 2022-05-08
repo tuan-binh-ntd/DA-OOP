@@ -130,7 +130,7 @@ namespace API.Controllers
                 StatusCode = input.StatusCode,
                 DepartmentId = input.DepartmentId,
             };
-            await _dataContext.Project.AddAsync(data);
+            _dataContext.Project.Add(data);
             await _dataContext.SaveChangesAsync();
             return Ok(data);
         }

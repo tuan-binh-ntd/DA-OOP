@@ -18,7 +18,7 @@ const routes: Routes = [
     component: SiteLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'tasks', component: TasksComponent },
+      { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },

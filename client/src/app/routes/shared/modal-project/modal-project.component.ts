@@ -90,7 +90,6 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.controls[i].markAsDirty();
       this.modalForm.controls[i].updateValueAndValidity();
     }
-    debugger
     if (this.modalForm.valid) {
       this.projectService
         .createProject(this.modalForm.value)
@@ -108,5 +107,12 @@ export class ModalProjectComponent implements OnInit {
           }
         });
     }
+  }
+
+  onChangeDepartment(){
+    
+   const department = this.departments.find(department=> department.id === this.modalForm.value.departmentId);
+   const user = this.users.find(user => user.departmentId === department.id);
+   this.modalForm.get('appUserId')?.setValue(user.id);
   }
 }

@@ -45,8 +45,8 @@
   </div>
 
   <div class="card-columns">
-    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block">
-      <div class="card-body" (click)="onViewTask(item.id)">
+    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block" [routerLink]="['tasks', item.id]">
+      <div class="card-body" (click)="onViewTask(item)">
         <div class="row">
           <div class="col col-6" style="line-height: 16px">
             <span class="font-weight-light" style="line-height: 32px">
@@ -73,9 +73,10 @@
               {{ item.completeDate | date: "dd/MM/yyyy" }}
             </p>
             <ng-template #notComplete>
-              <ng-container *ngIf="item.dayLefts.days >0; else overtime" class="card-text">
-                <i class="fa fa-clock-o mr-2" aria-hidden="true"></i>
-                {{ item.dayLefts.days }} Days
+              <ng-container *ngIf="item.dayLefts.days >0; else overtime" class="card-text text-warning">
+                <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                <span class="text-warning">{{ item.dayLefts.days }} Days</span>
+                
               </ng-container>
             </ng-template>
             <ng-template #overtime>
