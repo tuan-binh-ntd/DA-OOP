@@ -1,7 +1,6 @@
 export enum Permission
 {
-    Admin = 1,
-    ProjectManager = 2,
-    Leader = 3,
-    Employee = 4
+    ProjectManager = 1,
+    Leader = 2,
+    Employee = 3
 }

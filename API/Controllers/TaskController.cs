@@ -61,7 +61,7 @@ namespace API.Controllers
                 ProjectId = input.ProjectId,
                 AppUserId = input.AppUserId
             };
-            _dataContext.Task.Add(newTask);
+            await _dataContext.Task.AddAsync(newTask);
             await _dataContext.SaveChangesAsync();
             return Ok(newTask);
         }
