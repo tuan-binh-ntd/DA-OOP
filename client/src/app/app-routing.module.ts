@@ -8,6 +8,7 @@ import { ProfileComponent } from './routes/profile/profile.component';
 import { ProjectsComponent } from './routes/projects/projects.component';
 import { TasksComponent } from './routes/tasks/tasks.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
+import { UsersComponent } from './routes/users/users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'tasks', component: TasksComponent },
+      { path: 'users', component: UsersComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
