@@ -12,7 +12,6 @@ export class TaskService {
     userId?: string,):Observable<any>{
       let userIdString = '';
       let projectIdString = '';
-      debugger
       if(userId || projectId){
         if(userId){
            userIdString = 'userId=' + userId;

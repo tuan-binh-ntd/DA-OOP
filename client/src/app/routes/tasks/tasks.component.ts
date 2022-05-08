@@ -22,6 +22,7 @@ export class TasksComponent implements OnInit {
   projects: any[] = [];
   projectId: string = '';
   userId: string = '';
+  sub: any;
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
       this.projectId = params['id'];
@@ -32,7 +33,7 @@ export class TasksComponent implements OnInit {
   }
 
   fetchTaskData() {
-    this.taskService
+  this.sub =  this.taskService
       .getAllTask(this.projectId, '')
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
@@ -57,5 +58,11 @@ export class TasksComponent implements OnInit {
   }
   getProjectName(id: string) {
     return this.projects.find((project) => project.id === id)?.projectName;
+  }
+
+  ngOnDestroy() {
+    //ActivatedRoute is an Observable is that the router may not recreate the component when navigating to the same component. 
+    //In this case the parameter may change without the component being recreated.
+    this.sub.unsubscribe();
   }
 }

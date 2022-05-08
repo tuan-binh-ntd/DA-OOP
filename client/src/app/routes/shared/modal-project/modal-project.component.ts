@@ -110,9 +110,8 @@ export class ModalProjectComponent implements OnInit {
   }
 
   onChangeDepartment(){
-    
    const department = this.departments.find(department=> department.id === this.modalForm.value.departmentId);
-   const user = this.users.find(user => user.departmentId === department.id);
-   this.modalForm.get('appUserId')?.setValue(user.id);
+   const user = this.users.find(user => user.departmentId === department?.id);
+   this.modalForm.get('appUserId')?.setValue(user?.id);
   }
 }
