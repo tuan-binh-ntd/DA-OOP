@@ -8,8 +8,25 @@ import { Observable } from 'rxjs';
 export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
-  getAllTask():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
+  getAllTask(  projectId?: string,
+    userId?: string,):Observable<any>{
+      let userIdString = '';
+      let projectIdString = '';
+      if(userId || projectId){
+        if(userId){
+           userIdString = 'userId=' + userId;
+        } 
+        if(projectId){
+          projectIdString = 'projectId=' + projectIdString;
+        }
+        return this.http.get(this.baseUrl + '/getall' + '?' + userIdString + projectIdString);
+      }else if(userId && projectId){
+        return this.http.get(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString);
+      }
+      else{
+        return this.http.get(this.baseUrl + '/getall');
+
+      }
   }
   createTask(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

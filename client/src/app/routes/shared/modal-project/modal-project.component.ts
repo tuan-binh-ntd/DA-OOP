@@ -1,91 +1,112 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { ProjectService } from 'src/app/services/project.service';
+import { UserService } from 'src/app/services/user.service';
 import { Priority } from '../priority-icon/priority-icon.component';
 
 @Component({
   selector: 'app-modal-project',
   templateUrl: './modal-project.component.html',
-  styleUrls: ['./modal-project.component.css']
+  styleUrls: ['./modal-project.component.css'],
 })
 export class ModalProjectComponent implements OnInit {
-  @Input() departments: any[]  = []
+  @Input() departments: any[] = [];
   @Output() onCreateProject = new EventEmitter();
-  mode:string = 'create';
-  title: string = 'New Project'
-  constructor(private fb: FormBuilder, private projectService: ProjectService,
+  mode: string = 'create';
+  title: string = 'New Project';
+  users: any[] = [];
+  constructor(
+    private fb: FormBuilder,
+    private projectService: ProjectService,
+    private userService: UserService,
     private toastr: ToastrService
-    ) { }
-  modalForm!:FormGroup
-  projectTypes:any[]  = [
-    {value: 'MRP', viewValue: 'Manufacturing Projects'},
-    {value: 'CTP', viewValue: 'Construction Projects'},
-    {value: 'MNP', viewValue: 'Management Projects'},
-    {value: 'RSP', viewValue: 'Research Projects'},
+  ) {}
+  modalForm!: FormGroup;
+  projectTypes: any[] = [
+    { value: 'MRP', viewValue: 'Manufacturing Projects' },
+    { value: 'CTP', viewValue: 'Construction Projects' },
+    { value: 'MNP', viewValue: 'Management Projects' },
+    { value: 'RSP', viewValue: 'Research Projects' },
   ];
   priorityCode: any[] = [
-    {value: Priority.Urgent, viewValue: 'Urgent'},
-    {value: Priority.High, viewValue: 'High'},
-    {value: Priority.Medium, viewValue: 'Medium'},
-    {value: Priority.Normal, viewValue: 'Normal'},
-    {value: Priority.Low, viewValue: 'Low'},
-  ]
+    { value: Priority.Urgent, viewValue: 'Urgent' },
+    { value: Priority.High, viewValue: 'High' },
+    { value: Priority.Medium, viewValue: 'Medium' },
+    { value: Priority.Normal, viewValue: 'Normal' },
+    { value: Priority.Low, viewValue: 'Low' },
+  ];
 
   ngOnInit(): void {
+    this.fetchUserData();
     this.initForm();
   }
- 
-  initForm(){
+
+  fetchUserData(){
+    this.userService.getAllUser().pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.users = response;
+    });
+  }
+
+  initForm() {
     this.modalForm = this.fb.group({
       projectName: [null, Validators.required],
       description: [null],
       projectType: [null, Validators.required],
       projectCode: [null, Validators.required],
       deadlineDate: [null, Validators.required],
-      priorityCode: [Priority.Medium,Validators.required],
+      priorityCode: [Priority.Medium, Validators.required],
       statusCode: [StatusCode.Open],
       departmentId: [null, Validators.required],
-    })
+      appUserId: [null, Validators.required],
+    });
   }
 
-  openModal(data:any,mode: string){
+  openModal(data: any, mode: string) {
     this.mode = mode;
     this.modalForm.reset();
-    if(mode==='create'){
+    if (mode === 'create') {
       this.title = 'New Project';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
-    }else{
+    } else {
       this.modalForm.patchValue(data);
       this.title = data.projectName;
     }
   }
-    submitForm(){
-      for (const i in this.modalForm.controls) {
-        this.modalForm.controls[i].markAsDirty();
-        this.modalForm.controls[i].updateValueAndValidity();
-      }
-      if(this.modalForm.valid){
-        this.projectService.createProject(this.modalForm.value).pipe(  catchError((err) => {
-          return of(err);
-        })).subscribe(response =>{
-          if(response){
+  submitForm() {
+    for (const i in this.modalForm.controls) {
+      this.modalForm.controls[i].markAsDirty();
+      this.modalForm.controls[i].updateValueAndValidity();
+    }
+    debugger
+    if (this.modalForm.valid) {
+      this.projectService
+        .createProject(this.modalForm.value)
+        .pipe(
+          catchError((err) => {
+            return of(err);
+          })
+        )
+        .subscribe((response) => {
+          if (response) {
             this.toastr.success('Successfully!');
             this.onCreateProject.emit();
-          }
-          else{
+          } else {
             this.toastr.error('Failed');
           }
-        })
-      }
+        });
     }
-
-  
-
+  }
 }
-
-
