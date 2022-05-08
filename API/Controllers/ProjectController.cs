@@ -28,8 +28,8 @@ namespace API.Controllers
                         ProjectId = t.ProjectId
                     }).AsNoTracking().ToListAsync();
             var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
-            var projectList = await _dataContext.Project.Join(_dataContext.AppUser,
-                    p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
+            var projectList = await _dataContext.AppUser.Where(e => e.PermissionCode == Permission.Leader).Join(_dataContext.Project,
+                    u => u.DepartmentId, p=> p.DepartmentId, (u, p) => new GetAllProjectForViewDto
                     {
                         Id = p.Id,
                         ProjectName = p.ProjectName,
@@ -75,8 +75,8 @@ namespace API.Controllers
                         ProjectId = t.ProjectId
                     }).AsNoTracking().ToListAsync();
                 var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
-                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId)
-                    .Join(_dataContext.AppUser,p => p.DepartmentId, u => u.DepartmentId, (p, u) => 
+                var projectList = await _dataContext.AppUser.Where(e => e.DepartmentId == departmentId && e.PermissionCode == Permission.Leader)
+                    .Join(_dataContext.Project,u => u.DepartmentId, p => p.DepartmentId, (u, p) => 
                         new GetAllProjectForViewDto
                         {
                             Id = p.Id,
