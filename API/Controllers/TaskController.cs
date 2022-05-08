@@ -20,17 +20,10 @@ namespace API.Controllers
             _dataContext=dataContext;
         }
 
-        [HttpGet("getforid")]
-        public async Task<ActionResult> GetTaskForUser(Guid userId)
+        [HttpGet("gettaskforuserofproject")]
+        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId)
         {
-            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId).ToListAsync();
-            return Ok(taskList);
-        }
-
-        [HttpGet("gettaskforproject")]
-        public async Task<ActionResult> GetAllTaskForProject(Guid projectId)
-        {
-            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.ProjectId == projectId).ToListAsync();
+            var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId || e.ProjectId == projectId).ToListAsync();
             return Ok(taskList);
         }
 
