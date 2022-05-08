@@ -32,7 +32,7 @@ namespace API.Controllers
             var newUser = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (newUser != null) return BadRequest("Username is taken");
             var leaderExisted = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == input.DepartmentId && e.PermissionCode == Permission.Leader);
-            if (leaderExisted != null) return BadRequest("Department had leader");
+            if (leaderExisted != null && input.PermissionCode == Permission.Leader) return BadRequest("Department had leader");
             var user = new AppUser
             {
                 Id = new Guid(),
