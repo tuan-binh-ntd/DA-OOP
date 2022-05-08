@@ -9,30 +9,12 @@
       "restore": {
         "projectUniqueName": "D:\\DA-OOP\\API\\API.csproj",
         "projectName": "API",
-<<<<<<< HEAD
-<<<<<<< HEAD
-        "projectPath": "D:\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "D:\\DA-OOP\\API\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-        "projectPath": "D:\\S\\DA-OOP\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\linhd\\.nuget\\packages\\",
-        "outputPath": "D:\\S\\DA-OOP\\DA-OOP\\API\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\linhd\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> 8a5aee23962f612e294cf97e441142f1f0c13203
-=======
         "projectPath": "D:\\DA-OOP\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
         "outputPath": "D:\\DA-OOP\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> c2b31142adcc2b4104611f04b7217f7877b5bf6d
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "http://nuget.s-erp.vn/nuget/": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
