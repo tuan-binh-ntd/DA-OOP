@@ -10,7 +10,7 @@ export class DeparmentService {
   constructor(private http: HttpClient) { }
 
   getAllDepartment():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall/department');
+    return this.http.get(this.baseUrl + '/getall');
    }
   createDepartment(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

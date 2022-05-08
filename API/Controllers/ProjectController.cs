@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace API.Controllers
 {
     [Route("api/project")]
@@ -23,6 +22,12 @@ namespace API.Controllers
         [HttpGet("getall")]
         public async Task<ActionResult> GetAllProject()
         {
+            var taskList = await _dataContext.Project.Join(_dataContext.Task, p => p.Id, t => t.ProjectId, (p, t) =>
+                    new
+                    {
+                        ProjectId = t.ProjectId
+                    }).AsNoTracking().ToListAsync();
+            var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
             var projectList = await _dataContext.Project.Join(_dataContext.AppUser,
                     p => p.DepartmentId, u => u.DepartmentId, (p, u) => new GetAllProjectForViewDto
                     {
@@ -41,6 +46,16 @@ namespace API.Controllers
                         AppUserId = u.Id,
                         LeaderName = u.FirstName + " " + u.LastName,
                     }).AsNoTracking().ToListAsync();
+            foreach (var item in projectList)
+            {
+                foreach (var num in count)
+                {
+                    if (item.Id == num.ProjectId)
+                    {
+                        item.TaskCount = num.Count;
+                    }
+                }
+            }
             return Ok(projectList);
         }
 
@@ -54,13 +69,13 @@ namespace API.Controllers
                 {
                     return BadRequest("Department not existed");
                 }
-                var taskList = await _dataContext.Project.Join(_dataContext.Task, p => p.Id, t => t.ProjectId, (p, t) =>
+                var taskList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId).Join(_dataContext.Task, p => p.Id, t => t.ProjectId, (p, t) =>
                     new
                     {
                         ProjectId = t.ProjectId
                     }).AsNoTracking().ToListAsync();
                 var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
-                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId && e.Id == count.ElementAt(0).ProjectId)
+                var projectList = await _dataContext.Project.Where(e => e.DepartmentId == departmentId)
                     .Join(_dataContext.AppUser,p => p.DepartmentId, u => u.DepartmentId, (p, u) => 
                         new GetAllProjectForViewDto
                         {
@@ -78,9 +93,18 @@ namespace API.Controllers
                             DepartmentId = p.DepartmentId,
                             AppUserId = u.Id,
                             LeaderName = u.FirstName + " " + u.LastName,
-                            TaskCount = count.ElementAt(0).Count,
                         })
                     .AsNoTracking().ToListAsync();
+                foreach(var item in projectList)
+                {
+                    foreach(var num in count)
+                    {
+                        if(item.Id == num.ProjectId)
+                        {
+                            item.TaskCount = num.Count;
+                        }
+                    }
+                }
                 return Ok(projectList);
             }
             return BadRequest("You not permission");
