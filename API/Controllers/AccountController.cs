@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using API.Enum;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -24,6 +25,27 @@ namespace API.Controllers
         {
             var appUserList = await _dataContext.AppUser.AsNoTracking().ToListAsync();
             return Ok(appUserList);
+        }
+
+        [HttpGet("getuserforproject")]
+        public async Task<ActionResult> GetUserForProject(Guid projectId)
+        {
+            var userList = from u in _dataContext.AppUser
+                           join t in _dataContext.Task
+                           on u.Id equals t.AppUserId
+                           join p in _dataContext.Project
+                           on t.ProjectId equals p.Id
+                           where p.Id == projectId
+                           select new
+                           {
+                               ProjectId = p.Id,
+                               ProjectName = p.ProjectName,
+                               AppUserId = t.AppUserId,
+                               FirstName = u.FirstName,
+                               LastName = u.LastName,
+                           };
+            userList.AsNoTracking().ToList().GroupBy(e => e.AppUserId);
+            return Ok(userList);
         }
 
         [HttpPost("register")]

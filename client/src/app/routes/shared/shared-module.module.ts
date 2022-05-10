@@ -9,11 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { ModalProjectComponent } from './modal-project/modal-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalTaskComponent } from './modal-task/modal-task.component';
 
 @NgModule({
   declarations: [
     PriorityIconComponent,
-    ModalProjectComponent
+    ModalProjectComponent,
+    ModalTaskComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   exports:[
     PriorityIconComponent,
-    ModalProjectComponent
+    ModalProjectComponent,
+    ModalTaskComponent
 
   ],
   providers:[ MatDatepickerModule,
