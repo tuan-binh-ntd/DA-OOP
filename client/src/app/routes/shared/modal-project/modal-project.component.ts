@@ -72,6 +72,7 @@ export class ModalProjectComponent implements OnInit {
       appUserId: [null, Validators.required],
       createDate: [null, Validators.required],
       completeDate: [null],
+      description:[null],
     });
   }
 

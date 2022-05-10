@@ -52,6 +52,10 @@ hr {
   width: auto;
 }
 
+.modal-xl {
+  max-width: 90%;
+}
+
 .button-create:hover,
 .button-create:focus {
   border-color: rgba(0, 0, 0, 0.15);

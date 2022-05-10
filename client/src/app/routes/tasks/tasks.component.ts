@@ -56,8 +56,14 @@ export class TasksComponent implements OnInit {
         this.projects = response;
       });
   }
-  getProjectName(id: string) {
+  getUserName(id: string) {
+    const user = this.users.find((user) => user.id === id)
+    return user?.firstName + ' ' + user?.lastName;
+  }
+
+  getProjectName(id: string){
     return this.projects.find((project) => project.id === id)?.projectName;
+
   }
 
   ngOnDestroy() {
