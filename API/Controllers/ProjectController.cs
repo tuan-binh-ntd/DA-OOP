@@ -27,7 +27,13 @@ namespace API.Controllers
                     {
                         ProjectId = t.ProjectId
                     }).AsNoTracking().ToListAsync();
+            var taskListComplete = await _dataContext.Project.Join(_dataContext.Task.Where(t => t.StatusCode == API.Enum.StatusCode.Closed), p => p.Id, t => t.ProjectId, (p, t) =>
+                    new
+                    {
+                        ProjectId = t.ProjectId
+                    }).AsNoTracking().ToListAsync();
             var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+            var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
             var projectList = await _dataContext.AppUser.Where(e => e.PermissionCode == Permission.Leader).Join(_dataContext.Project,
                     u => u.DepartmentId, p=> p.DepartmentId, (u, p) => new GetAllProjectForViewDto
                     {
@@ -53,8 +59,18 @@ namespace API.Controllers
                     if (item.Id == num.ProjectId)
                     {
                         item.TaskCount = num.Count;
+                        break;  
                     }
                 }
+                foreach (var numTaskComplete in countTaskComplete)
+                {
+                    if (item.Id == numTaskComplete.ProjectId)
+                    {
+                        item.TaskProgress = ((float)numTaskComplete.Count / (float)item.TaskCount) * 100;
+                        break;
+                    }
+                }
+
             }
             return Ok(projectList);
         }
