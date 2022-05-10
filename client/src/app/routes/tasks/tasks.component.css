@@ -110,3 +110,8 @@
   .button-filter:not(:disabled):active {
     transform: translateY(.125rem);
   }
+
+  .fa {
+    padding-top: 2px;
+    padding-right: 5px;
+  }

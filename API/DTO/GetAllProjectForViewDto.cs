@@ -20,5 +20,6 @@ namespace API.DTO
         public Guid AppUserId { get; set; }
         public string LeaderName { get; set; }
         public int TaskCount { get; set; } = 0;
+        public float TaskProgress { get; set; } = 0;
     }
 }
