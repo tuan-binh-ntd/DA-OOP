@@ -30,11 +30,9 @@ namespace API.Controllers
         [HttpGet("getuserforproject")]
         public async Task<ActionResult> GetUserForProject(Guid projectId)
         {
-            var userList = from u in _dataContext.AppUser
-                           join t in _dataContext.Task
-                           on u.Id equals t.AppUserId
-                           join p in _dataContext.Project
-                           on t.ProjectId equals p.Id
+            var userList = await (from u in _dataContext.AppUser
+                           join t in _dataContext.Task on u.Id equals t.AppUserId
+                           join p in _dataContext.Project on t.ProjectId equals p.Id
                            where p.Id == projectId
                            select new
                            {
@@ -43,8 +41,8 @@ namespace API.Controllers
                                AppUserId = t.AppUserId,
                                FirstName = u.FirstName,
                                LastName = u.LastName,
-                           };
-            userList.AsNoTracking().ToList().GroupBy(e => e.AppUserId);
+                           }).AsNoTracking().ToListAsync();
+            userList.GroupBy(e => e.AppUserId);
             return Ok(userList);
         }
 
