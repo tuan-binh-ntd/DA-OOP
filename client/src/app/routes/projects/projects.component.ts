@@ -88,5 +88,8 @@ export class ProjectsComponent implements OnInit {
     this.fetchProjectData();
   }
 
+  roundProgress(progress: number){
+    return Math.round(progress) + '%'
+  }
  
 }

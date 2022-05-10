@@ -77,18 +77,20 @@
                 <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
                 <span class="text-warning">{{ item.dayLefts.days }} Days</span>
                 
-              </ng-container>
-            </ng-template>
-            <ng-template #overtime>
-              <p *ngIf="item.dayLefts.days <= 0" class="card-text text-danger">
-               <i class="fa fa-times-circle mr-2" aria-hidden="true">
-              </i>
-             <span> Overtime</span>
-              </p>
-            </ng-template>
+                </ng-container>
+              </ng-template>
+              <ng-template #overtime>
+                <p *ngIf="item.dayLefts.days <= 0" class="card-text text-danger">
+                <i class="fa fa-times-circle mr-2" aria-hidden="true">
+                </i>
+              <span> Overtime</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="col col-6">
+            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail')">Update</button>
+            </div>
           </div>
-          <div class="col col-6"></div>
-        </div>
 
         <hr />
         <div class="row text-center">
@@ -97,7 +99,10 @@
             <span>{{item.leaderName}}</span>
           </div>
           <div class="col col-6">
-            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail')">Update</button>
+            <h6>Progress</h6>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width': roundProgress(item.taskProgress)}"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
           </div>
         </div>
       </div>
