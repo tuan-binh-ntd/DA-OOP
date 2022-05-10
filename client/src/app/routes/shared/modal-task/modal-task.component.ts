@@ -21,6 +21,8 @@ export class ModalTaskComponent implements OnInit {
   users: any[] = [];
   departments: any[] = [];
   modalForm!: FormGroup;
+  isEdit: boolean = false;
+  data: any;
   taskTypes: any[] = [
     { value: 'Test', viewValue: 'Test' },
   ];
@@ -77,8 +79,10 @@ export class ModalTaskComponent implements OnInit {
     });
   }
 
-  openModal(data: any, mode: string) {
+  openModal(data: any, mode: string, isEdit:boolean) {
+    this.isEdit = isEdit;
     this.mode = mode;
+    this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
       this.title = 'New Project';
@@ -87,8 +91,19 @@ export class ModalTaskComponent implements OnInit {
     this.modalForm.get('createDate')?.setValue(new Date())
   } else {
     this.modalForm.patchValue(data);
-    this.title = data.taskName;
+    this.checkEditForm();
   }
+  }
+
+  checkEditForm(){
+    this.modalForm.patchValue(this.data);
+    if(this.isEdit){
+      this.modalForm.enable();
+      this.title = 'Update: ' + this.data.taskName;
+    }else{
+      this.modalForm.disable();
+      this.title = 'View: ' + this.data.taskName;
+    }
   }
 
   submitForm() {
@@ -140,4 +155,11 @@ export class ModalTaskComponent implements OnInit {
     const user = this.users.find(user => user.departmentId === department?.id);
     this.modalForm.get('createUserId')?.setValue(user?.id);
    }
+
+   onChangeEdit(ev: any) {
+    this.isEdit = ev;
+    if (this.mode === 'detail') {
+      this.checkEditForm();
+    }
+  }
 }

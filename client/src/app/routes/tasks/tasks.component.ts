@@ -24,7 +24,6 @@ export class TasksComponent implements OnInit {
   userId: string = '';
   sub: any;
   isShowModal: boolean = false;
-
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -49,9 +48,9 @@ export class TasksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //   this.route.params.subscribe(params=>{
-    //     this.projectId = params['id'];
-    //  })
+      this.route.params.subscribe(params=>{
+        this.projectId = params['id'];
+     })
     this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
@@ -81,12 +80,14 @@ export class TasksComponent implements OnInit {
         this.projects = response;
       });
   }
-  getProjectName(id: string) {
-    return this.projects.find((project) => project.id === id)?.projectName;
+  getUserName(id: string) {
+    const user = this.users.find((user) => user.id === id)
+    return user?.firstName + ' ' + user?.lastName;
   }
 
-  getUserName(id: string) {
-    return this.users.find((user) => user.id === id)?.firstName + " " + this.users.find((user) => user.id === id)?.lastName;
+  getProjectName(id: string){
+    return this.projects.find((project) => project.id === id)?.projectName;
+
   }
 
   getPriority(priorityCode: string){
@@ -103,19 +104,22 @@ export class TasksComponent implements OnInit {
     this.sub.unsubscribe();
   }
 
-  openDetailModal(data: any, mode: string) {
+  openDetailModal(data: any, mode: string, isEdit: boolean) {
     var myModal = new bootstrap.Modal(
       document.getElementById('createTaskModal')!
     );
     myModal.show();
     this.isShowModal = true;
-    this.modalTask.openModal(data, mode);
+    this.modalTask.openModal(data, mode, isEdit);
   }
 
   onChangeTask() {
     var myModal = new bootstrap.Modal(
       document.getElementById('createTaskModal')!
     );
+    
+    // $('#createProjectModal').modal('hide')
+    // $('#createProjectModal').hide;
     myModal.hide();
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();

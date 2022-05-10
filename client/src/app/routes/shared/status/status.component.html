@@ -1,0 +1,7 @@
+<div [ngSwitch]="statusCode" class="text-center">
+    <span *ngSwitchCase="code.Reopened" class="badge badge-light fsz-14">Reopened</span>
+    <span *ngSwitchCase="code.Open" class="badge  badge-info fsz-14">Open</span>
+    <span *ngSwitchCase="code.Resolved" class="badge  badge-success fsz-14">Resolved</span>
+    <span *ngSwitchCase="code.InProgress" class="badge  badge-primary fsz-14">InProgress</span>
+    <span *ngSwitchCase="code.Closed" class="badge  badge-secondary fsz-14">Closed</span>
+</div>

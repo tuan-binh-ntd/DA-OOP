@@ -12,165 +12,190 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="modalForm">
-      <div class="form-group row">
-        <label class="form-label col-2" for="name">Name</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <input
-              matInput
-              placeholder="Enter project name"
-              formControlName="projectName"
-            />
-          </mat-form-field>
-        </div>
-      </div>
-  
-      <div class="form-group row">
-        <label class="form-label col-2" for="name">Code</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <input
-              matInput
-              placeholder="Enter project code"
-              formControlName="projectCode"
-            />
-          </mat-form-field>
-        </div>
-      </div>
-  
-      <div class="form-group row">
-        <label class="form-label col-2">Type</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-select
-              placeholder="Enter project type"
-              formControlName="projectType"
-            >
-              <mat-option
-                *ngFor="let type of projectTypes"
-                [value]="type.value"
+      <div class="row">
+        <div class="col col-6">
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Name</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <input
+                  matInput
+                  placeholder="Enter project name"
+                  formControlName="projectName"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+      
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Code</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <input
+                  matInput
+                  placeholder="Enter project code"
+                  formControlName="projectCode"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+      
+          <div class="form-group row">
+            <label class="form-label col-2">Type</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-select
+                  placeholder="Enter project type"
+                  formControlName="projectType"
+                >
+                  <mat-option
+                    *ngFor="let type of projectTypes"
+                    [value]="type.value"
+                  >
+                    {{ type.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label class="form-label col-2">Department</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                
+                <mat-select
+                  placeholder="Enter project department"
+                  formControlName="departmentId"
+                  (ngModelChange)="onChangeDepartment()"
+                >
+                  <mat-option
+                    *ngFor="let department of departments"
+                    [value]="department.id"
+                  >
+                    {{ department.departmentName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+      
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Leader</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-select
+                [disabled]="true"
+                placeholder="Enter project leader"
+                formControlName="appUserId"
               >
-                {{ type.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+                <mat-option
+                  *ngFor="let user of users"
+                  [value]="user.id"
+                >
+                  {{ user.firstName }} {{user.lastName}}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="col col-6">
+          <div class="form-group row">
+            <label class="form-label col-2">Priority</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-select
+                  placeholder="Enter project priority"
+                  formControlName="priorityCode"
+                >
+                  <mat-option
+                    *ngFor="let code of priorityCode"
+                    [value]="code.value"
+                  >
+                    {{ code.viewValue }}
+                  </mat-option>
+                </mat-select>
+    
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Create</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  matInput
+              [disabled]="true"
+                  [matDatepicker]="create"
+                  formControlName="createDate"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="create">
+                </mat-datepicker-toggle>
+                <mat-datepicker #create></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Deadline</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="deadline"
+                  formControlName="deadlineDate"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="deadline">
+                </mat-datepicker-toggle>
+                <mat-datepicker #deadline></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div [hidden]="mode === 'create'" class="form-group row">
+            <label class="form-label col-2" for="name">Complete</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="complete"
+                  formControlName="completeDate"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="complete">
+                </mat-datepicker-toggle>
+                <mat-datepicker #complete></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
 
-      <div class="form-group row">
-        <label class="form-label col-2">Department</label>
-        <div class="col-10">
+          <div class="form-group row">
+            <label class="form-label col-2" for="name">Description</label>
+            <div class="col-10">
           <mat-form-field class="w-100">
-            
-            <mat-select
-              placeholder="Enter project department"
-              formControlName="departmentId"
-              (ngModelChange)="onChangeDepartment()"
+            <textarea matInput 
+            placeholder="Description" 
+            formControlName="description"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="5"
+            #autosize="cdkTextareaAutosize"
             >
-              <mat-option
-                *ngFor="let department of departments"
-                [value]="department.id"
-              >
-                {{ department.departmentName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+            </textarea>
+          </mat-form-field> 
+          </div>
+          </div>
         </div>
       </div>
-  
-      <div class="form-group row">
-        <label class="form-label col-2" for="name">Leader</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-select
-            [disabled]="true"
-            placeholder="Enter project leader"
-            formControlName="appUserId"
-          >
-            <mat-option
-              *ngFor="let user of users"
-              [value]="user.id"
-            >
-              {{ user.firstName }} {{user.lastName}}
-            </mat-option>
-          </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
+   
       
     
   
-      <div class="form-group row">
-        <label class="form-label col-2">Priority</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-select
-              placeholder="Enter project priority"
-              formControlName="priorityCode"
-            >
-              <mat-option
-                *ngFor="let code of priorityCode"
-                [value]="code.value"
-              >
-                {{ code.viewValue }}
-              </mat-option>
-            </mat-select>
-
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="form-label col-2" for="name">Create</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-label>Choose a date</mat-label>
-            <input
-              matInput
-              [disabled]="true"
-              [matDatepicker]="create"
-              formControlName="createDate"
-            />
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="create">
-            </mat-datepicker-toggle>
-            <mat-datepicker #create></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="form-label col-2" for="name">Deadline</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-label>Choose a date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="deadline"
-              formControlName="deadlineDate"
-            />
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="deadline">
-            </mat-datepicker-toggle>
-            <mat-datepicker #deadline></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-      <div [hidden]="mode === 'create'" class="form-group row">
-        <label class="form-label col-2" for="name">Complete</label>
-        <div class="col-10">
-          <mat-form-field class="w-100">
-            <mat-label>Choose a date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="complete"
-              formControlName="completeDate"
-            />
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="complete">
-            </mat-datepicker-toggle>
-            <mat-datepicker #complete></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
+  
       <style>
         ::ng-deep .cdk-overlay-container {
           z-index: 2000;

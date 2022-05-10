@@ -71,7 +71,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   onViewTask(projectId: string): any {
-    this.router.navigate([`tasks`, { projectId }]);
+    this.router.navigate(['tasks', { projectId }]);
   }
 
   onChangeProject() {
@@ -88,5 +88,8 @@ export class ProjectsComponent implements OnInit {
     this.fetchProjectData();
   }
 
+  roundProgress(progress: number){
+    return Math.round(progress) + '%'
+  }
  
 }
