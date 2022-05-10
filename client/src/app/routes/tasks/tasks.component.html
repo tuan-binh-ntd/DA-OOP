@@ -4,15 +4,16 @@
         <h2>Tasks</h2>
       </div>
       <div class="col col-6">
-        <button
-          class="button-create float-right"
-          data-toggle="modal"
-          data-target="#createProjectModal"
-        >
+        <button 
+        class="button-create float-right" 
+        data-toggle="modal" 
+        data-target="#createTaskModal"
+        (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
+        <i class="fa fa-plus"></i>
           Create Task
         </button>
       </div>
-    </div>
+    </div>  
     <table  id="example" class="table table-hover mt-4" style="width:100%">
         <thead>
             <tr>
@@ -26,10 +27,11 @@
                 <th class="text-center">Priority</th>
                 <th class="text-center">Status</th>
                 <th>Description</th>
+                <th class="text-center">Operation</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let task of tasks">
+            <tr *ngFor="let task of tasks" (click)="openDetailModal(task, 'detail', false)">
                 <td class="text-center">{{ task.taskType }}</td>
                 <td>{{ getUserName(task.createUserId) }}</td>
                 <td>{{ task.taskName }}</td>
@@ -39,8 +41,22 @@
                 <td class="text-center"><app-priority-icon [priorityCode]="task.priorityCode"></app-priority-icon></td>
                 <td><app-status [statusCode]="task.statusCode"></app-status></td>
                 <td>{{ task.description }}</td>
-            </tr>
+                <td>
+                  <div class="row">
+                      <i class="fa fa-edit" (click)="openDetailModal(task, 'detail', false)"></i>
+                      <i class="fa fa-trash"></i>
+                  </div>
+                </td>
+            </tr> 
         </tbody>
         
     </table>
+    <script>
+      $('#sortTable').DataTable();
+      </script>
+      <div class="modal fade" id="createTaskModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <app-modal-task #modalTask [projects]="projects" (onChangeTask)="onChangeTask()"></app-modal-task>
+      </div>
 </div>

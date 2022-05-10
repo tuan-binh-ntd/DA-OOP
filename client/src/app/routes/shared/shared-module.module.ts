@@ -16,7 +16,7 @@ import { ModalTaskComponent } from './modal-task/modal-task.component';
   declarations: [
     PriorityIconComponent,
     ModalProjectComponent,
-    StatusComponent
+    StatusComponent,
     ModalTaskComponent
   ],
   imports: [
@@ -33,7 +33,7 @@ import { ModalTaskComponent } from './modal-task/modal-task.component';
   exports:[
     PriorityIconComponent,
     ModalProjectComponent,
-    StatusComponent
+    StatusComponent,
     ModalTaskComponent
   ],
   providers:[ MatDatepickerModule,
