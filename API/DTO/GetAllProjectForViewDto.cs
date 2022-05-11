@@ -13,13 +13,13 @@ namespace API.DTO
         public DateTime CreateDate { get; set; }
         public DateTime DeadlineDate { get; set; }
         public DateTime? CompleteDate { get; set; }
-        public TimeSpan DayLefts { get; set; }
+        public int DayLefts { get; set; }
         public Priority PriorityCode { get; set; }
         public StatusCode StatusCode { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid AppUserId { get; set; }
         public string LeaderName { get; set; }
         public int TaskCount { get; set; } = 0;
-        public float TaskProgress { get; set; } = 0;
+        public decimal TaskProgress { get; set; } = 0;
     }
 }

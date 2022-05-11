@@ -41,30 +41,24 @@ namespace API.Controllers
             await taskListComplete.AsNoTracking().ToListAsync();
             var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
             var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
-            var projectList = from p in _dataContext.Project
-                              join d in _dataContext.Department
-                              on p.DepartmentId equals d.Id
-                              join u in _dataContext.AppUser
-                              on d.Id equals u.DepartmentId
-                              where u.PermissionCode == Permission.Leader
-                              select new GetAllProjectForViewDto
-                              {
-                                  Id = p.Id,
-                                  ProjectName = p.ProjectName,
-                                  Description = p.Description,
-                                  ProjectType = p.ProjectType,
-                                  ProjectCode = p.ProjectCode,
-                                  CreateDate = p.CreateDate,
-                                  DeadlineDate = p.DeadlineDate,
-                                  CompleteDate = p.CompleteDate,
-                                  DayLefts = p.DeadlineDate - DateTime.Now,
-                                  PriorityCode = p.PriorityCode,
-                                  StatusCode = p.StatusCode,
-                                  DepartmentId = p.DepartmentId,
-                                  AppUserId = u.Id,
-                                  LeaderName = u.FirstName + " " + u.LastName,
-                              };
-            await projectList.AsNoTracking().ToListAsync();
+            var projectList = await _dataContext.AppUser.Where(e => e.PermissionCode == Permission.Leader).Join(_dataContext.Project,
+                    u => u.DepartmentId, p => p.DepartmentId, (u, p) => new GetAllProjectForViewDto
+                    {
+                        Id = p.Id,
+                        ProjectName = p.ProjectName,
+                        Description = p.Description,
+                        ProjectType = p.ProjectType,
+                        ProjectCode = p.ProjectCode,
+                        CreateDate = p.CreateDate,
+                        DeadlineDate = p.DeadlineDate,
+                        CompleteDate = p.CompleteDate,
+                        DayLefts = (p.DeadlineDate - DateTime.Now).Days,
+                        PriorityCode = p.PriorityCode,
+                        StatusCode = p.StatusCode,
+                        DepartmentId = p.DepartmentId,
+                        AppUserId = u.Id,
+                        LeaderName = u.FirstName + " " + u.LastName,
+                    }).AsNoTracking().ToListAsync();
             foreach (var item in projectList)
             {
                 foreach (var num in count)
@@ -72,14 +66,14 @@ namespace API.Controllers
                     if (item.Id == num.ProjectId)
                     {
                         item.TaskCount = num.Count;
-                        break;  
+                        break;
                     }
                 }
                 foreach (var numTaskComplete in countTaskComplete)
                 {
                     if (item.Id == numTaskComplete.ProjectId)
                     {
-                        item.TaskProgress = ((float)numTaskComplete.Count / (float)item.TaskCount) * 100;
+                        item.TaskProgress = Math.Round(Convert.ToDecimal(((float)numTaskComplete.Count / (float)item.TaskCount) * 100), 2);
                         break;
                     }
                 }
@@ -110,30 +104,26 @@ namespace API.Controllers
                                };
                 await taskList.AsNoTracking().ToListAsync();
                 var count = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
-                var projectList = from u in _dataContext.AppUser
-                                  join d in _dataContext.Department
-                                  on u.DepartmentId equals d.Id
-                                  join p in _dataContext.Project
-                                  on d.Id equals p.DepartmentId
-                                  where u.DepartmentId == departmentId && u.PermissionCode == Permission.Leader
-                                  select new GetAllProjectForViewDto
-                                  {
-                                      Id = p.Id,
-                                      ProjectName = p.ProjectName,
-                                      Description = p.Description,
-                                      ProjectType = p.ProjectType,
-                                      ProjectCode = p.ProjectCode,
-                                      CreateDate = p.CreateDate,
-                                      DeadlineDate = p.DeadlineDate,
-                                      CompleteDate = p.CompleteDate,
-                                      DayLefts = p.DeadlineDate - DateTime.Now,
-                                      PriorityCode = p.PriorityCode,
-                                      StatusCode = p.StatusCode,
-                                      DepartmentId = p.DepartmentId,
-                                      AppUserId = u.Id,
-                                      LeaderName = u.FirstName + " " + u.LastName,
-                                  };
-                await projectList.AsNoTracking().ToListAsync();
+                var projectList = await _dataContext.AppUser.Where(e => e.DepartmentId == departmentId && e.PermissionCode == Permission.Leader)
+                    .Join(_dataContext.Project, u => u.DepartmentId, p => p.DepartmentId, (u, p) =>
+                         new GetAllProjectForViewDto
+                         {
+                             Id = p.Id,
+                             ProjectName = p.ProjectName,
+                             Description = p.Description,
+                             ProjectType = p.ProjectType,
+                             ProjectCode = p.ProjectCode,
+                             CreateDate = p.CreateDate,
+                             DeadlineDate = p.DeadlineDate,
+                             CompleteDate = p.CompleteDate,
+                             DayLefts = (p.DeadlineDate - DateTime.Now).Days,
+                             PriorityCode = p.PriorityCode,
+                             StatusCode = p.StatusCode,
+                             DepartmentId = p.DepartmentId,
+                             AppUserId = u.Id,
+                             LeaderName = u.FirstName + " " + u.LastName,
+                         })
+                    .AsNoTracking().ToListAsync();
                 foreach (var item in projectList)
                 {
                     foreach (var num in count)
@@ -175,27 +165,44 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
+        public async Task<ActionResult> UpdateProject(Guid id, UpdateProjectDto input)
         {
-            var project = await _dataContext.Project.FindAsync(input.Id);
-            if (project != null && input.CompleteDate >= project.CreateDate)
+            var project = await _dataContext.Project.FindAsync(id);
+            if (project != null)
             {
-                project.ProjectName = project.ProjectName;
-                project.Description = input.Description;
-                project.ProjectCode = input.ProjectCode;
-                project.ProjectType = input.ProjectType;
-                project.DeadlineDate = input.DeadlineDate;
-                project.PriorityCode = input.PriorityCode;
-                project.StatusCode = input.StatusCode;
-                project.DepartmentId = input.DepartmentId;
-                project.CompleteDate = input.CompleteDate;
-                _dataContext.Project.Update(project);
-                await _dataContext.SaveChangesAsync();
-                return Ok(project);
+                if (input.PermissionCode == Permission.ProjectManager)
+                {
+                    project.ProjectName = project.ProjectName;
+                    project.Description = input.Description;
+                    project.ProjectCode = input.ProjectCode;
+                    project.ProjectType = input.ProjectType;
+                    project.DeadlineDate = input.DeadlineDate;
+                    project.PriorityCode = input.PriorityCode;
+                    project.StatusCode = input.StatusCode;
+                    project.DepartmentId = input.DepartmentId;
+                    _dataContext.Project.Update(project);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(project);
+                }
+                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
+                {
+                    project.StatusCode = input.StatusCode;
+                    _dataContext.Project.Update(project);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(project);
+                }
+                else
+                {
+                    project.StatusCode = input.StatusCode;
+                    project.CompleteDate = DateTime.Now;
+                    _dataContext.Project.Update(project);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(project);
+                }
             }
             else
             {
-                return BadRequest("CompleteDate can not less than CreateDate");
+                return BadRequest("Project not existed");
             }
         }
 
