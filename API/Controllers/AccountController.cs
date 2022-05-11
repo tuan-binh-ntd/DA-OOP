@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using API.Enum;
 using System.Linq;
+using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -15,18 +17,23 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly DataContext _dataContext;
-        public AccountController(DataContext dataContext)
+        private readonly ITokenService _tokenService;
+
+        public AccountController(DataContext dataContext, ITokenService tokenService)
         {
             _dataContext=dataContext;
+            _tokenService = tokenService;
         }
 
         [HttpGet("getall")]
+        [AllowAnonymous]
         public async Task<ActionResult> GetAllUser()
         {
             var appUserList = await _dataContext.AppUser.AsNoTracking().ToListAsync();
             return Ok(appUserList);
         }
 
+        [Authorize]
         [HttpGet("getuserforproject")]
         public async Task<ActionResult> GetUserForProject(Guid projectId)
         {
@@ -47,7 +54,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDto input)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto input)
         {
             var newUser = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (newUser != null) return BadRequest("Username is taken");
@@ -67,7 +74,11 @@ namespace API.Controllers
             };
             await _dataContext.AppUser.AddAsync(user);
             await _dataContext.SaveChangesAsync();
-            return Ok(user);
+            return new UserDto
+            {
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user)
+            };
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto input)
@@ -76,7 +87,11 @@ namespace API.Controllers
             if (user == null) return Unauthorized("Invalid username");
             var pass = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
             if (pass == null) return Unauthorized("Invalid password");
-            return Ok(user);
+            return new UserDto
+            {
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         [HttpDelete("delete")]
