@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   percentCount = 0;
  constructor(private router: Router){}
  ngOnInit(): void {
-   
+
  }
 
  enterpriseCountStop = setInterval(()=>{
@@ -26,13 +26,13 @@ userCountStop = setInterval(()=>{
   if(this.userCount  === 250){
     clearInterval(this.userCountStop)
   }
-}, 1)  
+}, 1)
 percentCountStop = setInterval(()=>{
   this.percentCount ++;
   if(this.percentCount  === 92){
     clearInterval(this.percentCountStop)
   }
-}, 20)  
+}, 20)
 navigateToProject(){
   this.router.navigateByUrl('projects')
 }

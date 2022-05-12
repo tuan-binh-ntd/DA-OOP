@@ -11,9 +11,11 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class NavBarComponent implements OnInit {
   userName!:string;
   loggedIn:boolean = false;
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {}
-
+  logout() {
+    this.authenticationService.logout();
+  }
 
 }
