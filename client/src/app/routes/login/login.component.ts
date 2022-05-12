@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  loggedIn: boolean = false;
   @ViewChild('toast') toast: any;
   constructor(
     private fb: FormBuilder,
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
         )
         .subscribe((response) => {
           if (response) {
+            this.loggedIn = true;
             this.toastr.success('Login success!', '', {
               timeOut: 1000,
             });
@@ -59,5 +61,14 @@ export class LoginComponent implements OnInit {
           }
         });
     }
+  }
+  logout() {
+    this.authenticationService.logout();
+  }
+
+  getCurrentUser() {
+    this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => {
+      this.loggedIn = !!user;
+    })
   }
 }

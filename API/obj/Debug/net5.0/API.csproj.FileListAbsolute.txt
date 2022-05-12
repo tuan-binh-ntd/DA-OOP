@@ -40,7 +40,6 @@ D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
 D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
 D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
-D:\DA-OOP\API\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\DA-OOP\API\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
 D:\DA-OOP\API\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 D:\DA-OOP\API\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
@@ -118,3 +117,4 @@ D:\S\DA-OOP\DA-OOP\API\obj\Debug\net5.0\refint\API.dll
 D:\S\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 D:\S\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 D:\S\DA-OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
+D:\DA-OOP\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

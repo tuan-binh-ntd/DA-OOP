@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,10 +10,10 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
   userName!:string;
-  constructor(private router: Router) { }
+  loggedIn:boolean = false;
+  constructor() { }
 
-  ngOnInit(): void {
-  }
- 
+  ngOnInit(): void {}
+
 
 }
