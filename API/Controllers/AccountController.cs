@@ -33,7 +33,6 @@ namespace API.Controllers
             return Ok(appUserList);
         }
 
-        [Authorize]
         [HttpGet("getuserforproject")]
         public async Task<ActionResult> GetUserForProject(Guid projectId)
         {
@@ -49,8 +48,10 @@ namespace API.Controllers
                                FirstName = u.FirstName,
                                LastName = u.LastName,
                            }).AsNoTracking().ToListAsync();
-            userList.GroupBy(e => e.AppUserId);
-            return Ok(userList);
+            var results = from u in userList
+                          group u by new { u.ProjectId, u.ProjectName, u.AppUserId, u.FirstName, u.LastName } into g
+                          select new { AppUserId = g.Key };
+            return Ok(results);
         }
 
         [HttpPost("register")]
