@@ -93,6 +93,45 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user)
             };
         }
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateUser(Guid id, UpdateUserDto input)
+        {
+            var user = await _dataContext.AppUser.FindAsync(id);
+            if (user != null)
+            {
+                if (input.PermissionCode == Permission.Employee)
+                {
+                    user.FirstName = user.FirstName;
+                    user.LastName = user.LastName;
+                    user.Address = user.Address;
+                    user.Email = user.Email;
+                    user.Phone = user.Phone;
+                    user.Password = input.Password;
+                    user.DepartmentId = user.DepartmentId;
+                    _dataContext.AppUser.Update(user);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(user);
+                }
+                else
+                {
+                    user.FirstName = input.FirstName;
+                    user.LastName = input.LastName;
+                    user.Address = input.Address;
+                    user.Email = input.Email;
+                    user.Phone = input.Phone;
+                    user.Password = input.Password;
+                    user.DepartmentId = input.DepartmentId;
+                    _dataContext.AppUser.Update(user);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(user);
+                }
+                
+            }
+            else
+            {
+                return BadRequest("User not existed");
+            }
+        }
 
         [HttpDelete("delete")]
         public async Task<ActionResult> DeteleUser(Guid id)
