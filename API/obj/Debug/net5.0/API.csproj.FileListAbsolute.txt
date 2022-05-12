@@ -80,7 +80,6 @@ D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.OpenApi.dll
-D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -178,3 +177,4 @@ F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.dll
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
+D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
