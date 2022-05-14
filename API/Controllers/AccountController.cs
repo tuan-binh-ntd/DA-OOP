@@ -53,6 +53,24 @@ namespace API.Controllers
                           select new { AppUserId = g.Key };
             return Ok(results);
         }
+         [HttpGet("getuserfordepartment")]
+        public async Task<ActionResult> GetUserForDepartment(Guid DepartmentId)
+        {
+            var userList = await (from u in _dataContext.AppUser
+                           join d in _dataContext.Department on u.DepartmentId equals d.Id
+                           where d.Id == DepartmentId
+                           select new
+                           {
+                               DepartmentId = d.Id,
+                               DepartmentName = d.DepartmentName,
+                               AppUserId = u.Id,
+                               FirstName = u.FirstName,
+                               LastName = u.LastName,
+                           }).AsNoTracking().ToListAsync();
+            userList.GroupBy(e => e.AppUserId);
+            return Ok(userList);
+        }
+
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto input)
