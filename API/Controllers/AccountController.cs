@@ -48,10 +48,27 @@ namespace API.Controllers
                                FirstName = u.FirstName,
                                LastName = u.LastName,
                            }).AsNoTracking().ToListAsync();
-            var results = from u in userList
-                          group u by new { u.ProjectId, u.ProjectName, u.AppUserId, u.FirstName, u.LastName } into g
+            var results = from u in userList group u by new { u.ProjectId, u.ProjectName, u.AppUserId, u.FirstName, u.LastName } into g
                           select new { AppUserId = g.Key };
             return Ok(results);
+        }
+
+        [HttpGet("getuserfordepartment")]
+        public async Task<ActionResult> GetUserForDepartment(Guid DepartmentId)
+        {
+            var userList = await (from u in _dataContext.AppUser
+                           join d in _dataContext.Department on u.DepartmentId equals d.Id
+                           where d.Id == DepartmentId
+                           select new
+                           {
+                               DepartmentId = d.Id,
+                               DepartmentName = d.DepartmentName,
+                               AppUserId = u.Id,
+                               FirstName = u.FirstName,
+                               LastName = u.LastName,
+                           }).AsNoTracking().ToListAsync();
+            userList.GroupBy(e => e.AppUserId);
+            return Ok(userList);
         }
 
         [HttpPost("register")]
@@ -77,10 +94,14 @@ namespace API.Controllers
             await _dataContext.SaveChangesAsync();
             return new UserDto
             {
+                Id = user.Id,
+                PermissionCode = user.PermissionCode,
                 Email = user.Email,
+                DepartmentId = user.DepartmentId,
                 Token = _tokenService.CreateToken(user)
             };
         }
+
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto input)
         {
@@ -90,10 +111,14 @@ namespace API.Controllers
             if (pass == null) return Unauthorized("Invalid password");
             return new UserDto
             {
+                Id = user.Id,
+                PermissionCode = user.PermissionCode,
                 Email = user.Email,
+                DepartmentId = user.DepartmentId,
                 Token = _tokenService.CreateToken(user)
             };
         }
+
         [HttpPut("update")]
         public async Task<ActionResult> UpdateUser(Guid id, UpdateUserDto input)
         {
