@@ -59,6 +59,7 @@ namespace API.Controllers
                 StatusCode = input.StatusCode,
                 Description = input.Description,
                 TaskType = input.TaskType,
+                TaskCode = input.TaskCode,
                 ProjectId = input.ProjectId,
                 AppUserId = input.AppUserId
             };
@@ -82,6 +83,7 @@ namespace API.Controllers
                     task.StatusCode = input.StatusCode;
                     task.Description = input.Description;
                     task.TaskType = input.TaskType;
+                    task.TaskCode = input.TaskCode;
                     task.ProjectId = input.ProjectId;
                     task.AppUserId = input.AppUserId;
                     _dataContext.Task.Update(task);
