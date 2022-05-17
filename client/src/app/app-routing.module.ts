@@ -9,6 +9,7 @@ import { ProjectsComponent } from './routes/projects/projects.component';
 import { TasksComponent } from './routes/tasks/tasks.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
 import { UsersComponent } from './routes/users/users.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,7 +18,7 @@ const routes: Routes = [
     path: '',
     component: SiteLayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent },
+      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent },
       { path: 'projects', component: ProjectsComponent },

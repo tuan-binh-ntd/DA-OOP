@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTO;
 using API.Entity;
+using API.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,12 +29,12 @@ namespace API.Controllers
                 var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
                 return Ok(taskList);
             }
-            if(userId != null && projectId != null)
+            if (userId != null && projectId != null)
             {
                 var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.ProjectId == projectId && e.AppUserId == userId).ToListAsync();
                 return Ok(taskList);
             }
-            if(userId != null || projectId != null)
+            if (userId != null || projectId != null)
             {
                 var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId || e.ProjectId == projectId).ToListAsync();
                 return Ok(taskList);
@@ -58,6 +59,7 @@ namespace API.Controllers
                 StatusCode = input.StatusCode,
                 Description = input.Description,
                 TaskType = input.TaskType,
+                TaskCode = input.TaskCode,
                 ProjectId = input.ProjectId,
                 AppUserId = input.AppUserId
             };
@@ -67,28 +69,46 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
+        public async Task<ActionResult> UpdateTask(Guid id, UpdateTaskDto input)
         {
-            var task = await _dataContext.Task.FindAsync(input.Id);
-            if (task != null && input.CompleteDate >= task.CompleteDate)
+            var task = await _dataContext.Task.FindAsync(id);
+            if (task != null)
             {
-                task.TaskName = input.TaskName;
-                task.CreateUserId = input.CreateUserId;
-                task.DeadlineDate = input.DeadlineDate;
-                task.PriorityCode = input.PriorityCode;
-                task.StatusCode = input.StatusCode;
-                task.Description = input.Description;
-                task.TaskType = input.TaskType;
-                task.ProjectId = input.ProjectId;
-                task.AppUserId = input.AppUserId;
-                task.CompleteDate = input.CompleteDate;
-                _dataContext.Task.Add(task);
-                await _dataContext.SaveChangesAsync();
-                return Ok(task);
+                if (input.PermissionCode == Permission.Leader)
+                {
+                    task.TaskName = input.TaskName;
+                    task.CreateUserId = input.CreateUserId;
+                    task.DeadlineDate = input.DeadlineDate;
+                    task.PriorityCode = input.PriorityCode;
+                    task.StatusCode = input.StatusCode;
+                    task.Description = input.Description;
+                    task.TaskType = input.TaskType;
+                    task.TaskCode = input.TaskCode;
+                    task.ProjectId = input.ProjectId;
+                    task.AppUserId = input.AppUserId;
+                    _dataContext.Task.Update(task);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(task);
+                }
+                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
+                {
+                    task.StatusCode = input.StatusCode;
+                    _dataContext.Update(task);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(task);
+                }
+                else
+                {
+                    task.StatusCode = input.StatusCode;
+                    task.CompleteDate = DateTime.Now;
+                    _dataContext.Update(task);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(task);
+                }
             }
             else
             {
-                return BadRequest("CompleteDate can not less than CreateDate");
+                return BadRequest("Task not existed");
             }
         }
 

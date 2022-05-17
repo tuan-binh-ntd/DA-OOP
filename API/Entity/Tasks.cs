@@ -1,5 +1,6 @@
 ﻿using API.Enum;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,10 +26,13 @@ namespace API.Entity
         public string Description { get; set; }
         [Required, StringLength(50)]
         public string TaskType { get; set; }
+        [Required, StringLength(50)]
+        public string TaskCode { get; set; }
         [Required]
         [ForeignKey("Project")]
         public Guid ProjectId { get; set; }
         [ForeignKey("AppUser")]
         public Guid? AppUserId { get; set; }
+        public ICollection<Comment> Comment { get; set; }
     }
 }
