@@ -3,7 +3,7 @@ import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { DeparmentService } from 'src/app/services/deparment.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -20,9 +20,9 @@ export class ProfileComponent implements OnInit {
     { value: Permission.Leader, viewValue: 'Leader' },
     { value: Permission.Employee, viewValue: 'Employee' }
   ]
-  constructor(private authenticationService: AuthenticationService, 
+  constructor(private authenticationService: AuthenticationService,
               private userService: UserService,
-              private departmentService: DeparmentService) { }
+              private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
     this.fetchUserData();

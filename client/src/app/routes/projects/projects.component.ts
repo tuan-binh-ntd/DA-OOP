@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
-import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
-import { DeparmentService } from 'src/app/services/deparment.service';
 import { ProjectService } from '../../services/project.service';
 import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
-import { Priority } from '../shared/priority-icon/priority-icon.component';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { ToastrService } from 'ngx-toastr';
+import { DepartmentService } from 'src/app/services/department.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -18,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ProjectsComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
-    private departmentService: DeparmentService,
+    private departmentService: DepartmentService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -35,10 +32,9 @@ export class ProjectsComponent implements OnInit {
   isInProgressRecord: boolean = false;
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
-  right: number;
+  right: boolean;
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.right = user.permissionCode;
+    this.right = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.ProjectManager;
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
@@ -84,7 +80,7 @@ export class ProjectsComponent implements OnInit {
     var myModal = new bootstrap.Modal(
       document.getElementById('createProjectModal')!
     );
-    
+
     // $('#createProjectModal').modal('hide')
     // $('#createProjectModal').hide;
     myModal.hide();
@@ -99,17 +95,9 @@ export class ProjectsComponent implements OnInit {
   }
 
   openModal(){
-    debugger
-    if(this.right === Permission.ProjectManager){
+    if(this.right){
       this.modalProject.openModal(null, 'create', true);this.isShowModal = true
     }
-    else{
-      $(document.body).removeClass('modal-open');
-      $('.modal-backdrop').remove();
-      this.toastr.error('You dont have permision', '', {
-        timeOut: 1000,
-      });
-    }
   }
- 
+
 }
