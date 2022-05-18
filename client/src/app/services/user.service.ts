@@ -12,5 +12,13 @@ export class UserService {
 
   getAllUser():Observable<any>{
     return this.http.get(this.baseUrl + '/getall');
-   }
+  }
+
+  updateUser(payload:any):Observable<any>{
+    return this.http.put(this.baseUrl + '/update',payload);
+  }
+
+  changePassword(payload:any):Observable<any>{
+    return this.http.put(this.baseUrl + '/changepassword',payload);
+  }
 }

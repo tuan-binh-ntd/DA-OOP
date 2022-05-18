@@ -85,7 +85,7 @@ export class ModalTaskComponent implements OnInit {
     this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
-      this.title = 'New Project';
+      this.title = 'New Task';
     this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
     this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
     this.modalForm.get('createDate')?.setValue(new Date())

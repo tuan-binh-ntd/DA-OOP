@@ -1,0 +1,112 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="createUserModal">{{title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="modalForm">
+            <div class="row">
+                <div class="col col-6">
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Fisrst Name</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter first name" formControlName="firstName" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Last Name</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter last name" formControlName="lastName" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Address</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter address" formControlName="address" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Email</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter email" formControlName="email" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-6">
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Phone</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter phone" formControlName="phone" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="form-label col-2">Department</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <mat-select placeholder="Enter department" formControlName="departmentId">
+                                    <mat-option *ngFor="let department of departments" [value]="department.id">
+                                        {{ department.departmentName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label class="form-label col-2" for="name">Password</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Enter password" formControlName="password" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label class="form-label col-2">Permission</label>
+                        <div class="col-10">
+                            <mat-form-field class="w-100">
+                                <mat-select placeholder="Enter permission" formControlName="permissionCode">
+                                    <mat-option *ngFor="let code of permission" [value]="code.value">
+                                        {{ code.viewValue }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                ::ng-deep .cdk-overlay-container {
+                    z-index: 2000;
+                }
+            </style>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="w-100 ">
+            <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+                Close
+            </button>
+            <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">Edit</button>
+            <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="onSubmit()">Save changes</button>
+            <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right" (click)="onChangeEdit(false)">Cancel</button>
+        </div>
+
+    </div>
+</div>

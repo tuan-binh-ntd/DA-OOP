@@ -4,7 +4,7 @@ using System;
 
 namespace API.DTO
 {
-    public class UserDto
+    public class AppUserDto
     {
         public Guid Id { get; set; }
         public string Email { get; set; }

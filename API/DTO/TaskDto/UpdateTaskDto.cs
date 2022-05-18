@@ -5,6 +5,7 @@ namespace API.DTO
 {
     public class UpdateTaskDto
     {
+        public Guid Id { get; set; }
         public string TaskName { get; set; }
         public Guid CreateUserId { get; set; }
         public DateTime DeadlineDate { get; set; }
