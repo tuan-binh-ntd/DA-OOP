@@ -98,6 +98,7 @@ export class ModalProjectComponent implements OnInit {
   openModal(data: any, mode: string, isEdit: boolean) {
     this.isEdit = isEdit;
     this.mode = mode;
+    this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
       this.title = 'New Project';
