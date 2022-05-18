@@ -13,6 +13,7 @@ import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { Priority } from '../priority-icon/priority-icon.component';
@@ -35,6 +36,7 @@ export class ModalProjectComponent implements OnInit {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private userService: UserService,
+    private authenticationService: AuthenticationService,
     private toastr: ToastrService
   ) {}
   modalForm!: FormGroup;
@@ -44,6 +46,13 @@ export class ModalProjectComponent implements OnInit {
     { value: 'MNP', viewValue: 'Management Projects' },
     { value: 'RSP', viewValue: 'Research Projects' },
   ];
+  statusCode: any[] = [
+    { value: StatusCode.Reopened, viewValue: 'Reopened' },
+    { value: StatusCode.Resolved, viewValue: 'Resolved' },
+    { value: StatusCode.Open, viewValue: 'Open' },
+    { value: StatusCode.InProgress, viewValue: 'InProgress' },
+    { value: StatusCode.Closed, viewValue: 'Closed' },
+  ]
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -54,7 +63,12 @@ export class ModalProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserData();
+    this.getCurrentUser();
     this.initForm();
+  }
+
+  getCurrentUser() {
+    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
   }
 
   fetchUserData(){

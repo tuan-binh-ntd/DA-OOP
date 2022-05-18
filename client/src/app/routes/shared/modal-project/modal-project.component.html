@@ -99,6 +99,25 @@
               </mat-form-field>
             </div>
           </div>
+          <div [hidden]="mode === 'create'" class="form-group row">
+            <label class="form-label col-2">Status</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-select
+                  placeholder="Enter project status"
+                  formControlName="statusCode"
+                >
+                  <mat-option
+                    *ngFor="let code of statusCode"
+                    [value]="code.value"
+                  >
+                    {{ code.viewValue }}
+                  </mat-option>
+                </mat-select>
+    
+              </mat-form-field>
+            </div>
+          </div>
         </div>
         <div class="col col-6">
           <div class="form-group row">

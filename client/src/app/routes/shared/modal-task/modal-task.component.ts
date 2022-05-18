@@ -6,6 +6,7 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -42,13 +43,19 @@ export class ModalTaskComponent implements OnInit {
     private taskService: TaskService,
     private departmentService: DepartmentService,
     private userService: UserService,
+    private authenticationService: AuthenticationService,
     private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.fetchUserData();
     this.fetchDepartmentData();
+    this.getCurrentUser();
     this.initForm();
+  }
+
+  getCurrentUser() {
+    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
   }
 
   fetchUserData(){
@@ -151,13 +158,6 @@ export class ModalTaskComponent implements OnInit {
       }
     }
   }
-
-  onChangeProject(){
-    const project = this.projects.find(project=> project.id === this.modalForm.value.projectId);
-    const department = this.departments.find(department=> department.id === project?.departmentId);
-    const user = this.users.find(user => user.departmentId === department?.id);
-    this.modalForm.get('createUserId')?.setValue(user?.id);
-   }
 
    onChangeEdit(ev: any) {
     this.isEdit = ev;

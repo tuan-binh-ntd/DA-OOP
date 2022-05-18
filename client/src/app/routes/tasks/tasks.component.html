@@ -35,6 +35,7 @@
                 <td class="text-center">{{ task.taskType }}</td>
                 <td>{{ getUserName(task.createUserId) }}</td>
                 <td>{{ task.taskName }}</td>
+                <td>{{ getUserName(task.appUserId) }}</td>
                 <td>{{ getProjectName(task.projectId) }}</td>
                 <td class="text-center">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
                 <td class="text-center">{{ task.completeDate | date: 'dd/MM/yyyy'}}</td>
