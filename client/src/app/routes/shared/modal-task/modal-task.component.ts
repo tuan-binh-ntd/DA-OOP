@@ -2,9 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
-import { DeparmentService } from 'src/app/services/deparment.service';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -23,6 +26,7 @@ export class ModalTaskComponent implements OnInit {
   modalForm!: FormGroup;
   isEdit: boolean = false;
   data: any;
+  user: User;
   taskTypes: any[] = [
     { value: 'Test', viewValue: 'Test' },
   ];
@@ -37,15 +41,21 @@ export class ModalTaskComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private deparmentService: DeparmentService,
+    private departmentService: DepartmentService,
     private userService: UserService,
+    private authenticationService: AuthenticationService,
     private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.fetchUserData();
     this.fetchDepartmentData();
+    this.getCurrentUser();
     this.initForm();
+  }
+
+  getCurrentUser() {
+    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
   }
 
   fetchUserData(){
@@ -56,7 +66,7 @@ export class ModalTaskComponent implements OnInit {
   }
 
   fetchDepartmentData(){
-    this.deparmentService.getAllDepartment().pipe(catchError((err) => of(err)))
+    this.departmentService.getAllDepartment().pipe(catchError((err) => of(err)))
     .subscribe((response) => {
       this.departments = response;
     });
@@ -149,15 +159,13 @@ export class ModalTaskComponent implements OnInit {
     }
   }
 
-  onChangeProject(){
-    const project = this.projects.find(project=> project.id === this.modalForm.value.projectId);
-    const department = this.departments.find(department=> department.id === project?.departmentId);
-    const user = this.users.find(user => user.departmentId === department?.id);
-    this.modalForm.get('createUserId')?.setValue(user?.id);
-   }
-
    onChangeEdit(ev: any) {
     this.isEdit = ev;
+    if(Number(this.user.permissionCode) == Permission.Employee)
+    {
+      this.isEdit = false;
+      this.toastr.warning("You must had permission")
+    }
     if (this.mode === 'detail') {
       this.checkEditForm();
     }

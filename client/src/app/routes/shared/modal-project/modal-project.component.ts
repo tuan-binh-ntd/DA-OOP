@@ -10,7 +10,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { Priority } from '../priority-icon/priority-icon.component';
@@ -26,10 +29,14 @@ export class ModalProjectComponent implements OnInit {
   mode: string = 'create';
   title: string = 'New Project';
   users: any[] = [];
+  data: any;
+  isEdit: boolean = false;
+  user: User;
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
     private userService: UserService,
+    private authenticationService: AuthenticationService,
     private toastr: ToastrService
   ) {}
   modalForm!: FormGroup;
@@ -39,6 +46,13 @@ export class ModalProjectComponent implements OnInit {
     { value: 'MNP', viewValue: 'Management Projects' },
     { value: 'RSP', viewValue: 'Research Projects' },
   ];
+  statusCode: any[] = [
+    { value: StatusCode.Reopened, viewValue: 'Reopened' },
+    { value: StatusCode.Resolved, viewValue: 'Resolved' },
+    { value: StatusCode.Open, viewValue: 'Open' },
+    { value: StatusCode.InProgress, viewValue: 'InProgress' },
+    { value: StatusCode.Closed, viewValue: 'Closed' },
+  ]
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -49,7 +63,12 @@ export class ModalProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserData();
+    this.getCurrentUser();
     this.initForm();
+  }
+
+  getCurrentUser() {
+    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
   }
 
   fetchUserData(){
@@ -76,8 +95,10 @@ export class ModalProjectComponent implements OnInit {
     });
   }
 
-  openModal(data: any, mode: string) {
+  openModal(data: any, mode: string, isEdit: boolean) {
+    this.isEdit = isEdit;
     this.mode = mode;
+    this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
       this.title = 'New Project';
@@ -86,9 +107,21 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('createDate')?.setValue(new Date())
     } else {
       this.modalForm.patchValue(data);
-      this.title = data.projectName;
+      this.checkEditForm();
     }
   }
+
+  checkEditForm(){
+    this.modalForm.patchValue(this.data);
+    if(this.isEdit){
+      this.modalForm.enable();
+      this.title = 'Update: ' + this.data.projectName;
+    }else{
+      this.modalForm.disable();
+      this.title = 'View: ' + this.data.projectName;
+    }
+  }
+
   submitForm() {
     for (const i in this.modalForm.controls) {
       this.modalForm.controls[i].markAsDirty();
@@ -136,5 +169,17 @@ export class ModalProjectComponent implements OnInit {
    const department = this.departments.find(department=> department.id === this.modalForm.value.departmentId);
    const user = this.users.find(user => user.departmentId === department?.id);
    this.modalForm.get('appUserId')?.setValue(user?.id);
+  }
+
+  onChangeEdit(ev: any) {
+    this.isEdit = ev;
+    if(Number(this.user.permissionCode) == Permission.Employee || Number(this.user.permissionCode) == Permission.Leader)
+    {
+      this.isEdit = false;
+      this.toastr.warning("You must had permission")
+    }
+    if (this.mode === 'detail') {
+      this.checkEditForm();
+    }
   }
 }

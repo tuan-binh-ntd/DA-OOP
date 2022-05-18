@@ -3,7 +3,7 @@
     <div class="col col-6">
       <h2>Projects</h2>
     </div>
-    <div class="col col-6">
+    <div *ngIf="right" class="col col-6">
       <button
         class="button-create float-right"
         data-toggle="modal"
@@ -73,22 +73,22 @@
               {{ item.completeDate | date: "dd/MM/yyyy" }}
             </p>
             <ng-template #notComplete>
-              <ng-container *ngIf="item.dayLefts.days >0; else overtime" class="card-text text-warning">
+              <ng-container *ngIf="item.dayLefts >0; else overtime" class="card-text text-warning">
                 <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
-                <span class="text-warning">{{ item.dayLefts.days }} Days</span>
-                
+                <span class="text-warning">{{ item.dayLefts }} Days</span>
+
                 </ng-container>
               </ng-template>
               <ng-template #overtime>
-                <p *ngIf="item.dayLefts.days <= 0" class="card-text text-danger">
+                <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
                 <i class="fa fa-times-circle mr-2" aria-hidden="true">
                 </i>
-              <span> Overtime</span>
+              <span>Overtime</span>
                 </p>
               </ng-template>
             </div>
             <div class="col col-6">
-            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail')">Update</button>
+            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail', false)">Update</button>
             </div>
           </div>
 

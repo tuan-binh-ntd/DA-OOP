@@ -99,6 +99,25 @@
               </mat-form-field>
             </div>
           </div>
+          <div [hidden]="mode === 'create'" class="form-group row">
+            <label class="form-label col-2">Status</label>
+            <div class="col-10">
+              <mat-form-field class="w-100">
+                <mat-select
+                  placeholder="Enter project status"
+                  formControlName="statusCode"
+                >
+                  <mat-option
+                    *ngFor="let code of statusCode"
+                    [value]="code.value"
+                  >
+                    {{ code.viewValue }}
+                  </mat-option>
+                </mat-select>
+    
+              </mat-form-field>
+            </div>
+          </div>
         </div>
         <div class="col col-6">
           <div class="form-group row">
@@ -204,11 +223,15 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-      Close
-    </button>
-    <button type="button" class="btn btn-primary" (click)="submitForm()">Save changes</button>
-  </div>
+    <div class="w-100 ">
+        <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+            Close
+        </button>
+        <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">Edit</button>
+        <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">Save changes</button>
+        <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right" (click)="onChangeEdit(false)">Cancel</button>
+    </div>
+</div>
 </div>
 
 

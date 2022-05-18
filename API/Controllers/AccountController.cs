@@ -39,17 +39,15 @@ namespace API.Controllers
         {
             var userList = await (from u in _dataContext.AppUser
                            join t in _dataContext.Task on u.Id equals t.AppUserId
-                           join p in _dataContext.Project on t.ProjectId equals p.Id
-                           where p.Id == projectId
+                           where t.ProjectId == projectId
                            select new
                            {
-                               ProjectId = p.Id,
-                               ProjectName = p.ProjectName,
+                               ProjectId = t.ProjectId,
                                AppUserId = t.AppUserId,
                                FirstName = u.FirstName,
                                LastName = u.LastName,
                            }).AsNoTracking().ToListAsync();
-            var results = from u in userList group u by new { u.ProjectId, u.ProjectName, u.AppUserId, u.FirstName, u.LastName } into g
+            var results = from u in userList group u by new { u.ProjectId, u.AppUserId, u.FirstName, u.LastName } into g
                           select new { AppUserId = g.Key };
             return Ok(results);
         }
@@ -79,28 +77,60 @@ namespace API.Controllers
             if (newUser != null) return BadRequest("Username is taken");
             var leaderExisted = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == input.DepartmentId && e.PermissionCode == Permission.Leader);
             if (leaderExisted != null && input.PermissionCode == Permission.Leader) return BadRequest("Department had leader");
-            var user = new AppUser
+            if (input.PermissionCreator == Permission.Leader && input.PermissionCode == Permission.Employee)
             {
-                Id = new Guid(),
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                Address = input.Address,
-                Email = input.Email,
-                Phone = input.Phone,
-                Password = input.Password,
-                DepartmentId = input.DepartmentId,
-                PermissionCode = input.PermissionCode
-            };
-            await _dataContext.AppUser.AddAsync(user);
-            await _dataContext.SaveChangesAsync();
-            return new AppUserDto
+                var user = new AppUser
+                {
+                    Id = new Guid(),
+                    FirstName = input.FirstName,
+                    LastName = input.LastName,
+                    Address = input.Address,
+                    Email = input.Email,
+                    Phone = input.Phone,
+                    Password = input.Password,
+                    DepartmentId = input.DepartmentId,
+                    PermissionCode = input.PermissionCode
+                };
+                await _dataContext.AppUser.AddAsync(user);
+                await _dataContext.SaveChangesAsync();
+                return new AppUserDto
+                {
+                    Id = user.Id,
+                    PermissionCode = user.PermissionCode,
+                    Email = user.Email,
+                    DepartmentId = user.DepartmentId,
+                    Token = _tokenService.CreateToken(user)
+                };
+            }
+            else if (input.PermissionCreator == Permission.ProjectManager && (input.PermissionCode == Permission.Employee || input.PermissionCode == Permission.Leader))
             {
-                Id = user.Id,
-                PermissionCode = user.PermissionCode,
-                Email = user.Email,
-                DepartmentId = user.DepartmentId,
-                Token = _tokenService.CreateToken(user)
-            };
+                var user = new AppUser
+                {
+                    Id = new Guid(),
+                    FirstName = input.FirstName,
+                    LastName = input.LastName,
+                    Address = input.Address,
+                    Email = input.Email,
+                    Phone = input.Phone,
+                    Password = input.Password,
+                    DepartmentId = input.DepartmentId,
+                    PermissionCode = input.PermissionCode
+                };
+                await _dataContext.AppUser.AddAsync(user);
+                await _dataContext.SaveChangesAsync();
+                return new AppUserDto
+                {
+                    Id = user.Id,
+                    PermissionCode = user.PermissionCode,
+                    Email = user.Email,
+                    DepartmentId = user.DepartmentId,
+                    Token = _tokenService.CreateToken(user)
+                };
+            }
+            else
+            {
+                return BadRequest("You must had permission");
+            }
         }
 
         [HttpPost("login")]
