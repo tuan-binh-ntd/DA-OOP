@@ -11,13 +11,15 @@ import { ModalProjectComponent } from './modal-project/modal-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatusComponent } from './status/status.component';
 import { ModalTaskComponent } from './modal-task/modal-task.component';
+import { ModalUserComponent } from './modal-user/modal-user.component';
 
 @NgModule({
   declarations: [
     PriorityIconComponent,
     ModalProjectComponent,
     StatusComponent,
-    ModalTaskComponent
+    ModalTaskComponent,
+    ModalUserComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { ModalTaskComponent } from './modal-task/modal-task.component';
     PriorityIconComponent,
     ModalProjectComponent,
     StatusComponent,
-    ModalTaskComponent
+    ModalTaskComponent,
+    ModalUserComponent
   ],
   providers:[ MatDatepickerModule,
     MatNativeDateModule ]

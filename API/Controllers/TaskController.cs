@@ -69,9 +69,9 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateTask(Guid id, UpdateTaskDto input)
+        public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
         {
-            var task = await _dataContext.Task.FindAsync(id);
+            var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
                 if (input.PermissionCode == Permission.Leader)

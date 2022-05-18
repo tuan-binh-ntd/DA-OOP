@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { DeparmentService } from 'src/app/services/deparment.service';
 import { UserService } from 'src/app/services/user.service';
+import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 
 @Component({
   selector: 'app-users',
@@ -9,6 +12,14 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+  @ViewChild('modalUser') modalUser!: ModalUserComponent;
+  $: any;
+  isShowModal: boolean = false;
+  permission: any[] = [
+    { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
+    { value: Permission.Leader, viewValue: 'Leader' },
+    { value: Permission.Employee, viewValue: 'Employee' }
+  ]
   constructor(private departmentService: DeparmentService,
     private userService: UserService,
   ) { }
@@ -39,5 +50,32 @@ export class UsersComponent implements OnInit {
   }
   getDepartmentName(id: string) {
     return this.departments.find(department => department.id === id)?.departmentName
+  }
+
+  getPermission(permission: string){
+    return this.permission.find((permissionCode) => permissionCode.value == permission)?.viewValue;
+  }
+
+  openDetailModal(data: any, mode: string, isEdit: boolean) {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('createUserModal')!
+    );
+    myModal.show();
+    this.isShowModal = true;
+    this.modalUser.openModal(data, mode, isEdit);
+  }
+
+  onChangeUser() {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('createUserModal')!
+    );
+    
+    // $('#createProjectModal').modal('hide')
+    // $('#createProjectModal').hide;
+    myModal.hide();
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
+    this.isShowModal = false;
+    this.fetchUserData();
   }
 }

@@ -1,3 +1,13 @@
-
-<app-nav-bar></app-nav-bar>
-<p>profile works!</p>
+<div class="container-fluid">
+    <div class="row mt-4">
+      <div class="col col-12">
+        <h2>Avatar phần 2 dự kiến ra mắt vào tháng 12 năm nay</h2>
+        <h2>{{ getUser(user.id).firstName }} {{ getUser(user.id).lastName }}</h2>
+        <h2>{{ getUser(user.id).address }}</h2>
+        <h2>{{ getUser(user.id).email }}</h2>
+        <h2>{{ getUser(user.id).phone }}</h2>
+        <h2>{{ getDepartmentName(user.departmentId) }}</h2>
+        <h2>{{ getPermission(user.permissionCode) }}</h2>
+      </div>
+    </div>
+</div>

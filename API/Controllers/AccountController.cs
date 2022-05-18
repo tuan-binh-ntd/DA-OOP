@@ -9,6 +9,7 @@ using API.Enum;
 using System.Linq;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using API.DTO.UserDto;
 
 namespace API.Controllers
 {
@@ -72,7 +73,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto input)
+        public async Task<ActionResult<AppUserDto>> Register(RegisterDto input)
         {
             var newUser = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (newUser != null) return BadRequest("Username is taken");
@@ -92,7 +93,7 @@ namespace API.Controllers
             };
             await _dataContext.AppUser.AddAsync(user);
             await _dataContext.SaveChangesAsync();
-            return new UserDto
+            return new AppUserDto
             {
                 Id = user.Id,
                 PermissionCode = user.PermissionCode,
@@ -103,13 +104,13 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto input)
+        public async Task<ActionResult<AppUserDto>> Login(LoginDto input)
         {
             var user = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
             if (user == null) return Unauthorized("Invalid username");
             var pass = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
             if (pass == null) return Unauthorized("Invalid password");
-            return new UserDto
+            return new AppUserDto
             {
                 Id = user.Id,
                 PermissionCode = user.PermissionCode,
@@ -119,10 +120,20 @@ namespace API.Controllers
             };
         }
 
-        [HttpPut("update")]
-        public async Task<ActionResult> UpdateUser(Guid id, UpdateUserDto input)
+        [HttpPut("changepassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto input)
         {
-            var user = await _dataContext.AppUser.FindAsync(id);
+            var user = await _dataContext.AppUser.SingleOrDefaultAsync(e => e.Email == input.Email);
+            user.Password = input.Password;
+            _dataContext.AppUser.Update(user);
+            await _dataContext.SaveChangesAsync();
+            return Ok(user);
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateUser(UpdateUserDto input)
+        {
+            var user = await _dataContext.AppUser.FindAsync(input.Id);
             if (user != null)
             {
                 if (input.PermissionCode == Permission.Employee)

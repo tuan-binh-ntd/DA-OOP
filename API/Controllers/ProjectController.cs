@@ -193,9 +193,9 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateProject(Guid id, UpdateProjectDto input)
+        public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
         {
-            var project = await _dataContext.Project.FindAsync(id);
+            var project = await _dataContext.Project.FindAsync(input.Id);
             if (project != null)
             {
                 if (input.PermissionCode == Permission.ProjectManager)
