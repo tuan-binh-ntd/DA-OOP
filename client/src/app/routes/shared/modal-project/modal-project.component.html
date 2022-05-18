@@ -204,11 +204,15 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-      Close
-    </button>
-    <button type="button" class="btn btn-primary" (click)="submitForm()">Save changes</button>
-  </div>
+    <div class="w-100 ">
+        <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+            Close
+        </button>
+        <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">Edit</button>
+        <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">Save changes</button>
+        <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right" (click)="onChangeEdit(false)">Cancel</button>
+    </div>
+</div>
 </div>
 
 

@@ -67,13 +67,13 @@ export class ProjectsComponent implements OnInit {
       ?.departmentName;
   }
 
-  openDetailModal(data: any, mode: string) {
+  openDetailModal(data: any, mode: string, isEdit: boolean) {
     var myModal = new bootstrap.Modal(
       document.getElementById('createProjectModal')!
     );
     myModal.show();
     this.isShowModal = true;
-    this.modalProject.openModal(data, mode);
+    this.modalProject.openModal(data, mode, isEdit);
   }
 
   onViewTask(projectId: string): any {
@@ -101,7 +101,7 @@ export class ProjectsComponent implements OnInit {
   openModal(){
     debugger
     if(this.right === Permission.ProjectManager){
-      this.modalProject.openModal(null, 'create');this.isShowModal = true
+      this.modalProject.openModal(null, 'create', true);this.isShowModal = true
     }
     else{
       $(document.body).removeClass('modal-open');

@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { User } from 'src/app/models/user';
 import { DeparmentService } from 'src/app/services/deparment.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -23,6 +25,7 @@ export class ModalTaskComponent implements OnInit {
   modalForm!: FormGroup;
   isEdit: boolean = false;
   data: any;
+  user: User;
   taskTypes: any[] = [
     { value: 'Test', viewValue: 'Test' },
   ];
@@ -158,6 +161,11 @@ export class ModalTaskComponent implements OnInit {
 
    onChangeEdit(ev: any) {
     this.isEdit = ev;
+    if(Number(this.user.permissionCode) == Permission.Employee)
+    {
+      this.isEdit = false;
+      this.toastr.warning("You must had permission")
+    }
     if (this.mode === 'detail') {
       this.checkEditForm();
     }

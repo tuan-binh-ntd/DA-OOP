@@ -39,17 +39,15 @@ namespace API.Controllers
         {
             var userList = await (from u in _dataContext.AppUser
                            join t in _dataContext.Task on u.Id equals t.AppUserId
-                           join p in _dataContext.Project on t.ProjectId equals p.Id
-                           where p.Id == projectId
+                           where t.ProjectId == projectId
                            select new
                            {
-                               ProjectId = p.Id,
-                               ProjectName = p.ProjectName,
+                               ProjectId = t.ProjectId,
                                AppUserId = t.AppUserId,
                                FirstName = u.FirstName,
                                LastName = u.LastName,
                            }).AsNoTracking().ToListAsync();
-            var results = from u in userList group u by new { u.ProjectId, u.ProjectName, u.AppUserId, u.FirstName, u.LastName } into g
+            var results = from u in userList group u by new { u.ProjectId, u.AppUserId, u.FirstName, u.LastName } into g
                           select new { AppUserId = g.Key };
             return Ok(results);
         }

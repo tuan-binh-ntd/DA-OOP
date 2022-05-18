@@ -75,7 +75,7 @@
             <ng-template #notComplete>
               <ng-container *ngIf="item.dayLefts.days >0; else overtime" class="card-text text-warning">
                 <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
-                <span class="text-warning">{{ item.dayLefts.days }} Days</span>
+                <span class="text-warning">{{ item.dayLefts }} Days</span>
                 
                 </ng-container>
               </ng-template>
@@ -88,7 +88,7 @@
               </ng-template>
             </div>
             <div class="col col-6">
-            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail')">Update</button>
+            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail', false)">Update</button>
             </div>
           </div>
 
