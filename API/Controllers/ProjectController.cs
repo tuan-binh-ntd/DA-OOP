@@ -19,8 +19,8 @@ namespace API.Controllers
             _dataContext = dataContext;
         }
 
-        [HttpGet("getall")]
-        public async Task<ActionResult> GetAllProject()
+        [HttpPost("getall")]
+        public async Task<ActionResult> GetAllProject([FromBody] GetAllProjectDto getAllProjectDto)
         {
             var taskList = await (from p in _dataContext.Project
                                   join t in _dataContext.Task on p.Id equals t.ProjectId
@@ -42,27 +42,75 @@ namespace API.Controllers
 
             var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
 
-            var projectList = await (from u in _dataContext.AppUser 
-                                     join p in _dataContext.Project on u.DepartmentId equals p.DepartmentId
-                                     where u.PermissionCode == Permission.Leader
-                                     select new GetAllProjectForViewDto
-                                     {
-                                         Id = p.Id,
-                                         ProjectName = p.ProjectName,
-                                         Description = p.Description,
-                                         ProjectType = p.ProjectType,
-                                         ProjectCode = p.ProjectCode,
-                                         CreateDate = p.CreateDate,
-                                         DeadlineDate = p.DeadlineDate,
-                                         CompleteDate = p.CompleteDate,
-                                         DayLefts = (p.DeadlineDate - DateTime.Now).Days,
-                                         PriorityCode = p.PriorityCode,
-                                         StatusCode = p.StatusCode,
-                                         DepartmentId = p.DepartmentId,
-                                         AppUserId = u.Id,
-                                         LeaderName = u.FirstName + " " + u.LastName,
-                                     }).AsNoTracking().ToListAsync();
+            var projectFilter = _dataContext.Project.Join(_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectName))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.ProjectName.Contains(getAllProjectDto.ProjectName));
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectCode))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.ProjectCode == getAllProjectDto.ProjectCode);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectType))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.ProjectType == getAllProjectDto.ProjectType);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.StatusCode.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.StatusCode == getAllProjectDto.StatusCode);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.PriorityCode.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.PriorityCode == getAllProjectDto.PriorityCode);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CreateDateTo.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.CreateDate <= getAllProjectDto.CreateDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CreateDateFrom.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.CreateDate >= getAllProjectDto.CreateDateFrom);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CompleteDateTo.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.CompleteDate <= getAllProjectDto.CompleteDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CompleteDateFrom.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.CompleteDate >= getAllProjectDto.CompleteDateFrom);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.DeadlineDateTo.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate <= getAllProjectDto.DeadlineDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(getAllProjectDto.DeadlineDateFrom.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate >= getAllProjectDto.DeadlineDateFrom);
+            }
 
+
+            /*var projectList = await (from u in _dataContext.AppUser
+                                     join p in _dataContext.Project on u.DepartmentId equals p.DepartmentId
+                                     where u.PermissionCode == Permission.Leader).AsNoTracking();*/
+
+            var projectList = await projectFilter.OrderByDescending(p => p.pj.CreateDate).Select(
+                 p =>  new GetAllProjectForViewDto
+                 {
+                 Id = p.pj.Id,
+                 ProjectName = p.pj.ProjectName,
+                 Description = p.pj.Description,
+                 ProjectType = p.pj.ProjectType,
+                 ProjectCode = p.pj.ProjectCode,
+                 CreateDate = p.pj.CreateDate,
+                 DeadlineDate = p.pj.DeadlineDate,
+                 CompleteDate = p.pj.CompleteDate,
+                 DayLefts = (p.pj.DeadlineDate - DateTime.Now).Days,
+                 PriorityCode = p.pj.PriorityCode,
+                 StatusCode = p.pj.StatusCode,
+                 DepartmentId = p.pj.DepartmentId,
+                 AppUserId = p.user.Id,
+                 LeaderName = p.user.FirstName + " " + p.user.LastName,
+             }).AsNoTracking().ToListAsync();
             foreach (var project in projectList)
             {
                 foreach (var task in countTask)
