@@ -8,7 +8,7 @@
         class="button-create float-right"
         data-toggle="modal"
         data-target="#createProjectModal"
-        (click)="modalProject.openModal(null, 'create');this.isShowModal = true"
+        (click)="openModal()"
       >
         Create Project
       </button>
@@ -102,7 +102,7 @@
             <h6>Progress</h6>
             <div class="progress">
               <div style="display: flex;"class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width': roundProgress(item.taskProgress)}"  aria-valuemin="0" aria-valuemax="100">
-                <h6 style="justify-content: space-between;">{{roundProgress(item.taskProgress)}}</h6>
+                <span class="text-center">{{roundProgress(item.taskProgress)}}</span>
               </div>
             </div>
           </div>

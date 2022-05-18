@@ -14,7 +14,7 @@
         </button>
       </div>
     </div>  
-    <table  id="example" class="table table-hover mt-4" style="width:100%">
+    <table *ngIf="tasks.length !== 0"  id="example" class="table table-hover mt-4" style="width:100%">
         <thead>
             <tr>
                 <th class="text-center">Type</th>
@@ -51,6 +51,12 @@
         </tbody>
         
     </table>
+    <div *ngIf="tasks.length === 0" class="text-center">
+      <img src="assets/nodata.jpg" class="d-block ml-auto mr-auto" style="width: 50%" alt="Logo">
+      <h3 class="mb-2">No Tasks Found</h3>
+      <br>
+      <button class="button-create" (click)="goBack()">Go Back</button>
+    </div>
     <script>
       $('#sortTable').DataTable();
       </script>

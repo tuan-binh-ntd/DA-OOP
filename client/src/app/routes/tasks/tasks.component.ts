@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
@@ -44,13 +44,16 @@ export class TasksComponent implements OnInit {
     private taskService: TaskService,
     private projectService: ProjectService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
       this.route.params.subscribe(params=>{
         this.projectId = params['id'];
      })
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.userId = user.id;
     this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
@@ -58,7 +61,7 @@ export class TasksComponent implements OnInit {
 
   fetchTaskData() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, '')
+      .getAllTask(this.projectId, this.userId)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -125,5 +128,9 @@ export class TasksComponent implements OnInit {
     $('.modal-backdrop').remove();
     this.isShowModal = false;
     this.fetchTaskData();
+  }
+
+  goBack(){
+    this.router.navigateByUrl("home")
   }
 }

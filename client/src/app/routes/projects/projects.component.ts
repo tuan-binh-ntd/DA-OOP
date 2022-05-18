@@ -8,6 +8,8 @@ import { ModalProjectComponent } from '../shared/modal-project/modal-project.com
 import { Priority } from '../shared/priority-icon/priority-icon.component';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
+import { Permission } from 'src/app/helpers/PermisionEnum';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -17,7 +19,8 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private departmentService: DeparmentService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
@@ -32,7 +35,10 @@ export class ProjectsComponent implements OnInit {
   isInProgressRecord: boolean = false;
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
+  right: number;
   ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.right = user.permissionCode;
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
@@ -90,6 +96,20 @@ export class ProjectsComponent implements OnInit {
 
   roundProgress(progress: number){
     return Math.round(progress) + '%'
+  }
+
+  openModal(){
+    debugger
+    if(this.right === Permission.ProjectManager){
+      this.modalProject.openModal(null, 'create');this.isShowModal = true
+    }
+    else{
+      $(document.body).removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      this.toastr.error('You dont have permision', '', {
+        timeOut: 1000,
+      });
+    }
   }
  
 }

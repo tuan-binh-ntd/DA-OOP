@@ -12,16 +12,19 @@ export class TaskService {
     userId?: string,):Observable<any>{
       let userIdString = '';
       let projectIdString = '';
+    
       if(userId || projectId){
+        debugger
         if(userId){
            userIdString = 'userId=' + userId;
         } 
         if(projectId){
           projectIdString = 'projectId=' + projectId;
         }
+        if(userId && projectId){
+          return this.http.get(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString);
+        }
         return this.http.get(this.baseUrl + '/getall' + '?' + userIdString + projectIdString);
-      }else if(userId && projectId){
-        return this.http.get(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString);
       }
       else{
         return this.http.get(this.baseUrl + '/getall');

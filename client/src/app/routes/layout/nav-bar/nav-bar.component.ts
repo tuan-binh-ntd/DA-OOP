@@ -13,7 +13,10 @@ export class NavBarComponent implements OnInit {
   loggedIn:boolean = false;
   constructor(private authenticationService: AuthenticationService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.userName = user.name;
+  }
   logout() {
     this.authenticationService.logout();
   }

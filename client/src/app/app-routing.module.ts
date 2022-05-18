@@ -19,6 +19,7 @@ const routes: Routes = [
     component: SiteLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+      { path: 'projects/tasks', component: TasksComponent },
       { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent },
       { path: 'projects', component: ProjectsComponent },
