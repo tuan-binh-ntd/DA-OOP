@@ -28,7 +28,6 @@ export class UsersComponent implements OnInit {
   disable: boolean = false;
   ngOnInit(): void {
     this.disable = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Employee;
-    console.log(this.disable);
     this.fetchUserData();
     this.fetchDepartmentData();
   }

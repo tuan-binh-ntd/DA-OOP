@@ -36,6 +36,7 @@ export class ModalUserComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserData();
     this.fetchDepartmentData();
+    Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Leader ? this.permission.shift() : null;
     this.initForm();
   }
 
