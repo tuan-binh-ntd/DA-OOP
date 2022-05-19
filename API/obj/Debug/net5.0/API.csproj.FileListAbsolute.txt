@@ -177,3 +177,4 @@ F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 D:\S\DA-OOP\DA-OOP\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache
