@@ -12,8 +12,8 @@ namespace API.DTO
         public string ProjectName { get; set; }
         public string ProjectType { get; set; }
         public string ProjectCode { get; set; }
-        public StatusCode StatusCode { get; set; }
-        public Priority PriorityCode { get; set; }
+        public StatusCode? StatusCode { get; set; }
+        public Priority? PriorityCode { get; set; }
         public DateTime? CreateDateFrom { get; set; }
         public DateTime? CreateDateTo { get; set; }
         public DateTime? DeadlineDateFrom { get; set; } 
