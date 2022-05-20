@@ -127,12 +127,12 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
+        public async Task<ActionResult> UpdateTask(Permission permissionCode,UpdateTaskDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
-                if (input.PermissionCode == Permission.Leader)
+                if (permissionCode == Permission.Leader)
                 {
                     task.TaskName = input.TaskName;
                     task.CreateUserId = input.CreateUserId;
@@ -148,7 +148,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (permissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     task.StatusCode = input.StatusCode;
                     _dataContext.Update(task);

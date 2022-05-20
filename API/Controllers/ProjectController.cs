@@ -241,12 +241,12 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
+        public async Task<ActionResult> UpdateProject(Permission permissionCode,UpdateProjectDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.Id);
             if (project != null)
             {
-                if (input.PermissionCode == Permission.ProjectManager)
+                if (permissionCode == Permission.ProjectManager)
                 {
                     project.ProjectName = project.ProjectName;
                     project.Description = input.Description;
@@ -260,7 +260,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (permissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     project.StatusCode = input.StatusCode;
                     _dataContext.Project.Update(project);

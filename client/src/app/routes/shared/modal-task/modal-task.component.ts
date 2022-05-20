@@ -84,6 +84,7 @@ export class ModalTaskComponent implements OnInit {
       id: [null],
       taskName: [null, Validators.required],
       taskType: [null, Validators.required],
+      taskCode: [null, Validators.required],
       createUserId: [null, Validators.required],
       createDate: [null, Validators.required],
       deadlineDate: [null, Validators.required],
