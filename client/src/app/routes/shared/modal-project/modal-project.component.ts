@@ -98,6 +98,7 @@ export class ModalProjectComponent implements OnInit {
     this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
+      this.modalForm.enable();
       this.title = 'New Project';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);

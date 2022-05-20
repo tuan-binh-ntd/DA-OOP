@@ -21,12 +21,12 @@ export class TaskService {
           projectIdString = 'projectId=' + projectId;
         }
         if(userId && projectId){
-          return this.http.post(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString, payload);
+          return this.http.get(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString, payload);
         }
-        return this.http.post(this.baseUrl + '/getall' + '?' + userIdString + projectIdString, payload);
+        return this.http.get(this.baseUrl + '/getall' + '?' + userIdString + projectIdString, payload);
       }
       else{
-        return this.http.post(this.baseUrl + '/getall', payload);
+        return this.http.get(this.baseUrl + '/getall', payload);
 
       }
   }

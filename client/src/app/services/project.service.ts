@@ -10,7 +10,7 @@ export class ProjectService {
   constructor(private http: HttpClient) {
   }
   getAllProject(payload: any):Observable<any>{
-   return this.http.post(this.baseUrl + '/getall', payload);
+   return this.http.get(this.baseUrl + '/getall', payload);
   }
   createProject(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

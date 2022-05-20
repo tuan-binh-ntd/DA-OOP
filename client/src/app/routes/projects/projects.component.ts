@@ -37,7 +37,7 @@ export class ProjectsComponent implements OnInit {
 
   getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
-    this.right = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.ProjectManager;
+    const user = JSON.parse(localStorage.getItem('user'))
     if(user.permissionCode === Permission.ProjectManager){
       this.right = true
     }
@@ -101,7 +101,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   openModal(){
-      this.modalProject.openModal(null, 'create');
+      this.modalProject.openModal(null, 'create', true);
       this.isShowModal = true;
   }
 

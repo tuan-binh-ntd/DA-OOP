@@ -11,6 +11,8 @@ import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.com
 import { UsersComponent } from './routes/users/users.component';
 import { AuthGuard } from './guard/auth.guard';
 import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
+import { AuthRightGuard } from './guard/authRight.guard';
+import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,10 +25,11 @@ const routes: Routes = [
       { path: 'projects/tasks', component: TasksComponent },
       { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/:id', component: TasksComponent },
-      { path: 'users', component: UsersComponent },
+      { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'forbidden', component: ForbiddenComponent },
     ],
   },
 ];

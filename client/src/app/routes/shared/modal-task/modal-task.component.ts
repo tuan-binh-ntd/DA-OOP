@@ -26,7 +26,9 @@ export class ModalTaskComponent implements OnInit {
   isEdit: boolean = false;
   data: any;
   user: User;
-  taskTypes: any[] = [{ value: 'Test', viewValue: 'Test' }];
+  taskTypes: any[] = [{ value: 'bug', viewValue: 'Bug' },
+  { value: 'feature', viewValue: 'Feature' },
+  {value: 'rnd', viewValue: 'RnD'}];
   statusCode: any[] = [
     { value: StatusCode.Reopened, viewValue: 'Reopened' },
     { value: StatusCode.Resolved, viewValue: 'Resolved' },
@@ -89,7 +91,7 @@ export class ModalTaskComponent implements OnInit {
       taskName: [null, Validators.required],
       taskType: [null, Validators.required],
       taskCode: [null, Validators.required],
-      createUserId: [null, Validators.required],
+      createUserId: [null, Validators.required,],
       createDate: [null, Validators.required],
       deadlineDate: [null, Validators.required],
       priorityCode: [Priority.Medium, Validators.required],
@@ -107,11 +109,15 @@ export class ModalTaskComponent implements OnInit {
     this.mode = mode;
     this.data = data;
     this.modalForm.reset();
+    this.modalForm.get('createUserId').setValue(this.user.id)
     if (mode === 'create') {
+      this.modalForm.enable();
       this.title = 'New Task';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
+      this.modalForm.get('createUserId').setValue(this.user.id)
+    this.modalForm.controls['createUserId'].disable();
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
@@ -127,6 +133,8 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.taskName;
     }
+  
+    this.modalForm.controls['createUserId'].disable();
   }
 
   submitForm() {
