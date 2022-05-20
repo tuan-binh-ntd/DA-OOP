@@ -13,6 +13,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
 import { AuthRightGuard } from './guard/authRight.guard';
 import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
+import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,8 +31,11 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'forbidden', component: ForbiddenComponent },
+      { path: '**', pathMatch: 'full', 
+      component: PageNotFoundComponent },
     ],
   },
+
 ];
 
 @NgModule({

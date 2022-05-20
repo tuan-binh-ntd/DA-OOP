@@ -23,7 +23,8 @@ import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/t
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/daygrid';
-import { ForbiddenComponent } from './routes/forbidden/forbidden.component'; // a plugin!
+import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
+import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component'; // a plugin!
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin
@@ -43,6 +44,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     UsersComponent,
     TasksCalendarComponent,
     ForbiddenComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
