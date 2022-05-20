@@ -4,14 +4,16 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
-import { DeparmentService } from 'src/app/services/deparment.service';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
-  styleUrls: ['./modal-task.component.css']
+  styleUrls: ['./modal-task.component.css'],
 })
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
@@ -23,8 +25,14 @@ export class ModalTaskComponent implements OnInit {
   modalForm!: FormGroup;
   isEdit: boolean = false;
   data: any;
-  taskTypes: any[] = [
-    { value: 'Test', viewValue: 'Test' },
+  user: User;
+  taskTypes: any[] = [{ value: 'Test', viewValue: 'Test' }];
+  statusCode: any[] = [
+    { value: StatusCode.Reopened, viewValue: 'Reopened' },
+    { value: StatusCode.Resolved, viewValue: 'Resolved' },
+    { value: StatusCode.Open, viewValue: 'Open' },
+    { value: StatusCode.InProgress, viewValue: 'InProgress' },
+    { value: StatusCode.Closed, viewValue: 'Closed' },
   ];
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
@@ -37,29 +45,42 @@ export class ModalTaskComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private deparmentService: DeparmentService,
+    private departmentService: DepartmentService,
     private userService: UserService,
+    private authenticationService: AuthenticationService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchUserData();
     this.fetchDepartmentData();
+    this.getCurrentUser();
     this.initForm();
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  fetchUserData(){
-    this.userService.getAllUser().pipe(catchError((err) => of(err)))
-    .subscribe((response) => {
-      this.users = response;
-    });
+  getCurrentUser() {
+    return this.authenticationService.currentUser
+      .pipe(catchError((err) => of(err)))
+      .subscribe((user) => (this.user = user));
   }
 
-  fetchDepartmentData(){
-    this.deparmentService.getAllDepartment().pipe(catchError((err) => of(err)))
-    .subscribe((response) => {
-      this.departments = response;
-    });
+  fetchUserData() {
+    this.userService
+      .getAllUser()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.users = response;
+      });
+  }
+
+  fetchDepartmentData() {
+    this.departmentService
+      .getAllDepartment()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.departments = response;
+      });
   }
 
   initForm() {
@@ -67,6 +88,7 @@ export class ModalTaskComponent implements OnInit {
       id: [null],
       taskName: [null, Validators.required],
       taskType: [null, Validators.required],
+      taskCode: [null, Validators.required],
       createUserId: [null, Validators.required],
       createDate: [null, Validators.required],
       deadlineDate: [null, Validators.required],
@@ -76,31 +98,32 @@ export class ModalTaskComponent implements OnInit {
       appUserId: [null, Validators.required],
       description: [null],
       completeDate: [null],
+      permissionCode: [null],
     });
   }
 
-  openModal(data: any, mode: string, isEdit:boolean) {
+  openModal(data: any, mode: string, isEdit: boolean) {
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
       this.title = 'New Task';
-    this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
-    this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
-    this.modalForm.get('createDate')?.setValue(new Date())
-  } else {
-    this.modalForm.patchValue(data);
-    this.checkEditForm();
-  }
+      this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
+      this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
+      this.modalForm.get('createDate')?.setValue(new Date());
+    } else {
+      this.modalForm.patchValue(data);
+      this.checkEditForm();
+    }
   }
 
-  checkEditForm(){
+  checkEditForm() {
     this.modalForm.patchValue(this.data);
-    if(this.isEdit){
+    if (this.isEdit) {
       this.modalForm.enable();
       this.title = 'Update: ' + this.data.taskName;
-    }else{
+    } else {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.taskName;
     }
@@ -112,51 +135,43 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      if(this.mode === 'create'){
-      this.taskService
-        .createTask(this.modalForm.value)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((response) => {
-          if (response) {
-            this.toastr.success('Successfully!');
-            this.onChangeTask.emit();
-          } else {
-            this.toastr.error('Failed');
-          }
-        });
-      }
-      else{
+      if (this.mode === 'create') {
         this.taskService
-        .updateTask(this.modalForm.value)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((response) => {
-          if (response) {
-            this.toastr.success('Successfully!');
+          .createTask(this.modalForm.value)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+              this.onChangeTask.emit();
+            } else {
+              this.toastr.error('Failed');
+            }
+          });
+      } else {
+        this.modalForm.value.permissionCode = this.user.permissionCode;
+        this.taskService
+          .updateTask(this.modalForm.value)
+          .pipe(catchError((err) => {return of(err);}))
+          .subscribe((response) => {
+            if(response.id)
+            {
+              this.toastr.success('Successfully!', '', {
+                timeOut: 1000,
+              });
+            } else {
+              this.toastr.error('You not permission');
+            }
             this.onChangeTask.emit();
-          } else {
-            this.toastr.error('Failed');
-          }
-        });
+          });
       }
     }
   }
 
-  onChangeProject(){
-    const project = this.projects.find(project=> project.id === this.modalForm.value.projectId);
-    const department = this.departments.find(department=> department.id === project?.departmentId);
-    const user = this.users.find(user => user.departmentId === department?.id);
-    this.modalForm.get('createUserId')?.setValue(user?.id);
-   }
-
-   onChangeEdit(ev: any) {
+  onChangeEdit(ev: any) {
     this.isEdit = ev;
     if (this.mode === 'detail') {
       this.checkEditForm();

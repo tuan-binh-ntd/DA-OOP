@@ -9,25 +9,24 @@ export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
   getAllTask(projectId?: string,
-    userId?: string,):Observable<any>{
+    userId?: string, payload?: any):Observable<any>{
       let userIdString = '';
       let projectIdString = '';
-    
+
       if(userId || projectId){
-        debugger
         if(userId){
            userIdString = 'userId=' + userId;
-        } 
+        }
         if(projectId){
           projectIdString = 'projectId=' + projectId;
         }
         if(userId && projectId){
-          return this.http.get(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString);
+          return this.http.post(this.baseUrl + '/getall' + '?' + userIdString +'&' + projectIdString, payload);
         }
-        return this.http.get(this.baseUrl + '/getall' + '?' + userIdString + projectIdString);
+        return this.http.post(this.baseUrl + '/getall' + '?' + userIdString + projectIdString, payload);
       }
       else{
-        return this.http.get(this.baseUrl + '/getall');
+        return this.http.post(this.baseUrl + '/getall', payload);
 
       }
   }

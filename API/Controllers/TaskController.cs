@@ -21,25 +21,83 @@ namespace API.Controllers
             _dataContext = dataContext;
         }
 
-        [HttpGet("getall")]
-        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId)
+        [HttpPost("getall")]
+        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId, [FromBody] SearchTaskDto searchTaskDto)
         {
-            if (userId == null && projectId == null)
+
+            var taskList = _dataContext.Task.AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskName))
             {
-                var taskList = await _dataContext.Task.AsNoTracking().ToListAsync();
-                return Ok(taskList);
+                taskList = taskList.Where(t => t.TaskName.Contains(searchTaskDto.TaskName));
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskType))
+            {
+                taskList = taskList.Where(t => t.TaskType == searchTaskDto.TaskType);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskCode))
+            {
+                taskList = taskList.Where(t => t.TaskCode == searchTaskDto.TaskCode);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.StatusCode.ToString()))
+            {
+                taskList = taskList.Where(t => t.StatusCode == searchTaskDto.StatusCode);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.PriorityCode.ToString()))
+            {
+                taskList = taskList.Where(t => t.PriorityCode == searchTaskDto.PriorityCode);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.CreateDateTo.ToString()))
+            {
+                taskList = taskList.Where(t => t.CreateDate <= searchTaskDto.CreateDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.CreateDateFrom.ToString()))
+            {
+                taskList = taskList.Where(t => t.CreateDate >= searchTaskDto.CreateDateFrom);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.CompleteDateTo.ToString()))
+            {
+                taskList = taskList.Where(t => t.CompleteDate <= searchTaskDto.CompleteDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.CompleteDateFrom.ToString()))
+            {
+                taskList = taskList.Where(t => t.CompleteDate >= searchTaskDto.CompleteDateFrom);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.DeadlineDateTo.ToString()))
+            {
+                taskList = taskList.Where(t => t.DeadlineDate <= searchTaskDto.DeadlineDateTo);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTaskDto.DeadlineDateFrom.ToString()))
+            {
+                taskList = taskList.Where(t => t.DeadlineDate >= searchTaskDto.DeadlineDateFrom);
             }
             if (userId != null && projectId != null)
             {
-                var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.ProjectId == projectId && e.AppUserId == userId).ToListAsync();
-                return Ok(taskList);
+                taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);
             }
             if (userId != null || projectId != null)
             {
-                var taskList = await _dataContext.Task.AsNoTracking().Where(e => e.AppUserId == userId || e.ProjectId == projectId).ToListAsync();
-                return Ok(taskList);
+                taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);
             }
-            return null;
+            var taskListForView = await taskList.OrderByDescending(t => t.CreateDate).Select(
+                 t => new
+                 {
+                     Id = t.Id,
+                     TaskName = t.TaskName,
+                     Description = t.Description,
+                     TaskType = t.TaskType,
+                     TaskCode = t.TaskCode,
+                     CreateDate = t.CreateDate,
+                     DeadlineDate = t.DeadlineDate,
+                     CompleteDate = t.CompleteDate,
+                     DayLefts = (t.DeadlineDate - DateTime.Now).Days,
+                     PriorityCode = t.PriorityCode,
+                     StatusCode = t.StatusCode,
+                     ProjectId = t.ProjectId,
+                     AppUserId = t.AppUserId,
+                     CreateUserId = t.CreateUserId
+
+                 }).AsNoTracking().ToListAsync(); ;
+            return Ok(taskListForView);
         }
 
         [HttpPost("create")]
@@ -97,7 +155,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else
+                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.Resolve)
                 {
                     task.StatusCode = input.StatusCode;
                     task.CompleteDate = DateTime.Now;
@@ -105,11 +163,16 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
+                else
+                {
+                    return BadRequest("You not permission");
+                }
             }
             else
             {
                 return BadRequest("Task not existed");
             }
+
         }
 
         [HttpDelete("delete")]

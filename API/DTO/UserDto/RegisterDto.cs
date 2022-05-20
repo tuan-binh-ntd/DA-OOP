@@ -13,5 +13,6 @@ namespace API.DTO
         public Guid DepartmentId { get; set; }
         public string Password { get; set; }
         public Permission PermissionCode { get; set; }
+        public Permission PermissionCreator { get; set; }
     }
 }

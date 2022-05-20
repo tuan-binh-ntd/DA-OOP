@@ -4,6 +4,8 @@ import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { GetAllProject } from 'src/app/models/getallproject';
+import { SearchTask } from 'src/app/models/searchtask';
 import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -39,7 +41,8 @@ export class TasksComponent implements OnInit {
     { value: StatusCode.Resolved, viewValue: 'Resolved' },
     { value: StatusCode.Closed, viewValue: 'Closed' },
   ]
-
+  getAllProject: GetAllProject = new GetAllProject();
+  searchTask: SearchTask = new SearchTask();
   constructor(
     private taskService: TaskService,
     private projectService: ProjectService,
@@ -61,7 +64,7 @@ export class TasksComponent implements OnInit {
 
   fetchTaskData() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId)
+      .getAllTask(this.projectId, this.userId, this.searchTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -77,7 +80,7 @@ export class TasksComponent implements OnInit {
   }
   fetchProjectData() {
     this.projectService
-      .getAllProject()
+      .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
@@ -102,7 +105,7 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    //ActivatedRoute is an Observable is that the router may not recreate the component when navigating to the same component. 
+    //ActivatedRoute is an Observable is that the router may not recreate the component when navigating to the same component.
     //In this case the parameter may change without the component being recreated.
     this.sub.unsubscribe();
   }
@@ -120,7 +123,7 @@ export class TasksComponent implements OnInit {
     var myModal = new bootstrap.Modal(
       document.getElementById('createTaskModal')!
     );
-    
+
     // $('#createProjectModal').modal('hide')
     // $('#createProjectModal').hide;
     myModal.hide();

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { DeparmentService } from 'src/app/services/deparment.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -29,13 +29,14 @@ export class ModalUserComponent implements OnInit {
   ]
   constructor(private authenticationService: AuthenticationService,
     private userService: UserService,
-    private deparmentService: DeparmentService,
+    private departmentService: DepartmentService,
     private fb: FormBuilder,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.fetchUserData();
     this.fetchDepartmentData();
+    Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Leader ? this.permission.shift() : null;
     this.initForm();
   }
 
@@ -49,7 +50,7 @@ export class ModalUserComponent implements OnInit {
   }
 
   fetchDepartmentData(){
-    this.deparmentService.getAllDepartment().pipe(catchError((err) => of(err)))
+    this.departmentService.getAllDepartment().pipe(catchError((err) => of(err)))
     .subscribe((response) => {
       this.departments = response;
     });
@@ -113,11 +114,11 @@ export class ModalUserComponent implements OnInit {
             })
           )
           .subscribe((response) => {
-            if (response) {
+            if (!response) {
               this.toastr.success('Successfully!');
               this.onChangeUser.emit();
             } else {
-              this.toastr.error('Failed');
+              this.toastr.error("You must had permission")
             }
           });
       }
