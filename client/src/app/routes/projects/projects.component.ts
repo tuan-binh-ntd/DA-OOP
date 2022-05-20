@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/services/department.service';
+import { GetAllProject } from 'src/app/models/getallproject';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -33,6 +34,8 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean;
+
+  getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
     this.right = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.ProjectManager;
     this.fetchDepartmentData();
@@ -50,7 +53,7 @@ export class ProjectsComponent implements OnInit {
 
   fetchProjectData() {
     this.projectService
-      .getAllProject()
+      .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.data = response;
