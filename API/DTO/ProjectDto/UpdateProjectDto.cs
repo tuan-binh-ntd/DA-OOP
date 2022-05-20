@@ -14,6 +14,6 @@ namespace API.DTO
         public Priority PriorityCode { get; set; }
         public StatusCode StatusCode { get; set; }
         public Guid DepartmentId { get; set; }
-        //public Permission PermissionCode { get; set; }
+        public Permission PermissionCode { get; set; }
     }
 }

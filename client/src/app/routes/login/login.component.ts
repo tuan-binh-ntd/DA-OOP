@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
         .subscribe((response) => {
           if (!response) {
             this.loggedIn = true;
-            console.log(response);
             this.toastr.success('Login success!', '', {
               timeOut: 1000,
             });

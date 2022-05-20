@@ -241,12 +241,12 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateProject(Permission permissionCode,UpdateProjectDto input)
+        public async Task<ActionResult> UpdateProject(UpdateProjectDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.Id);
             if (project != null)
             {
-                if (permissionCode == Permission.ProjectManager)
+                if (input.PermissionCode == Permission.ProjectManager)
                 {
                     project.ProjectName = project.ProjectName;
                     project.Description = input.Description;
@@ -260,14 +260,14 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else if (permissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     project.StatusCode = input.StatusCode;
                     _dataContext.Project.Update(project);
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else
+                else if(input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.Resolve) 
                 {
                     project.StatusCode = input.StatusCode;
                     project.CompleteDate = DateTime.Now;
@@ -275,6 +275,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
+                    return BadRequest("Yow not permission");
             }
             else
             {

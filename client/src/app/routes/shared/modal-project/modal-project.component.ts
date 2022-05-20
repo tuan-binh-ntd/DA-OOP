@@ -1,13 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
@@ -17,7 +9,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { Priority } from '../priority-icon/priority-icon.component';
-
 @Component({
   selector: 'app-modal-project',
   templateUrl: './modal-project.component.html',
@@ -52,7 +43,7 @@ export class ModalProjectComponent implements OnInit {
     { value: StatusCode.Open, viewValue: 'Open' },
     { value: StatusCode.InProgress, viewValue: 'InProgress' },
     { value: StatusCode.Closed, viewValue: 'Closed' },
-  ]
+  ];
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -65,17 +56,22 @@ export class ModalProjectComponent implements OnInit {
     this.fetchUserData();
     this.getCurrentUser();
     this.initForm();
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   getCurrentUser() {
-    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
+    return this.authenticationService.currentUser
+      .pipe(catchError((err) => of(err)))
+      .subscribe((user) => (this.user = user));
   }
 
-  fetchUserData(){
-    this.userService.getAllUser().pipe(catchError((err) => of(err)))
-    .subscribe((response) => {
-      this.users = response;
-    });
+  fetchUserData() {
+    this.userService
+      .getAllUser()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.users = response;
+      });
   }
 
   initForm() {
@@ -91,7 +87,8 @@ export class ModalProjectComponent implements OnInit {
       appUserId: [null, Validators.required],
       createDate: [null, Validators.required],
       completeDate: [null],
-      description:[null],
+      description: [null],
+      permissionCode: [null],
     });
   }
 
@@ -104,19 +101,19 @@ export class ModalProjectComponent implements OnInit {
       this.title = 'New Project';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
-      this.modalForm.get('createDate')?.setValue(new Date())
+      this.modalForm.get('createDate')?.setValue(new Date());
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
     }
   }
 
-  checkEditForm(){
+  checkEditForm() {
     this.modalForm.patchValue(this.data);
-    if(this.isEdit){
+    if (this.isEdit) {
       this.modalForm.enable();
       this.title = 'Update: ' + this.data.projectName;
-    }else{
+    } else {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.projectName;
     }
@@ -128,7 +125,7 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      if(this.mode === 'create'){
+      if (this.mode === 'create') {
         this.projectService
           .createProject(this.modalForm.value)
           .pipe(
@@ -144,39 +141,41 @@ export class ModalProjectComponent implements OnInit {
               this.toastr.error('Failed');
             }
           });
-      }
-      else{
+      } else {
+        this.modalForm.value.permissionCode = this.user.permissionCode;
         this.projectService
-        .updateProject(this.modalForm.value)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((response) => {
-          if (response) {
-            this.toastr.success('Successfully!');
-            this.onChangeProject.emit();
-          } else {
-            this.toastr.error('Failed');
-          }
-        });
+          .updateProject(this.modalForm.value)
+          .pipe(
+            catchError((err) => {
+              this.toastr.error('You not permission');
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (!response) {
+              this.toastr.success('Successfully!');
+              this.onChangeProject.emit();
+            }
+          });
       }
     }
   }
 
-  onChangeDepartment(){
-   const department = this.departments.find(department=> department.id === this.modalForm.value.departmentId);
-   const user = this.users.find(user => user.departmentId === department?.id);
-   this.modalForm.get('appUserId')?.setValue(user?.id);
+  onChangeDepartment() {
+    const department = this.departments.find(
+      (department) => department.id === this.modalForm.value.departmentId
+    );
+    const user = this.users.find(
+      (user) => user.departmentId === department?.id
+    );
+    this.modalForm.get('appUserId')?.setValue(user?.id);
   }
 
   onChangeEdit(ev: any) {
     this.isEdit = ev;
-    if(Number(this.user.permissionCode) == Permission.Employee || Number(this.user.permissionCode) == Permission.Leader)
-    {
+    if (Number(this.user.permissionCode) == Permission.Employee) {
       this.isEdit = false;
-      this.toastr.warning("You must had permission")
+      this.toastr.warning('You must had permission');
     }
     if (this.mode === 'detail') {
       this.checkEditForm();

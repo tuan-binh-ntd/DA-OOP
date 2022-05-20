@@ -16,6 +16,6 @@ namespace API.DTO
         public string TaskCode { get; set; }
         public Guid ProjectId { get; set; }
         public Guid AppUserId { get; set; }
-        //public Permission PermissionCode { get; set; }
+        public Permission PermissionCode { get; set; }
     }
 }

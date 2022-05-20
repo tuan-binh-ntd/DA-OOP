@@ -127,12 +127,12 @@ namespace API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateTask(Permission permissionCode,UpdateTaskDto input)
+        public async Task<ActionResult> UpdateTask(UpdateTaskDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
-                if (permissionCode == Permission.Leader)
+                if (input.PermissionCode == Permission.Leader)
                 {
                     task.TaskName = input.TaskName;
                     task.CreateUserId = input.CreateUserId;
@@ -148,14 +148,14 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else if (permissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     task.StatusCode = input.StatusCode;
                     _dataContext.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else
+                else if(input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.Resolve)
                 {
                     task.StatusCode = input.StatusCode;
                     task.CompleteDate = DateTime.Now;
@@ -163,6 +163,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
+                return BadRequest("You not permission");
             }
             else
             {
