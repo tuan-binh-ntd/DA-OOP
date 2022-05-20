@@ -19,8 +19,9 @@ namespace API.Controllers
             _dataContext = dataContext;
         }
 
-        [HttpPost("getall")]
-        public async Task<ActionResult> GetAllProject([FromBody] GetAllProjectDto getAllProjectDto)
+        [HttpGet("getall")]
+        public async Task<ActionResult> GetAllProject( string projectName, string projectType, string projectCode, StatusCode? statusCode, Priority? priorityCode,DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo, Guid? departmentId, Permission? permission)
+        
         {
             var taskList = await (from p in _dataContext.Project
                                   join t in _dataContext.Task on p.Id equals t.ProjectId
@@ -43,55 +44,64 @@ namespace API.Controllers
             var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
 
             var projectFilter = _dataContext.Project.Join(_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectName))
+            if (!string.IsNullOrWhiteSpace(projectName))
             {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectName.Contains(getAllProjectDto.ProjectName));
+                projectFilter = projectFilter.Where(p => p.pj.ProjectName.Contains(projectName));
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectCode))
+            if (!string.IsNullOrWhiteSpace(projectCode))
             {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectCode == getAllProjectDto.ProjectCode);
+                projectFilter = projectFilter.Where(p => p.pj.ProjectCode == projectCode);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.ProjectType))
+            if (!string.IsNullOrWhiteSpace(projectType))
             {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectType == getAllProjectDto.ProjectType);
+                projectFilter = projectFilter.Where(p => p.pj.ProjectType == projectType);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.StatusCode.ToString()))
+            if (!string.IsNullOrWhiteSpace(statusCode.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.StatusCode == getAllProjectDto.StatusCode);
+                projectFilter = projectFilter.Where(p => p.pj.StatusCode == statusCode);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.PriorityCode.ToString()))
+            if (!string.IsNullOrWhiteSpace(priorityCode.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.PriorityCode == getAllProjectDto.PriorityCode);
+                projectFilter = projectFilter.Where(p => p.pj.PriorityCode == priorityCode);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CreateDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(createDateTo.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.CreateDate <= getAllProjectDto.CreateDateTo);
+                projectFilter = projectFilter.Where(p => p.pj.CreateDate <= createDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CreateDateFrom.ToString()))
+            if (!string.IsNullOrWhiteSpace(createDateFrom.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.CreateDate >= getAllProjectDto.CreateDateFrom);
+                projectFilter = projectFilter.Where(p => p.pj.CreateDate >= createDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CompleteDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(completeDateTo.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.CompleteDate <= getAllProjectDto.CompleteDateTo);
+                projectFilter = projectFilter.Where(p => p.pj.CompleteDate <= completeDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.CompleteDateFrom.ToString()))
+            if (!string.IsNullOrWhiteSpace(completeDateFrom.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.CompleteDate >= getAllProjectDto.CompleteDateFrom);
+                projectFilter = projectFilter.Where(p => p.pj.CompleteDate >= completeDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.DeadlineDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(deadlineDateTo.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate <= getAllProjectDto.DeadlineDateTo);
+                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate <= deadlineDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(getAllProjectDto.DeadlineDateFrom.ToString()))
+            if (!string.IsNullOrWhiteSpace(deadlineDateFrom.ToString()))
             {
-                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate >= getAllProjectDto.DeadlineDateFrom);
+                projectFilter = projectFilter.Where(p => p.pj.DeadlineDate >= deadlineDateFrom);
+            }
+            if (!string.IsNullOrWhiteSpace(departmentId.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.pj.DepartmentId == departmentId);
+            }
+            if (!string.IsNullOrWhiteSpace(permission.ToString()))
+            {
+                projectFilter = projectFilter.Where(p => p.user.PermissionCode == permission);
             }
 
 
             /*var projectList = await (from u in _dataContext.AppUser
                                      join p in _dataContext.Project on u.DepartmentId equals p.DepartmentId
                                      where u.PermissionCode == Permission.Leader).AsNoTracking();*/
+
 
             var projectList = await projectFilter.OrderByDescending(p => p.pj.CreateDate).Select(
                  p =>  new GetAllProjectForViewDto
@@ -172,6 +182,87 @@ namespace API.Controllers
                                          join p in _dataContext.Project
                                          on u.DepartmentId equals p.DepartmentId
                                          where u.PermissionCode == Permission.Leader && u.DepartmentId == departmentId
+                                         select new GetAllProjectForViewDto
+                                         {
+                                             Id = p.Id,
+                                             ProjectName = p.ProjectName,
+                                             Description = p.Description,
+                                             ProjectType = p.ProjectType,
+                                             ProjectCode = p.ProjectCode,
+                                             CreateDate = p.CreateDate,
+                                             DeadlineDate = p.DeadlineDate,
+                                             CompleteDate = p.CompleteDate,
+                                             DayLefts = (p.DeadlineDate - DateTime.Now).Days,
+                                             PriorityCode = p.PriorityCode,
+                                             StatusCode = p.StatusCode,
+                                             DepartmentId = p.DepartmentId,
+                                             AppUserId = u.Id,
+                                             LeaderName = u.FirstName + " " + u.LastName,
+                                         }).AsNoTracking().ToListAsync();
+
+                foreach (var project in projectList)
+                {
+                    foreach (var task in countTask)
+                    {
+                        if (project.Id == task.ProjectId)
+                        {
+                            project.TaskCount = task.Count;
+                            break;
+                        }
+                    }
+                    foreach (var numTaskComplete in countTaskComplete)
+                    {
+                        if (project.Id == numTaskComplete.ProjectId)
+                        {
+                            project.TaskProgress = Math.Round(Convert.ToDecimal(((float)numTaskComplete.Count / (float)project.TaskCount) * 100), 2);
+                            break;
+                        }
+                    }
+
+                }
+                return Ok(projectList);
+            }
+            return BadRequest("You not permission");
+        }
+
+        [HttpGet("getprojectforuserid")]
+        public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForUserId(Guid userId, Permission permission)
+        {
+            if (permission == Permission.ProjectManager || permission == Permission.Leader)
+            {
+                var userIdNotFound = await _dataContext.Project.Join (_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking().FirstOrDefaultAsync(e => e.user.Id == userId);
+                if (userIdNotFound == null)
+                {
+                    return BadRequest("Project For User not found");
+                }
+                var taskList = await (from p in _dataContext.Project
+                                      join u in _dataContext.AppUser
+                                      on p.DepartmentId equals u.DepartmentId
+                                      join t in _dataContext.Task
+                                      on p.Id equals t.ProjectId
+                                      where u.Id == userId
+                                      select new
+                                      {
+                                          ProjectId = t.ProjectId
+                                      }).AsNoTracking().ToListAsync();
+
+                var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+
+                var taskListComplete = await (from p in _dataContext.Project
+                                              join t in _dataContext.Task
+                                              on p.Id equals t.ProjectId
+                                              where t.StatusCode == Enum.StatusCode.Closed
+                                              select new
+                                              {
+                                                  ProjectId = t.ProjectId
+                                              }).AsNoTracking().ToListAsync();
+
+                var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+
+                var projectList = await (from u in _dataContext.AppUser
+                                         join p in _dataContext.Project
+                                         on u.DepartmentId equals p.DepartmentId
+                                         where u.PermissionCode == Permission.Leader && u.Id == userId
                                          select new GetAllProjectForViewDto
                                          {
                                              Id = p.Id,
