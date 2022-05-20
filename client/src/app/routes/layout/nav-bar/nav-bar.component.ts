@@ -19,7 +19,6 @@ export class NavBarComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService, private userService: UserService) { }
 
 
-
   fetchUserData() {
     this.userService
       .getAllUser()

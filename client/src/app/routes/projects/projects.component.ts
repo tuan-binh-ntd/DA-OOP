@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
-import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
-import { DeparmentService } from 'src/app/services/deparment.service';
 import { ProjectService } from '../../services/project.service';
 import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
-import { Priority } from '../shared/priority-icon/priority-icon.component';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { ToastrService } from 'ngx-toastr';
+import { DepartmentService } from 'src/app/services/department.service';
+import { GetAllProject } from 'src/app/models/getallproject';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -18,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ProjectsComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
-    private departmentService: DeparmentService,
+    private departmentService: DepartmentService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -36,8 +34,10 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+
+  getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user'));
+    this.right = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.ProjectManager;
     if(user.permissionCode === Permission.ProjectManager){
       this.right = true
     }
@@ -56,7 +56,7 @@ export class ProjectsComponent implements OnInit {
 
   fetchProjectData() {
     this.projectService
-      .getAllProject()
+      .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.data = response;
@@ -69,13 +69,13 @@ export class ProjectsComponent implements OnInit {
       ?.departmentName;
   }
 
-  openDetailModal(data: any, mode: string) {
+  openDetailModal(data: any, mode: string, isEdit: boolean) {
     var myModal = new bootstrap.Modal(
       document.getElementById('createProjectModal')!
     );
     myModal.show();
     this.isShowModal = true;
-    this.modalProject.openModal(data, mode);
+    this.modalProject.openModal(data, mode, isEdit);
   }
 
   onViewTask(projectId: string): any {
@@ -86,7 +86,7 @@ export class ProjectsComponent implements OnInit {
     var myModal = new bootstrap.Modal(
       document.getElementById('createProjectModal')!
     );
-    
+
     // $('#createProjectModal').modal('hide')
     // $('#createProjectModal').hide;
     myModal.hide();
@@ -104,5 +104,5 @@ export class ProjectsComponent implements OnInit {
       this.modalProject.openModal(null, 'create');
       this.isShowModal = true;
   }
- 
+
 }
