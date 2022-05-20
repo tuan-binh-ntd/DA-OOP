@@ -93,6 +93,7 @@ namespace API.Controllers
                                      join p in _dataContext.Project on u.DepartmentId equals p.DepartmentId
                                      where u.PermissionCode == Permission.Leader).AsNoTracking();*/
 
+
             var projectList = await projectFilter.OrderByDescending(p => p.pj.CreateDate).Select(
                  p =>  new GetAllProjectForViewDto
                  {
@@ -172,6 +173,87 @@ namespace API.Controllers
                                          join p in _dataContext.Project
                                          on u.DepartmentId equals p.DepartmentId
                                          where u.PermissionCode == Permission.Leader && u.DepartmentId == departmentId
+                                         select new GetAllProjectForViewDto
+                                         {
+                                             Id = p.Id,
+                                             ProjectName = p.ProjectName,
+                                             Description = p.Description,
+                                             ProjectType = p.ProjectType,
+                                             ProjectCode = p.ProjectCode,
+                                             CreateDate = p.CreateDate,
+                                             DeadlineDate = p.DeadlineDate,
+                                             CompleteDate = p.CompleteDate,
+                                             DayLefts = (p.DeadlineDate - DateTime.Now).Days,
+                                             PriorityCode = p.PriorityCode,
+                                             StatusCode = p.StatusCode,
+                                             DepartmentId = p.DepartmentId,
+                                             AppUserId = u.Id,
+                                             LeaderName = u.FirstName + " " + u.LastName,
+                                         }).AsNoTracking().ToListAsync();
+
+                foreach (var project in projectList)
+                {
+                    foreach (var task in countTask)
+                    {
+                        if (project.Id == task.ProjectId)
+                        {
+                            project.TaskCount = task.Count;
+                            break;
+                        }
+                    }
+                    foreach (var numTaskComplete in countTaskComplete)
+                    {
+                        if (project.Id == numTaskComplete.ProjectId)
+                        {
+                            project.TaskProgress = Math.Round(Convert.ToDecimal(((float)numTaskComplete.Count / (float)project.TaskCount) * 100), 2);
+                            break;
+                        }
+                    }
+
+                }
+                return Ok(projectList);
+            }
+            return BadRequest("You not permission");
+        }
+
+        [HttpGet("getprojectforuserid")]
+        public async Task<ActionResult<GetAllProjectForViewDto>> GetProjectForUserId(Guid userId, Permission permission)
+        {
+            if (permission == Permission.ProjectManager || permission == Permission.Leader)
+            {
+                var userIdNotFound = await _dataContext.Project.Join (_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking().FirstOrDefaultAsync(e => e.user.Id == userId);
+                if (userIdNotFound == null)
+                {
+                    return BadRequest("Project For User not found");
+                }
+                var taskList = await (from p in _dataContext.Project
+                                      join u in _dataContext.AppUser
+                                      on p.DepartmentId equals u.DepartmentId
+                                      join t in _dataContext.Task
+                                      on p.Id equals t.ProjectId
+                                      where u.Id == userId
+                                      select new
+                                      {
+                                          ProjectId = t.ProjectId
+                                      }).AsNoTracking().ToListAsync();
+
+                var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+
+                var taskListComplete = await (from p in _dataContext.Project
+                                              join t in _dataContext.Task
+                                              on p.Id equals t.ProjectId
+                                              where t.StatusCode == Enum.StatusCode.Closed
+                                              select new
+                                              {
+                                                  ProjectId = t.ProjectId
+                                              }).AsNoTracking().ToListAsync();
+
+                var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+
+                var projectList = await (from u in _dataContext.AppUser
+                                         join p in _dataContext.Project
+                                         on u.DepartmentId equals p.DepartmentId
+                                         where u.PermissionCode == Permission.Leader && u.Id == userId
                                          select new GetAllProjectForViewDto
                                          {
                                              Id = p.Id,
