@@ -19,6 +19,15 @@ import { ProjectsComponent } from './routes/projects/projects.component';
 import { SharedModuleModule } from './routes/shared/shared-module.module';
 import * as bootstrap from "bootstrap";
 import { UsersComponent } from './routes/users/users.component';
+import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/daygrid'; // a plugin!
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,10 +40,12 @@ import { UsersComponent } from './routes/users/users.component';
     NavBarComponent,
     SiteLayoutComponent,
     UsersComponent,
+    TasksCalendarComponent,
   ],
   imports: [
     BrowserModule,
     SharedModuleModule,
+    FullCalendarModule ,
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,

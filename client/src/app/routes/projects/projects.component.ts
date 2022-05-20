@@ -35,10 +35,12 @@ export class ProjectsComponent implements OnInit {
   isInProgressRecord: boolean = false;
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
-  right: number;
+  right: boolean = false;
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
-    this.right = user.permissionCode;
+    if(user.permissionCode === Permission.ProjectManager){
+      this.right = true
+    }
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
@@ -99,17 +101,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   openModal(){
-    debugger
-    if(this.right === Permission.ProjectManager){
-      this.modalProject.openModal(null, 'create');this.isShowModal = true
-    }
-    else{
-      $(document.body).removeClass('modal-open');
-      $('.modal-backdrop').remove();
-      this.toastr.error('You dont have permision', '', {
-        timeOut: 1000,
-      });
-    }
+      this.modalProject.openModal(null, 'create');
+      this.isShowModal = true;
   }
  
 }

@@ -18,9 +18,7 @@ export class NavBarComponent implements OnInit {
   users: any[] = [];
   constructor(private authenticationService: AuthenticationService, private userService: UserService) { }
 
-  ngOnInit(): void {
-    this.fetchUserData();
-  }
+
 
   fetchUserData() {
     this.userService
@@ -34,6 +32,8 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
     this.userName = user.name;
+    this.fetchUserData();
+
   }
   logout() {
     this.authenticationService.logout();

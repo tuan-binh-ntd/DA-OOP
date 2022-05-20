@@ -10,6 +10,7 @@ import { TasksComponent } from './routes/tasks/tasks.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
 import { UsersComponent } from './routes/users/users.component';
 import { AuthGuard } from './guard/auth.guard';
+import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'projects/tasks', component: TasksComponent },
+      { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent },
       { path: 'projects', component: ProjectsComponent },

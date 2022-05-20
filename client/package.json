@@ -23,6 +23,8 @@
     "@fortawesome/angular-fontawesome": "^0.10.2",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
+    "@fullcalendar/angular": "^5.11.0",
+    "@fullcalendar/daygrid": "^5.11.0",
     "@types/bootstrap": "^5.1.11",
     "bootstrap": "^4.0.0",
     "font-awesome": "^4.7.0",
