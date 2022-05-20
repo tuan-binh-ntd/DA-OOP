@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetAllProject( string projectName, string projectType, string projectCode, StatusCode? statusCode, Priority? priorityCode,DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo, Guid? departmentId, Permission? permission)
+        public async Task<ActionResult> GetAllProject( string keyWord, StatusCode? statusCode, Priority? priorityCode,DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo, Guid? departmentId, Permission? permission)
         
         {
             var taskList = await (from p in _dataContext.Project
@@ -44,18 +44,10 @@ namespace API.Controllers
             var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
 
             var projectFilter = _dataContext.Project.Join(_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(projectName))
+            if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectName.Contains(projectName));
-            }
-            if (!string.IsNullOrWhiteSpace(projectCode))
-            {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectCode == projectCode);
-            }
-            if (!string.IsNullOrWhiteSpace(projectType))
-            {
-                projectFilter = projectFilter.Where(p => p.pj.ProjectType == projectType);
-            }
+                projectFilter = projectFilter.Where(p => p.pj.ProjectName.Contains(keyWord) || p.pj.ProjectCode.Contains(keyWord)|| p.pj.ProjectType.Contains(keyWord));
+            }           
             if (!string.IsNullOrWhiteSpace(statusCode.ToString()))
             {
                 projectFilter = projectFilter.Where(p => p.pj.StatusCode == statusCode);

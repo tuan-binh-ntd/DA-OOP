@@ -21,54 +21,51 @@ namespace API.Controllers
             _dataContext = dataContext;
         }
 
-        [HttpPost("getall")]
-        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId, [FromBody] SearchTaskDto searchTaskDto)
+        [HttpGet("getall")]
+        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId, Guid? createUserId,string keyWord,Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
+        
         {
 
             var taskList = _dataContext.Task.AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskName))
+            if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                taskList = taskList.Where(t => t.TaskName.Contains(searchTaskDto.TaskName));
+                taskList = taskList.Where(t => t.TaskName.Contains(keyWord)|| t.TaskType.Contains(keyWord)|| t.TaskCode.Contains(keyWord));
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskType))
+            if (!string.IsNullOrWhiteSpace(statusCode.ToString()))
             {
-                taskList = taskList.Where(t => t.TaskType == searchTaskDto.TaskType);
+                taskList = taskList.Where(t => t.StatusCode == statusCode);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskCode))
+            if (!string.IsNullOrWhiteSpace(priorityCode.ToString()))
             {
-                taskList = taskList.Where(t => t.TaskCode == searchTaskDto.TaskCode);
+                taskList = taskList.Where(t => t.PriorityCode == priorityCode);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.StatusCode.ToString()))
+            if (!string.IsNullOrWhiteSpace(createDateTo.ToString()))
             {
-                taskList = taskList.Where(t => t.StatusCode == searchTaskDto.StatusCode);
+                taskList = taskList.Where(t => t.CreateDate <= createDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.PriorityCode.ToString()))
+            if (!string.IsNullOrWhiteSpace(createDateFrom.ToString()))
             {
-                taskList = taskList.Where(t => t.PriorityCode == searchTaskDto.PriorityCode);
+                taskList = taskList.Where(t => t.CreateDate >= createDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.CreateDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(completeDateTo.ToString()))
             {
-                taskList = taskList.Where(t => t.CreateDate <= searchTaskDto.CreateDateTo);
+                taskList = taskList.Where(t => t.CompleteDate <= completeDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.CreateDateFrom.ToString()))
+            if (!string.IsNullOrWhiteSpace(completeDateFrom.ToString()))
             {
-                taskList = taskList.Where(t => t.CreateDate >= searchTaskDto.CreateDateFrom);
+                taskList = taskList.Where(t => t.CompleteDate >= completeDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.CompleteDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(deadlineDateTo.ToString()))
             {
-                taskList = taskList.Where(t => t.CompleteDate <= searchTaskDto.CompleteDateTo);
+                taskList = taskList.Where(t => t.DeadlineDate <= deadlineDateTo);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.CompleteDateFrom.ToString()))
+            if (!string.IsNullOrWhiteSpace(deadlineDateFrom.ToString()))
             {
-                taskList = taskList.Where(t => t.CompleteDate >= searchTaskDto.CompleteDateFrom);
+                taskList = taskList.Where(t => t.DeadlineDate >= deadlineDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.DeadlineDateTo.ToString()))
+            if (!string.IsNullOrWhiteSpace(createUserId.ToString()))
             {
-                taskList = taskList.Where(t => t.DeadlineDate <= searchTaskDto.DeadlineDateTo);
-            }
-            if (!string.IsNullOrWhiteSpace(searchTaskDto.DeadlineDateFrom.ToString()))
-            {
-                taskList = taskList.Where(t => t.DeadlineDate >= searchTaskDto.DeadlineDateFrom);
+                taskList = taskList.Where(t => t.CreateUserId == createUserId);
             }
             if (userId != null && projectId != null)
             {
