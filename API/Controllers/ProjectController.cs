@@ -275,7 +275,10 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
+                else
+                {
                     return BadRequest("Yow not permission");
+                }
             }
             else
             {

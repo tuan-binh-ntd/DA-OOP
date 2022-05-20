@@ -24,7 +24,7 @@ namespace API.Controllers
         [HttpPost("getall")]
         public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId, [FromBody] SearchTaskDto searchTaskDto)
         {
-           
+
             var taskList = _dataContext.Task.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(searchTaskDto.TaskName))
             {
@@ -68,15 +68,15 @@ namespace API.Controllers
             }
             if (!string.IsNullOrWhiteSpace(searchTaskDto.DeadlineDateFrom.ToString()))
             {
-                taskList = taskList.Where(t=> t.DeadlineDate >= searchTaskDto.DeadlineDateFrom);
+                taskList = taskList.Where(t => t.DeadlineDate >= searchTaskDto.DeadlineDateFrom);
             }
             if (userId != null && projectId != null)
             {
-                 taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);               
+                taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);
             }
             if (userId != null || projectId != null)
             {
-                 taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);  
+                taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);
             }
             var taskListForView = await taskList.OrderByDescending(t => t.CreateDate).Select(
                  t => new
@@ -94,8 +94,8 @@ namespace API.Controllers
                      StatusCode = t.StatusCode,
                      ProjectId = t.ProjectId,
                      AppUserId = t.AppUserId,
-                     CreateUserId=t.CreateUserId
-                    
+                     CreateUserId = t.CreateUserId
+
                  }).AsNoTracking().ToListAsync(); ;
             return Ok(taskListForView);
         }
@@ -155,7 +155,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else if(input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.Resolve)
+                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.Resolve)
                 {
                     task.StatusCode = input.StatusCode;
                     task.CompleteDate = DateTime.Now;
@@ -163,12 +163,16 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                return BadRequest("You not permission");
+                else
+                {
+                    return BadRequest("You not permission");
+                }
             }
             else
             {
                 return BadRequest("Task not existed");
             }
+
         }
 
         [HttpDelete("delete")]

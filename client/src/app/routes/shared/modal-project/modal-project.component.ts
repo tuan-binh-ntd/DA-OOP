@@ -147,15 +147,16 @@ export class ModalProjectComponent implements OnInit {
           .updateProject(this.modalForm.value)
           .pipe(
             catchError((err) => {
-              this.toastr.error('You not permission');
               return of(err);
             })
-          )
-          .subscribe((response) => {
-            if (!response) {
-              this.toastr.success('Successfully!');
-              this.onChangeProject.emit();
-            }
+            )
+            .subscribe((response) => {
+              if (response.id) {
+                this.toastr.success('Successfully!');
+              } else {
+                this.toastr.error('You not permission');
+              }
+            this.onChangeProject.emit();
           });
       }
     }

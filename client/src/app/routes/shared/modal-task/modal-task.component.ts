@@ -156,17 +156,18 @@ export class ModalTaskComponent implements OnInit {
         this.modalForm.value.permissionCode = this.user.permissionCode;
         this.taskService
           .updateTask(this.modalForm.value)
-          .pipe(
-            catchError((err) => {
-              this.toastr.error('You not permission')
-              return of(err);
-            })
-          )
+          .pipe(catchError((err) => {return of(err);}))
           .subscribe((response) => {
-            if (!response) {
-              this.toastr.success('Successfully!');
-              this.onChangeTask.emit();
+            if(response.id)
+            {
+              this.toastr.success('Successfully!', '', {
+                timeOut: 1000,
+              });
+            } else {
+              this.toastr.error('You not permission');
+
             }
+            this.onChangeTask.emit();
           });
       }
     }
@@ -174,10 +175,6 @@ export class ModalTaskComponent implements OnInit {
 
   onChangeEdit(ev: any) {
     this.isEdit = ev;
-    if (Number(this.user.permissionCode) == Permission.Employee) {
-      this.isEdit = false;
-      this.toastr.warning('You must had permission');
-    }
     if (this.mode === 'detail') {
       this.checkEditForm();
     }
