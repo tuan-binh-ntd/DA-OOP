@@ -30,6 +30,13 @@ export class ModalTaskComponent implements OnInit {
   taskTypes: any[] = [
     { value: 'Test', viewValue: 'Test' },
   ];
+  statusCode: any[] = [
+    { value: StatusCode.Reopened, viewValue: 'Reopened' },
+    { value: StatusCode.Resolved, viewValue: 'Resolved' },
+    { value: StatusCode.Open, viewValue: 'Open' },
+    { value: StatusCode.InProgress, viewValue: 'InProgress' },
+    { value: StatusCode.Closed, viewValue: 'Closed' },
+  ]
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
