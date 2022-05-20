@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
-import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';
@@ -165,7 +164,6 @@ export class ModalTaskComponent implements OnInit {
               });
             } else {
               this.toastr.error('You not permission');
-
             }
             this.onChangeTask.emit();
           });
