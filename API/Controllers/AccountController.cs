@@ -22,52 +22,78 @@ namespace API.Controllers
 
         public AccountController(DataContext dataContext, ITokenService tokenService)
         {
-            _dataContext=dataContext;
+            _dataContext = dataContext;
             _tokenService = tokenService;
         }
 
         [HttpGet("getall")]
         [AllowAnonymous]
-        public async Task<ActionResult> GetAllUser()
+        public async Task<ActionResult> GetAllUser(Guid? projectId, Guid? departmentId)
         {
-            var appUserList = await _dataContext.AppUser.AsNoTracking().ToListAsync();
-            return Ok(appUserList);
-        }
+            if (projectId != null)
+            {
+                var userList = await (from p in _dataContext.Project
+                                      join t in _dataContext.Task on p.Id equals t.ProjectId
+                                      join u in _dataContext.AppUser on t.AppUserId equals u.Id
+                                      where p.Id == projectId && u.PermissionCode != Permission.ProjectManager
+                                      select new
+                                      {
+                                          ProjectName = p.ProjectName,
+                                          TaskName = t.TaskName,
+                                          AppUserId = u.Id,
+                                          UserName = u.FirstName + " " + u.LastName,
+                                          DepartmentId = p.DepartmentId,
+                                          Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                      }).AsNoTracking().ToListAsync();
+                /*var groupUserList = userList.GroupBy(e => e.AppUserId).Select(e => new { AppUserId = e.Key, Count = e.Count()}).ToList();
+                var result = await (from p in _dataContext.Project
+                                    join t in _dataContext.Task on p.Id equals t.ProjectId
+                                    join u in _dataContext.AppUser on t.AppUserId equals u.Id
+                                    from g in groupUserList 
+                                    select new
+                                    {
+                                        ProjectName = p.ProjectName,
+                                        TaskName = t.TaskName,
+                                        AppUserId = u.Id,
+                                        UserName = u.FirstName + " " + u.LastName,
+                                        DepartmentId = p.DepartmentId,
+                                        Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                    }).AsNoTracking().ToListAsync();*/
+                return Ok(userList);
+            }
+            if (departmentId != null)
+            {
+                var userList = await (from d in _dataContext.Department
+                                      join u in _dataContext.AppUser on d.Id equals u.DepartmentId
+                                      where d.Id == departmentId && u.PermissionCode != Permission.ProjectManager
+                                      select new
+                                      {
+                                          DepartmentId = d.Id,
+                                          DepartmentName = d.DepartmentName,
+                                          AppUserId = u.Id,
+                                          UserName = u.FirstName + " " + u.LastName,
+                                          Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
 
-        [HttpGet("getuserforproject")]
-        public async Task<ActionResult> GetUserForProject(Guid projectId)
-        {
-            var userList = await (from u in _dataContext.AppUser
-                           join t in _dataContext.Task on u.Id equals t.AppUserId
-                           where t.ProjectId == projectId
-                           select new
-                           {
-                               ProjectId = t.ProjectId,
-                               AppUserId = t.AppUserId,
-                               FirstName = u.FirstName,
-                               LastName = u.LastName,
-                           }).AsNoTracking().ToListAsync();
-            var results = from u in userList group u by new { u.ProjectId, u.AppUserId, u.FirstName, u.LastName } into g
-                          select new { AppUserId = g.Key };
-            return Ok(results);
-        }
-
-        [HttpGet("getuserfordepartment")]
-        public async Task<ActionResult> GetUserForDepartment(Guid DepartmentId)
-        {
-            var userList = await (from u in _dataContext.AppUser
-                           join d in _dataContext.Department on u.DepartmentId equals d.Id
-                           where d.Id == DepartmentId
-                           select new
-                           {
-                               DepartmentId = d.Id,
-                               DepartmentName = d.DepartmentName,
-                               AppUserId = u.Id,
-                               FirstName = u.FirstName,
-                               LastName = u.LastName,
-                           }).AsNoTracking().ToListAsync();
-            userList.GroupBy(e => e.AppUserId);
-            return Ok(userList);
+                                      }).AsNoTracking().ToListAsync();
+                //userList.GroupBy(e => e.AppUserId);
+                return Ok(userList);
+            }
+            if (projectId == null && departmentId == null)
+            {
+                var appUserList = await (from d in _dataContext.Department
+                                  join u in _dataContext.AppUser on d.Id equals u.DepartmentId
+                                  where u.PermissionCode == Permission.Leader || u.PermissionCode == Permission.Employee
+                                  select new
+                                  {
+                                      DepartmentId = d.Id,
+                                      DepartmentName = d.DepartmentName,
+                                      AppUserId = u.Id,
+                                      UserName = u.FirstName + " " + u.LastName,
+                                      Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                  }).AsNoTracking().ToListAsync();
+                return Ok(appUserList);
+            }
+            return Ok();
         }
 
         [HttpPost("register")]
@@ -192,7 +218,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(user);
                 }
-                
+
             }
             else
             {
