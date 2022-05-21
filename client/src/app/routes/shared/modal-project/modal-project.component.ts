@@ -23,6 +23,7 @@ export class ModalProjectComponent implements OnInit {
   data: any;
   isEdit: boolean = false;
   user: User;
+  leader: any[] = [];
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
@@ -54,7 +55,6 @@ export class ModalProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserData();
-    this.getCurrentUser();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
   }
@@ -92,7 +92,12 @@ export class ModalProjectComponent implements OnInit {
     });
   }
 
+  changeLeaderForDepartment() {
+
+  }
+
   openModal(data: any, mode: string, isEdit: boolean) {
+    this.leader = this.users.filter(e => e.permission == 'Leader');
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;
@@ -103,6 +108,7 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
+      this.modalForm.get('appUserId')?.disable();
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
@@ -168,9 +174,9 @@ export class ModalProjectComponent implements OnInit {
       (department) => department.id === this.modalForm.value.departmentId
     );
     const user = this.users.find(
-      (user) => user.departmentId === department?.id
+      (user) => user.departmentId === department?.id && user.permission == 'Leader'
     );
-    this.modalForm.get('appUserId')?.setValue(user?.id);
+    this.modalForm.get('appUserId')?.setValue(user?.appUserId);
   }
 
   onChangeEdit(ev: any) {

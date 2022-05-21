@@ -184,6 +184,15 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
+                else if(input.PermissionCode == Permission.ProjectManager && (input.StatusCode == Enum.StatusCode.Closed || 
+                    input.StatusCode == Enum.StatusCode.Resolve))
+                {
+                    project.StatusCode = input.StatusCode;
+                    project.CompleteDate = DateTime.Now;
+                    _dataContext.Project.Update(project);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(project);
+                }
                 else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     project.StatusCode = input.StatusCode;

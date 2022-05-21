@@ -70,7 +70,8 @@ export class ModalUserComponent implements OnInit {
       phone: [null, Validators.required],
       password: [null, Validators.required],
       departmentId: [null, Validators.required],
-      permissionCode: [Permission.Employee, Validators.required],
+      permissionCode: [null, Validators.required],
+      permissionCreator: [null]
     });
   }
 
@@ -105,6 +106,7 @@ export class ModalUserComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
+      this.modalForm.value.permissionCreator = Number(JSON.parse(localStorage.getItem('user')).permissionCode)
       if (this.mode === 'create') {
         this.authenticationService
           .register(this.modalForm.value)
@@ -114,11 +116,11 @@ export class ModalUserComponent implements OnInit {
             })
           )
           .subscribe((response) => {
-            if (!response) {
+            if (response.id) {
               this.toastr.success('Successfully!');
               this.onChangeUser.emit();
             } else {
-              this.toastr.error("You must had permission")
+              this.toastr.error("You must had permission or department had leader")
             }
           });
       }
