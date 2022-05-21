@@ -130,6 +130,7 @@ namespace API.Controllers
                 return new AppUserDto
                 {
                     Id = user.Id,
+                    UserName = user.FirstName + " " + user.LastName,
                     PermissionCode = user.PermissionCode,
                     Email = user.Email,
                     DepartmentId = user.DepartmentId,
@@ -155,6 +156,7 @@ namespace API.Controllers
                 return new AppUserDto
                 {
                     Id = user.Id,
+                    UserName = user.FirstName + " " + user.LastName,
                     PermissionCode = user.PermissionCode,
                     Email = user.Email,
                     DepartmentId = user.DepartmentId,
@@ -177,6 +179,7 @@ namespace API.Controllers
             return new AppUserDto
             {
                 Id = user.Id,
+                UserName = user.FirstName + " " + user.LastName,
                 PermissionCode = user.PermissionCode,
                 Email = user.Email,
                 DepartmentId = user.DepartmentId,
