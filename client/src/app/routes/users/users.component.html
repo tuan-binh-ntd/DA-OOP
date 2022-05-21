@@ -27,12 +27,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
-        <td>{{ user.firstName }} {{ user.lastName }}</td>
+        <td>{{ user.userName }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
         <td>{{ getDepartmentName(user.departmentId) }}</td>
-        <td>{{ getPermission(user.permissionCode) }}</td>
+        <td>{{ user.permission }}</td>
       </tr>
     </tbody>
   </table>

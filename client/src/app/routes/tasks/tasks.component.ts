@@ -87,8 +87,8 @@ export class TasksComponent implements OnInit {
       });
   }
   getUserName(id: string) {
-    const user = this.users.find((user) => user.id === id)
-    return user?.firstName + ' ' + user?.lastName;
+    const user = this.users.find((user) => user.appUserId === id)
+    return user?.userName;
   }
 
   getProjectName(id: string){
