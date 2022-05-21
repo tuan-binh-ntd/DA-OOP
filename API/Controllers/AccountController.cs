@@ -87,7 +87,6 @@ namespace API.Controllers
             {
                 var appUserList = await (from d in _dataContext.Department
                                   join u in _dataContext.AppUser on d.Id equals u.DepartmentId
-                                  where u.PermissionCode == Permission.Leader || u.PermissionCode == Permission.Employee
                                   select new
                                   {
                                       DepartmentId = d.Id,
@@ -97,7 +96,8 @@ namespace API.Controllers
                                       Address = u.Address,
                                       Email = u.Email,
                                       Phone = u.Phone,
-                                      Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                      Permission = u.PermissionCode == Permission.ProjectManager ? "ProjectManager" 
+                                          : u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
                                   }).AsNoTracking().ToListAsync();
                 return Ok(appUserList);
             }

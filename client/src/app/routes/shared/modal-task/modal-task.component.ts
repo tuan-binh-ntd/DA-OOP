@@ -133,7 +133,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.taskName;
     }
-  
+
     this.modalForm.controls['createUserId'].disable();
   }
 
@@ -143,6 +143,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
+      this.modalForm.value.createUserId = this.user.id;
       if (this.mode === 'create') {
         this.taskService
           .createTask(this.modalForm.value)

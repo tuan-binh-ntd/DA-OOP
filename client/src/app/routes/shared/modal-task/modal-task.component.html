@@ -59,8 +59,8 @@
                         <div class="col-10">
                             <mat-form-field class="w-100">
                                 <mat-select placeholder="Enter task leader" formControlName="createUserId">
-                                    <mat-option *ngFor="let user of users" [value]="user.id">
-                                        {{ user.firstName }} {{user.lastName}}
+                                    <mat-option *ngFor="let user of users" [value]="user.appUserId">
+                                        {{ user.userName }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
