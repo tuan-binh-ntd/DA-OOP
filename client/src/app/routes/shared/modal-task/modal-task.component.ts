@@ -118,6 +118,8 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.user.id)
     this.modalForm.controls['createUserId'].disable();
+    this.modalForm.controls['statusCode'].disable();
+    this.modalForm.controls['createDate'].disable();
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
@@ -133,8 +135,19 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.taskName;
     }
-
     this.modalForm.controls['createUserId'].disable();
+    this.modalForm.controls['completeDate'].disable();
+    this.modalForm.controls['createDate'].disable();
+    if (Number(this.user.permissionCode) == 3) {
+      this.modalForm.controls['taskName'].disable();
+      this.modalForm.controls['taskType'].disable();
+      this.modalForm.controls['taskCode'].disable();
+      this.modalForm.controls['projectId'].disable();
+      this.modalForm.controls['appUserId'].disable();
+      this.modalForm.controls['description'].disable();
+      this.modalForm.controls['priorityCode'].disable();
+      this.modalForm.controls['deadlineDate'].disable();
+    }
   }
 
   submitForm() {
