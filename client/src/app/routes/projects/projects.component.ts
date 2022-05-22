@@ -57,9 +57,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   fetchProjectData() {
-    if(!this.right){
-      this.getAllProject.departmentId = this.user.departmentId
-    }
+    Number(this.user.permissionCode) == 2 ? this.getAllProject.departmentId = this.user.departmentId : this.getAllProject.departmentId = null;
     this.projectService
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
