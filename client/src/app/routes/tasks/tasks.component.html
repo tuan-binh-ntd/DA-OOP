@@ -34,7 +34,7 @@
         <td>{{ getUserName(task.createUserId) }}</td>
         <td>{{ getUserName(task.appUserId) }}</td>
         <td class="text-center">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="text-center">{{ !task.completeDate  ? task.dayLefts <=  0  && !task.dayLefts ? 'Overtime' : task.dayLefts + ' Days'
+        <td class="text-center">{{ task.completeDate == null ? task.dayLefts < 0? 'Overtime' : task.dayLefts + ' Days'
             : task.completeDate | date: 'dd/MM/yyyy' }}</td>
         <td class="text-center">
           <app-priority-icon [priorityCode]="task.priorityCode"></app-priority-icon>
