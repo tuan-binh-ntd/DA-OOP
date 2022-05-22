@@ -1,1 +1,2 @@
 <i [ngClass]="selectedPriorityIcon.icon"  [style.color]="selectedPriorityIcon.color" data-toggle="tooltip" data-placement="top" [title]="selectedPriorityIcon.label"></i>
+<span *ngIf="isShowLabel" class="ml-2">{{selectedPriorityIcon.label}}</span>

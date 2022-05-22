@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, of } from 'rxjs';
@@ -15,6 +16,17 @@ export class ProjectFilterComponent implements OnInit {
   departments: any[] = [];
   filterForm!: FormGroup;
   @Output() onSubmitForm = new EventEmitter();
+  @Output() filterType = new EventEmitter();
+  @Output() filterStatus = new EventEmitter();
+  @Output() filterPriority = new EventEmitter();
+  @Output() resetFilter = new EventEmitter();
+
+
+  priorityValue:any;
+  typeName:string = 'Type';
+  priorityName:string = 'Priority';
+  statusName:string = 'Status';
+
   projectTypes: any[] = [
     { value: 'MRP', viewValue: 'Manufacturing Projects' },
     { value: 'CTP', viewValue: 'Construction Projects' },
@@ -35,8 +47,7 @@ export class ProjectFilterComponent implements OnInit {
     { value: Priority.Normal, viewValue: 'Normal' },
     { value: Priority.Low, viewValue: 'Low' },
   ];
-
-  constructor( private departmentService: DepartmentService, private fb: FormBuilder) { }
+  constructor( private departmentService: DepartmentService, private fb: FormBuilder,public datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -68,9 +79,32 @@ export class ProjectFilterComponent implements OnInit {
   }
   
   submitForm(){
-    this.onSubmitForm.emit(this.filterForm.value);
+    // const payload = {
+    //   createDateFrom: this.datepipe.transform(this.filterForm.value.createDateFrom, 'YYYY-MM-DDThh:mm:ss')
+    // }
+    // console.log(payload)
+    // this.onSubmitForm.emit(payload);
   }
 
+
+  onFilterType(type:any){
+    this.typeName = type.viewValue;
+    this.filterType.emit(type.value);
+  }
+
+  onFilterStatus(status:any){
+    this.statusName = status.viewValue;
+    this.filterStatus.emit(status.value);
+  }
+
+  onFilterPriority(priority:any){
+    this.priorityName = priority.viewValue;
+    this.filterPriority.emit(priority.value);
+  }
+
+  onResetFilter(){
+    this.resetFilter.emit()
+  }
   
 
 }

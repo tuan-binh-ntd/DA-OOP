@@ -1,11 +1,11 @@
 <div class="container-fluid ml-2 mr-2">
   <div class="row mt-4">
     <div class="col col-6 p-0">
-      <h2 >Projects</h2>
+      <h2>Projects</h2>
     </div>
     <div *ngIf="right" class="col col-6">
       <button
-      *ngIf="right"
+        *ngIf="right"
         class="button-create float-right"
         data-toggle="modal"
         data-target="#createProjectModal"
@@ -20,8 +20,13 @@
     <div class="col col-6 p-0">
       <div class="form-group has-search">
         <span class="fa fa-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search" (keydown)="onSearch($event)"/>
-      <!-- </div>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          (keydown)="onSearch($event)"
+        />
+        <!-- </div>
       <div class="mb-3">
         <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
           All: {{ allRecord }}
@@ -42,95 +47,134 @@
           Closed: {{ closedRecord }}
         </button>
       </div> -->
-      
+      </div>
     </div>
-    
-  </div>
-  <div class="col col-6">
-    <app-project-filter (onSubmitForm)="submitFormFilter($event)"></app-project-filter>
+    <div class="col col-6">
+      <app-project-filter
+        (onSubmitForm)="submitFormFilter($event)"
+        (resetFilter)="onResetFilter()"
+        (filterPriority)="onFilterPriority($event)"
+        (filterStatus)="onFilterStatus($event)"
+        (filterType)="onFilterType($event)"
+      ></app-project-filter>
     </div>
 
-  <div class="card-columns">
-    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block" [routerLink]="['projects/tasks', item.id]">
-      <div class="card-body" (click)="onViewTask(item.id)">
-        <div class="row">
-          <div class="col col-6" style="line-height: 16px">
-            <span class="font-weight-light" style="line-height: 32px">
-              {{ item.taskCount }} Tasks
-            </span>
+    <div class="card-columns">
+      <div
+        class="card bg-light"
+        *ngFor="let item of data"
+        style="display: inline-block"
+        [routerLink]="['projects/tasks', item.id]"
+      >
+        <div class="card-body" (click)="onViewTask(item.id)">
+          <div class="row">
+            <div class="col col-6" style="line-height: 16px">
+              <span class="font-weight-light" style="line-height: 32px">
+                {{ item.taskCount }} Tasks
+              </span>
+            </div>
+            <div class="col col-6">
+              <app-priority-icon
+                class="float-right"
+                [priorityCode]="item.priorityCode"
+              ></app-priority-icon>
+            </div>
           </div>
-          <div class="col col-6">
-            <app-priority-icon
-              class="float-right"
-              [priorityCode]="item.priorityCode"
-            ></app-priority-icon>
-          </div>
-        </div>
-        <h5 class="card-title">{{ item.projectName }}</h5>
-        <!-- <p class="card-text">{{ item.description }}</p> -->
-        <div class="row">
-          <div class="col col-8">
-            <p class="card-text">
-              <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-              <span class="department">{{ getDepartmentName(item.departmentId) }}</span>
-              
-            </p>
-            <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
-              <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
-              {{ item.completeDate | date: "dd/MM/yyyy" }}
-            </p>
-            <ng-template #notComplete>
-              <ng-container *ngIf="item.dayLefts >0; else overtime" class="card-text text-warning">
-                <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
-                <span class="text-warning">{{ item.dayLefts }} Days</span>
-
+          <h5 class="card-title">{{ item.projectName }}</h5>
+          <!-- <p class="card-text">{{ item.description }}</p> -->
+          <div class="row">
+            <div class="col col-8">
+              <p class="card-text">
+                <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+                <span class="department">{{
+                  getDepartmentName(item.departmentId)
+                }}</span>
+              </p>
+              <p
+                *ngIf="item.completeDate; else notComplete"
+                class="card-text text-success"
+              >
+                <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                {{ item.completeDate | date: "dd/MM/yyyy" }}
+              </p>
+              <ng-template #notComplete>
+                <ng-container
+                  *ngIf="item.dayLefts > 0; else overtime"
+                  class="card-text text-warning"
+                >
+                  <i
+                    class="fa fa-clock-o mr-2 text-warning"
+                    aria-hidden="true"
+                  ></i>
+                  <span class="text-warning">{{ item.dayLefts }} Days</span>
                 </ng-container>
               </ng-template>
               <ng-template #overtime>
                 <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
-                <i class="fa fa-times-circle mr-2" aria-hidden="true">
-                </i>
-              <span>Overtime</span>
+                  <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                  <span>Overtime</span>
                 </p>
               </ng-template>
             </div>
             <div class="col col-4">
-            <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail', false)">Update</button>
+              <button
+                *ngIf="right"
+                class="button-create float-right"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', false)
+                "
+              >
+                Update
+              </button>
             </div>
           </div>
 
-        <hr />
-        <div class="row text-center">
-          <div class="col col-6">
-            <h6>Leader</h6>
-            <span>{{item.leaderName}}</span>
-          </div>
-          <div class="col col-6">
-            <h6>Progress</h6>
-            <div class="progress">
-              <div style="display: flex;"class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width': roundProgress(item.taskProgress)}"  aria-valuemin="0" aria-valuemax="100">
-                <span class="text-center">{{roundProgress(item.taskProgress)}}</span>
+          <hr />
+          <div class="row text-center">
+            <div class="col col-6">
+              <h6>Leader</h6>
+              <span>{{ item.leaderName }}</span>
+            </div>
+            <div class="col col-6">
+              <h6>Progress</h6>
+              <div class="progress">
+                <div
+                  style="display: flex"
+                  class="progress-bar progress-bar-striped bg-success"
+                  role="progressbar"
+                  [ngStyle]="{ width: roundProgress(item.taskProgress) }"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <span class="text-center">{{
+                    roundProgress(item.taskProgress)
+                  }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div
-    class="modal fade"
-    id="createProjectModal"
-    [hidden]="!isShowModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl" role="document">
-    <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()"></app-modal-project>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="createProjectModal"
+      [hidden]="!isShowModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl" role="document">
+        <app-modal-project
+          #modalProject
+          [departments]="departments"
+          (onChangeProject)="onChangeProject()"
+        ></app-modal-project>
+      </div>
     </div>
   </div>
-</div>
 </div>

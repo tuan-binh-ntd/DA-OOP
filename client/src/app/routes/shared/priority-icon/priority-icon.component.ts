@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PriorityIconComponent implements OnInit {
   @Input() priorityCode!: number;
- 
+ @Input() isShowLabel: boolean = false;
   constructor() {
     $('body').tooltip({
       selector: '[data-toggle="tooltip"]'

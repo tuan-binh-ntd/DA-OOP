@@ -9,12 +9,15 @@ import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/services/department.service';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { User } from 'src/app/models/user';
+import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { Priority } from '../shared/priority-icon/priority-icon.component';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
+  
   constructor(
     private projectService: ProjectService,
     private departmentService: DepartmentService,
@@ -57,7 +60,9 @@ export class ProjectsComponent implements OnInit {
   }
 
   fetchProjectData() {
-    Number(this.user.permissionCode) == 2 ? this.getAllProject.departmentId = this.user.departmentId : this.getAllProject.departmentId = null;
+    if(!this.right){
+      this.getAllProject.departmentId = this.user.departmentId
+    }
     this.projectService
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
@@ -116,16 +121,34 @@ export class ProjectsComponent implements OnInit {
   }
 
   submitFormFilter(data:any){
-     this.getAllProject.statusCode = data.statusCode;
-     this.getAllProject.priorityCode = data.priorityCode;
      this.getAllProject.createDateFrom = data.createDateFrom;
      this.getAllProject.createDateTo = data.createDateTo;
      this.getAllProject.deadlineDateFrom = data.reateDateTo ;
      this.getAllProject.deadlineDateTo = data.deadlineDateTo;
      this.getAllProject.completeDateFrom = data.completeDateFrom;
      this.getAllProject.completeDateTo =data.completeDateTo;
-     this.getAllProject.departmentId =  data.departmentId;
      this.fetchProjectData();
   }
 
+  onFilterType(type:any){
+     this.getAllProject.projectType = type;
+     this.fetchProjectData();
+  }
+
+  onFilterStatus(status:any){
+    this.getAllProject.statusCode = status;
+    this.fetchProjectData();
+  }
+
+  onFilterPriority(priority:any){
+    this.getAllProject.priorityCode = priority;
+    this.fetchProjectData();
+  }
+
+  onResetFilter(){
+    this.getAllProject.projectType = null;
+    this.getAllProject.statusCode = null;
+    this.getAllProject.priorityCode = null;
+    this.fetchProjectData();
+  }
 }

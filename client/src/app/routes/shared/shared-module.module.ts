@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { PriorityIconComponent } from './priority-icon/priority-icon.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MdePopoverModule } from '@material-extended/mde';
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -44,7 +45,8 @@ import { MdePopoverModule } from '@material-extended/mde';
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
-    MdePopoverModule
+    MdePopoverModule,
+    MatMenuModule,
   ],
   exports:[
     PriorityIconComponent,
@@ -55,6 +57,7 @@ import { MdePopoverModule } from '@material-extended/mde';
     ProjectFilterComponent
   ],
   providers:[ MatDatepickerModule,
-    MatNativeDateModule ]
+    MatNativeDateModule,
+    DatePipe, ]
 })
 export class SharedModuleModule { }

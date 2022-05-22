@@ -21,7 +21,7 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: baseline;
-    width: auto;
+    min-width: 75px;
   }
   
   

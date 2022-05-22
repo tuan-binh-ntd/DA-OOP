@@ -231,10 +231,50 @@
             </div>
           </div>
         </div>
-        <hr class="mt-0 mb-2">
-          <button  type="button" class="btn ml-2 btn-primary" (click)="submitForm()">Save</button>
+        <hr class="mt-0 mb-2" />
+        <button
+          type="button"
+          class="btn ml-2 btn-primary"
+          (click)="submitForm()"
+        >
+          Save
+        </button>
       </div>
-
     </mat-card-content>
   </mat-card>
 </mde-popover>
+
+<button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
+  <i class="fa fa-list mr-2" aria-hidden="true"></i>
+  {{ typeName }}</button>
+<mat-menu #typeMenu="matMenu">
+  <button mat-menu-item *ngFor="let type of projectTypes" (click)="onFilterType(type)">
+
+    {{ type.viewValue }}
+  </button>
+</mat-menu>
+
+<button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
+  <i class="fa fa-signal mr-2" aria-hidden="true"></i>
+  {{ statusName }}</button>
+<mat-menu #statusMenu="matMenu">
+  <button mat-menu-item *ngFor="let status of statusCode" (click)="onFilterStatus(status)">
+    {{ status.viewValue }}
+  </button>
+</mat-menu>
+
+<button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
+  <i class="fa fa-chevron-up mr-2" aria-hidden="true"></i>
+  {{priorityName}}
+  </button>
+<mat-menu #priorityMenu="matMenu">
+  <button mat-menu-item *ngFor="let priority of priorityCode" (click)="onFilterPriority(priority)">
+    <app-priority-icon [priorityCode]="priority.value" [isShowLabel]="true"></app-priority-icon>
+  </button>
+</mat-menu>
+
+<button class="button-filter ml-2" (click)="onResetFilter()">
+  <i class="fa fa-times mr-2" aria-hidden="true"></i>
+  Clear
+</button>
+
