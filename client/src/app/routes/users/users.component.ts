@@ -38,6 +38,7 @@ export class UsersComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
+        this.users = this.users.filter(e => e.permission == 'Leader' || e.permission == 'Employee');
       });
   }
 

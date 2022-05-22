@@ -10,7 +10,6 @@ export class ProjectService {
   constructor(private http: HttpClient) {
   }
   getAllProject(payload: any):Observable<any>{
-    debugger
     let keyword,status, priority, permision,createDateFrom,createDateTo,deadlineDateFrom,deadlineDateTo,departmentId,userId
         keyword = payload.keyWord ? 'keyWord=' + payload.keyWord  : ''
          status = payload.statusCode ? '&statusCode=' + payload.statusCode  : ''

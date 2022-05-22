@@ -6,6 +6,7 @@ import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { SearchTask } from 'src/app/models/searchtask';
+import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -26,6 +27,7 @@ export class TasksComponent implements OnInit {
   userId: string = '';
   sub: any;
   isShowModal: boolean = false;
+  user: User;
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -55,8 +57,8 @@ export class TasksComponent implements OnInit {
       this.route.params.subscribe(params=>{
         this.projectId = params['id'];
      })
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.userId = user.id;
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.userId = this.user.id;
     this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
@@ -79,6 +81,7 @@ export class TasksComponent implements OnInit {
       });
   }
   fetchProjectData() {
+    Number(this.user.permissionCode) == 2 ? this.getAllProject.departmentId = this.user.departmentId : this.getAllProject.departmentId = null;
     this.projectService
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
