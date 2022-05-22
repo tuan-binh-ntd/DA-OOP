@@ -12,14 +12,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StatusComponent } from './status/status.component';
 import { ModalTaskComponent } from './modal-task/modal-task.component';
 import { ModalUserComponent } from './modal-user/modal-user.component';
-
+import { ProjectFilterComponent } from './project-filter/project-filter.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MdePopoverModule } from '@material-extended/mde';
 @NgModule({
   declarations: [
     PriorityIconComponent,
     ModalProjectComponent,
     StatusComponent,
     ModalTaskComponent,
-    ModalUserComponent
+    ModalUserComponent,
+    ProjectFilterComponent
   ],
   imports: [
     CommonModule,
@@ -30,14 +38,21 @@ import { ModalUserComponent } from './modal-user/modal-user.component';
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
-
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MdePopoverModule
   ],
   exports:[
     PriorityIconComponent,
     ModalProjectComponent,
     StatusComponent,
     ModalTaskComponent,
-    ModalUserComponent
+    ModalUserComponent,
+    ProjectFilterComponent
   ],
   providers:[ MatDatepickerModule,
     MatNativeDateModule ]

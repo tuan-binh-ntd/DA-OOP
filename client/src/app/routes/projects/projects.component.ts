@@ -112,10 +112,22 @@ export class ProjectsComponent implements OnInit {
 
   onSearch(ev:any){
     if (ev.key === "Enter") {
-      debugger
       this.getAllProject.keyWord = ev.target.value;
       this.fetchProjectData();
     }
+  }
+
+  submitFormFilter(data:any){
+     this.getAllProject.statusCode = data.statusCode;
+     this.getAllProject.priorityCode = data.priorityCode;
+     this.getAllProject.createDateFrom = data.createDateFrom;
+     this.getAllProject.createDateTo = data.createDateTo;
+     this.getAllProject.deadlineDateFrom = data.reateDateTo ;
+     this.getAllProject.deadlineDateTo = data.deadlineDateTo;
+     this.getAllProject.completeDateFrom = data.completeDateFrom;
+     this.getAllProject.completeDateTo =data.completeDateTo;
+     this.getAllProject.departmentId =  data.departmentId;
+     this.fetchProjectData();
   }
 
 }

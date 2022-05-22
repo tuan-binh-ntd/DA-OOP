@@ -6,7 +6,7 @@ import { Filter } from "./filter.";
 export class GetAllProject extends Filter{
   keyWord: string;
   statusCode: StatusCode;
-  riorityCode: Priority;
+  priorityCode: Priority;
   createDateFrom: Date;
   createDateTo: Date;
   deadlineDateFrom: Date;

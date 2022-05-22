@@ -1,7 +1,7 @@
-<div class="container-fluid">
+<div class="container-fluid ml-2 mr-2">
   <div class="row mt-4">
-    <div class="col col-6">
-      <h2>Projects</h2>
+    <div class="col col-6 p-0">
+      <h2 >Projects</h2>
     </div>
     <div *ngIf="right" class="col col-6">
       <button
@@ -17,11 +17,11 @@
   </div>
 
   <div class="row">
-    <div class="col col-6">
+    <div class="col col-6 p-0">
       <div class="form-group has-search">
         <span class="fa fa-search form-control-feedback"></span>
         <input type="text" class="form-control" placeholder="Search" (keydown)="onSearch($event)"/>
-      </div>
+      <!-- </div>
       <div class="mb-3">
         <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
           All: {{ allRecord }}
@@ -41,9 +41,14 @@
         <button class="btn ml-2" [ngClass]="{ 'btn-primary': isClosedRecord }">
           Closed: {{ closedRecord }}
         </button>
-      </div>
+      </div> -->
+      
     </div>
+    
   </div>
+  <div class="col col-6">
+    <app-project-filter (onSubmitForm)="submitFormFilter($event)"></app-project-filter>
+    </div>
 
   <div class="card-columns">
     <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block" [routerLink]="['projects/tasks', item.id]">
@@ -127,4 +132,5 @@
     <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()"></app-modal-project>
     </div>
   </div>
+</div>
 </div>
