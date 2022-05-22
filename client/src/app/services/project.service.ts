@@ -10,7 +10,21 @@ export class ProjectService {
   constructor(private http: HttpClient) {
   }
   getAllProject(payload: any):Observable<any>{
-   return this.http.get(this.baseUrl + '/getall', payload);
+    debugger
+    let keyword,status, priority, permision,createDateFrom,createDateTo,deadlineDateFrom,deadlineDateTo,departmentId,userId
+        keyword = payload.keyWord ? 'keyWord=' + payload.keyWord  : ''
+         status = payload.statusCode ? '&statusCode=' + payload.statusCode  : ''
+        priority = payload.priorityCode ? '&priorityCode=' + payload.priorityCode  : ''
+        permision = payload.permision ? '&permision=' + payload.permision  : ''
+        createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom  : ''
+        createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo  : ''
+        deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom  : ''
+        deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo  : ''
+        departmentId = payload.departmentId ? '&departmentId=' + payload.departmentId  : ''
+        userId = payload.userId ? '&userId=' + payload.userId  : ''
+      return this.http.get(this.baseUrl + '/getall?' + keyword + status + priority
+      + permision + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + departmentId + userId);
+
   }
   createProject(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

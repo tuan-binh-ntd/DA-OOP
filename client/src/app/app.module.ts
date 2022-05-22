@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TasksComponent } from './routes/tasks/tasks.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './routes/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './routes/profile/profile.component';
 import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -49,6 +49,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   imports: [
     BrowserModule,
     SharedModuleModule,
+    FormsModule,
     FullCalendarModule ,
     CommonModule,
     AppRoutingModule,

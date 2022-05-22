@@ -34,6 +34,7 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+  request: any;
 
   getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
@@ -79,7 +80,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   onViewTask(projectId: string): any {
-    this.router.navigate(['tasks', { projectId }]);
+    this.router.navigate(['projects/tasks', { projectId }]);
   }
 
   onChangeProject() {
@@ -103,6 +104,14 @@ export class ProjectsComponent implements OnInit {
   openModal(){
       this.modalProject.openModal(null, 'create', true);
       this.isShowModal = true;
+  }
+
+  onSearch(ev:any){
+    if (ev.key === "Enter") {
+      debugger
+      this.getAllProject.keyWord = ev.target.value;
+      this.fetchProjectData();
+    }
   }
 
 }

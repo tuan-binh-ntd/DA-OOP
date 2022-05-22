@@ -8,7 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PriorityIconComponent implements OnInit {
   @Input() priorityCode!: number;
  
-  constructor() { }
+  constructor() {
+    $('body').tooltip({
+      selector: '[data-toggle="tooltip"]'
+  })
+   }
 
   ngOnInit(): void {
   }
@@ -66,3 +70,4 @@ export const PriorityLabel = {
   [Priority.High]: 'High',
   [Priority.Urgent]: 'Urgent',
 };
+

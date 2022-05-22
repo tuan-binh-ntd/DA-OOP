@@ -20,7 +20,7 @@
     <div class="col col-6">
       <div class="form-group has-search">
         <span class="fa fa-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search" />
+        <input type="text" class="form-control" placeholder="Search" (keydown)="onSearch($event)"/>
       </div>
       <div class="mb-3">
         <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
@@ -46,8 +46,8 @@
   </div>
 
   <div class="card-columns">
-    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block" [routerLink]="['tasks', item.id]">
-      <div class="card-body" (click)="onViewTask(item)">
+    <div class="card  bg-light" *ngFor="let item of data" style="display: inline-block" [routerLink]="['projects/tasks', item.id]">
+      <div class="card-body" (click)="onViewTask(item.id)">
         <div class="row">
           <div class="col col-6" style="line-height: 16px">
             <span class="font-weight-light" style="line-height: 32px">
@@ -64,10 +64,11 @@
         <h5 class="card-title">{{ item.projectName }}</h5>
         <!-- <p class="card-text">{{ item.description }}</p> -->
         <div class="row">
-          <div class="col col-6">
+          <div class="col col-8">
             <p class="card-text">
               <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-              {{ getDepartmentName(item.departmentId) }}
+              <span class="department">{{ getDepartmentName(item.departmentId) }}</span>
+              
             </p>
             <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
               <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
@@ -88,7 +89,7 @@
                 </p>
               </ng-template>
             </div>
-            <div class="col col-6">
+            <div class="col col-4">
             <button class="button-create float-right" (click)="$event.stopPropagation();openDetailModal(item, 'detail', false)">Update</button>
             </div>
           </div>
