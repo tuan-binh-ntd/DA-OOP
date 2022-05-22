@@ -1,3 +1,4 @@
+import { Permission } from "../helpers/PermisionEnum";
 import { Priority } from "../helpers/PriorityEnum";
 import { StatusCode } from "../helpers/StatusCodeEnum";
 import { Filter } from "./filter.";
@@ -12,4 +13,7 @@ export class GetAllProject extends Filter{
   deadlineDateTo: Date;
   completeDateFrom: Date;
   completeDateTo: Date;
+  departmentId: string;
+  permission: Permission;
+  userId: string;
 }
