@@ -26,7 +26,7 @@ export class ProjectsComponent implements OnInit {
   ) {}
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
-  data: any[] = [];
+  projects: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
   resolvedRecord: number = 0;
@@ -67,8 +67,8 @@ export class ProjectsComponent implements OnInit {
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.data = response;
-        this.allRecord = this.data.length;
+        this.projects = response;
+        this.allRecord = this.projects.length;
       });
   }
 

@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
+import { GetAllTask } from 'src/app/models/getalltask';
 import { SearchTask } from 'src/app/models/searchtask';
 import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
@@ -27,6 +29,7 @@ export class TasksComponent implements OnInit {
   userId: string = '';
   sub: any;
   isShowModal: boolean = false;
+  right: boolean = false;
   user: User;
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
@@ -44,6 +47,7 @@ export class TasksComponent implements OnInit {
     { value: StatusCode.Closed, viewValue: 'Closed' },
   ]
   getAllProject: GetAllProject = new GetAllProject();
+  getAllTask: GetAllTask = new GetAllTask();
   searchTask: SearchTask = new SearchTask();
   constructor(
     private taskService: TaskService,
@@ -55,9 +59,13 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
       this.route.params.subscribe(params=>{
-        this.projectId = params['id'];
+        this.projectId = params['projectId'];
      })
+    const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'));
+    if(user.permissionCode === Permission.ProjectManager || user.permissionCode === Permission.Leader){
+      this.right = true
+    }
     this.userId = this.user.id;
     this.fetchTaskData();
     this.fetchUserData();
@@ -66,7 +74,7 @@ export class TasksComponent implements OnInit {
 
   fetchTaskData() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.searchTask)
+      .getAllTask(this.projectId, this.userId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -81,7 +89,6 @@ export class TasksComponent implements OnInit {
       });
   }
   fetchProjectData() {
-    Number(this.user.permissionCode) == 2 ? this.getAllProject.departmentId = this.user.departmentId : this.getAllProject.departmentId = null;
     this.projectService
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
@@ -138,5 +145,12 @@ export class TasksComponent implements OnInit {
 
   goBack(){
     this.router.navigateByUrl("home")
+  }
+
+  onSearch(ev:any){
+    if (ev.key === "Enter") {
+      this.getAllTask.keyWord = ev.target.value;
+      this.fetchTaskData();
+    }
   }
 }

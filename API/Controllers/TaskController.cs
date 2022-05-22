@@ -22,14 +22,18 @@ namespace API.Controllers
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetTaskForUserOrProject(Guid? userId, Guid? projectId, Guid? createUserId,string keyWord,Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
+        public async Task<ActionResult> GetTaskForUserOrProject(string taskType, Guid? userId, Guid? projectId, Guid? createUserId,string keyWord,Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
         
         {
 
             var taskList = _dataContext.Task.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                taskList = taskList.Where(t => t.TaskName.Contains(keyWord)|| t.TaskType.Contains(keyWord)|| t.TaskCode.Contains(keyWord));
+                taskList = taskList.Where(t => t.TaskName.Contains(keyWord)|| t.TaskCode.Contains(keyWord));
+            }
+            if (!string.IsNullOrWhiteSpace(taskType))
+            {
+                taskList = taskList.Where(t => t.TaskType.Contains(taskType));
             }
             if (!string.IsNullOrWhiteSpace(statusCode.ToString()))
             {

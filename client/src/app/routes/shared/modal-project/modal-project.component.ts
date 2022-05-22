@@ -30,7 +30,7 @@ export class ModalProjectComponent implements OnInit {
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private toastr: ToastrService
-  ) {}
+  ) { }
   modalForm!: FormGroup;
   projectTypes: any[] = [
     { value: 'MRP', viewValue: 'Manufacturing Projects' },
@@ -109,6 +109,8 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('appUserId')?.disable();
+      this.modalForm.get('statusCode')?.disable();
+      this.modalForm.get('createDate')?.disable();
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
@@ -123,6 +125,18 @@ export class ModalProjectComponent implements OnInit {
     } else {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.projectName;
+    }
+    this.modalForm.controls['appUserId'].disable();
+    this.modalForm.controls['completeDate'].disable();
+    this.modalForm.controls['createDate'].disable();
+    if (Number(this.user.permissionCode) == 2) {
+      this.modalForm.controls['projectName'].disable();
+      this.modalForm.controls['projectType'].disable();
+      this.modalForm.controls['projectCode'].disable();
+      this.modalForm.controls['deadlineDate'].disable();
+      this.modalForm.controls['priorityCode'].disable();
+      this.modalForm.controls['description'].disable();
+      this.modalForm.controls['departmentId'].disable();
     }
   }
 
@@ -156,13 +170,13 @@ export class ModalProjectComponent implements OnInit {
             catchError((err) => {
               return of(err);
             })
-            )
-            .subscribe((response) => {
-              if (response.id) {
-                this.toastr.success('Successfully!');
-              } else {
-                this.toastr.error('You not permission');
-              }
+          )
+          .subscribe((response) => {
+            if (response.id) {
+              this.toastr.success('Successfully!');
+            } else {
+              this.toastr.error('You not permission');
+            }
             this.onChangeProject.emit();
           });
       }
