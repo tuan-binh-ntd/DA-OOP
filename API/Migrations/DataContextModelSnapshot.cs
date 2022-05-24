@@ -69,38 +69,6 @@ namespace API.Migrations
                     b.ToTable("AppUser");
                 });
 
-            modelBuilder.Entity("API.Entity.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CommentContent")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime>("CommentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TasksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("TasksId");
-
-                    b.ToTable("Comment");
-                });
-
             modelBuilder.Entity("API.Entity.Department", b =>
                 {
                     b.Property<Guid>("Id")
@@ -234,19 +202,6 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("API.Entity.Comment", b =>
-                {
-                    b.HasOne("API.Entity.AppUser", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Entity.Tasks", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("TasksId");
-                });
-
             modelBuilder.Entity("API.Entity.Project", b =>
                 {
                     b.HasOne("API.Entity.Department", null)
@@ -271,8 +226,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entity.AppUser", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Task");
                 });
 
@@ -286,11 +239,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entity.Project", b =>
                 {
                     b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("API.Entity.Tasks", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

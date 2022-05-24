@@ -22,10 +22,10 @@ export class ProjectFilterComponent implements OnInit {
   @Output() resetFilter = new EventEmitter();
 
 
-  priorityValue:any;
-  typeName:string = 'Type';
-  priorityName:string = 'Priority';
-  statusName:string = 'Status';
+  priorityValue: any;
+  typeName: string = 'Type';
+  priorityName: string = 'Priority';
+  statusName: string = 'Status';
 
   projectTypes: any[] = [
     { value: 'MRP', viewValue: 'Manufacturing Projects' },
@@ -47,7 +47,7 @@ export class ProjectFilterComponent implements OnInit {
     { value: Priority.Normal, viewValue: 'Normal' },
     { value: Priority.Low, viewValue: 'Low' },
   ];
-  constructor( private departmentService: DepartmentService, private fb: FormBuilder,public datepipe: DatePipe) { }
+  constructor(private departmentService: DepartmentService, private fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -77,8 +77,8 @@ export class ProjectFilterComponent implements OnInit {
     });
 
   }
-  
-  submitForm(){
+
+  submitForm() {
     // const payload = {
     //   createDateFrom: this.datepipe.transform(this.filterForm.value.createDateFrom, 'YYYY-MM-DDThh:mm:ss')
     // }
@@ -87,24 +87,27 @@ export class ProjectFilterComponent implements OnInit {
   }
 
 
-  onFilterType(type:any){
+  onFilterType(type: any) {
     this.typeName = type.viewValue;
     this.filterType.emit(type.value);
   }
 
-  onFilterStatus(status:any){
+  onFilterStatus(status: any) {
     this.statusName = status.viewValue;
     this.filterStatus.emit(status.value);
   }
 
-  onFilterPriority(priority:any){
+  onFilterPriority(priority: any) {
     this.priorityName = priority.viewValue;
     this.filterPriority.emit(priority.value);
   }
 
-  onResetFilter(){
+  onResetFilter() {
+    this.typeName = 'Type';
+    this.priorityName = 'Priority';
+    this.statusName = 'Status';
     this.resetFilter.emit()
   }
-  
+
 
 }

@@ -11,6 +11,5 @@ namespace API.Data
         public DbSet<Tasks> Task { get; set; }
         public DbSet<Project> Project { get; set; }
         public DbSet<Department> Department { get; set; }
-        public DbSet<Comment> Comment { get; set; }
     }
 }

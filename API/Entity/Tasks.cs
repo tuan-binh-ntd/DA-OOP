@@ -33,6 +33,5 @@ namespace API.Entity
         public Guid ProjectId { get; set; }
         [ForeignKey("AppUser")]
         public Guid? AppUserId { get; set; }
-        public ICollection<Comment> Comment { get; set; }
     }
 }

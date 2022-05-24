@@ -26,6 +26,5 @@ namespace API.Entity
         [Required, StringLength(50)]
         public Permission PermissionCode { get; set; }
         public ICollection<Tasks> Task { get; set; }
-        public ICollection<Comment> Comments { get; set; }
     }
 }
