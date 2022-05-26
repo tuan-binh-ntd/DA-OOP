@@ -1,14 +1,18 @@
 .home-header{
-    font-size: 65px;
+    font-size: 55px;
+    font-weight: 700;
+
 }
 
 .home-description{
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 700;
+    color: var(--light-text);
 }
 .home-des-wrap {
   position: relative;
 }
+
 
 .vertical-center {
   margin: 0;
@@ -27,49 +31,55 @@
 }
 
 /* CSS */
-.home__btn{
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid #1A1A1A;
-  border-radius: 15px;
+
+/* CSS */
+.home__btn {
+  align-items: center;
+  background-color: var(--primary-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
-  color: #3B3B3B;
+  color: #fff;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 16px;
   font-weight: 600;
-  line-height: normal;
+  justify-content: center;
+  line-height: 1.25;
   margin: 0;
-  min-height: 60px;
-  min-width: 0;
-  outline: none;
-  padding: 16px 24px;
-  text-align: center;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
   text-decoration: none;
-  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  transition: all 250ms;
   user-select: none;
-  min-width: 150px;
   -webkit-user-select: none;
   touch-action: manipulation;
-  will-change: transform;
+  vertical-align: baseline;
+  width: auto;
 }
 
-.home__btn:disabled {
-  pointer-events: none;
+.home__btn:hover,
+.home__btn:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  background-color: var(--heavy-color);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: #fff;
 }
 
 .home__btn:hover {
-  color: #fff;
-  background-color: #1A1A1A;
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .home__btn:active {
-  box-shadow: none;
+  background-color: #F0F0F1;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+  color: #fff;
   transform: translateY(0);
 }
-
 
 
 
@@ -94,5 +104,111 @@
 .count:hover::after {
   width: 100%;
 }
+
+.card-img::before{
+  background: url(/src/assets/home-header-bg.jpg) no-repeat top left/contain;
+    height: 400px;
+    width: 200px;
+}
+
+.home__marketing-detail {
+  width: 350px;
+  margin-bottom: 45px;
+  padding: 30px 20px 30px 25px;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 15px 45px rgb(16 30 54 / 15%);
+  border-radius: 4px;
+}
+.home__marketing-wrap{
+  margin: 45px auto 50px;
+}
+
+
+.home__marketing-header{
+  font-size: 25px;
+  margin: 20px 0 ;
+  font-weight: 700;
+  margin: 20px 0 15px;
+}
+
+.home__marketing-icon{
+  box-shadow: 0 15px 15px rgb(16 30 54 / 15%);
+  font-size: 30px;
+  border-radius: 20px;
+  width: 60px;
+  height: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color:#fff;
+}
+
+.border-purple{
+  border-left:5px solid #7b68ee ;
+}
+.purple-text {
+  color:#7b68ee;
+}
+.border-pink{
+  border-left:5px solid #fd71af ;
+}
+.pink-text{
+ color:#fd71af;
+}
+.border-blue{
+  border-left:5px solid #49ccf9 ;
+}
+.blue-text{
+ color:#49ccf9;
+}
+.border-yellow{
+  border-left:5px solid #ffc800 ;
+}
+.blue-yellow{
+  color:#ffc800;
+ }
+ .border-green{
+  border-left:5px solid #00b884 ;
+}
+ .green-text{
+  color:#00b884;
+ }
+.border-red{
+ border-left:5px solid #fd7171 ;
+}
+ .red-text{
+   color: #fd7171;
+ }
+.purple{
+  background: linear-gradient(180deg,#9f8fff 0,#7b68ee 100%);
+}  
+
+.pink{
+  background: linear-gradient(180deg,#ff9ec9 0,#fd71af 100%);
+}
+
+.blue{
+  background: linear-gradient(180deg,#84dfff .01%,#49ccf9 99.99%);
+}
+
+.yellow{
+  background: linear-gradient(180deg,#ffdb58 0,#ffc800 100%);
+}
+
+.green{
+  background: linear-gradient(180deg,#5ddd93 .03%,#00b884 99.97%);
+}
+
+.red{
+  background: linear-gradient(180deg,#ff9696 .03%,#fd7171 99.97%);
+}
+
 
 

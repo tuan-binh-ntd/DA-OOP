@@ -1,12 +1,13 @@
-
-<div class="container-fluid">
+<div class="wrapper">
   <div class="row">
-      <div class="col col-6 home-des-wrap text-center">
-        <div class="vertical-center">
-          <h1 class="home-header  font-italic">Work on big ideas, without the busywork</h1>
-          <p class="home-description">Bring your team's work together in one shared space</p>
-            <button class="home__btn" (click)="navigateToProject()">Your Projects</button>
-          <div class="row home-counter  mt-4">
+    <div class="col col-6 home-des-wrap">
+      <div class="vertical-center">
+        <h1 class="home-header">All of your projects, in one place.</h1>
+        <p class="home-description">
+          HeadUp brings your team together to plan, track, and collaborate on
+          any project — all in one place.
+        </p>
+        <!-- <div class="row home-counter  mt-4">
             <div class="col col-4 text-center">
               <span class="mb-2 count">{{enterpriseCount}}</span>
               <br>
@@ -22,21 +23,143 @@
               <br>
               <span>Trust</span>
             </div>
+          </div> -->
+        <div class="row mt-2 home-description">
+          <div class="col col-12">
+            <p>
+              <i
+                class="fa fa-check-circle text-success ml-1"
+                aria-hidden="true"
+              ></i>
+              Organize projects at a glance
+            </p>
+            <p>
+              <i
+                class="fa fa-check-circle text-success ml-1"
+                aria-hidden="true"
+              ></i>
+              Collaborate with your team
+            </p>
+            <p>
+              <i
+                class="fa fa-check-circle text-success ml-1"
+                aria-hidden="true"
+              ></i>
+              Track progress and goals
+            </p>
           </div>
         </div>
+        <button class="home__btn mt-2" (click)="navigateToProject()">
+          Your Projects
+        </button>
+      </div>
     </div>
     <div class="col col-6">
-        <img class="d-block ml-auto mr-auto" src="assets/homeimg.png" width="580px" height="700px" alt="Logo">
-    </div>
-  </div>
-</div>
-
-
-<div class="chart">
-  <canvas baseChart
+      <div class="chart mr-auto ml-auto chart-background">
+        <canvas
+          baseChart
           [data]="pieChartData"
           [type]="pieChartType"
           [options]="pieChartOptions"
-          >
-  </canvas>
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <div class="card-container card-img">
+    <div class="row">
+      <div class="col col-5">
+        <span class="fsz-10">VISUALIZE & PLAN</span>
+        <h1 class="home-header" style="margin-bottom: 50px">
+          Build the perfect workflow for every project.
+        </h1>
+        <p>
+          Track your entire project from start to finish with beautiful views
+          that make project planning a breeze. Manage your resources on a List,
+          Box, Gantt, Board, Calendar view or create your own workflow with any
+          of ClickUps 10+ customizable views.
+        </p>
+      </div>
+      <div class="col col-7">
+        <img width="100%" src="assets/visualize-and-plan.gif" alt="" />
+      </div>
+    </div>
+  </div>
+  <div class="card-container card-img">
+    <span class="fsz-10">TEMPLATE</span>
+    <h1 class="home-header">
+      Start with ready-made templates or customize your own.
+    </h1>
+    <div class="home__marketing-wrap"></div>
+    <div class="row ">
+      <div class="col col-4">
+        <div class="home__marketing-detail border-purple">
+          <i
+            class="fa fa-briefcase home__marketing-icon purple"
+            aria-hidden="true"
+          ></i>
+          <h2 class="home__marketing-header">Project Management.</h2>
+          <span class="purple-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="col col-4">
+        <div class="home__marketing-detail border-pink">
+          <i class="fa fa-check home__marketing-icon pink" aria-hidden="true"></i>
+          <h2 class="home__marketing-header">Getting Things Done.</h2>
+          <span class="pink-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="col col-4">
+        <div class="home__marketing-detail border-blue">
+          <i class="fa fa-list-ul home__marketing-icon blue" aria-hidden="true"></i>
+          <h2 class="home__marketing-header">Project Management.</h2>
+          <span class="blue-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-4">
+        <div class="home__marketing-detail border-yellow">
+          <i
+            class="fa fa-briefcase home__marketing-icon yellow"
+            aria-hidden="true"
+          ></i>
+          <h2 class="home__marketing-header">Agile.</h2>
+          <span class="yellow-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="col col-4">
+        <div class="home__marketing-detail border-green">
+          <i class="fa fa-check home__marketing-icon green" aria-hidden="true"></i>
+          <h2 class="home__marketing-header">Marketing.</h2>
+          <span class="green-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+      <div class="col col-4">
+        <div class="home__marketing-detail border-red">
+          <i class="fa fa-list-ul home__marketing-icon red" aria-hidden="true"></i>
+          <h2 class="home__marketing-header">Remote Work.</h2>
+          <span class="red-text"
+            >Use Template
+            <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
