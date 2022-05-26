@@ -1,12 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+   pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ],
+    datasets: [ {
+      data: [ 300, 500, 100 ]
+    } ]
+  };
+   pieChartType: ChartType = 'pie';
+   pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    }
+  };
   enterpriseCount = 0;
   userCount = 0;
   percentCount = 0;

@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MdePopoverModule } from '@material-extended/mde';
 import {MatMenuModule} from '@angular/material/menu';
+import {  NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -47,6 +48,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatToolbarModule,
     MdePopoverModule,
     MatMenuModule,
+    NgChartsModule,
   ],
   exports:[
     PriorityIconComponent,

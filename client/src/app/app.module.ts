@@ -25,6 +25,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/daygrid';
 import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component'; // a plugin!
+import { NgChartsModule } from 'ng2-charts';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin
@@ -60,6 +61,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
       preventDuplicates: true,
     }),
     FontAwesomeModule,
+    NgChartsModule,
+
   ],
   providers: [ ],
   bootstrap: [AppComponent]
