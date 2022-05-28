@@ -20,7 +20,7 @@ export class TaskService {
       }
       let taskType, createUserId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? 'userId=' + payload.userId : ''
+      userId = payload.userId ? '&userId=' + payload.userId : ''
       projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
       createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
@@ -37,7 +37,7 @@ export class TaskService {
     else {
       let taskType, createUserId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? 'userId=' + payload.userId : ''
+      userId = payload.userId ? '&userId=' + payload.userId : ''
       projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
       createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
@@ -57,5 +57,8 @@ export class TaskService {
   }
   updateTask(payload: any): Observable<any> {
     return this.http.put(this.baseUrl + '/update', payload);
+  }
+  deleteTask(id: any): Observable<any> {
+    return this.http.delete(this.baseUrl + '/delete?id=' + id);
   }
 }

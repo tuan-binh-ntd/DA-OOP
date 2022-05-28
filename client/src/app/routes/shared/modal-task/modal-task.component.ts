@@ -28,7 +28,7 @@ export class ModalTaskComponent implements OnInit {
   user: User;
   taskTypes: any[] = [{ value: 'bug', viewValue: 'Bug' },
   { value: 'feature', viewValue: 'Feature' },
-  {value: 'rnd', viewValue: 'RnD'}];
+  { value: 'rnd', viewValue: 'RnD' }];
   statusCode: any[] = [
     { value: StatusCode.Reopened, viewValue: 'Reopened' },
     { value: StatusCode.Resolved, viewValue: 'Resolved' },
@@ -51,7 +51,7 @@ export class ModalTaskComponent implements OnInit {
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchUserData();
@@ -117,12 +117,14 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.user.id)
-    this.modalForm.controls['createUserId'].disable();
-    this.modalForm.controls['statusCode'].disable();
-    this.modalForm.controls['createDate'].disable();
-    } else {
+      this.modalForm.controls['createUserId'].disable();
+      this.modalForm.controls['statusCode'].disable();
+      this.modalForm.controls['createDate'].disable();
+    } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
       this.checkEditForm();
+    } else {
+      this.modalForm.patchValue(data);
     }
   }
 
@@ -173,14 +175,13 @@ export class ModalTaskComponent implements OnInit {
               this.toastr.error('Failed');
             }
           });
-      } else {
+      } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode = this.user.permissionCode;
         this.taskService
           .updateTask(this.modalForm.value)
-          .pipe(catchError((err) => {return of(err);}))
+          .pipe(catchError((err) => { return of(err); }))
           .subscribe((response) => {
-            if(response.id)
-            {
+            if (response.id) {
               this.toastr.success('Successfully!', '', {
                 timeOut: 1000,
               });
@@ -188,6 +189,20 @@ export class ModalTaskComponent implements OnInit {
               this.toastr.error('You not permission');
             }
             this.onChangeTask.emit();
+          });
+      } else {
+        this.taskService
+          .deleteTask(this.modalForm.value.id)
+          .pipe(catchError((err) => { return of(err); }))
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!', '', {
+                timeOut: 1000,
+              });
+              this.onChangeTask.emit();
+            } else {
+              this.toastr.error('You not permission');
+            }
           });
       }
     }

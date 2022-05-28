@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
@@ -13,6 +14,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
+import { TaskFilterComponent } from '../shared/task-filter/task-filter.component';
 
 @Component({
   selector: 'app-tasks',
@@ -54,16 +56,16 @@ export class TasksComponent implements OnInit {
     private projectService: ProjectService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-      this.route.params.subscribe(params=>{
-        this.projectId = params['projectId'];
-     })
+    this.route.params.subscribe(params => {
+      this.projectId = params['projectId'];
+    })
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'));
-    if(user.permissionCode === Permission.ProjectManager || user.permissionCode === Permission.Leader){
+    if (user.permissionCode === Permission.ProjectManager || user.permissionCode === Permission.Leader) {
       this.right = true
     }
     this.userId = this.user.id;
@@ -101,16 +103,16 @@ export class TasksComponent implements OnInit {
     return user?.userName;
   }
 
-  getProjectName(id: string){
+  getProjectName(id: string) {
     return this.projects.find((project) => project.id === id)?.projectName;
 
   }
 
-  getPriority(priorityCode: string){
+  getPriority(priorityCode: string) {
     return this.priorityCode.find((priority) => priority.value == priorityCode)?.viewValue;
   }
 
-  getStatus(statusCode: string){
+  getStatus(statusCode: string) {
     return this.statusCode.find((status) => status.value == statusCode)?.viewValue;
   }
 
@@ -143,14 +145,46 @@ export class TasksComponent implements OnInit {
     this.fetchTaskData();
   }
 
-  goBack(){
+  goBack() {
     this.router.navigateByUrl("home")
   }
 
-  onSearch(ev:any){
+  onSearch(ev: any) {
     if (ev.key === "Enter") {
       this.getAllTask.keyWord = ev.target.value;
       this.fetchTaskData();
     }
   }
+  
+  submitFormFilter(data:any){
+    this.getAllTask.createDateFrom = data.createDateFrom;
+    this.getAllTask.createDateTo = data.createDateTo;
+    this.getAllTask.deadlineDateFrom = data.reateDateTo ;
+    this.getAllTask.deadlineDateTo = data.deadlineDateTo;
+    this.getAllTask.completeDateFrom = data.completeDateFrom;
+    this.getAllTask.completeDateTo =data.completeDateTo;
+    this.fetchTaskData();
+ }
+
+ onFilterType(type:any){
+    this.getAllTask.taskType = type;
+    this.fetchTaskData();
+ }
+
+ onFilterStatus(status:any){
+   this.getAllTask.statusCode = status;
+   this.fetchTaskData();
+ }
+
+ onFilterPriority(priority:any){
+   this.getAllTask.priorityCode = priority;
+   this.fetchTaskData();
+ }
+
+ onResetFilter(){
+   this.getAllTask.taskType = null;
+   this.getAllTask.statusCode = null;
+   this.getAllTask.priorityCode = null;
+   this.fetchTaskData();
+ }
 }

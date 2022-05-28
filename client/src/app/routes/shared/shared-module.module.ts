@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MdePopoverModule } from '@material-extended/mde';
 import {MatMenuModule} from '@angular/material/menu';
+import { TaskFilterComponent } from './task-filter/task-filter.component';
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -28,7 +29,8 @@ import {MatMenuModule} from '@angular/material/menu';
     StatusComponent,
     ModalTaskComponent,
     ModalUserComponent,
-    ProjectFilterComponent
+    ProjectFilterComponent,
+    TaskFilterComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +56,8 @@ import {MatMenuModule} from '@angular/material/menu';
     StatusComponent,
     ModalTaskComponent,
     ModalUserComponent,
-    ProjectFilterComponent
+    ProjectFilterComponent,
+    TaskFilterComponent
   ],
   providers:[ MatDatepickerModule,
     MatNativeDateModule,
