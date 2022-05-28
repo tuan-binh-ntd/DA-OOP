@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
@@ -24,6 +25,7 @@ export class ModalTaskComponent implements OnInit {
   departments: any[] = [];
   modalForm!: FormGroup;
   isEdit: boolean = false;
+  projectId: string = '';
   data: any;
   user: User;
   taskTypes: any[] = [{ value: 'bug', viewValue: 'Bug' },
@@ -50,10 +52,14 @@ export class ModalTaskComponent implements OnInit {
     private departmentService: DepartmentService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
     private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.projectId = params['projectId'];
+    })
     this.fetchUserData();
     this.fetchDepartmentData();
     this.getCurrentUser();
@@ -116,7 +122,8 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
-      this.modalForm.get('createUserId').setValue(this.user.id)
+      this.modalForm.get('createUserId').setValue(this.user.id);
+      this.modalForm.get('projectId').setValue(this.projectId);
       this.modalForm.controls['createUserId'].disable();
       this.modalForm.controls['statusCode'].disable();
       this.modalForm.controls['createDate'].disable();
