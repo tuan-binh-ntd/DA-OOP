@@ -71,11 +71,11 @@ namespace API.Controllers
             {
                 taskList = taskList.Where(t => t.CreateUserId == createUserId);
             }
-            if (userId != null && projectId != null)
+            if (!string.IsNullOrWhiteSpace(userId.ToString()) && !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
                 taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);
             }
-            if (userId != null || projectId != null)
+            if (!string.IsNullOrWhiteSpace(userId.ToString()) || !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
                 taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);
             }
