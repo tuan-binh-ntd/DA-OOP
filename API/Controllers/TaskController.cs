@@ -140,6 +140,7 @@ namespace API.Controllers
                     task.DeadlineDate = input.DeadlineDate;
                     task.PriorityCode = input.PriorityCode;
                     task.StatusCode = input.StatusCode;
+                    task.CompleteDate = DateTime.Now;
                     task.Description = input.Description;
                     task.TaskType = input.TaskType;
                     task.TaskCode = input.TaskCode;
