@@ -61,8 +61,8 @@
         </td>
         <td class=text-center>
           <div class="position-fixed">
-            <i class="fa fa-lg fa-edit" (click)="openDetailModal(task, 'detail', false)"></i>
-            <i class="fa fa-lg fa-trash" data-toggle="modal" data-target="#createTaskModal" (click)="modalTask.openModal(task, 'delete', true);this.isShowModal = true" style="color: red;"></i>
+            <button class="btn fa fa-lg fa-edit" (click)="openDetailModal(task, 'detail', false)"></button>
+            <button class="btn fa fa-lg fa-trash" data-toggle="modal" data-target="#createTaskModal" (click)="modalTask.openModal(task, 'delete', true);this.isShowModal = true" style="color: red;"></button>
           </div>
         </td>
       </tr>
