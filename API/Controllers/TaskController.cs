@@ -22,14 +22,14 @@ namespace API.Controllers
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetTaskForUserOrProject(string taskType, Guid? userId, Guid? projectId, Guid? createUserId,string keyWord,Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
-        
+        public async Task<ActionResult> GetTaskForUserOrProject(string taskType, Guid? userId, Guid? projectId, Guid? createUserId, string keyWord, Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
+
         {
 
             var taskList = _dataContext.Task.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                taskList = taskList.Where(t => t.TaskName.Contains(keyWord)|| t.TaskCode.Contains(keyWord));
+                taskList = taskList.Where(t => t.TaskName.Contains(keyWord) || t.TaskCode.Contains(keyWord));
             }
             if (!string.IsNullOrWhiteSpace(taskType))
             {
@@ -133,7 +133,7 @@ namespace API.Controllers
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
-                if (input.PermissionCode == Permission.Leader )
+                if (input.PermissionCode == Permission.Leader)
                 {
                     task.TaskName = input.TaskName;
                     task.CreateUserId = input.CreateUserId;
@@ -145,18 +145,18 @@ namespace API.Controllers
                     task.TaskCode = input.TaskCode;
                     task.ProjectId = input.ProjectId;
                     task.AppUserId = input.AppUserId;
+
+                    if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+                    {
+                        task.StatusCode = input.StatusCode;
+                        task.CompleteDate = DateTime.Now;
+
+                    }
                     _dataContext.Task.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-                else if (input.PermissionCode == Permission.Leader &&(input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed))
-                {
-                    task.StatusCode = input.StatusCode;
-                    task.CompleteDate = DateTime.Now;
-                    _dataContext.Update(task);
-                    await _dataContext.SaveChangesAsync();
-                    return Ok(task);
-                }
+
                 else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     task.StatusCode = input.StatusCode;

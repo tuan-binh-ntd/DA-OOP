@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetAllProject( string keyWord, string projectType, StatusCode? statusCode, Priority? priorityCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo, Guid? departmentId, Permission? permission, Guid? userId)
+        public async Task<ActionResult> GetAllProject(string keyWord, string projectType, StatusCode? statusCode, Priority? priorityCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo, Guid? departmentId, Permission? permission, Guid? userId)
         {
             var projectFilter = _dataContext.Project.Join(_dataContext.AppUser.Where(u => u.PermissionCode == Permission.Leader), pj => pj.DepartmentId, user => user.DepartmentId, (pj, user) => new { pj, user }).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(keyWord))
@@ -83,23 +83,23 @@ namespace API.Controllers
 
 
             var projectList = await projectFilter.OrderByDescending(p => p.pj.CreateDate).Select(
-                 p =>  new GetAllProjectForViewDto
+                 p => new GetAllProjectForViewDto
                  {
-                 Id = p.pj.Id,
-                 ProjectName = p.pj.ProjectName,
-                 Description = p.pj.Description,
-                 ProjectType = p.pj.ProjectType,
-                 ProjectCode = p.pj.ProjectCode,
-                 CreateDate = p.pj.CreateDate,
-                 DeadlineDate = p.pj.DeadlineDate,
-                 CompleteDate = p.pj.CompleteDate,
-                 DayLefts = (p.pj.DeadlineDate - DateTime.Now).Days,
-                 PriorityCode = p.pj.PriorityCode,
-                 StatusCode = p.pj.StatusCode,
-                 DepartmentId = p.pj.DepartmentId,
-                 AppUserId = p.user.Id,
-                 LeaderName = p.user.FirstName + " " + p.user.LastName,
-             }).AsNoTracking().ToListAsync();
+                     Id = p.pj.Id,
+                     ProjectName = p.pj.ProjectName,
+                     Description = p.pj.Description,
+                     ProjectType = p.pj.ProjectType,
+                     ProjectCode = p.pj.ProjectCode,
+                     CreateDate = p.pj.CreateDate,
+                     DeadlineDate = p.pj.DeadlineDate,
+                     CompleteDate = p.pj.CompleteDate,
+                     DayLefts = (p.pj.DeadlineDate - DateTime.Now).Days,
+                     PriorityCode = p.pj.PriorityCode,
+                     StatusCode = p.pj.StatusCode,
+                     DepartmentId = p.pj.DepartmentId,
+                     AppUserId = p.user.Id,
+                     LeaderName = p.user.FirstName + " " + p.user.LastName,
+                 }).AsNoTracking().ToListAsync();
             var taskList = await (from p in _dataContext.Project
                                   join t in _dataContext.Task on p.Id equals t.ProjectId
                                   select new
@@ -183,19 +183,17 @@ namespace API.Controllers
                     project.PriorityCode = input.PriorityCode;
                     project.DepartmentId = input.DepartmentId;
                     project.StatusCode = input.StatusCode;
+
+                    if (input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Resolve)
+                    {
+                        project.StatusCode = input.StatusCode;
+                        project.CompleteDate = DateTime.Now;
+                    }
                     _dataContext.Project.Update(project);
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else if(input.PermissionCode == Permission.ProjectManager && (input.StatusCode == Enum.StatusCode.Closed ||
-                    input.StatusCode == Enum.StatusCode.Resolve))
-                {
-                    project.StatusCode = input.StatusCode;
-                    project.CompleteDate = DateTime.Now;
-                    _dataContext.Project.Update(project);
-                    await _dataContext.SaveChangesAsync();
-                    return Ok(project);
-                }
+
                 else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     project.StatusCode = input.StatusCode;
@@ -203,7 +201,7 @@ namespace API.Controllers
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else if(input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.Resolve) 
+                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.Resolve)
                 {
                     project.StatusCode = input.StatusCode;
                     project.CompleteDate = DateTime.Now;
