@@ -159,8 +159,8 @@ namespace API.Controllers
                 CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
                 PriorityCode = input.PriorityCode,
-                StatusCode = input.StatusCode,
-                DepartmentId = input.DepartmentId,
+                StatusCode = Enum.StatusCode.Open,
+                DepartmentId = input.DepartmentId
             };
             _dataContext.Project.Add(data);
             await _dataContext.SaveChangesAsync();

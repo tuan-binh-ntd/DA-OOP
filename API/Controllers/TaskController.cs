@@ -115,7 +115,7 @@ namespace API.Controllers
                 CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
                 PriorityCode = input.PriorityCode,
-                StatusCode = input.StatusCode,
+                StatusCode = Enum.StatusCode.Open,
                 Description = input.Description,
                 TaskType = input.TaskType,
                 TaskCode = input.TaskCode,
