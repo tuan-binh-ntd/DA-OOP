@@ -225,7 +225,8 @@ namespace API.Controllers
         [HttpDelete("delete")]
         public async Task<ActionResult> DeleteProject(Guid id)
         {
-            _dataContext.Task.Remove(await _dataContext.Task.FirstOrDefaultAsync(e => e.ProjectId == id));
+            _dataContext.Task.RemoveRange(await _dataContext.Task.Where(e => e.ProjectId == id).ToListAsync());
+            await _dataContext.SaveChangesAsync();
             _dataContext.Project.Remove(await _dataContext.Project.FindAsync(id));
             await _dataContext.SaveChangesAsync();
             return Ok("Removed");

@@ -63,12 +63,11 @@ export class TasksComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.projectId = params['projectId'];
     })
-    const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'));
-    if (user.permissionCode === Permission.ProjectManager || user.permissionCode === Permission.Leader) {
+    if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
-    this.userId = this.user.id;
+    this.userId = Number(this.user.permissionCode) == Permission.Employee ? this.user.id : null;
     this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
@@ -155,7 +154,7 @@ export class TasksComponent implements OnInit {
       this.fetchTaskData();
     }
   }
-  
+
   submitFormFilter(data:any){
     this.getAllTask.createDateFrom = data.createDateFrom;
     this.getAllTask.createDateTo = data.createDateTo;
