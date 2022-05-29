@@ -111,9 +111,11 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('appUserId')?.disable();
       this.modalForm.get('statusCode')?.disable();
       this.modalForm.get('createDate')?.disable();
-    } else {
+    } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
       this.checkEditForm();
+    } else {
+      this.modalForm.patchValue(data);
     }
   }
 
@@ -162,7 +164,7 @@ export class ModalProjectComponent implements OnInit {
               this.toastr.error('Failed');
             }
           });
-      } else {
+      } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode = this.user.permissionCode;
         this.projectService
           .updateProject(this.modalForm.value)
@@ -178,6 +180,20 @@ export class ModalProjectComponent implements OnInit {
               this.toastr.error('You not permission');
             }
             this.onChangeProject.emit();
+          });
+      } else {
+        this.projectService
+          .deleteProject(this.modalForm.value.id)
+          .pipe(catchError((err) => { return of(err); }))
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!', '', {
+                timeOut: 1000,
+              });
+              this.onChangeProject.emit();
+            } else {
+              this.toastr.error('You not permission');
+            }
           });
       }
     }

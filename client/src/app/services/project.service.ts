@@ -32,4 +32,7 @@ export class ProjectService {
   updateProject(payload:any):Observable<any>{
     return this.http.put(this.baseUrl + '/update', payload);
   }
+  deleteProject(id: any): Observable<any> {
+    return this.http.delete(this.baseUrl + '/delete?id=' + id);
+  }
 }
