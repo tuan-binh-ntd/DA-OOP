@@ -67,7 +67,7 @@ export class TasksComponent implements OnInit {
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
-    this.userId = Number(this.user.permissionCode) == Permission.Employee ? this.user.id : null;
+    this.userId = this.user.id;
     this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
