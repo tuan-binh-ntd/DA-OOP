@@ -181,13 +181,13 @@ namespace API.Controllers
                     project.ProjectType = input.ProjectType;
                     project.DeadlineDate = input.DeadlineDate;
                     project.PriorityCode = input.PriorityCode;
-                    project.StatusCode = input.StatusCode;
                     project.DepartmentId = input.DepartmentId;
+                    project.StatusCode = input.StatusCode;
                     _dataContext.Project.Update(project);
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
                 }
-                else if(input.PermissionCode == Permission.ProjectManager && (input.StatusCode == Enum.StatusCode.Closed || 
+                else if(input.PermissionCode == Permission.ProjectManager && (input.StatusCode == Enum.StatusCode.Closed ||
                     input.StatusCode == Enum.StatusCode.Resolve))
                 {
                     project.StatusCode = input.StatusCode;

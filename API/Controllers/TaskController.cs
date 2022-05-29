@@ -133,20 +133,27 @@ namespace API.Controllers
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
-                if (input.PermissionCode == Permission.Leader)
+                if (input.PermissionCode == Permission.Leader )
                 {
                     task.TaskName = input.TaskName;
                     task.CreateUserId = input.CreateUserId;
                     task.DeadlineDate = input.DeadlineDate;
                     task.PriorityCode = input.PriorityCode;
                     task.StatusCode = input.StatusCode;
-                    task.CompleteDate = DateTime.Now;
                     task.Description = input.Description;
                     task.TaskType = input.TaskType;
                     task.TaskCode = input.TaskCode;
                     task.ProjectId = input.ProjectId;
                     task.AppUserId = input.AppUserId;
                     _dataContext.Task.Update(task);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(task);
+                }
+                else if (input.PermissionCode == Permission.Leader &&(input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed))
+                {
+                    task.StatusCode = input.StatusCode;
+                    task.CompleteDate = DateTime.Now;
+                    _dataContext.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
