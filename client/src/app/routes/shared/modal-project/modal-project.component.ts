@@ -109,6 +109,7 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('appUserId')?.disable();
+      this.modalForm.get('statusCode')?.disable();
       this.modalForm.get('createDate')?.disable();
     } else if (mode === 'detail') {
       this.modalForm.patchValue(data);

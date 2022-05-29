@@ -125,6 +125,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('createUserId').setValue(this.user.id);
       this.modalForm.get('projectId').setValue(this.projectId);
       this.modalForm.controls['createUserId'].disable();
+      this.modalForm.controls['statusCode'].disable();
       this.modalForm.controls['createDate'].disable();
     } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
