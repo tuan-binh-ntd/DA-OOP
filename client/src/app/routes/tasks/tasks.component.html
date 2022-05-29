@@ -64,8 +64,8 @@
               <i class="fa fa-lg fa-edit"></i>
               <span>Sửa</span>
             </button>
-            <button class="btn btn-outline-danger" (click)="modalTask.openModal(task, 'delete', true);this.isShowModal = true">
-              <i class="fa fa-lg fa-trash" data-toggle="modal" data-target="#createTaskModal" style="color: red;"></i>
+            <button class="btn btn-outline-danger" (click)="openDetailModal(task, 'delete', true)">
+              <i class="fa fa-lg fa-trash"></i>
               <span>Xóa</span>
             </button>
         </td>
