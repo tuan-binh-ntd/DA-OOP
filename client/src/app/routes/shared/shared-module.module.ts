@@ -31,8 +31,8 @@ import { TaskFilterComponent } from './task-filter/task-filter.component';
     ModalTaskComponent,
     ModalUserComponent,
     ProjectFilterComponent,
-    TaskFilterComponent
-    ProjectFilterComponent
+    TaskFilterComponent,
+    ProjectFilterComponent,
   ],
   imports: [
     CommonModule,
