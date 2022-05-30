@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -13,7 +13,7 @@ import {StatusCode} from 'src/app/helpers/StatusCodeEnum';
 export class HomeComponent implements OnInit {
   
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
-  
+  @ViewChild('canvas') baseChart: ElementRef;
   projects: any[] = [];
   reopenedProject: number = 0;
   openProject: number = 0;
@@ -25,13 +25,34 @@ export class HomeComponent implements OnInit {
     responsive: true,
     plugins: {
       legend: {
+        display: true,
+        position: 'bottom',
+        labels:{
+          padding: 30,
+          color: '#7c828d',
+          font:{
+            size: 16,
+            family: 'Quicksand, sans-serif',
+            weight: "700"
+          }
+        }
+      },  title: {
         display: false,
-      },
+        text: 'Projects Pie Chart',
+        position: 'bottom',
     }
+    },
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: 'linear',
+        from: 1,
+        to: 0,
+        loop: true
+      }
+    },
   };
-  enterpriseCount = 0;
-  userCount = 0;
-  percentCount = 0;
+  
  constructor(private router: Router, private projectService: ProjectService){}
 async ngOnInit() {
  await this.fetchProjectData();
@@ -51,35 +72,42 @@ async fetchProjectData() {
     this.openProject = this.projects.filter(project=> project.statusCode === StatusCode.Open).length;
     this.inProgressProject = this.projects.filter(project=> project.statusCode === StatusCode.InProgress).length;
     this.completeProject = this.projects.filter(project=> project.statusCode === StatusCode.Resolved).length;
-  
+    var ctx = this.baseChart.nativeElement.getContext("2d");
+    var gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+    var gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+
+    gradient1.addColorStop(0, '#ebf4f5');   
+    gradient1.addColorStop(1, '#b5c6e0');
+    gradient2.addColorStop(0, '#6ff7e8');   
+    gradient2.addColorStop(1, '#1f7ea1');
+    var gradient3= ctx.createLinearGradient(0, 0, 0, 400);
+
+    gradient3.addColorStop(0, '#aefb2a');   
+    gradient3.addColorStop(1, '#57ebde');
+    var gradient4= ctx.createLinearGradient(0, 0, 0, 400);
+
+    gradient4.addColorStop(0, '#0974f1');   
+    gradient4.addColorStop(1, '#9fccfa');
     this.pieChartData = {
-      labels: ['Reopened Projects', 'Open Projects', 'Completed Projects', 'Inprogress Projects' ],
+
+      labels: ['Reopened', 'Open', 'Completed', 'Inprogress' ],
       datasets: [ {
         data: [ this.reopenedProject, this.openProject, this.completeProject, this.inProgressProject],
+        backgroundColor: [
+         gradient1,gradient2,gradient3,gradient4
+      ],
+      hoverBackgroundColor: [
+        gradient1,gradient2,gradient3,gradient4
+      ],
+      hoverBorderColor:[
+          '#ff930f'
+      ]
       } ]
     };
     const image = new Image();
 image.src = 'assets/home-header-bg.jpg';
   }
 
- enterpriseCountStop = setInterval(()=>{
-  this.enterpriseCount ++;
-  if(this.enterpriseCount  === 25){
-    clearInterval(this.enterpriseCountStop)
-  }
-}, 50)
-userCountStop = setInterval(()=>{
-  this.userCount ++;
-  if(this.userCount  === 250){
-    clearInterval(this.userCountStop)
-  }
-}, 1)
-percentCountStop = setInterval(()=>{
-  this.percentCount ++;
-  if(this.percentCount  === 92){
-    clearInterval(this.percentCountStop)
-  }
-}, 20)
 navigateToProject(){
   this.router.navigateByUrl('projects')
 }

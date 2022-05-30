@@ -1,12 +1,12 @@
-<div class="container-fluid ml-2 mr-2">
+<div class="wrapper ">
   <div class="row mt-4">
     <div class="col col-6 p-0">
-      <h2>Projects</h2>
+      <h2 class="mb-3 text-primary fw-700">Projects</h2>
     </div>
     <div *ngIf="right" class="col col-6">
       <button
         *ngIf="right"
-        class="button-create float-right"
+        class="create__btn float-right"
         data-toggle="modal"
         data-target="#createProjectModal"
         (click)="openModal()"
@@ -61,7 +61,7 @@
 
     <div class="card-columns">
       <div
-        class="card bg-light"
+        class="card "
         *ngFor="let item of projects"
         style="display: inline-block"
         [routerLink]="['projects/tasks', item.id]"
@@ -118,7 +118,7 @@
             </div>
             <div class="col col-4">
               <button
-                class="button-create float-right"
+                class="home__btn float-right"
                 (click)="
                   $event.stopPropagation();
                   openDetailModal(item, 'detail', false)

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="margin-left: 120px;">
     <a class="navbar-brand font-weight-bolder" href="home" style="font-size: 30px">
     <img src="assets/logo.png" style="width: 50px" alt="Logo">
       HeadUp
@@ -19,31 +19,73 @@
       class="collapse navbar-collapse"
       id="collapsibleNavbar"
     >
-      <ul class="navbar-nav col-md-auto">
-        <li class="nav-item">
+      <ul class="navbar-nav nav-active-list col-md-auto">
+        <li class="nav-item nav-active">
           <a class="nav-link font-weight-bold" href="home">Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item nav-active">
           <a class="nav-link font-weight-bold" href="projects">My Projects</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link font-weight-bold" href="projects/tasks">My Tasks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link font-weight-bold" href="users">Employees</a>
-        </li>
-        <li class="nav-item dropdown" *ngIf="(getUser() | async) as user">
+        <!-- <li *ngIf="right" class="nav-item nav-active">
+          <a 
+          class="nav-link font-weight-bold dropdown-toggle"
+          href="#"
+          role="button"
+          data-toggle="dropdown2"
+          aria-haspopup="true"
+          aria-expanded="false"
+          id="navbarDropdown2"
+          data-target="target2">My Tasks</a>
+          <div #target1 class="dropdown-menu  navbar-dropdown" aria-labelledby="navbarDropdown1">
+            <a class="dropdown-item " href="projects/tasks">
+              <i class="fa fa-list-alt" aria-hidden="true"></i>
+              List</a>
+            <a class="dropdown-item" href="projects/tasks/calendar">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              Calendar</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
+          </div>
+        </li> -->
+        <li class="nav-item nav-active dropdown" *ngIf="right">
           <a
             class="nav-link font-weight-bold dropdown-toggle"
-            href="#"
             role="button"
-            data-toggle="dropdown"
+            data-toggle="dropdown2"
             aria-haspopup="true"
             aria-expanded="false"
+            id="navbarDropdown2"
+            data-target="target2"
+          >
+          <span class="mr-2">My Tasks</span>
+          </a>
+          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
+            <a class="dropdown-item" href="projects/tasks">
+              <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
+              List</a>
+
+            <a class="dropdown-item" href="projects/tasks/calendar">
+              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
+              Calendar</a>
+            
+          </div>
+        </li>
+        <li *ngIf="!right" class="nav-item nav-active">
+          <a class="nav-link font-weight-bold" href="users">Employees</a>
+        </li>
+        <li class="nav-item nav-active dropdown" *ngIf="(getUser() | async) as user">
+          <a
+            class="nav-link font-weight-bold dropdown-toggle"
+            role="button"
+            data-toggle="dropdown2"
+            aria-haspopup="true"
+            aria-expanded="false"
+            id="navbarDropdown2"
+            data-target="target2"
           >
           <span class="mr-2">{{ user.userName }}</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
             <a class="dropdown-item" href="profile">Profile</a>
 
             <a class="dropdown-item" href="change-password">Change Password</a>
@@ -51,6 +93,7 @@
             <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
           </div>
         </li>
+      
       </ul>
     </div>
   </nav>

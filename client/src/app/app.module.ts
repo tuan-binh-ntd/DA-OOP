@@ -21,15 +21,22 @@ import * as bootstrap from "bootstrap";
 import { UsersComponent } from './routes/users/users.component';
 import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import dayGridPlugin from '@fullcalendar/daygrid';
+import listPlugin from '@fullcalendar/list';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component'; // a plugin!
 import { NgChartsModule } from 'ng2-charts';
-FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
+FullCalendarModule.registerPlugins([
+  bootstrapPlugin ,
   dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
   interactionPlugin
-]);
+])
 
 @NgModule({
   declarations: [
@@ -46,12 +53,13 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TasksCalendarComponent,
     ForbiddenComponent,
     PageNotFoundComponent,
+    ContentLayoutComponent,
   ],
   imports: [
     BrowserModule,
+    FullCalendarModule ,
     SharedModuleModule,
     FormsModule,
-    FullCalendarModule ,
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -62,7 +70,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     }),
     FontAwesomeModule,
     NgChartsModule,
-
   ],
   providers: [ ],
   bootstrap: [AppComponent]

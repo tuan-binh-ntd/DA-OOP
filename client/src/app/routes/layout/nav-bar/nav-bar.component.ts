@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChangePasswordComponent } from '../../change-password/change-password.component';
@@ -15,8 +16,11 @@ import { ModalUserComponent } from '../../shared/modal-user/modal-user.component
 export class NavBarComponent implements OnInit {
   userName!:string;
   loggedIn:boolean = false;
+  right:boolean = true;
   users: any[] = [];
-  constructor(private authenticationService: AuthenticationService, private userService: UserService) { }
+  constructor(private authenticationService: AuthenticationService, private userService: UserService) {
+  
+   }
 
 
   fetchUserData() {
@@ -31,6 +35,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
     this.userName = user.name;
+    this.right = user.permissionCode !== Permission.ProjectManager
     this.fetchUserData();
 
   }

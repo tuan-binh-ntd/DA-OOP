@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
+const emailRegex = '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -27,41 +28,41 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.loginForm = this.fb.group({
-      email: [null, Validators.required],
+      email: [null,  [Validators.required,Validators.email]],
       password: [null, Validators.required],
     });
   }
 
-  onSubmit() {
-    for (const i in this.loginForm.controls) {
-      this.loginForm.controls[i].markAsDirty();
-      this.loginForm.controls[i].updateValueAndValidity();
-    }
-    if (this.loginForm.valid) {
-      this.authenticationService
-        .login(this.loginForm.value)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((response) => {
-          if (!response) {
-            this.loggedIn = true;
-            this.toastr.success('Login success!', '', {
-              timeOut: 1000,
-            });
-            setTimeout(() => {
-              this.router.navigateByUrl('home');
-            }, 800);
-          }
-          else{
-            this.toastr.error('Email or password not correct!', '', {
-              timeOut: 1000,
-            });
-          }
-        });
-    }
+  onSubmit(key?:any) {
+      for (const i in this.loginForm.controls) {
+        this.loginForm.controls[i].markAsDirty();
+        this.loginForm.controls[i].updateValueAndValidity();
+      }
+      if (this.loginForm.valid) {
+        this.authenticationService
+          .login(this.loginForm.value)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (!response) {
+              this.loggedIn = true;
+              this.toastr.success('Login success!', '', {
+                timeOut: 1000,
+              });
+              setTimeout(() => {
+                this.router.navigateByUrl('home');
+              }, 800);
+            }
+            else{
+              this.toastr.error('Email or password not correct!', '', {
+                timeOut: 1000,
+              });
+            }
+          });
+      }
   }
   logout() {
     this.authenticationService.logout();

@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Calendar } from '@fullcalendar/angular';
 import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
@@ -50,12 +51,14 @@ export class TasksComponent implements OnInit {
   getAllTask: GetAllTask = new GetAllTask();
   searchTask: SearchTask = new SearchTask();
   constructor(
-    private taskService: TaskService,
-    private projectService: ProjectService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router,
-  ) { }
+    protected taskService: TaskService,
+    protected projectService: ProjectService,
+    protected userService: UserService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+  ) {
+    forwardRef(() =>Calendar)
+   }
 
   ngOnInit(): void {
       this.route.params.subscribe(params=>{

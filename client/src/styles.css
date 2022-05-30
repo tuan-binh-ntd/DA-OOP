@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 html, body{
     font-family: 'Quicksand', sans-serif;
-    background-color: #fafbfc;
 }
 
 *{
@@ -22,14 +21,63 @@ body:not(.modal-open){
   }
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
+.wrapper {
+    max-width: 1190px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+    position: relative;
+    color: inherit;
+    transition: .2s;
+  }
 
+  .site-wrap{
+    position: relative;
+    background-color: #fcfcfd;
+    overflow: hidden;
+  }
+  .content-wrap{
+    position: relative;
+    background-color: #fcfcfd;
+    overflow: hidden;
+  }
+  .site-wrap::before{
+    content: '';
+    display: block;
+    position: absolute;
+    top: -342px;
+    left: calc(50vw + 100px);
+      width: 1143px;
+      height: 1149px;
+    background: url(./assets/Background.svg) no-repeat center/contain;
+  
+  }
 .card-container{
-    padding:60px 0;
+    padding:120px 0;
 }
-.fsz-10{
-    font-size: 14px;
+.btn-primary{
+    background-color: var(--primary-color)  !important;
+    border-color:  var(--primary-color)  !important;
 }
+.btn:focus{
+    outline: none !important;;
+}
+.btn-primary:hover{
+    outline: none;
+    background-color: var(--heavy-color)  !important;
+    border-color:  var(--heavy-color)  !important;
 
+}
+.text-primary{
+    color: var(--primary-color)  !important;
+}
+.p-text{
+    color: var(--light-text)  !important;
+
+}
+.fsz-35{
+    font-size: 35px;
+}
 .fsz-14{
     font-size: 14px;
 }
@@ -43,12 +91,108 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
 }
 
 
-.fw-600{
-    font-weight: 600;
+.fw-700{
+    font-weight: 700;
 }
 
 .modal-xl {
     max-width: 90%;
   }
 
+
+  .home__btn {
+    align-items: center;
+    background-color: var(--primary-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+  }
+  
+  .home__btn:hover,
+  .home__btn:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--heavy-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: #fff;
+  }
+  
+  .home__btn:hover {
+    transform: translateY(-1px);
+  }
+  
+  .create__btn:active {
+    background-color: #F0F0F1;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: #fff;
+    transform: translateY(0);
+  }
+
+  .create__btn {
+    align-items: center;
+    background-color: var(--heavy-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+  }
+  
+  .create__btn:hover,
+  .create__btn:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--heavy-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: #fff;
+  }
+  
+  .create__btn:hover {
+    transform: translateY(-1px);
+  }
+  
+  .create__btn:active {
+    background-color: #F0F0F1;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: #fff;
+    transform: translateY(0);
+  }
   

@@ -1,3 +1,29 @@
 .form-control:focus {
     box-shadow: none;
   }
+
+  .login-wrap{
+    background-image: url(../../../assets/login1.svg), 
+    url(../../../assets/login2.svg);
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    background-size: 368px, 368px;
+    background-position: left bottom, right bottom;
+  }
+  .login-section{
+    display: flex;
+    flex-direction: column;
+    margin: 0px auto 24px;
+    width: 400px;
+    padding: 32px 40px;
+    background: rgb(255, 255, 255);
+    border-radius: 3px;
+    box-shadow: rgb(0 0 0 / 10%) 0px 0px 10px;
+    box-sizing: border-box;
+    color: rgb(94, 108, 132);
+}
+
+.login-header{
+  text-align: center;
+  padding: 40px 0px;
+}
