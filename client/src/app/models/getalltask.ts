@@ -6,6 +6,7 @@ export class GetAllTask extends Filter{
     userId: string;
     projectId: string;
     createUserId: string;
+    taskType: string;
     keyWord: string;
     priorityCode: Priority;
     statusCode: StatusCode;

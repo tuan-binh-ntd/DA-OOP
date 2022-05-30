@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content"  *ngIf="mode ==='create' || mode ==='detail'">
   <div class="modal-header">
     <h5 class="modal-title" id="createProjectModal">{{title}}</h5>
     <button
@@ -215,11 +215,6 @@
           </div>
         </div>
       </div>
-
-
-
-
-
       <style>
         ::ng-deep .cdk-overlay-container {
           z-index: 2000;
@@ -239,5 +234,13 @@
 </div>
 </div>
 
-
+<div class="modal-content" *ngIf="mode ==='delete'">
+  <div class="modal-body">
+      <h3>Bạn chắc chắn muốn xóa project này?</h3>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary float-left" (click)="submitForm()">OK</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+  </div>
+</div>
 

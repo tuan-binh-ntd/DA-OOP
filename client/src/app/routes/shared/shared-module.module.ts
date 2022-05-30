@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MdePopoverModule } from '@material-extended/mde';
 import {MatMenuModule} from '@angular/material/menu';
 import {  NgChartsModule } from 'ng2-charts';
+import { TaskFilterComponent } from './task-filter/task-filter.component';
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -29,6 +30,8 @@ import {  NgChartsModule } from 'ng2-charts';
     StatusComponent,
     ModalTaskComponent,
     ModalUserComponent,
+    ProjectFilterComponent,
+    TaskFilterComponent
     ProjectFilterComponent
   ],
   imports: [
@@ -56,7 +59,8 @@ import {  NgChartsModule } from 'ng2-charts';
     StatusComponent,
     ModalTaskComponent,
     ModalUserComponent,
-    ProjectFilterComponent
+    ProjectFilterComponent,
+    TaskFilterComponent
   ],
   providers:[ MatDatepickerModule,
     MatNativeDateModule,

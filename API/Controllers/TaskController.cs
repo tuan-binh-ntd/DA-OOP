@@ -22,14 +22,14 @@ namespace API.Controllers
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult> GetTaskForUserOrProject(string taskType, Guid? userId, Guid? projectId, Guid? createUserId,string keyWord,Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
-        
+        public async Task<ActionResult> GetTaskForUserOrProject(string taskType, Guid? userId, Guid? projectId, Guid? createUserId, string keyWord, Priority? priorityCode, StatusCode? statusCode, DateTime? createDateFrom, DateTime? createDateTo, DateTime? deadlineDateFrom, DateTime? deadlineDateTo, DateTime? completeDateFrom, DateTime? completeDateTo)
+
         {
 
             var taskList = _dataContext.Task.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                taskList = taskList.Where(t => t.TaskName.Contains(keyWord)|| t.TaskCode.Contains(keyWord));
+                taskList = taskList.Where(t => t.TaskName.Contains(keyWord) || t.TaskCode.Contains(keyWord));
             }
             if (!string.IsNullOrWhiteSpace(taskType))
             {
@@ -71,11 +71,11 @@ namespace API.Controllers
             {
                 taskList = taskList.Where(t => t.CreateUserId == createUserId);
             }
-            if (userId != null && projectId != null)
+            if (!string.IsNullOrWhiteSpace(userId.ToString()) && !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
                 taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);
             }
-            if (userId != null || projectId != null)
+            if (!string.IsNullOrWhiteSpace(userId.ToString()) || !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
                 taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);
             }
@@ -115,7 +115,7 @@ namespace API.Controllers
                 CreateDate = DateTime.Now,
                 DeadlineDate = input.DeadlineDate,
                 PriorityCode = input.PriorityCode,
-                StatusCode = input.StatusCode,
+                StatusCode = Enum.StatusCode.Open,
                 Description = input.Description,
                 TaskType = input.TaskType,
                 TaskCode = input.TaskCode,
@@ -145,10 +145,18 @@ namespace API.Controllers
                     task.TaskCode = input.TaskCode;
                     task.ProjectId = input.ProjectId;
                     task.AppUserId = input.AppUserId;
+
+                    if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+                    {
+                        task.StatusCode = input.StatusCode;
+                        task.CompleteDate = DateTime.Now;
+
+                    }
                     _dataContext.Task.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
+
                 else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
                 {
                     task.StatusCode = input.StatusCode;
