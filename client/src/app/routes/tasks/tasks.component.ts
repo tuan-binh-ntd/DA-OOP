@@ -58,7 +58,6 @@ export class TasksComponent implements OnInit {
     protected userService: UserService,
     protected route: ActivatedRoute,
     protected router: Router,
-    private router: Router
   ) {
     forwardRef(() =>Calendar)
    }
