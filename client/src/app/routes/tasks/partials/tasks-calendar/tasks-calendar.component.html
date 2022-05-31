@@ -4,5 +4,11 @@
         List
     </a>
 </button>
-<full-calendar #fullcalendar (eventDragStop)="eventDragStop($event)" [deepChangeDetection]="true"
+<div class="col col-6 p-0">
+    <h2 class="text-primary fw-700" style="margin-top:10px ;">Task Calendar </h2>
+</div>
+<full-calendar #fullcalendar (eventDragStop)="eventDragStop($event)" [deepChangeDetection]="true" style="margin-top: 10px;"
     [options]="calendarOptions"></full-calendar>
+
+   
+    
