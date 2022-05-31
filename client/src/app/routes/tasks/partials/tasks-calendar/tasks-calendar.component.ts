@@ -25,11 +25,7 @@ import { TasksComponent } from '../../tasks.component';
 export class TasksCalendarComponent extends TasksComponent implements OnInit {
   @ViewChild('fullcalendar') fullcalendar: ElementRef;
   calendarOptions: CalendarOptions = {
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-    },
+  
     initialView: 'dayGridMonth',
     weekends: true,
     editable: true,
@@ -69,6 +65,11 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
           array.push(detail);
         });
         this.calendarOptions = {
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+          },
           initialView: 'dayGridMonth',
           eventClick: this.onDateClick.bind(this),
           events: array,
