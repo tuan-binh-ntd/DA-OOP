@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChangePasswordComponent } from '../../change-password/change-password.component';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
+import { TasksComponent } from '../../tasks/tasks.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,8 +15,10 @@ import { ModalUserComponent } from '../../shared/modal-user/modal-user.component
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  @ViewChild('task') task!: TasksComponent;
   userName!:string;
   loggedIn:boolean = false;
+  showTask: boolean = false;
   right:boolean = true;
   users: any[] = [];
   constructor(private authenticationService: AuthenticationService, private userService: UserService) {

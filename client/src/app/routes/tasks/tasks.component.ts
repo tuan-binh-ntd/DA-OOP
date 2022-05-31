@@ -31,6 +31,7 @@ export class TasksComponent implements OnInit {
   projectId: string = '';
   userId: string = '';
   sub: any;
+  pm: string = 'create';
   isShowModal: boolean = false;
   right: boolean = false;
   user: User;
@@ -71,14 +72,22 @@ export class TasksComponent implements OnInit {
       this.right = true
     }
     this.userId = this.user.id;
-    this.fetchTaskData();
     this.fetchUserData();
     this.fetchProjectData();
+    this.openTask(this.pm);
   }
 
   fetchTaskData() {
     this.sub = this.taskService
       .getAllTask(this.projectId, this.userId, this.getAllTask)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.tasks = response;
+      });
+  }
+  fetchCreateTaskData() {
+    this.sub = this.taskService
+      .getAllTask1(this.projectId, this.userId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -188,5 +197,15 @@ export class TasksComponent implements OnInit {
    this.getAllTask.statusCode = null;
    this.getAllTask.priorityCode = null;
    this.fetchTaskData();
- }
+  }
+
+  openTask(pm: string){
+    this.pm = pm;
+    if(pm === 'create'){
+      this.fetchTaskData();
+    }
+    else if (pm === 'employee') {
+      this.fetchCreateTaskData();
+    }
+  }
 }

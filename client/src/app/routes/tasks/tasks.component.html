@@ -26,6 +26,12 @@
         (filterStatus)="onFilterStatus($event)"
         (filterType)="onFilterType($event)"
       ></app-task-filter>
+      <button class="button float-right">
+        <a href="projects/tasks/calendar">
+        <i class="fa fa-calendar mr-2"></i>
+        Calendar
+        </a>
+      </button>
     </div>
   </div>
   <table *ngIf="tasks.length !== 0" id="example" class="table table-hover mt-4" style="width:100%">

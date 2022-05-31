@@ -67,17 +67,17 @@ namespace API.Controllers
             {
                 taskList = taskList.Where(t => t.DeadlineDate >= deadlineDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(createUserId.ToString()))
+            if (!string.IsNullOrWhiteSpace(createUserId.ToString()) && !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
-                taskList = taskList.Where(t => t.CreateUserId == createUserId);
+                taskList = taskList.Where(t => t.ProjectId == projectId && t.CreateUserId == createUserId);
             }
             if (!string.IsNullOrWhiteSpace(userId.ToString()) && !string.IsNullOrWhiteSpace(projectId.ToString()))
             {
                 taskList = taskList.Where(t => t.ProjectId == projectId && t.AppUserId == userId);
             }
-            if (!string.IsNullOrWhiteSpace(userId.ToString()) || !string.IsNullOrWhiteSpace(projectId.ToString()))
+            if (!string.IsNullOrWhiteSpace(userId.ToString()) || !string.IsNullOrWhiteSpace(projectId.ToString()) || !string.IsNullOrWhiteSpace(createUserId.ToString()))
             {
-                taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId);
+                taskList = taskList.Where(t => t.AppUserId == userId || t.ProjectId == projectId || t.CreateUserId == createUserId);
             }
             var taskListForView = await taskList.OrderByDescending(t => t.CreateDate).Select(
                  t => new

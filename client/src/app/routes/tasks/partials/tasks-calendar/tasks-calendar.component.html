@@ -1,3 +1,8 @@
-<full-calendar #fullcalendar
-    (eventDragStop)="eventDragStop($event)"
-    [deepChangeDetection]="true"  [options]="calendarOptions"></full-calendar> 
+<button class="button float-right">
+    <a href="projects/tasks">
+        <i class="fa fa-list-alt mr-2"></i>
+        List
+    </a>
+</button>
+<full-calendar #fullcalendar (eventDragStop)="eventDragStop($event)" [deepChangeDetection]="true"
+    [options]="calendarOptions"></full-calendar>

@@ -52,6 +52,52 @@ export class TaskService {
       return this.http.get(this.baseUrl + '/getall?' + taskType + userId + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
     }
   }
+
+  getAllTask1(projectId?: string, createUserId?: string, payload?: any): Observable<any> {
+    let userIdString = '';
+    let projectIdString = '';
+    if (createUserId || projectId) {
+      if (createUserId) {
+        userIdString = '&createUserId=' + createUserId;
+      }
+      if (projectId) {
+        projectIdString = 'projectId=' + projectId;
+      }
+      let taskType, userId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+      taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
+      userId = payload.userId ? '&userId=' + payload.userId : ''
+      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
+      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
+      keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
+      priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
+      statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
+      createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom : ''
+      createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo : ''
+      deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom : ''
+      deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
+      completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
+      completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
+        return this.http.get(this.baseUrl + '/getall?' + userId + '&' + projectIdString + taskType+ userIdString + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+    }
+    else {
+      let taskType, userId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+      taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
+      userId = payload.userId ? '&userId=' + payload.userId : ''
+      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
+      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
+      keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
+      priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
+      statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
+      createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom : ''
+      createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo : ''
+      deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom : ''
+      deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
+      completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
+      completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
+      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+    }
+  }
+
   createTask(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }
