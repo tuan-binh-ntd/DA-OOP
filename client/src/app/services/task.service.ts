@@ -53,7 +53,7 @@ export class TaskService {
     }
   }
 
-  getAllTask1(projectId?: string, createUserId?: string, payload?: any): Observable<any> {
+  getAllTaskCreator(projectId?: string, createUserId?: string, payload?: any): Observable<any> {
     let userIdString = '';
     let projectIdString = '';
     if (createUserId || projectId) {

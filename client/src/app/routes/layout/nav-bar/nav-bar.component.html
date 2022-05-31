@@ -60,11 +60,11 @@
           <span class="mr-2">My Tasks</span>
           </a>
           <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-            <a class="dropdown-item" href="projects/tasks" (click)="task.openTask('create'); this.showTask = true">
+            <a class="dropdown-item" href="projects/tasks/mytask">
               <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
               Task cua minh</a>
 
-            <a class="dropdown-item" href="projects/tasks" (click)="task.openTask('employee'); this.showTask = true">
+            <a class="dropdown-item" href="projects/tasks/assign">
               <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
               Task minh giao</a>
           </div>
@@ -96,10 +96,3 @@
       </ul>
     </div>
   </nav>
-
-  
-  <div class="modal fade" id="task" [hidden]="!showTask" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <app-tasks #task></app-tasks>
-    </div>
-  </div>

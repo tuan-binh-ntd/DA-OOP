@@ -15,10 +15,8 @@ import { TasksComponent } from '../../tasks/tasks.component';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  @ViewChild('task') task!: TasksComponent;
   userName!:string;
   loggedIn:boolean = false;
-  showTask: boolean = false;
   right:boolean = true;
   users: any[] = [];
   constructor(private authenticationService: AuthenticationService, private userService: UserService) {

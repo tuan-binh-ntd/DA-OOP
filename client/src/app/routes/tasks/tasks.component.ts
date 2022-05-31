@@ -29,9 +29,9 @@ export class TasksComponent implements OnInit {
   users: any[] = [];
   projects: any[] = [];
   projectId: string = '';
+  isMyTask: string = '';
   userId: string = '';
   sub: any;
-  pm: string = 'create';
   isShowModal: boolean = false;
   right: boolean = false;
   user: User;
@@ -60,12 +60,15 @@ export class TasksComponent implements OnInit {
     protected route: ActivatedRoute,
     protected router: Router,
   ) {
-    forwardRef(() =>Calendar)
+    forwardRef(() =>Calendar);
    }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.projectId = params['projectId'];
+    })
+    this.route.params.subscribe(params => {
+      this.isMyTask = params['id'];
     })
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
@@ -74,7 +77,11 @@ export class TasksComponent implements OnInit {
     this.userId = this.user.id;
     this.fetchUserData();
     this.fetchProjectData();
-    this.openTask(this.pm);
+    if(this.isMyTask === 'mytask'){
+      this.fetchTaskData();
+    } else {
+      this.fetchCreateTaskData();
+    }
   }
 
   fetchTaskData() {
@@ -87,7 +94,7 @@ export class TasksComponent implements OnInit {
   }
   fetchCreateTaskData() {
     this.sub = this.taskService
-      .getAllTask1(this.projectId, this.userId, this.getAllTask)
+      .getAllTaskCreator(this.projectId, this.userId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -197,15 +204,5 @@ export class TasksComponent implements OnInit {
    this.getAllTask.statusCode = null;
    this.getAllTask.priorityCode = null;
    this.fetchTaskData();
-  }
-
-  openTask(pm: string){
-    this.pm = pm;
-    if(pm === 'create'){
-      this.fetchTaskData();
-    }
-    else if (pm === 'employee') {
-      this.fetchCreateTaskData();
-    }
   }
 }
