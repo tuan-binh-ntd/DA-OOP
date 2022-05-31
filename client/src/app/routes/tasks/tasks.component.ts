@@ -77,14 +77,18 @@ export class TasksComponent implements OnInit {
     this.userId = this.user.id;
     this.fetchUserData();
     this.fetchProjectData();
+    this.fetchTaskData();
+  }
+
+  fetchTaskData(){
     if(this.isMyTask === 'mytask'){
-      this.fetchTaskData();
+      this.fetchMyTaskData();
     } else {
       this.fetchCreateTaskData();
     }
   }
 
-  fetchTaskData() {
+  fetchMyTaskData() {
     this.sub = this.taskService
       .getAllTask(this.projectId, this.userId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
