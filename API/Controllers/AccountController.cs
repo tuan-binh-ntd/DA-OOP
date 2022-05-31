@@ -238,11 +238,57 @@ namespace API.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<ActionResult> DeteleUser(Guid id)
+        public async Task<ActionResult> DeteleUser(Guid deleteUserId, Guid deletedUserId, Permission deleteUserPermission, 
+            Permission deletedUserPermission, Guid newLeaderId, Guid? departmentId)
         {
-            _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(id));
-            await _dataContext.SaveChangesAsync();
-            return Ok("Removed");
+            if(deleteUserPermission == Permission.ProjectManager && deletedUserPermission == Permission.Leader)
+            {
+                // Lấy Leader mới, gán lại quyền và lưu lại
+                var newLeader = await _dataContext.AppUser.FindAsync(newLeaderId);
+                newLeader.PermissionCode = Permission.Leader;
+                _dataContext.AppUser.Update(newLeader);
+                await _dataContext.SaveChangesAsync();
+                // Lấy danh sách các công việc của Leader chuẩn bị xóa và lưu
+                var taskOldLeader = await _dataContext.Task.Where(e => e.CreateUserId == deletedUserId).ToListAsync();
+                foreach(var item in taskOldLeader)
+                {
+                    //Các công việc của Leader thì gán AppUserId cho leader mới
+                    if(item.AppUserId == deletedUserId)
+                    {
+                        item.AppUserId = newLeader.Id;
+                    }
+                    item.CreateUserId = newLeader.Id;
+                }
+                _dataContext.Task.UpdateRange(taskOldLeader);
+                await _dataContext.SaveChangesAsync();
+                //Xóa leader
+                _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(deletedUserId));
+                await _dataContext.SaveChangesAsync();
+                return Ok("Removed");
+            }
+            else if(deleteUserPermission == Permission.ProjectManager && deletedUserPermission == Permission.Employee ||
+                deleteUserPermission == Permission.Leader && deletedUserPermission == Permission.Employee)
+            {
+                //Lấy danh sách công việc của employee
+                var taskOldEmployee = await _dataContext.Task.Where(e => e.AppUserId == deletedUserId).ToListAsync();
+                //Lấy leader của phòng có employee
+                var leader = await _dataContext.AppUser.SingleOrDefaultAsync(e => e.DepartmentId == departmentId);
+                //Gán công việc cho leader và lưu
+                foreach(var item in taskOldEmployee)
+                {
+                    item.AppUserId = leader.Id;
+                }
+                _dataContext.Task.UpdateRange(taskOldEmployee);
+                await _dataContext.SaveChangesAsync();
+                //Xóa employee
+                _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(deletedUserId));
+                await _dataContext.SaveChangesAsync();
+                return Ok("Removed");
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
