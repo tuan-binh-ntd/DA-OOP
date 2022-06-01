@@ -1,5 +1,5 @@
-<div class="wrapper ">
-  <div class="row mt-4">
+<div class="container-fluid">
+  <div class="row no-gutters mt-4">
     <div class="col col-6 p-0">
       <h2 class="mb-3 text-primary fw-700">Projects</h2>
     </div>
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row no-gutters">
     <div class="col col-5 p-0">
       <div class="form-group has-search">
         <span class="fa fa-search form-control-feedback"></span>
@@ -67,7 +67,7 @@
         [routerLink]="['projects/tasks', item.id]"
       >
         <div class="card-body" (click)="onViewTask(item.id)">
-          <div class="row">
+          <div class="row no-gutters">
             <div class="col col-10" style="line-height: 16px">
               <span class="font-weight-light" style="line-height: 32px">
                 {{ item.taskCount }} Tasks
@@ -90,7 +90,7 @@
           </div>
           <h5 class="card-title">{{ item.projectName }}</h5>
           <!-- <p class="card-text">{{ item.description }}</p> -->
-          <div class="row">
+          <div class="row no-gutters">
             <div class="col col-8">
               <p class="card-text">
                 <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
@@ -138,7 +138,7 @@
           </div>
 
           <hr />
-          <div class="row text-center">
+          <div class="row no-gutters text-center">
             <div class="col col-6">
               <h6>Leader</h6>
               <span>{{ item.leaderName }}</span>

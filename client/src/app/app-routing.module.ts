@@ -15,6 +15,7 @@ import { AuthRightGuard } from './guard/authRight.guard';
 import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
+import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -33,6 +34,7 @@ const routes: Routes = [
     children: [
       { path: 'projects/tasks', component: TasksComponent },
       { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
+      { path: 'projects/tasks/status', component: TaskStatusComponent },
   { path: 'projects/tasks/:id', component: TasksComponent },
   { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
   { path: 'projects', component: ProjectsComponent },

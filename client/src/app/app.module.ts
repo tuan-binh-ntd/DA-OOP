@@ -21,6 +21,7 @@ import * as bootstrap from "bootstrap";
 import { UsersComponent } from './routes/users/users.component';
 import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -30,6 +31,7 @@ import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component'; // a plugin!
 import { NgChartsModule } from 'ng2-charts';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
+import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
 FullCalendarModule.registerPlugins([
   bootstrapPlugin ,
   dayGridPlugin,
@@ -54,6 +56,7 @@ FullCalendarModule.registerPlugins([
     ForbiddenComponent,
     PageNotFoundComponent,
     ContentLayoutComponent,
+    TaskStatusComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    DragDropModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),

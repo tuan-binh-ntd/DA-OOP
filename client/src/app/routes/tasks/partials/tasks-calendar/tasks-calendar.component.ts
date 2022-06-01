@@ -31,23 +31,7 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
     editable: true,
     selectable: true,
   };
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.projectId = params['projectId'];
-    });
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.user = JSON.parse(localStorage.getItem('user'));
-    if (
-      user.permissionCode === Permission.ProjectManager ||
-      user.permissionCode === Permission.Leader
-    ) {
-      this.right = true;
-    }
-    this.userId = this.user.id;
-    this.fetchTaskData();
-    this.fetchUserData();
-    this.fetchProjectData();
-  }
+
 
   fetchTaskData() {
     this.sub = this.taskService
@@ -58,6 +42,7 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
         let array = [];
         this.tasks.forEach((task) => {
           const detail = {
+            id: task.id,
             title: task.taskName,
             start: task.createDate,
             end: task.deadlineDate,
@@ -77,33 +62,18 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
           droppable: true,
           themeSystem: 'bootstrap',
           eventColor: '#00b4d8',
-          height: 630,
+          height: 600,
         };
       });
   }
 
   onDateClick(res: any) {
-    alert('Clicked on date : ' + res);
+   const task = this.tasks.find(task=> task.id === res.event._def.publicId);
+   this.openDetailModal(task,'detail',false);
   }
   pipeDate(date: any) {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(date, 'dd-MM-yyyy');
   }
-  eventClick(model) {
-    console.log(model);
-  }
-  eventDragStop(model) {
-    console.log(model);
-  }
-  clickButton(model) {
-    console.log(model);
-  }
-  dateClick(model) {
-    console.log(model);
-  }
-  handleClickDate() {}
-  handleEventClick() {
-    console.log(123);
-  }
-  handleDropEvent() {}
+  
 }
