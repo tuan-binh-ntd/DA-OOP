@@ -21,7 +21,7 @@ export class TaskFilterComponent implements OnInit {
   @Output() filterStatus = new EventEmitter();
   @Output() filterPriority = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
-
+@Output() onSearchTask = new EventEmitter();
 
   priorityValue: any;
   typeName: string = 'Type';
@@ -74,6 +74,10 @@ export class TaskFilterComponent implements OnInit {
       projectId: [null],
     });
 
+  }
+
+  onSearch(ev:any){
+    this.onSearchTask.emit(ev);
   }
 
   submitForm() {
