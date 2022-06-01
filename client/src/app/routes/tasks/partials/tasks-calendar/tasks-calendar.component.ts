@@ -32,10 +32,51 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
     selectable: true,
   };
 
+  fetchTaskData(){
+    if(this.isMyTask === 'mytask'){
+      this.fetchMyTaskData();
+    } else {
+      this.fetchCreateTaskData();
+    }
+  }
 
-  fetchTaskData() {
+  fetchMyTaskData() {
     this.sub = this.taskService
       .getAllTask(this.projectId, this.userId, this.getAllTask)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.tasks = response;
+        let array = [];
+        this.tasks.forEach((task) => {
+          const detail = {
+            id: task.id,
+            title: task.taskName,
+            start: task.createDate,
+            end: task.deadlineDate,
+          };
+          array.push(detail);
+        });
+        this.calendarOptions = {
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+          },
+          initialView: 'dayGridMonth',
+          eventClick: this.onDateClick.bind(this),
+          events: array,
+          editable: true,
+          droppable: true,
+          themeSystem: 'bootstrap',
+          eventColor: '#00b4d8',
+          height: 600,
+        };
+      });
+  }
+
+  fetchCreateTaskData() {
+    this.sub = this.taskService
+      .getAllTaskCreator(this.projectId, this.userId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;

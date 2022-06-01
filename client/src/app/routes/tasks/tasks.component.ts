@@ -67,9 +67,11 @@ export class TasksComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.projectId = params['projectId'];
     })
-    this.route.params.subscribe(params => {
-      this.isMyTask = params['id'];
-    })
+    if(this.projectId == undefined){
+      this.route.params.subscribe(params => {
+        this.isMyTask = params['type'];
+      });
+    }
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true

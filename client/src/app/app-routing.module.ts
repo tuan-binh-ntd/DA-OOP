@@ -33,20 +33,24 @@ const routes: Routes = [
     component: ContentLayoutComponent,
     children: [
       { path: 'projects/tasks', component: TasksComponent },
-      { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },
-  { path: 'projects/tasks/:id', component: TasksComponent },
-  { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'change-password', component: ChangePasswordComponent },
-  { path: 'forbidden', component: ForbiddenComponent },
-  { path: '**', pathMatch: 'full', 
-  component: PageNotFoundComponent },
+      { path: 'projects/tasks/:type/calendar', component: TasksCalendarComponent },
+      { path: 'projects/tasks/:type', component: TasksComponent },
+      { path: 'projects/tasks/:id/calendar', component: TasksCalendarComponent },
+      { path: 'projects/tasks/:id', component: TasksComponent },
+      { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'forbidden', component: ForbiddenComponent },
+      {
+        path: '**', pathMatch: 'full',
+        component: PageNotFoundComponent
+      },
     ],
   },
 
-  
+
 
 ];
 
@@ -54,4 +58,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
