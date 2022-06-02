@@ -239,7 +239,7 @@ namespace API.Controllers
 
         [HttpDelete("delete")]
         public async Task<ActionResult> DeteleUser(Guid deleteUserId, Guid deletedUserId, Permission deleteUserPermission, 
-            Permission deletedUserPermission, Guid newLeaderId, Guid? departmentId)
+            Permission deletedUserPermission, Guid newLeaderId)
         {
             if(deleteUserPermission == Permission.ProjectManager && deletedUserPermission == Permission.Leader)
             {
@@ -249,7 +249,7 @@ namespace API.Controllers
                 _dataContext.AppUser.Update(newLeader);
                 await _dataContext.SaveChangesAsync();
                 // Lấy danh sách các công việc của Leader chuẩn bị xóa và lưu
-                var taskOldLeader = await _dataContext.Task.Where(e => e.CreateUserId == deletedUserId).ToListAsync();
+                var taskOldLeader = await _dataContext.Task.Where(e => e.CreateUserId == deletedUserId || e.AppUserId == deletedUserId).ToListAsync();
                 foreach(var item in taskOldLeader)
                 {
                     //Các công việc của Leader thì gán AppUserId cho leader mới
@@ -272,17 +272,17 @@ namespace API.Controllers
                 //Lấy danh sách công việc của employee
                 var taskOldEmployee = await _dataContext.Task.Where(e => e.AppUserId == deletedUserId).ToListAsync();
                 //Lấy leader của phòng có employee
-                var leader = await _dataContext.AppUser.SingleOrDefaultAsync(e => e.DepartmentId == departmentId);
+                var leader = await _dataContext.AppUser.FindAsync(deleteUserId);
                 //Gán công việc cho leader và lưu
                 foreach(var item in taskOldEmployee)
                 {
                     item.AppUserId = leader.Id;
                 }
                 _dataContext.Task.UpdateRange(taskOldEmployee);
-                await _dataContext.SaveChangesAsync();
+                _dataContext.SaveChanges();
                 //Xóa employee
                 _dataContext.AppUser.Remove(await _dataContext.AppUser.FindAsync(deletedUserId));
-                await _dataContext.SaveChangesAsync();
+                _dataContext.SaveChanges();
                 return Ok("Removed");
             }
             else
