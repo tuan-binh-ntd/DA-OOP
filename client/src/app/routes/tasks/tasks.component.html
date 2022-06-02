@@ -22,7 +22,7 @@
         <i class="fa fa-calendar mr-2"></i>
         <span>Calendar</span>
       </button>
-      <button *ngIf="!isMyTask" class="button float-right" [routerLink]="[projectId,'calendar']">
+      <button *ngIf="!isMyTask" class="button float-right" [routerLink]="['../tasks',projectId,'calendar']">
         <i class="fa fa-calendar mr-2"></i>
         <span>Calendar</span>
       </button>
