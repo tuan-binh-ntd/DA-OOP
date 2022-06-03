@@ -8,21 +8,10 @@ import { Observable } from 'rxjs';
 export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
-  getAllTask(projectId?: string, userId?: string, payload?: any): Observable<any> {
-    let userIdString = '';
-    let projectIdString = '';
-    if (userId || projectId) {
-      if (userId) {
-        userIdString = 'userId=' + userId;
-      }
-      if (projectId) {
-        projectIdString = 'projectId=' + projectId;
-      }
-      let taskType, createUserId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+  getAllTask(projectId?: string, userId?: string, createUserId?: string, payload?: any): Observable<any> {
+    if (projectId && userId && createUserId) {
+      let taskType, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? '&userId=' + payload.userId : ''
-      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
-      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
       priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
       statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
@@ -32,14 +21,29 @@ export class TaskService {
       deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
       completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
       completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-        return this.http.get(this.baseUrl + '/getall?' + userIdString + '&' + projectIdString + taskType+ createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      let getUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&userId=' + userId + '&projectId' + projectId +  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      let getCreateUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&projectId=' + projectId + '&createUserId' + createUserId +  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      return getUserId && getCreateUserId;
+    }
+    else if (userId) {
+      let taskType, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+      taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
+      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
+      keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
+      priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
+      statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
+      createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom : ''
+      createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo : ''
+      deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom : ''
+      deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
+      completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
+      completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
+      return this.http.get(this.baseUrl + '/getall?' + taskType +'&userId=' + userId  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
     }
     else {
-      let taskType, createUserId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+      let taskType, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? '&userId=' + payload.userId : ''
       projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
-      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
       priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
       statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
@@ -49,52 +53,7 @@ export class TaskService {
       deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
       completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
       completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
-    }
-  }
-
-  getAllTaskCreator(projectId?: string, createUserId?: string, payload?: any): Observable<any> {
-    let userIdString = '';
-    let projectIdString = '';
-    if (createUserId || projectId) {
-      if (createUserId) {
-        userIdString = '&createUserId=' + createUserId;
-      }
-      if (projectId) {
-        projectIdString = 'projectId=' + projectId;
-      }
-      let taskType, userId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
-      taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? '&userId=' + payload.userId : ''
-      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
-      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
-      keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
-      priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
-      statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
-      createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom : ''
-      createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo : ''
-      deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom : ''
-      deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
-      completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
-      completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-        return this.http.get(this.baseUrl + '/getall?' + userId + '&' + projectIdString + taskType+ userIdString + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
-    }
-    else {
-      let taskType, userId, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
-      taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
-      userId = payload.userId ? '&userId=' + payload.userId : ''
-      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
-      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
-      keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
-      priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
-      statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
-      createDateFrom = payload.createDateFrom ? '&createDateFrom=' + payload.createDateFrom : ''
-      createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo : ''
-      deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom : ''
-      deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
-      completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
-      completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      return this.http.get(this.baseUrl + '/getall?' + taskType + '&createUserId=' + createUserId  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
     }
   }
 

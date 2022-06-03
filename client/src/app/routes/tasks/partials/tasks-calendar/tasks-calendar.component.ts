@@ -35,53 +35,24 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
   fetchTaskData(){
     if(this.projectId === 'mytask'){
       this.projectId = null;
-      this.fetchMyTaskData();
+      this.createUserId = null;
+      this.userId = this.user.id;
+      this.fetchTask();
     } else if (this.projectId === 'assign'){
       this.projectId = null;
-      this.fetchCreateTaskData();
+      this.createUserId = this.user.id;
+      this.userId = null;
+      this.fetchTask();
     } else {
-      this.fetchMyTaskData();
-      this.fetchCreateTaskData();
+      this.createUserId = this.user.id;
+      this.userId = this.user.id;
+      this.fetchTask();
     }
   }
 
-  fetchMyTaskData() {
+  fetchTask() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.getAllTask)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.tasks = response;
-        let array = [];
-        this.tasks.forEach((task) => {
-          const detail = {
-            id: task.id,
-            title: task.taskName,
-            start: task.createDate,
-            end: task.deadlineDate,
-          };
-          array.push(detail);
-        });
-        this.calendarOptions = {
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-          },
-          initialView: 'dayGridMonth',
-          eventClick: this.onDateClick.bind(this),
-          events: array,
-          editable: true,
-          droppable: true,
-          themeSystem: 'bootstrap',
-          eventColor: '#00b4d8',
-          height: 600,
-        };
-      });
-  }
-
-  fetchCreateTaskData() {
-    this.sub = this.taskService
-      .getAllTaskCreator(this.projectId, this.userId, this.getAllTask)
+      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;

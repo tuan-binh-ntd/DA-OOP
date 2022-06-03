@@ -31,6 +31,7 @@ export class TasksComponent implements OnInit {
   projectId: string = '';
   isMyTask: string = '';
   userId: string = '';
+  createUserId: string = '';
   sub: any;
   isShowModal: boolean = false;
   right: boolean = false;
@@ -71,7 +72,6 @@ export class TasksComponent implements OnInit {
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
-    this.userId = Number(this.user.permissionCode) == Permission.ProjectManager ? null : this.user.id;
     this.fetchUserData();
     this.fetchProjectData();
     this.fetchTaskData();
@@ -80,27 +80,24 @@ export class TasksComponent implements OnInit {
   fetchTaskData(){
     if(this.projectId === 'mytask'){
       this.projectId = null;
-      this.fetchMyTaskData();
+      this.createUserId = null;
+      this.userId = this.user.id;
+      this.fetchTask();
     } else if (this.projectId === 'assign'){
       this.projectId = null;
-      this.fetchCreateTaskData();
+      this.createUserId = this.user.id;
+      this.userId = null;
+      this.fetchTask();
     } else {
-      this.fetchMyTaskData();
-      this.fetchCreateTaskData();
+      this.createUserId = this.user.id;
+      this.userId = this.user.id;
+      this.fetchTask();
     }
   }
 
-  fetchMyTaskData() {
+  fetchTask() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.getAllTask)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.tasks = response;
-      });
-  }
-  fetchCreateTaskData() {
-    this.sub = this.taskService
-      .getAllTaskCreator(this.projectId, this.userId, this.getAllTask)
+      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -178,6 +175,9 @@ export class TasksComponent implements OnInit {
       this.getAllTask.keyWord = ev.target.value;
       this.fetchTaskData();
     }
+    this.route.params.subscribe(params => {
+      this.projectId = params['type'];
+    })
   }
 
   submitFormFilter(data:any){
