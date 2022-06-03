@@ -21,8 +21,8 @@ export class TaskService {
       deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
       completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
       completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-      let getUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&userId=' + userId + '&projectId' + projectId +  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
-      let getCreateUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&projectId=' + projectId + '&createUserId' + createUserId +  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      let getUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&userId=' + userId + '&projectId' + projectId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      let getCreateUserId = this.http.get(this.baseUrl + '/getall?' + taskType + '&projectId=' + projectId + '&createUserId' + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
       return getUserId && getCreateUserId;
     }
     else if (userId) {
