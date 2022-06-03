@@ -65,9 +65,6 @@ export class TasksComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.projectId = params['type'];
-    })
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
@@ -81,7 +78,6 @@ export class TasksComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.projectId = params['type'];
     })
-    console.log(this.projectId)
     if(this.projectId === 'mytask'){
       this.projectId = null;
       this.createUserId = null;
@@ -100,9 +96,6 @@ export class TasksComponent implements OnInit {
   }
 
   fetchTask() {
-    console.log(this.projectId)
-    console.log(this.userId)
-    console.log(this.createUserId)
     this.sub = this.taskService
       .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
