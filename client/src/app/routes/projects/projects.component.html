@@ -13,34 +13,8 @@
   </div>
 
   <div class="row no-gutters">
-    <div class="col col-5 p-0">
-      <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search" (keydown)="onSearch($event)" />
-        <!-- </div>
-      <div class="mb-3">
-        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
-          All: {{ allRecord }}
-        </button>
-        <button
-          class="btn ml-2"
-          [ngClass]="{ 'btn-primary': isResolvedRecord }"
-        >
-          InProgress: {{ resolvedRecord }}
-        </button>
-        <button
-          class="btn ml-2"
-          [ngClass]="{ 'btn-primary': isInProgressRecord }"
-        >
-          Resolved: {{ inProgressRecord }}
-        </button>
-        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isClosedRecord }">
-          Closed: {{ closedRecord }}
-        </button>
-      </div> -->
-      </div>
-    </div>
-    <div class="col col-7">
+    
+    <div class="col col-10">
       <app-project-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
         (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
         (filterType)="onFilterType($event)"></app-project-filter>
@@ -59,7 +33,7 @@
             <div class="col col-1">
               <i *ngIf="right" class="fa fa-lg fa-trash" (click)="$event.stopPropagation();
               openDetailModal(item, 'delete', true);
-              this.isShowModal = true" style="color: red;"></i>
+              this.isShowModal = true" style="color:red;"></i>
             </div>
             <div class="col col-1">
               <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>

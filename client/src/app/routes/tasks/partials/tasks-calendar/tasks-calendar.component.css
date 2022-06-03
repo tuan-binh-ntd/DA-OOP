@@ -10,7 +10,7 @@
     cursor: pointer;
     display: inline-flex;
     font-size: 14px;
-    height: 48px;
+    height: 40px;
     justify-content: center;
     margin: 0;
     padding: calc(.875rem - 1px) calc(1rem - 1px);
@@ -22,10 +22,14 @@
     touch-action: manipulation;
     vertical-align: baseline;
     min-width: 75px;
-    /* margin-top: 10px;
-    margin-bottom: -10px;
+
+    margin-top: 10px;
+    margin-bottom: 0px;
     margin-right: 0px;
-    margin-left: -80px; */
+    margin-left: -10px;
+  
+    
+   
   }
 
 
