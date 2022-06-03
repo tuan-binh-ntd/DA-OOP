@@ -86,19 +86,19 @@ namespace API.Controllers
             if (projectId == null && departmentId == null)
             {
                 var appUserList = await (from d in _dataContext.Department
-                                  join u in _dataContext.AppUser on d.Id equals u.DepartmentId
-                                  select new
-                                  {
-                                      DepartmentId = d.Id,
-                                      DepartmentName = d.DepartmentName,
-                                      AppUserId = u.Id,
-                                      UserName = u.FirstName + " " + u.LastName,
-                                      Address = u.Address,
-                                      Email = u.Email,
-                                      Phone = u.Phone,
-                                      Permission = u.PermissionCode == Permission.ProjectManager ? "ProjectManager" 
-                                          : u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
-                                  }).AsNoTracking().ToListAsync();
+                                         join u in _dataContext.AppUser on d.Id equals u.DepartmentId
+                                         select new
+                                         {
+                                             DepartmentId = d.Id,
+                                             DepartmentName = d.DepartmentName,
+                                             AppUserId = u.Id,
+                                             UserName = u.FirstName + " " + u.LastName,
+                                             Address = u.Address,
+                                             Email = u.Email,
+                                             Phone = u.Phone,
+                                             Permission = u.PermissionCode == Permission.ProjectManager ? "ProjectManager"
+                                                 : u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                         }).AsNoTracking().ToListAsync();
                 return Ok(appUserList);
             }
             return Ok();

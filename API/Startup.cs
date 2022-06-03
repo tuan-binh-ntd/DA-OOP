@@ -30,6 +30,7 @@ namespace API
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<IDapper, Dapperr>();
             services.AddControllers();
             services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
