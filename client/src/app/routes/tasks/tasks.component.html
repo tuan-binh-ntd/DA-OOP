@@ -18,11 +18,7 @@
         (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)"></app-task-filter>
     </div>
     <div class="col col-2">
-      <button *ngIf="isMyTask" class="button float-right" [routerLink]="['calendar']">
-        <i class="fa fa-calendar mr-2"></i>
-        <span>Calendar</span>
-      </button>
-      <button *ngIf="!isMyTask" class="button float-right" [routerLink]="[projectId,'calendar']">
+      <button class="button float-right" [routerLink]="['calendar']">
         <i class="fa fa-calendar mr-2"></i>
         <span>Calendar</span>
       </button>

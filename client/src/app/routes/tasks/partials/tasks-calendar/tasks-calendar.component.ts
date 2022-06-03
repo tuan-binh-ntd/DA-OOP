@@ -33,9 +33,14 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
   };
 
   fetchTaskData(){
-    if(this.isMyTask === 'mytask'){
+    if(this.projectId === 'mytask'){
+      this.projectId = null;
       this.fetchMyTaskData();
+    } else if (this.projectId === 'assign'){
+      this.projectId = null;
+      this.fetchCreateTaskData();
     } else {
+      this.fetchMyTaskData();
       this.fetchCreateTaskData();
     }
   }
