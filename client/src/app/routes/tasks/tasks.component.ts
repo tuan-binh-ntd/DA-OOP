@@ -78,6 +78,9 @@ export class TasksComponent implements OnInit {
   }
 
   fetchTaskData(){
+    this.route.params.subscribe(params => {
+      this.projectId = params['type'];
+    })
     console.log(this.projectId)
     if(this.projectId === 'mytask'){
       this.projectId = null;
@@ -177,9 +180,6 @@ export class TasksComponent implements OnInit {
   onSearch(ev: any) {
     if (ev.key === "Enter") {
       this.getAllTask.keyWord = ev.target.value;
-      this.route.params.subscribe(params => {
-        this.projectId = params['type'];
-      })
       this.fetchTaskData();
     }
   }
@@ -213,9 +213,6 @@ export class TasksComponent implements OnInit {
    this.getAllTask.taskType = null;
    this.getAllTask.statusCode = null;
    this.getAllTask.priorityCode = null;
-   this.route.params.subscribe(params => {
-    this.projectId = params['type'];
-  })
    this.fetchTaskData();
   }
 }
