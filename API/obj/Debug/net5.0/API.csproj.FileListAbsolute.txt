@@ -240,3 +240,5 @@ D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\API.dll
 D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
 D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
+F:\DA-OOP\DA-OOP\API\bin\Debug\net5.0\API.StaticWebAssets.xml
+F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache

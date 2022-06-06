@@ -8,8 +8,8 @@ namespace API.Entity
     {
         [Required, Key]
         public Guid Id { get; set; }
-        [Required, ForeignKey("Task")]
-        public Guid TaskId { get; set; }
+        [Required, ForeignKey("Tasks")]
+        public Guid TasksId { get; set; }
         [Required, ForeignKey("AppUser")]
         public Guid SenderId { get; set; }
         [Required, StringLength(40)]

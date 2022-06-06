@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class AddMessagesToDB : Migration
+    public partial class AddMessageToDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TasksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SenderUserName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     RecipientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -38,6 +38,12 @@ namespace API.Migrations
                         principalTable: "AppUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Task_TasksId",
+                        column: x => x.TasksId,
+                        principalTable: "Task",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -49,6 +55,11 @@ namespace API.Migrations
                 name: "IX_Messages_SenderId",
                 table: "Messages",
                 column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_TasksId",
+                table: "Messages",
+                column: "TasksId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

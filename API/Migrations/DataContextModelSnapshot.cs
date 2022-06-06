@@ -122,7 +122,7 @@ namespace API.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<Guid>("TaskId")
+                    b.Property<Guid>("TasksId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -130,6 +130,8 @@ namespace API.Migrations
                     b.HasIndex("RecipientId");
 
                     b.HasIndex("SenderId");
+
+                    b.HasIndex("TasksId");
 
                     b.ToTable("Messages");
                 });
@@ -265,6 +267,12 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("API.Entity.Tasks", null)
+                        .WithMany("Message")
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Recipient");
 
                     b.Navigation("Sender");
@@ -311,6 +319,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entity.Project", b =>
                 {
                     b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("API.Entity.Tasks", b =>
+                {
+                    b.Navigation("Message");
                 });
 #pragma warning restore 612, 618
         }
