@@ -185,7 +185,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("update/status")]
-        public async Task<ActionResult> UpdateStatus(int taskId, StatusCode statusCode)
+        public async Task<ActionResult> UpdateStatus(Guid taskId, StatusCode statusCode)
         {
             var task = await _dataContext.Task.FindAsync(taskId);
             task.StatusCode = statusCode;
