@@ -3,7 +3,7 @@ using System;
 
 namespace API.DTO
 {
-    public class TaskDto
+    public class ModifyTaskDto
     {
         public string TaskName { get; set; }
         public string CreateUserName { get; set; }
