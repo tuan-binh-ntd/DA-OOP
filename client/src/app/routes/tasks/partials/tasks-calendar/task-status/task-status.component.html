@@ -18,7 +18,7 @@
       cdkDropList
       #listOpen="cdkDropList"
       [cdkDropListData]="inProgressTask"
-      [cdkDropListConnectedTo]="[listResolve, listProgress]"
+      [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let item of inProgressTask" cdkDrag>{{item.taskName}}</div>
