@@ -20,7 +20,6 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
   reOpendCount: number = 0;
 
   drop(event: CdkDragDrop<string[]>) {
-    debugger
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -28,28 +27,28 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
       if(event.container.id === 'reopen') {
          payload = {
           // @ts-ignore
-         id:  event.previousContainer.data[event.previousIndex].id,
+          taskId:  event.previousContainer.data[event.previousIndex].id,
          statusCode: StatusCode.Reopened
         }
       }
       else if(event.container.id === 'open') {
          payload = {
           // @ts-ignore
-         id:  event.previousContainer.data[event.previousIndex].id,
+          taskId:  event.previousContainer.data[event.previousIndex].id,
          statusCode: StatusCode.Open
         }
       }
       else if(event.container.id === 'inProgress') {
          payload = {
           // @ts-ignore
-         id:  event.previousContainer.data[event.previousIndex].id,
+          taskId:  event.previousContainer.data[event.previousIndex].id,
          statusCode: StatusCode.InProgress
         }
       }
       else{
          payload = {
           // @ts-ignore
-         id:  event.previousContainer.data[event.previousIndex].id,
+          taskId:  event.previousContainer.data[event.previousIndex].id,
          statusCode: StatusCode.Resolved
         }
       }
@@ -59,15 +58,20 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
-      this.taskService.patchTask(payload).subscribe(res=>{
-        if(res){
-          this.toastr.success('Update status successfully!!');
-          this.fetchTask();
-        }else{
-          this.toastr.success('Update status failed!');
-
+      this.taskService
+      .patchTask(payload)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.toastr.success('Update status successfully!');
+        } else {
+          this.toastr.error('Failed');
         }
-      })
+      });
     }
   }
 
