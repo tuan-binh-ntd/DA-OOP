@@ -206,6 +206,7 @@ export class TasksComponent implements OnInit {
    this.getAllTask.taskType = null;
    this.getAllTask.statusCode = null;
    this.getAllTask.priorityCode = null;
+   this.getAllTask.keyWord = null;
    this.fetchTaskData();
   }
 }

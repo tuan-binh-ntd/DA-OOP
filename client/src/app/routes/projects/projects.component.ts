@@ -149,6 +149,7 @@ export class ProjectsComponent implements OnInit {
     this.getAllProject.projectType = null;
     this.getAllProject.statusCode = null;
     this.getAllProject.priorityCode = null;
+    this.getAllProject.keyWord = null;
     this.fetchProjectData();
   }
 }
