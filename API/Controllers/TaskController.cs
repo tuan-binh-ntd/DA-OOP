@@ -184,6 +184,16 @@ namespace API.Controllers
 
         }
 
+        [HttpPatch("update/status")]
+        public async Task<ActionResult> UpdateStatus(int taskId, StatusCode statusCode)
+        {
+            var task = await _dataContext.Task.FindAsync(taskId);
+            task.StatusCode = statusCode;
+            _dataContext.Update(task);
+            await _dataContext.SaveChangesAsync();
+            return Ok("Successfully");
+        }
+
         [HttpDelete("delete")]
         public async Task<ActionResult> DeleteTask(Guid id)
         {
