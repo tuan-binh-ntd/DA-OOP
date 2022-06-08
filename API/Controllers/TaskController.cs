@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.DTO;
+using API.DTO.TaskDto;
 using API.Entity;
 using API.Enum;
 using Microsoft.AspNetCore.Mvc;
@@ -185,10 +186,10 @@ namespace API.Controllers
         }
 
         [HttpPatch("update/status")]
-        public async Task<ActionResult> UpdateStatus(Guid taskId, StatusCode statusCode)
+        public async Task<ActionResult> UpdateStatus(DTO.TaskDto.UpdateStatusDto input)
         {
-            var task = await _dataContext.Task.FindAsync(taskId);
-            task.StatusCode = statusCode;
+            var task = await _dataContext.Task.FindAsync(input.TaskId);
+            task.StatusCode = input.StatusCode;
             _dataContext.Update(task);
             await _dataContext.SaveChangesAsync();
             return Ok("Successfully"); 
