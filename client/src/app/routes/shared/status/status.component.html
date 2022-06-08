@@ -1,7 +1,7 @@
 <div [ngSwitch]="statusCode" class="text-center" >
-    <span style="width: 80px" *ngSwitchCase="code.Reopened" class="badge badge-light fsz-14">Reopened</span>
-    <span style="width: 80px" *ngSwitchCase="code.Open" class="badge  badge-info fsz-14">Open</span>
-    <span style="width: 80px" *ngSwitchCase="code.Resolved" class="badge  badge-success fsz-14">Resolved</span>
-    <span style="width: 80px" *ngSwitchCase="code.InProgress" class="badge  badge-primary fsz-14">InProgress</span>
-    <span style="width: 80px" *ngSwitchCase="code.Closed" class="badge  badge-secondary fsz-14">Closed</span>
+    <span style="width: 100px" *ngSwitchCase="code.Reopened" class=" badge text-white reopen fsz-14">Reopened</span>
+    <span style="width: 100px" *ngSwitchCase="code.Open" class="badge  text-white  open fsz-14">Open</span>
+    <span style="width: 100px" *ngSwitchCase="code.Resolved" class="badge  text-white complete  fsz-14">Resolved</span>
+    <span style="width: 100px" *ngSwitchCase="code.InProgress" class="badge text-white  inProgress fsz-14">InProgress</span>
+    <span style="width: 100px" *ngSwitchCase="code.Closed" class="badge   closed fsz-14">Closed</span>
 </div>

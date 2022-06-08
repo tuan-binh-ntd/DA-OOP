@@ -1,0 +1,22 @@
+.reopen{
+    background: linear-gradient(90deg,#f9b16e 100%,#f9b16e 0);
+}
+
+.open{
+    background: linear-gradient(90deg,var(--light-text) 100%,var(--light-text) 0);
+
+}
+
+.inProgress{
+    background: linear-gradient(90deg,#17a2b8 100%,#17a2b8 0);
+}
+
+.complete{
+    background: linear-gradient(90deg,#00ff87 100%,#00ff87 0);
+}
+
+.closed{
+    background: linear-gradient(90deg,#ebf4f5 100%,#ebf4f5 0);
+    
+    
+}

@@ -7,6 +7,9 @@ html, body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 :root {
@@ -206,3 +209,52 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
     transform: translateY(0);
   }
   
+  .fixedButton{
+    position: fixed;
+    bottom: 0px;
+    right: 0px; 
+    padding: 20px;
+}
+.btn--fab {
+  position: fixed;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px 0;
+  width: 70px;
+  height: 70px;
+  padding: 8px;
+  background-color: #fff;
+  right: 2%;
+  bottom: 5%;
+  border: none;
+  outline: none;
+  z-index: 999;
+  font-size: 2rem;
+  cursor: pointer;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+.btn--fab >  i {
+    color: var(--primary-color);
+    background-color: #fff;
+    border-radius: 50%;
+    
+  }
+
+  .btn--fab.color-1 {
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+
+
+
+
+/* CSS */
+
+
+
+
+.btn--fab:hover {
+  transform: translateY(-5px);
+}
+

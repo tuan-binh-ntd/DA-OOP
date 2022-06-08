@@ -4,10 +4,9 @@
       <h2 class="mb-3 text-primary fw-700">Tasks </h2>
     </div>
     <div class="col col-6">
-      <button *ngIf="right" class="button-create create__btn float-right" data-toggle="modal"
+      <button *ngIf="right" class="fixedButton btn--fab color-1 float-right" data-toggle="modal"
         data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
         <i class="fa fa-plus"></i>
-        <span>Create Task</span>
       </button>
     </div>
   </div>
@@ -25,37 +24,38 @@
     </div>
   </div>
   <table *ngIf="tasks.length !== 0" id="example" class="table table-hover mt-4" style="width:100%">
+    
     <thead>
       <tr>
-        <th class="text-center align-middle">Type</th>
-        <th class="align-middle">Project</th>
-        <th class="align-middle">Name</th>
-        <th class="align-middle">Creator</th>
-        <th class="align-middle">Employee</th>
-        <th class="text-center align-middle">Deadline Date</th>
-        <th class="text-center align-middle">Complete Date</th>
-        <th class="text-center align-middle">Priority</th>
-        <th class="text-center align-middle">Status</th>
-        <th class="text-center align-middle">Operation</th>
+        <th class="text-center align-middle" style="width: 5%;">Type</th>
+        <th class="align-middle" style="width: auto;">Project</th>
+        <th class="align-middle" style="width: auto;">Name</th>
+        <th class="align-middle" style="width: 10%;">Creator</th>
+        <th class="align-middle" style="width: 10%;">Employee</th>
+        <th class="text-center align-middle" style="width: 10%;">Deadline Date</th>
+        <th class="text-center align-middle" style="width: 10%;">Complete Date</th>
+        <th class="text-center align-middle" style="width: 5%;">Priority</th>
+        <th class="text-center align-middle" style="width: 10%;">Status</th>
+        <th class="text-center align-middle" style="width: 10%;">Operation</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td class="text-center align-middle">{{ task.taskType }}</td>
-        <td class="align-middle">{{ getProjectName(task.projectId) }}</td>
-        <td class="align-middle">{{ task.taskName }}</td>
-        <td class="align-middle">{{ getUserName(task.createUserId) }}</td>
-        <td class="align-middle">{{ getUserName(task.appUserId) }}</td>
-        <td class="text-center align-middle">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="text-center align-middle">{{ task.completeDate == null ? task.dayLefts < 0? 'Overtime' : task.dayLefts + ' Days' :
+        <td class="text-center align-middle" style="width: 5%;">{{ task.taskType }}</td>
+        <td class="align-middle" style="width: auto;">{{ getProjectName(task.projectId) }}</td>
+        <td class="align-middle" style="width: auto;">{{ task.taskName }}</td>
+        <td class="align-middle" style="width: 10%;">{{ getUserName(task.createUserId) }}</td>
+        <td class="align-middle" style="width: 10%;">{{ getUserName(task.appUserId) }}</td>
+        <td class="text-center align-middle" style="width: 10%;">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center align-middle" style="width: 10%;">{{ task.completeDate == null ? task.dayLefts < 0? 'Overtime' : task.dayLefts + ' Days' :
             task.completeDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="text-center align-middle">
+        <td class="text-center align-middle" style="width: 5%;">
           <app-priority-icon [priorityCode]="task.priorityCode"></app-priority-icon>
         </td>
-        <td class="text-center align-middle">
+        <td class="text-center align-middle" style="width: 10%;">
           <app-status [statusCode]="task.statusCode"></app-status>
         </td>
-        <td class="text-center p-0 align-middle">
+        <td class="text-center p-0 align-middle" style="width: 10%;">
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(task, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
