@@ -32,27 +32,9 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
     selectable: true,
   };
 
-  fetchTaskData(){
-    if(this.projectId === 'mytask'){
-      this.projectId = null;
-      this.createUserId = null;
-      this.userId = this.user.id;
-      this.fetchTask();
-    } else if (this.projectId === 'assign'){
-      this.projectId = null;
-      this.createUserId = this.user.id;
-      this.userId = null;
-      this.fetchTask();
-    } else {
-      this.createUserId = this.user.id;
-      this.userId = this.user.id;
-      this.fetchTask();
-    }
-  }
-
-  fetchTask() {
+  fetchTaskData() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
+      .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -82,6 +64,18 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
           height: 600,
         };
       });
+  }
+
+  onFilterUser(){
+    if(this.isMyTask == false){
+      this.getAllTask.createUserId = this.user.id;
+      this.getAllTask.userId = null;
+     }
+     else{
+       this.getAllTask.createUserId = null;
+       this.getAllTask.userId = this.user.id;
+     }
+     this.fetchTaskData();
   }
 
   onDateClick(res: any) {

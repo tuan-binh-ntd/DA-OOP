@@ -40,7 +40,6 @@ export class NavBarComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('user'));
     this.userName = user.name;    
     this.right = user.permissionCode !== Permission.ProjectManager
-    this.left = user.permissionCode !== Permission.Employee
     this.fetchUserData();
 
   }

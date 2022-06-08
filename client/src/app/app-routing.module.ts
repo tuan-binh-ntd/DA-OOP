@@ -34,8 +34,8 @@ const routes: Routes = [
     children: [
       { path: 'projects/tasks', component: TasksComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },
-      { path: 'projects/tasks/:type/calendar', component: TasksCalendarComponent },
-      { path: 'projects/tasks/:type', component: TasksComponent },
+      { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
+      { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },

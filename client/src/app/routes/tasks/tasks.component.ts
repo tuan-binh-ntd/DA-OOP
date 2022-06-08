@@ -9,13 +9,11 @@ import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { GetAllTask } from 'src/app/models/getalltask';
-import { SearchTask } from 'src/app/models/searchtask';
 import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
-import { TaskFilterComponent } from '../shared/task-filter/task-filter.component';
 
 @Component({
   selector: 'app-tasks',
@@ -29,11 +27,9 @@ export class TasksComponent implements OnInit {
   users: any[] = [];
   projects: any[] = [];
   projectId: string = '';
-  isMyTask: string = '';
-  userId: string = '';
-  createUserId: string = '';
   sub: any;
   isShowModal: boolean = false;
+  isMyTask: boolean = false;
   right: boolean = false;
   user: User;
   priorityCode: any[] = [
@@ -53,7 +49,6 @@ export class TasksComponent implements OnInit {
   ]
   getAllProject: GetAllProject = new GetAllProject();
   getAllTask: GetAllTask = new GetAllTask();
-  searchTask: SearchTask = new SearchTask();
   constructor(
     protected taskService: TaskService,
     protected projectService: ProjectService,
@@ -73,42 +68,28 @@ export class TasksComponent implements OnInit {
     }
     this.fetchUserData();
     this.fetchProjectData();
+    this.getAllTask.userId = this.user.id;
     this.fetchTaskData();
   }
-
-  fetchTaskData(){
+  
+  fetchTaskData() {
     this.route.params.subscribe(params => {
-      this.projectId = params['type'];
+      this.projectId = params['projectId'];
     })
-    if(this.projectId === 'mytask'){
-      this.projectId = null;
-      this.createUserId = null;
-      this.userId = this.user.id;
-      this.fetchTask();
-    } else if (this.projectId === 'assign'){
-      this.projectId = null;
-      this.createUserId = this.user.id;
-      this.userId = null;
-      this.fetchTask();
-    } else {
-      this.createUserId = this.user.id;
-      this.userId = this.user.id;
-      this.fetchTask();
-    }
-  }
-
-  fetchTask() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.tasks = response;
-      });
+    .getAllTask(this.projectId, this.getAllTask)
+    .pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.tasks = response;
+    });
+    this.getAllTask.userId = this.user.id;
+    console.log(this.projectId)
+    console.log(this.getAllTask.userId)
   }
   fetchUserData() {
     this.userService
-      .getAllUser()
-      .pipe(catchError((err) => of(err)))
+    .getAllUser()
+    .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
       });
@@ -128,7 +109,6 @@ export class TasksComponent implements OnInit {
 
   getProjectName(id: string) {
     return this.projects.find((project) => project.id === id)?.projectName;
-
   }
 
   getPriority(priorityCode: string) {
@@ -202,6 +182,18 @@ export class TasksComponent implements OnInit {
  onFilterPriority(priority:any){
    this.getAllTask.priorityCode = priority;
    this.fetchTaskData();
+ }
+
+ onFilterUser(){
+   if(this.isMyTask == false){
+     this.getAllTask.createUserId = this.user.id;
+     this.getAllTask.userId = null;
+    }
+    else{
+      this.getAllTask.createUserId = null;
+      this.getAllTask.userId = this.user.id;
+    }
+    this.fetchTaskData();
  }
 
  onResetFilter(){

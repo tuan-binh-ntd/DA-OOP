@@ -13,9 +13,13 @@
           </button>
         </div>
         <div class="col col-12">
-          <button class="button float-right mr-2" [routerLink]="['../']">
+          <button *ngIf="this.isMyTask == true" class="button float-right" (click)="onFilterUser(); this.isMyTask = false">
             <i class="fa fa-calendar mr-2"></i>
-            <span>List</span>
+            <span>Assign</span>
+          </button>
+          <button *ngIf="this.isMyTask == false" class="button float-right" (click)="onFilterUser(); this.isMyTask = true">
+            <i class="fa fa-calendar mr-2"></i>
+            <span>My Task</span>
           </button>
         </div>
       </div>

@@ -77,7 +77,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
 
   fetchTaskData() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
+      .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -89,7 +89,18 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         this.inProgressCount = this.inProgressTask.length;
         this.resolvedTask = this.tasks.filter(task=> task.statusCode === StatusCode.Resolved);
         this.resolvedCount = this.resolvedTask.length;
-
       });
+  }
+
+  onFilterUser(){
+    if(this.isMyTask == false){
+      this.getAllTask.createUserId = this.user.id;
+      this.getAllTask.userId = null;
+     }
+     else{
+       this.getAllTask.createUserId = null;
+       this.getAllTask.userId = this.user.id;
+     }
+     this.fetchTaskData();
   }
 }

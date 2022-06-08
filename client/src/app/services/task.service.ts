@@ -8,9 +8,11 @@ import { Observable } from 'rxjs';
 export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
-  getAllTask(projectId?: string, userId?: string, createUserId?: string, payload?: any): Observable<any> {
-    let taskType, keyWord, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+  getAllTask(projectId?: string, payload?: any): Observable<any> {
+    let taskType, userId, keyWord, createUserId, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
+      userId = payload.userId ? '&userId=' + payload.userId : ''
+      createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
       priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
       statusCode = payload.statusCode ? '&statusCode=' + payload.statusCode : ''
@@ -26,10 +28,10 @@ export class TaskService {
       return getUserId && getCreateUserId;
     }
     else if (userId) {
-      return this.http.get(this.baseUrl + '/getall?' + taskType +'&userId=' + userId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + '&projectId' + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
     }
     else {
-      return this.http.get(this.baseUrl + '/getall?' + taskType + '&createUserId=' + createUserId  + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
+      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
     }
   }
 
