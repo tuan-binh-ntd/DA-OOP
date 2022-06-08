@@ -60,6 +60,8 @@ export class TasksComponent implements OnInit {
     protected userService: UserService,
     protected route: ActivatedRoute,
     protected router: Router,
+    protected toastr: ToastrService
+
   ) {
     forwardRef(() =>Calendar);
    }

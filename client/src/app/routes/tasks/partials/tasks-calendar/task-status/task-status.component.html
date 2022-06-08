@@ -52,6 +52,7 @@
       </div>
       <div
         cdkDropList
+        id="open"
         #listOpen="cdkDropList"
         [cdkDropListData]="openTasks"
         [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
@@ -78,6 +79,7 @@
       </div>
       <div
         cdkDropList
+        id="inProgress"
         #listProgress="cdkDropList"
         [cdkDropListData]="inProgressTask"
         [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
@@ -104,6 +106,7 @@
       </div>
       <div
         cdkDropList
+        id="resolved"
         #listResolve="cdkDropList"
         [cdkDropListData]="resolvedTask"
         [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"

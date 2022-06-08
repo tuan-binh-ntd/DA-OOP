@@ -5580,11 +5580,7 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\DELL\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
->>>>>>> 98245cdd2a99f75a4b4d25b09bae3b4000ef4277
   },
   "project": {
     "version": "1.0.0",
@@ -5592,19 +5588,11 @@
       "projectUniqueName": "D:\\DA-OOP\\API\\API.csproj",
       "projectName": "API",
       "projectPath": "D:\\DA-OOP\\API\\API.csproj",
-<<<<<<< HEAD
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
       "outputPath": "D:\\DA-OOP\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\DA-OOP\\API\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> 98245cdd2a99f75a4b4d25b09bae3b4000ef4277
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5685,5 +5673,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\DA-OOP\\API\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

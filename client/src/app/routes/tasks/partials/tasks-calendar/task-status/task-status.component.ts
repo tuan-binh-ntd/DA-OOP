@@ -24,8 +24,34 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      let payload;
       if(event.container.id === 'reopen') {
-        
+         payload = {
+          // @ts-ignore
+         id:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Reopened
+        }
+      }
+      else if(event.container.id === 'open') {
+         payload = {
+          // @ts-ignore
+         id:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Open
+        }
+      }
+      else if(event.container.id === 'inProgress') {
+         payload = {
+          // @ts-ignore
+         id:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.InProgress
+        }
+      }
+      else{
+         payload = {
+          // @ts-ignore
+         id:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Resolved
+        }
       }
       transferArrayItem(
         event.previousContainer.data,
@@ -33,6 +59,15 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+      this.taskService.patchTask(payload).subscribe(res=>{
+        if(res){
+          this.toastr.success('Update status successfully!!');
+          this.fetchTask();
+        }else{
+          this.toastr.success('Update status failed!');
+
+        }
+      })
     }
   }
 

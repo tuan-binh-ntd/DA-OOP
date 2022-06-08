@@ -42,4 +42,8 @@ export class TaskService {
   deleteTask(id: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete?id=' + id);
   }
+
+  patchTask(payload:any){
+    return this.http.patch(this.baseUrl + '/update' + '/status',payload);
+  }
 }
