@@ -1,5 +1,5 @@
 .example-container {
-    width: 400px;
+    width: 100%;
     max-width: 100%;
     margin: 0 25px 25px 0;
     display: inline-block;
@@ -43,3 +43,60 @@
     opacity: 0;
   }
   
+  .list-wrap1:after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    border-radius: 7px;
+    position: static;
+    background: linear-gradient(90deg,#f9b16e 100%,#f9b16e 0);
+  }
+  .list-wrap2:after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    border-radius: 7px;
+    position: static;
+    background: linear-gradient(90deg,var(--light-text) 100%,var(--light-text) 0);
+  }
+
+  .list-wrap3:after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    border-radius: 7px;
+    position: static;
+    background: linear-gradient(90deg,#17a2b8 100%,#17a2b8 0);
+  }
+
+  .list-wrap4:after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    border-radius: 7px;
+    position: static;
+    background: linear-gradient(90deg,#00ff87 100%,#00ff87 0);
+
+  }
+  
+  
+    
+  .countTask{
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px 0;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    color: var(--light-text);
+    text-align: center;
+
+  }

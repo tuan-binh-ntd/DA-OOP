@@ -1,40 +1,126 @@
-<div class="example-container">
-    <h2>Open</h2>
-    <div
-      cdkDropList
-      #listProgress="cdkDropList"
-      [cdkDropListData]="openTasks"
-      [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of openTasks" cdkDrag>{{item.taskName}}</div>
+
+<div class="container-fluid ">
+  <div class="row no-gutters mt-4">
+    <div class="col col-6">
+      <h2 class="mb-3 text-primary fw-700">Tasks </h2>
     </div>
-  </div>
-  
-  <div class="example-container">
-    <h2>InProgress</h2>
-  
-    <div
-      cdkDropList
-      #listOpen="cdkDropList"
-      [cdkDropListData]="inProgressTask"
-      [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of inProgressTask" cdkDrag>{{item.taskName}}</div>
+    <div class="col col-6">
+      <button *ngIf="right" class="button-create create__btn float-right" data-toggle="modal"
+        data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
+        <i class="fa fa-plus"></i>
+        <span>Create Task</span>
+      </button>
     </div>
   </div>
 
-  <div class="example-container">
-    <h2>Resolved</h2>
+<div class="row ml-0 mr-0">
+  <div class="col col-3">
+
+    <div class="example-container">
+      <div class="d-flex mb-3" style="height:40px">
+        <h6 class="mr-2 fw-700 list-wrap1" style="line-height:40px; letter-spacing: 2px;">REOPEN</h6>
+        <div class="countTask">{{reOpendCount}}</div>
+        </div>
+        <div
+          cdkDropList
+          id="reopen"
+          #listReopen="cdkDropList"
+          [cdkDropListData]="reOpenTask"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of reOpenTask" cdkDrag>
+            <div class="w-100">
+              <div>
+                <span>{{item.taskName}}</span>
+                <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+              </div>
+              <span>{{item.taskCode}}</span>
+            </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
   
-    <div
-      cdkDropList
-      #listResolve="cdkDropList"
-      [cdkDropListData]="resolvedTask"
-      [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of resolvedTask" cdkDrag>{{item.taskName}}</div>
+    <div class="col col-3">
+  
+  <div class="example-container">
+    <div class="d-flex mb-3" style="height:40px">
+      <h6 class="mr-2 fw-700 list-wrap2" style="line-height:40px; letter-spacing: 2px;">OPEN</h6>
+      <div class="countTask">{{openCount}}</div>
+      </div>
+      <div
+        cdkDropList
+        #listOpen="cdkDropList"
+        [cdkDropListData]="openTasks"
+        [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of openTasks" cdkDrag>
+          <div class="w-100">
+            <div>
+              <span>{{item.taskName}}</span>
+              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+            </div>
+            <span>{{item.taskCode}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="col col-3">
+    
+    <div class="example-container">
+      <div class="d-flex mb-3" style="height:40px">
+        <h6 class="mr-2 fw-700 list-wrap3" style="line-height:40px; letter-spacing: 2px;">INPROGRESS</h6>
+        <span class="countTask">{{inProgressCount}}</span>
+      </div>
+      <div
+        cdkDropList
+        #listProgress="cdkDropList"
+        [cdkDropListData]="inProgressTask"
+        [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of inProgressTask" cdkDrag>
+          <div class="w-100">
+            <div>
+              <span>{{item.taskName}}</span>
+              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+            </div>
+            <span>{{item.taskCode}}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="col col-3">
+  
+    <div class="example-container">
+      <div class="d-flex mb-3" style="height:40px">
+      <h6 class="mr-2 fw-700 list-wrap4" style="line-height:40px; letter-spacing: 2px;">COMPLETED</h6>
+      <span class="countTask">{{resolvedCount}}</span>
+      </div>
+      <div
+        cdkDropList
+        #listResolve="cdkDropList"
+        [cdkDropListData]="resolvedTask"
+        [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of resolvedTask" cdkDrag>
+          <div class="w-100">
+            <div>
+              <span>{{item.taskName}}</span>
+              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+            </div>
+            <span>{{item.taskCode}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

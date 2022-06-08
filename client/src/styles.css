@@ -108,25 +108,7 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
       opacity: 1;
     }
   }
-  tbody {
-    display:block;
-    max-height:500px;
-    overflow-y:auto;
-}
-thead, tbody tr {
-    display:table;
-    width:100%;
-    table-layout:fixed;
-}
-thead {
-    width: calc( 100% - 1em )
-} 
 
-tr {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-}
 
   .home__btn {
     align-items: center;
