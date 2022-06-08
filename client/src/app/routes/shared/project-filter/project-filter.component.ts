@@ -20,7 +20,7 @@ export class ProjectFilterComponent implements OnInit {
   @Output() filterStatus = new EventEmitter();
   @Output() filterPriority = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
-
+  @Output() onSearchProject = new EventEmitter();
 
   priorityValue: any;
   typeName: string = 'Type';
@@ -84,6 +84,9 @@ export class ProjectFilterComponent implements OnInit {
     // }
     // console.log(payload)
     // this.onSubmitForm.emit(payload);
+  }
+  onSearch(ev:any){
+    this.onSearchProject.emit(ev);
   }
 
 

@@ -1,76 +1,67 @@
 <div class="container-fluid">
   <div class="row no-gutters mt-4">
     <div class="col col-6">
-      <h2 class="mb-3 text-primary fw-700" >Tasks </h2>
+      <h2 class="mb-3 text-primary fw-700">Tasks </h2>
     </div>
     <div class="col col-6">
-      <button *ngIf="right" class="button-create create__btn float-right" data-toggle="modal" data-target="#createTaskModal" style="margin-bottom:17px;"
-        (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
+      <button *ngIf="right" class="button-create create__btn float-right" data-toggle="modal"
+        data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
         <i class="fa fa-plus"></i>
-        Create Task
+        <span>Create Task</span>
       </button>
     </div>
   </div>
   <div class="row no-gutters">
     <div class="col col-10">
-      <app-task-filter
-        (onSubmitForm)="submitFormFilter($event)"
-        (resetFilter)="onResetFilter()"
-        (filterPriority)="onFilterPriority($event)"
-        (filterStatus)="onFilterStatus($event)"
-        (filterType)="onFilterType($event)"
-        (onSearchTask)="onSearch($event)"
-      ></app-task-filter>
+      <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
+        (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
+        (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)"></app-task-filter>
     </div>
-      <div class="col col-2">
-        <button class="button float-right">
-          <a href="projects/tasks/calendar">
-          <i class="fa fa-calendar mr-2"></i>
-          Calendar
-          </a>
-        </button>
+    <div class="col col-2">
+      <button class="button float-right" [routerLink]="['calendar']">
+        <i class="fa fa-calendar mr-2"></i>
+        <span>Calendar</span>
+      </button>
     </div>
   </div>
   <table *ngIf="tasks.length !== 0" id="example" class="table table-hover mt-4" style="width:100%">
     <thead>
       <tr>
-        <th class="text-center">Type</th>
-        <th>Project</th>
-        <th>Name</th>
-        <th>Creator</th>
-        <th>Employee</th>
-        <th class="text-center">Deadline Date</th>
-        <th class="text-center">Complete Date</th>
-        <th class="text-center">Priority</th>
-        <th class="text-center">Status</th>
-        <th class="text-center">Operation</th>
+        <th class="text-center align-middle">Type</th>
+        <th class="align-middle">Project</th>
+        <th class="align-middle">Name</th>
+        <th class="align-middle">Creator</th>
+        <th class="align-middle">Employee</th>
+        <th class="text-center align-middle">Deadline Date</th>
+        <th class="text-center align-middle">Complete Date</th>
+        <th class="text-center align-middle">Priority</th>
+        <th class="text-center align-middle">Status</th>
+        <th class="text-center align-middle">Operation</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td class="text-center">{{ task.taskType }}</td>
-        <td>{{ getProjectName(task.projectId) }}</td>
-        <td>{{ task.taskName }}</td>
-        <td>{{ getUserName(task.createUserId) }}</td>
-        <td>{{ getUserName(task.appUserId) }}</td>
-        <td class="text-center">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="text-center">{{ task.completeDate == null ? task.dayLefts < 0? 'Overtime' : task.dayLefts + ' Days'
-            : task.completeDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="text-center">
+        <td class="text-center align-middle">{{ task.taskType }}</td>
+        <td class="align-middle">{{ getProjectName(task.projectId) }}</td>
+        <td class="align-middle">{{ task.taskName }}</td>
+        <td class="align-middle">{{ getUserName(task.createUserId) }}</td>
+        <td class="align-middle">{{ getUserName(task.appUserId) }}</td>
+        <td class="text-center align-middle">{{ task.deadlineDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center align-middle">{{ task.completeDate == null ? task.dayLefts < 0? 'Overtime' : task.dayLefts + ' Days' :
+            task.completeDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center align-middle">
           <app-priority-icon [priorityCode]="task.priorityCode"></app-priority-icon>
         </td>
-        <td>
+        <td class="text-center align-middle">
           <app-status [statusCode]="task.statusCode"></app-status>
         </td>
-        <td class=text-center>
-            <button class="btn btn-outline-primary mr-2" (click)="openDetailModal(task, 'detail', false)">
-              <i class="fa fa-lg fa-edit"></i>
-              <span>Sửa</span>
-            </button>
-            <button class="btn btn-outline-danger" (click)="openDetailModal(task, 'delete', true)">
-              <i class="fa fa-lg fa-trash"></i>
-              <span>Xóa</span>
-            </button>
+        <td class="text-center p-0 align-middle">
+          <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(task, 'detail', false)">
+            <i class="fa fa-lg fa-edit"></i>
+          </button>
+          <button class="btn btn-outline-danger" (click)="openDetailModal(task, 'delete', true)">
+            <i class="fa fa-lg fa-trash"></i>
+          </button>
         </td>
       </tr>
     </tbody>

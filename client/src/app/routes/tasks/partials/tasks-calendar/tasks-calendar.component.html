@@ -1,33 +1,35 @@
 <div class="container-fluid">
-
-<button class="button float-right">
-    <a href="projects/tasks">
-        <i class="fa fa-list-alt mr-2"></i>
-        List
-    </a>
-</button>
-<div class="row no-gutters">
-    <div class="col col-6 p-0">
-        <h2 class="text-primary fw-700" style="margin-top:10px ;">Task Calendar </h2>
+  <div class="row no-gutters">
+    <div class="col col-12 p-0 mb-3">
+      <div class="row">
+        <div class="col col-6">
+          <h2 class="text-primary fw-700">Task Calendar </h2>
+        </div>
+        <div class="col col-6">
+          <button *ngIf="right" class="button-create create__btn float-right text-center" data-toggle="modal"
+            data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
+            <i class="fa fa-plus mr-2"></i>
+            <span>Create Task</span>
+          </button>
+        </div>
+        <div class="col col-12">
+          <button class="button float-right mr-2" [routerLink]="['../']">
+            <i class="fa fa-calendar mr-2"></i>
+            <span>List</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="col col-6 p-0">
-        <app-task-filter
-        (onSubmitForm)="submitFormFilter($event)"
-        (resetFilter)="onResetFilter()"
-        (filterPriority)="onFilterPriority($event)"
-        (filterStatus)="onFilterStatus($event)"
-        (filterType)="onFilterType($event)"
-      ></app-task-filter>
-        <button *ngIf="right" class="button-create create__btn float-right" data-toggle="modal" data-target="#createTaskModal" style="margin-bottom:17px;"
-    (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
-    Create Task
-    </button>
+    <div class="col col-12 p-0">
+      <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
+        (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
+        (filterType)="onFilterType($event)"></app-task-filter>
     </div>
-</div>
-<full-calendar #fullcalendar  [deepChangeDetection]="true" style="margin-top: 10px;"
-    [options]="calendarOptions"></full-calendar>
+  </div>
+  <full-calendar #fullcalendar [deepChangeDetection]="true" style="margin-top: 10px;" [options]="calendarOptions">
+  </full-calendar>
 
-    <div class="modal fade" id="createTaskModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
+  <div class="modal fade" id="createTaskModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <app-modal-task #modalTask [projects]="projects" (onChangeTask)="onChangeTask()"></app-modal-task>

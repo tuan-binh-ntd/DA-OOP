@@ -1,32 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="margin-left: 120px;">
-    <a class="navbar-brand font-weight-bolder" href="home" style="font-size: 30px">
+  <a class="navbar-brand font-weight-bolder" href="home" style="font-size: 30px">
     <img src="assets/logo.png" style="width: 50px" alt="Logo">
-      HeadUp
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    HeadUp
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div
-      class="collapse navbar-collapse"
-      id="collapsibleNavbar"
-    >
-      <ul class="navbar-nav nav-active-list col-md-auto">
-        <li class="nav-item nav-active">
-          <a class="nav-link font-weight-bold" href="home">Home</a>
-        </li>
-        <li class="nav-item nav-active">
-          <a class="nav-link font-weight-bold" href="projects">My Projects</a>
-        </li>
-        <!-- <li *ngIf="right" class="nav-item nav-active">
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav nav-active-list col-md-auto">
+      <li class="nav-item nav-active">
+        <a class="nav-link font-weight-bold" href="home">Home</a>
+      </li>
+      <li class="nav-item nav-active">
+        <a class="nav-link font-weight-bold" href="projects">My Projects</a>
+      </li>
+      <!-- <li *ngIf="right" class="nav-item nav-active">
           <a 
           class="nav-link font-weight-bold dropdown-toggle"
           href="#"
@@ -47,52 +37,38 @@
             <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
           </div>
         </li> -->
-        <li class="nav-item nav-active dropdown" *ngIf="right">
-          <a
-            class="nav-link font-weight-bold dropdown-toggle"
-            role="button"
-            data-toggle="dropdown2"
-            aria-haspopup="true"
-            aria-expanded="false"
-            id="navbarDropdown2"
-            data-target="target2"
-          >
+      <li class="nav-item nav-active dropdown" *ngIf="right">
+        <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
+          aria-expanded="false" id="navbarDropdown2" data-target="target2" (click)="onViewTask()">
           <span class="mr-2">My Tasks</span>
-          </a>
-          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-            <a class="dropdown-item" href="projects/tasks/mytask">
-              <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
-              My Task</a>
+        </a>
+        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2" *ngIf="left">
+          <a class="dropdown-item" href="projects/tasks/mytask">
+            <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
+            My Task</a>
 
-            <a class="dropdown-item" href="projects/tasks/assign">
-              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
-              Assign</a>
-          </div>
-        </li>
-        <li *ngIf="!right" class="nav-item nav-active">
-          <a class="nav-link font-weight-bold" href="users">Employees</a>
-        </li>
-        <li class="nav-item nav-active dropdown" *ngIf="(getUser() | async) as user">
-          <a
-            class="nav-link font-weight-bold dropdown-toggle"
-            role="button"
-            data-toggle="dropdown2"
-            aria-haspopup="true"
-            aria-expanded="false"
-            id="navbarDropdown2"
-            data-target="target2"
-          >
+          <a class="dropdown-item" href="projects/tasks/assign">
+            <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
+            Assign</a>
+        </div>
+      </li>
+      <li *ngIf="!right" class="nav-item nav-active">
+        <a class="nav-link font-weight-bold" href="users">Employees</a>
+      </li>
+      <li class="nav-item nav-active dropdown" *ngIf="(getUser() | async) as user">
+        <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
+          aria-expanded="false" id="navbarDropdown2" data-target="target2">
           <span class="mr-2">{{ user.userName }}</span>
-          </a>
-          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-            <a class="dropdown-item" href="profile">Profile</a>
+        </a>
+        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
+          <a class="dropdown-item" href="profile">Profile</a>
 
-            <a class="dropdown-item" href="change-password">Change Password</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
-          </div>
-        </li>
-      
-      </ul>
-    </div>
-  </nav>
+          <a class="dropdown-item" href="change-password">Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</nav>

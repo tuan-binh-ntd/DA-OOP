@@ -1,10 +1,14 @@
 ﻿using API.Data;
 using API.DTO;
+using API.DTO.ProjectDto;
 using API.Entity;
 using API.Enum;
+using API.Interfaces;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 namespace API.Controllers
@@ -14,9 +18,12 @@ namespace API.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly DataContext _dataContext;
-        public ProjectController(DataContext dataContext)
+        private readonly IDapper _dapper;
+
+        public ProjectController(DataContext dataContext, IDapper dapper)
         {
             _dataContext = dataContext;
+            _dapper = dapper;
         }
 
         [HttpGet("getall")]
@@ -100,16 +107,21 @@ namespace API.Controllers
                      AppUserId = p.user.Id,
                      LeaderName = p.user.FirstName + " " + p.user.LastName,
                  }).AsNoTracking().ToListAsync();
-            var taskList = await (from p in _dataContext.Project
+
+            /*var taskList = await (from p in _dataContext.Project
                                   join t in _dataContext.Task on p.Id equals t.ProjectId
                                   select new
                                   {
                                       ProjectId = t.ProjectId
                                   }).AsNoTracking().ToListAsync();
+             var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });*/
 
-            var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+            var dp_params = new DynamicParameters();
+            dp_params.Add("@statusCode", 0, DbType.Int32);
+            var countTask = await Task.FromResult(_dapper.GetAll<TaskNumDto>("[dbo].[GetTask]", dp_params, 
+                commandType: System.Data.CommandType.StoredProcedure));
 
-            var taskListComplete = await (from p in _dataContext.Project
+            /*var taskListComplete = await (from p in _dataContext.Project
                                           join t in _dataContext.Task
                                           on p.Id equals t.ProjectId
                                           where t.StatusCode == Enum.StatusCode.Closed
@@ -117,15 +129,21 @@ namespace API.Controllers
                                           {
                                               ProjectId = t.ProjectId
                                           }).AsNoTracking().ToListAsync();
+            var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });*/
 
-            var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });
+            dp_params = new DynamicParameters();
+            dp_params.Add("@statusCode", Enum.StatusCode.Closed, DbType.Int32);
+            var countTaskComplete = await Task.FromResult(_dapper.GetAll<TaskNumDto>("[dbo].[GetTask]", dp_params,
+                commandType: System.Data.CommandType.StoredProcedure));
+
+
             foreach (var project in projectList)
             {
                 foreach (var task in countTask)
                 {
                     if (project.Id == task.ProjectId)
                     {
-                        project.TaskCount = task.Count;
+                        project.TaskCount = task.TaskNum;
                         break;
                     }
                 }
@@ -133,7 +151,7 @@ namespace API.Controllers
                 {
                     if (project.Id == numTaskComplete.ProjectId)
                     {
-                        project.TaskProgress = Math.Round(Convert.ToDecimal(((float)numTaskComplete.Count / (float)project.TaskCount) * 100), 2);
+                        project.TaskProgress = Math.Round(Convert.ToDecimal(((float)numTaskComplete.TaskNum / (float)project.TaskCount) * 100), 2);
                         break;
                     }
                 }

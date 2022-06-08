@@ -1,22 +1,28 @@
-<button
-  class="button-filter"
-  [mdePopoverTriggerFor]="appPopover"
-  mdePopoverTriggerOn="click"
-  #popoverTrigger="mdePopoverTrigger"
->
-  <i class="fa fa-filter mr-2" aria-hidden="true"></i>
-  Filter
-</button>
+<div class="row no-gutters">
+  <div class="col col-5">
+    <div class="form-group has-search mr-2">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input type="text" class="form-control" placeholder="Search" (keydown)="onSearch($event)" />
+    </div>
+  </div>
+  <div class="col col-7">
+    <button 
+      class="button-filter" 
+      [mdePopoverTriggerFor]="appPopover" 
+      mdePopoverTriggerOn="click"
+      #popoverTrigger="mdePopoverTrigger">
+      <i class="fa fa-filter mr-2" aria-hidden="true"></i>
+      Filter
+    </button>
 
-<mde-popover
-  [mdePopoverCloseOnClick]="false"
-  #appPopover="mdePopover"
-  [mdePopoverOverlapTrigger]="false"
->
-  <mat-card style="max-width: 550px">
-    <mat-card-content>
-      <div [formGroup]="filterForm">
-        <!-- <div class="row">
+    <mde-popover 
+    [mdePopoverCloseOnClick]="false" 
+    #appPopover="mdePopover" 
+    [mdePopoverOverlapTrigger]="false">
+      <mat-card style="max-width: 550px">
+        <mat-card-content>
+          <div [formGroup]="filterForm">
+            <!-- <div class="row">
           <div class="col col-6">
             <div class="row">
               <label class="form-label col-12">Type</label>
@@ -101,180 +107,145 @@
           </div>
         </div> -->
 
-        <div class="row">
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name"
-                >Create date from</label
-              >
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="createDateFrom"
-                    formControlName="createDateFrom"
-                  />
-                  <mat-datepicker-toggle matSuffix [for]="createDateFrom">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #createDateFrom></mat-datepicker>
-                </mat-form-field>
+            <div class="row">
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Create date from</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input 
+                      matInput 
+                      [matDatepicker]="createDateFrom" 
+                      formControlName="createDateFrom" />
+                      <mat-datepicker-toggle matSuffix [for]="createDateFrom">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #createDateFrom></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Create date to</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="createDateTo" formControlName="createDateTo" />
+                      <mat-datepicker-toggle matSuffix [for]="createDateTo">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #createDateTo></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name">Create date to</label>
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="createDateTo"
-                    formControlName="createDateTo"
-                  />
-                  <mat-datepicker-toggle matSuffix [for]="createDateTo">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #createDateTo></mat-datepicker>
-                </mat-form-field>
+
+            <div class="row">
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Deadline date from</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="deadlineDateFrom" formControlName="deadlineDateFrom" />
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="deadlineDateFrom">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #deadlineDateFrom></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Deadline date to</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="deadlineDateTo" formControlName="deadlineDateTo" />
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="deadlineDateTo">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #deadlineDateTo></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row">
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name"
-                >Deadline date from</label
-              >
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="deadlineDateFrom"
-                    formControlName="deadlineDateFrom"
-                  />
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matSuffix [for]="deadlineDateFrom">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #deadlineDateFrom></mat-datepicker>
-                </mat-form-field>
+            <div class="row">
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Complete date from</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="completeDateFrom" formControlName="completeDateFrom" />
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="completeDateFrom">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #completeDateFrom></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-6">
+                <div class="form-group row">
+                  <label class="form-label col-12" for="name">Complete date to</label>
+                  <div class="col-12">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose a date</mat-label>
+                      <input matInput [matDatepicker]="completeDateTo" formControlName="completeDateTo" />
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="completeDateTo">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #completeDateTo></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
+            <hr class="mt-0 mb-2" />
+            <button type="button" class="btn ml-2 btn-primary" (click)="submitForm()">
+              Save
+            </button>
           </div>
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name"
-                >Deadline date to</label
-              >
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="deadlineDateTo"
-                    formControlName="deadlineDateTo"
-                  />
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matSuffix [for]="deadlineDateTo">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #deadlineDateTo></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-        </div>
+        </mat-card-content>
+      </mat-card>
+    </mde-popover>
 
-        <div class="row">
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name"
-                >Complete date from</label
-              >
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="completeDateFrom"
-                    formControlName="completeDateFrom"
-                  />
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matSuffix [for]="completeDateFrom">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #completeDateFrom></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-          <div class="col col-6">
-            <div class="form-group row">
-              <label class="form-label col-12" for="name"
-                >Complete date to</label
-              >
-              <div class="col-12">
-                <mat-form-field class="w-100">
-                  <mat-label>Choose a date</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="completeDateTo"
-                    formControlName="completeDateTo"
-                  />
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matSuffix [for]="completeDateTo">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #completeDateTo></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr class="mt-0 mb-2" />
-        <button
-          type="button"
-          class="btn ml-2 btn-primary"
-          (click)="submitForm()"
-        >
-          Save
-        </button>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</mde-popover>
+    <button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
+      <i class="fa fa-list mr-2" aria-hidden="true"></i>
+      {{ typeName }}</button>
+    <mat-menu #typeMenu="matMenu">
+      <button mat-menu-item *ngFor="let type of projectTypes" (click)="onFilterType(type)">
 
-<button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
-  <i class="fa fa-list mr-2" aria-hidden="true"></i>
-  {{ typeName }}</button>
-<mat-menu #typeMenu="matMenu">
-  <button mat-menu-item *ngFor="let type of projectTypes" (click)="onFilterType(type)">
+        {{ type.viewValue }}
+      </button>
+    </mat-menu>
 
-    {{ type.viewValue }}
-  </button>
-</mat-menu>
+    <button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
+      <i class="fa fa-signal mr-2" aria-hidden="true"></i>
+      {{ statusName }}</button>
+    <mat-menu #statusMenu="matMenu">
+      <button mat-menu-item *ngFor="let status of statusCode" (click)="onFilterStatus(status)">
+        {{ status.viewValue }}
+      </button>
+    </mat-menu>
 
-<button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
-  <i class="fa fa-signal mr-2" aria-hidden="true"></i>
-  {{ statusName }}</button>
-<mat-menu #statusMenu="matMenu">
-  <button mat-menu-item *ngFor="let status of statusCode" (click)="onFilterStatus(status)">
-    {{ status.viewValue }}
-  </button>
-</mat-menu>
+    <button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
+      <i class="fa fa-chevron-up mr-2" aria-hidden="true"></i>
+      {{priorityName}}
+    </button>
+    <mat-menu #priorityMenu="matMenu">
+      <button mat-menu-item *ngFor="let priority of priorityCode" (click)="onFilterPriority(priority)">
+        <app-priority-icon [priorityCode]="priority.value" [isShowLabel]="true"></app-priority-icon>
+      </button>
+    </mat-menu>
 
-<button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
-  <i class="fa fa-chevron-up mr-2" aria-hidden="true"></i>
-  {{priorityName}}
-  </button>
-<mat-menu #priorityMenu="matMenu">
-  <button mat-menu-item *ngFor="let priority of priorityCode" (click)="onFilterPriority(priority)">
-    <app-priority-icon [priorityCode]="priority.value" [isShowLabel]="true"></app-priority-icon>
-  </button>
-</mat-menu>
-
-<button class="btn btn-danger ml-2" (click)="onResetFilter()">
-  <i class="fa fa-times mr-2" aria-hidden="true"></i>
-  Clear
-</button>
-
+    <button class="btn btn-danger ml-2" (click)="onResetFilter()">
+      <i class="fa fa-times mr-2" aria-hidden="true"></i>
+      Clear
+    </button>
+</div>

@@ -26,5 +26,7 @@ namespace API.Entity
         [Required, StringLength(50)]
         public Permission PermissionCode { get; set; }
         public ICollection<Tasks> Task { get; set; }
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
     }
 }

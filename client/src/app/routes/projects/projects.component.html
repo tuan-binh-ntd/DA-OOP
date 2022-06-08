@@ -4,69 +4,26 @@
       <h2 class="mb-3 text-primary fw-700">Projects</h2>
     </div>
     <div *ngIf="right" class="col col-6">
-      <button
-        *ngIf="right"
-        class="create__btn float-right"
-        data-toggle="modal"
-        data-target="#createProjectModal"
-        (click)="openModal()"
-      >
-        Create Project
+      <button *ngIf="right" class="create__btn float-right" data-toggle="modal" data-target="#createProjectModal"
+        (click)="openModal()">
+        <i class="fa fa-plus mr-1"></i>
+        <span>Create Project</span>
       </button>
     </div>
   </div>
 
   <div class="row no-gutters">
-    <div class="col col-5 p-0">
-      <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Search"
-          (keydown)="onSearch($event)"
-        />
-        <!-- </div>
-      <div class="mb-3">
-        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isAllRecord }">
-          All: {{ allRecord }}
-        </button>
-        <button
-          class="btn ml-2"
-          [ngClass]="{ 'btn-primary': isResolvedRecord }"
-        >
-          InProgress: {{ resolvedRecord }}
-        </button>
-        <button
-          class="btn ml-2"
-          [ngClass]="{ 'btn-primary': isInProgressRecord }"
-        >
-          Resolved: {{ inProgressRecord }}
-        </button>
-        <button class="btn ml-2" [ngClass]="{ 'btn-primary': isClosedRecord }">
-          Closed: {{ closedRecord }}
-        </button>
-      </div> -->
-      </div>
-    </div>
-    <div class="col col-7">
-      <app-project-filter
-        (onSubmitForm)="submitFormFilter($event)"
-        (resetFilter)="onResetFilter()"
-        (filterPriority)="onFilterPriority($event)"
-        (filterStatus)="onFilterStatus($event)"
-        (filterType)="onFilterType($event)"
-      ></app-project-filter>
+    
+    <div class="col col-10">
+      <app-project-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
+        (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
+        (filterType)="onFilterType($event)"></app-project-filter>
     </div>
 
     <div class="card-columns">
-      <div
-        class="card "
-        *ngFor="let item of projects"
-        style="display: inline-block"
-        [routerLink]="['projects/tasks', item.id]"
-      >
-        <div class="card-body" (click)="onViewTask(item.id)">
+      <div class="card " *ngFor="let item of projects" style="display: inline-block"
+        [routerLink]="['tasks', item.id]">
+        <div class="card-body">
           <div class="row no-gutters">
             <div class="col col-10" style="line-height: 16px">
               <span class="font-weight-light" style="line-height: 32px">
@@ -74,18 +31,12 @@
               </span>
             </div>
             <div class="col col-1">
-              <i *ngIf="right" 
-              class="fa fa-lg fa-trash" 
-              (click)="$event.stopPropagation();
+              <i *ngIf="right" class="fa fa-lg fa-trash" (click)="$event.stopPropagation();
               openDetailModal(item, 'delete', true);
-              this.isShowModal = true" 
-              style="color: red;"></i>
+              this.isShowModal = true" style="color:red;"></i>
             </div>
             <div class="col col-1">
-              <app-priority-icon
-                class="float-right"
-                [priorityCode]="item.priorityCode"
-              ></app-priority-icon>
+              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
             </div>
           </div>
           <h5 class="card-title">{{ item.projectName }}</h5>
@@ -96,24 +47,15 @@
                 <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
                 <span class="department">{{
                   getDepartmentName(item.departmentId)
-                }}</span>
+                  }}</span>
               </p>
-              <p
-                *ngIf="item.completeDate; else notComplete"
-                class="card-text text-success"
-              >
+              <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
                 <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
                 {{ item.completeDate | date: "dd/MM/yyyy" }}
               </p>
               <ng-template #notComplete>
-                <ng-container
-                  *ngIf="item.dayLefts > 0; else overtime"
-                  class="card-text text-warning"
-                >
-                  <i
-                    class="fa fa-clock-o mr-2 text-warning"
-                    aria-hidden="true"
-                  ></i>
+                <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text text-warning">
+                  <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
                   <span class="text-warning">{{ item.dayLefts }} Days</span>
                 </ng-container>
               </ng-template>
@@ -125,13 +67,10 @@
               </ng-template>
             </div>
             <div class="col col-4">
-              <button
-                class="home__btn float-right"
-                (click)="
+              <button class="home__btn float-right" (click)="
                   $event.stopPropagation();
                   openDetailModal(item, 'detail', false)
-                "
-              >
+                ">
                 Update
               </button>
             </div>
@@ -146,17 +85,11 @@
             <div class="col col-6">
               <h6>Progress</h6>
               <div class="progress">
-                <div
-                  style="display: flex"
-                  class="progress-bar progress-bar-striped bg-success"
-                  role="progressbar"
-                  [ngStyle]="{ width: roundProgress(item.taskProgress) }"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
+                <div style="display: flex" class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                  [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0" aria-valuemax="100">
                   <span class="text-center">{{
                     roundProgress(item.taskProgress)
-                  }}</span>
+                    }}</span>
                 </div>
               </div>
             </div>
@@ -166,21 +99,11 @@
     </div>
 
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="createProjectModal"
-      [hidden]="!isShowModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="createProjectModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl" role="document">
-        <app-modal-project
-          #modalProject
-          [departments]="departments"
-          (onChangeProject)="onChangeProject()"
-        ></app-modal-project>
+        <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()">
+        </app-modal-project>
       </div>
     </div>
   </div>

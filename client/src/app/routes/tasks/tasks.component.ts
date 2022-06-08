@@ -31,6 +31,7 @@ export class TasksComponent implements OnInit {
   projectId: string = '';
   isMyTask: string = '';
   userId: string = '';
+  createUserId: string = '';
   sub: any;
   isShowModal: boolean = false;
   right: boolean = false;
@@ -64,41 +65,39 @@ export class TasksComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.projectId = params['projectId'];
-    })
-    this.route.params.subscribe(params => {
-      this.isMyTask = params['id'];
-    })
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
-    this.userId = this.user.id;
     this.fetchUserData();
     this.fetchProjectData();
     this.fetchTaskData();
   }
 
   fetchTaskData(){
-    if(this.isMyTask === 'mytask'){
-      this.fetchMyTaskData();
+    this.route.params.subscribe(params => {
+      this.projectId = params['type'];
+    })
+    if(this.projectId === 'mytask'){
+      this.projectId = null;
+      this.createUserId = null;
+      this.userId = this.user.id;
+      this.fetchTask();
+    } else if (this.projectId === 'assign'){
+      this.projectId = null;
+      this.createUserId = this.user.id;
+      this.userId = null;
+      this.fetchTask();
     } else {
-      this.fetchCreateTaskData();
+      this.createUserId = this.user.id;
+      this.userId = this.user.id;
+      this.fetchTask();
     }
   }
 
-  fetchMyTaskData() {
+  fetchTask() {
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.getAllTask)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.tasks = response;
-      });
-  }
-  fetchCreateTaskData() {
-    this.sub = this.taskService
-      .getAllTaskCreator(this.projectId, this.userId, this.getAllTask)
+      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;

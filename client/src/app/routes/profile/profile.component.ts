@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,19 +14,19 @@ export class ProfileComponent implements OnInit {
   users: any[] = [];
   user: User;
   departments: any[] = [];
+  currentUser: any;
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
     { value: Permission.Leader, viewValue: 'Leader' },
     { value: Permission.Employee, viewValue: 'Employee' }
   ]
-  constructor(private authenticationService: AuthenticationService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'))
     this.fetchUserData();
     this.fetchDepartmentData();
-    this.getCurrentUser();
   }
 
   fetchUserData() {
@@ -36,6 +35,7 @@ export class ProfileComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
+        this.currentUser = this.users.find(e => e.appUserId == this.user.id);
       });
   }
 
@@ -48,14 +48,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  getCurrentUser(){
-    return this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => this.user = user)
-  }
-
-  getUser(id: string) {
-    return this.users.find((user) => user.id === id);
-  }
-
   getDepartmentName(id: string) {
     return this.departments.find((department) => department.id === id)?.departmentName;
   }
@@ -64,3 +56,4 @@ export class ProfileComponent implements OnInit {
     return this.permission.find((permissionCode) => permissionCode.value == permission)?.viewValue;
   }
 }
+

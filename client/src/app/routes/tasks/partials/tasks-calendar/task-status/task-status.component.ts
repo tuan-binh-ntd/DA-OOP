@@ -29,7 +29,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
   fetchTaskData() {
     debugger
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.userId, this.getAllTask)
+      .getAllTask(this.projectId, this.userId, this.createUserId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
