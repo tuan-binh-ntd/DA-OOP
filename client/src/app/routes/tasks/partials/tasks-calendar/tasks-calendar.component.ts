@@ -66,18 +66,6 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
       });
   }
 
-  onFilterUser(){
-    if(this.isMyTask == false){
-      this.getAllTask.createUserId = this.user.id;
-      this.getAllTask.userId = null;
-     }
-     else{
-       this.getAllTask.createUserId = null;
-       this.getAllTask.userId = this.user.id;
-     }
-     this.fetchTaskData();
-  }
-
   onDateClick(res: any) {
    const task = this.tasks.find(task=> task.id === res.event._def.publicId);
    this.openDetailModal(task,'detail',false);

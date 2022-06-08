@@ -13,13 +13,9 @@
           </button>
         </div>
         <div class="col col-12">
-          <button *ngIf="this.isMyTask == true" class="button float-right" (click)="onFilterUser(); this.isMyTask = false">
+          <button class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
             <i class="fa fa-calendar mr-2"></i>
-            <span>Assign</span>
-          </button>
-          <button *ngIf="this.isMyTask == false" class="button float-right" (click)="onFilterUser(); this.isMyTask = true">
-            <i class="fa fa-calendar mr-2"></i>
-            <span>My Task</span>
+            <span>{{ filterUserTask }}</span>
           </button>
         </div>
       </div>

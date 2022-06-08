@@ -91,16 +91,4 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         this.resolvedCount = this.resolvedTask.length;
       });
   }
-
-  onFilterUser(){
-    if(this.isMyTask == false){
-      this.getAllTask.createUserId = this.user.id;
-      this.getAllTask.userId = null;
-     }
-     else{
-       this.getAllTask.createUserId = null;
-       this.getAllTask.userId = this.user.id;
-     }
-     this.fetchTaskData();
-  }
 }

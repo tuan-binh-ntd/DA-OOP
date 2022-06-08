@@ -32,6 +32,7 @@ export class TasksComponent implements OnInit {
   isMyTask: boolean = false;
   right: boolean = false;
   user: User;
+  filterUserTask: string = 'Assign';
   priorityCode: any[] = [
     { value: Priority.Urgent, viewValue: 'Urgent' },
     { value: Priority.High, viewValue: 'High' },
@@ -66,9 +67,9 @@ export class TasksComponent implements OnInit {
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
+    this.getAllTask.userId = this.user.id;
     this.fetchUserData();
     this.fetchProjectData();
-    this.getAllTask.userId = this.user.id;
     this.fetchTaskData();
   }
   
@@ -82,9 +83,6 @@ export class TasksComponent implements OnInit {
     .subscribe((response) => {
       this.tasks = response;
     });
-    this.getAllTask.userId = this.user.id;
-    console.log(this.projectId)
-    console.log(this.getAllTask.userId)
   }
   fetchUserData() {
     this.userService
@@ -186,10 +184,12 @@ export class TasksComponent implements OnInit {
 
  onFilterUser(){
    if(this.isMyTask == false){
-     this.getAllTask.createUserId = this.user.id;
+      this.filterUserTask = 'My Task';
+      this.getAllTask.createUserId = this.user.id;
      this.getAllTask.userId = null;
     }
     else{
+      this.filterUserTask = 'Assign';
       this.getAllTask.createUserId = null;
       this.getAllTask.userId = this.user.id;
     }
