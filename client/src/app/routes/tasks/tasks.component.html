@@ -17,7 +17,7 @@
         (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)"></app-task-filter>
     </div>
     <div class="col col-2">
-      <button class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
+      <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
         <i class="fa fa-calendar mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
