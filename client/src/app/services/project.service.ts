@@ -11,7 +11,7 @@ export class ProjectService {
   }
   getAllProject(payload?: any):Observable<any>{
     if(payload){
-      let keyword,status,type, priority, permision,createDateFrom,createDateTo,deadlineDateFrom,deadlineDateTo,departmentId,userId
+      let keyword,status,type, priority, permision,createDateFrom,createDateTo,deadlineDateFrom,deadlineDateTo,completeDateFrom,completeDateTo,departmentId,userId
           keyword = payload.keyWord ? 'keyWord=' + payload.keyWord  : ''
            status = payload.statusCode ? '&statusCode=' + payload.statusCode  : ''
           type = payload.projectType ? '&projectType=' + payload.projectType  : ''
@@ -21,10 +21,12 @@ export class ProjectService {
           createDateTo = payload.createDateTo ? '&createDateTo=' + payload.createDateTo  : ''
           deadlineDateFrom = payload.deadlineDateFrom ? '&deadlineDateFrom=' + payload.deadlineDateFrom  : ''
           deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo  : ''
+          completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom  : ''
+          completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo  : ''
           departmentId = payload.departmentId ? '&departmentId=' + payload.departmentId  : ''
           userId = payload.userId ? '&userId=' + payload.userId  : ''
         return this.http.get(this.baseUrl + '/getall?' + keyword + type + status + priority
-        + permision + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + departmentId + userId);
+        + permision + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo + departmentId + userId);
     }else{
       return this.http.get(this.baseUrl + '/getall' );
     }

@@ -59,8 +59,8 @@ export class TasksComponent implements OnInit {
     protected toastr: ToastrService
 
   ) {
-    forwardRef(() =>Calendar);
-   }
+    forwardRef(() => Calendar);
+  }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -72,22 +72,22 @@ export class TasksComponent implements OnInit {
     this.fetchProjectData();
     this.fetchTaskData();
   }
-  
+
   fetchTaskData() {
     this.route.params.subscribe(params => {
       this.projectId = params['projectId'];
     })
     this.sub = this.taskService
-    .getAllTask(this.projectId, this.getAllTask)
-    .pipe(catchError((err) => of(err)))
-    .subscribe((response) => {
-      this.tasks = response;
-    });
+      .getAllTask(this.projectId, this.getAllTask)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.tasks = response;
+      });
   }
   fetchUserData() {
     this.userService
-    .getAllUser()
-    .pipe(catchError((err) => of(err)))
+      .getAllUser()
+      .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
       });
@@ -157,50 +157,56 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  submitFormFilter(data:any){
+  submitFormFilter(data: any) {
     this.getAllTask.createDateFrom = data.createDateFrom;
     this.getAllTask.createDateTo = data.createDateTo;
-    this.getAllTask.deadlineDateFrom = data.reateDateTo ;
+    this.getAllTask.deadlineDateFrom = data.deadlineDateFrom;
     this.getAllTask.deadlineDateTo = data.deadlineDateTo;
     this.getAllTask.completeDateFrom = data.completeDateFrom;
-    this.getAllTask.completeDateTo =data.completeDateTo;
+    this.getAllTask.completeDateTo = data.completeDateTo;
     this.fetchTaskData();
- }
+  }
 
- onFilterType(type:any){
+  onFilterType(type: any) {
     this.getAllTask.taskType = type;
     this.fetchTaskData();
- }
+  }
 
- onFilterStatus(status:any){
-   this.getAllTask.statusCode = status;
-   this.fetchTaskData();
- }
+  onFilterStatus(status: any) {
+    this.getAllTask.statusCode = status;
+    this.fetchTaskData();
+  }
 
- onFilterPriority(priority:any){
-   this.getAllTask.priorityCode = priority;
-   this.fetchTaskData();
- }
+  onFilterPriority(priority: any) {
+    this.getAllTask.priorityCode = priority;
+    this.fetchTaskData();
+  }
 
- onFilterUser(){
-   if(this.isMyTask == false){
+  onFilterUser() {
+    if (this.isMyTask == false) {
       this.filterUserTask = 'My Task';
       this.getAllTask.createUserId = this.user.id;
-     this.getAllTask.userId = null;
+      this.getAllTask.userId = null;
     }
-    else{
+    else {
       this.filterUserTask = 'Assign';
       this.getAllTask.createUserId = null;
       this.getAllTask.userId = this.user.id;
     }
     this.fetchTaskData();
- }
+  }
 
- onResetFilter(){
-   this.getAllTask.taskType = null;
-   this.getAllTask.statusCode = null;
-   this.getAllTask.priorityCode = null;
-   this.getAllTask.keyWord = null;
-   this.fetchTaskData();
+  onResetFilter() {
+    this.getAllTask.taskType = null;
+    this.getAllTask.statusCode = null;
+    this.getAllTask.priorityCode = null;
+    this.getAllTask.keyWord = null;
+    this.getAllTask.createDateFrom = null;
+    this.getAllTask.createDateTo = null;
+    this.getAllTask.deadlineDateFrom = null;
+    this.getAllTask.deadlineDateTo = null;
+    this.getAllTask.completeDateFrom = null;
+    this.getAllTask.completeDateTo = null;
+    this.fetchTaskData();
   }
 }

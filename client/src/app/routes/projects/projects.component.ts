@@ -17,13 +17,13 @@ import { Priority } from '../shared/priority-icon/priority-icon.component';
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent implements OnInit {
-  
+
   constructor(
     private projectService: ProjectService,
     private departmentService: DepartmentService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
   projects: any[] = [];
@@ -43,7 +43,7 @@ export class ProjectsComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
-    if(user.permissionCode === Permission.ProjectManager){
+    if (user.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
     this.fetchDepartmentData();
@@ -60,7 +60,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   fetchProjectData() {
-    if(!this.right){
+    if (!this.right) {
       this.getAllProject.departmentId = this.user.departmentId
     }
     this.projectService
@@ -100,56 +100,62 @@ export class ProjectsComponent implements OnInit {
     myModal.hide();
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
-      this.isShowModal = false;
+    this.isShowModal = false;
     this.fetchProjectData();
   }
 
-  roundProgress(progress: number){
+  roundProgress(progress: number) {
     return Math.round(progress) + '%'
   }
 
-  openModal(){
-      this.modalProject.openModal(null, 'create', true);
-      this.isShowModal = true;
+  openModal() {
+    this.modalProject.openModal(null, 'create', true);
+    this.isShowModal = true;
   }
 
-  onSearch(ev:any){
+  onSearch(ev: any) {
     if (ev.key === "Enter") {
       this.getAllProject.keyWord = ev.target.value;
       this.fetchProjectData();
     }
   }
 
-  submitFormFilter(data:any){
-     this.getAllProject.createDateFrom = data.createDateFrom;
-     this.getAllProject.createDateTo = data.createDateTo;
-     this.getAllProject.deadlineDateFrom = data.reateDateTo ;
-     this.getAllProject.deadlineDateTo = data.deadlineDateTo;
-     this.getAllProject.completeDateFrom = data.completeDateFrom;
-     this.getAllProject.completeDateTo =data.completeDateTo;
-     this.fetchProjectData();
+  submitFormFilter(data: any) {
+    this.getAllProject.createDateFrom = data.createDateFrom;
+    this.getAllProject.createDateTo = data.createDateTo;
+    this.getAllProject.deadlineDateFrom = data.deadlineDateFrom;
+    this.getAllProject.deadlineDateTo = data.deadlineDateTo;
+    this.getAllProject.completeDateFrom = data.completeDateFrom;
+    this.getAllProject.completeDateTo = data.completeDateTo;
+    this.fetchProjectData();
   }
 
-  onFilterType(type:any){
-     this.getAllProject.projectType = type;
-     this.fetchProjectData();
+  onFilterType(type: any) {
+    this.getAllProject.projectType = type;
+    this.fetchProjectData();
   }
 
-  onFilterStatus(status:any){
+  onFilterStatus(status: any) {
     this.getAllProject.statusCode = status;
     this.fetchProjectData();
   }
 
-  onFilterPriority(priority:any){
+  onFilterPriority(priority: any) {
     this.getAllProject.priorityCode = priority;
     this.fetchProjectData();
   }
 
-  onResetFilter(){
+  onResetFilter() {
     this.getAllProject.projectType = null;
     this.getAllProject.statusCode = null;
     this.getAllProject.priorityCode = null;
     this.getAllProject.keyWord = null;
+    this.getAllProject.createDateFrom = null;
+    this.getAllProject.createDateTo = null;
+    this.getAllProject.deadlineDateFrom = null;
+    this.getAllProject.deadlineDateTo = null;
+    this.getAllProject.completeDateFrom = null;
+    this.getAllProject.completeDateTo = null;
     this.fetchProjectData();
   }
 }

@@ -81,11 +81,15 @@ export class TaskFilterComponent implements OnInit {
   }
 
   submitForm() {
-    // const payload = {
-    //   createDateFrom: this.datepipe.transform(this.filterForm.value.createDateFrom, 'YYYY-MM-DDThh:mm:ss')
-    // }
-    // console.log(payload)
-    // this.onSubmitForm.emit(payload);
+    const payload = {
+      createDateFrom: this.datepipe.transform(this.filterForm.value.createDateFrom, 'YYYY-MM-dd'),
+      createDateTo: this.datepipe.transform(this.filterForm.value.createDateTo, 'YYYY-MM-dd'),
+      deadlineDateFrom: this.datepipe.transform(this.filterForm.value.deadlineDateFrom, 'YYYY-MM-dd'),
+      deadlineDateTo: this.datepipe.transform(this.filterForm.value.deadlineDateTo, 'YYYY-MM-dd'),
+      completeDateFrom: this.datepipe.transform(this.filterForm.value.completeDateFrom, 'YYYY-MM-dd'),
+      completeDateTo: this.datepipe.transform(this.filterForm.value.completeDateTo, 'YYYY-MM-dd'),
+    }
+    this.onSubmitForm.emit(payload);
   }
 
 
