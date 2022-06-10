@@ -112,6 +112,7 @@ export class TaskFilterComponent implements OnInit {
     this.typeName = 'Type';
     this.priorityName = 'Priority';
     this.statusName = 'Status';
+    this.filterForm.reset();
     this.resetFilter.emit()
   }
 }
