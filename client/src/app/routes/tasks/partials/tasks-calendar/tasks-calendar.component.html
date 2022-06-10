@@ -21,12 +21,34 @@
         (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
         (filterType)="onFilterType($event)"></app-task-filter>
     </div>
-    <div class="col col-2">
+    <div class="col col-1">
+      <ul class="navbar-nav nav-active-list col-md-auto">
+        <li class="nav-item nav-active dropdown" *ngIf="right">
+          <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
+            aria-expanded="false" id="navbarDropdown2" data-target="target2">
+            <span class="mr-2">View</span>
+          </a>
+          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
+            <a class="dropdown-item" href="projects/tasks">
+              <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
+              List</a>
+
+            <a class="dropdown-item" href="projects/tasks/calendar">
+              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
+              Calendar</a>
+
+            <a class="dropdown-item" href="projects/tasks/status">
+              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
+              Status</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col col-1">
       <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
         <i class="fa fa-calendar mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
-
     </div>
   </div>
   <full-calendar #fullcalendar [deepChangeDetection]="true" style="margin-top: 10px;" [options]="calendarOptions">

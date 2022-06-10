@@ -209,4 +209,10 @@ export class TasksComponent implements OnInit {
     this.getAllTask.completeDateTo = null;
     this.fetchTaskData();
   }
+  onViewTask(): any {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    if(Number(this.user.permissionCode) === Permission.Employee){
+      this.router.navigate(['projects/tasks/mytask']);
+    }
+  }
 }
