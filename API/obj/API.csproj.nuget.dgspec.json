@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DA OOP\\DA-OOP\\API\\API.csproj": {}
+    "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\DA OOP\\DA-OOP\\API\\API.csproj": {
+    "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DA OOP\\DA-OOP\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "D:\\DA OOP\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\DA OOP\\DA-OOP\\API\\obj\\",
+        "projectPath": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\linhd\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\linhd\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -95,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

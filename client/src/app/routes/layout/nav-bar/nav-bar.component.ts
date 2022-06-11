@@ -39,7 +39,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
     this.userName = user.name;    
-    this.right = user.permissionCode !== Permission.ProjectManager
+    this.right = user.permissionCode !== Permission.Employee
     this.fetchUserData();
 
   }

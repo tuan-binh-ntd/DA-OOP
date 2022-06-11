@@ -56,8 +56,11 @@
             Status</a>
         </div>
       </li>
-      <li *ngIf="!right" class="nav-item nav-active">
+      <li *ngIf="right" class="nav-item nav-active">
         <a class="nav-link font-weight-bold" href="users">Employees</a>
+      </li>
+      <li class="nav-item nav-active">
+        <a class="nav-link font-weight-bold" href="message">Messages</a>
       </li>
       <li class="nav-item nav-active dropdown" *ngIf="(getUser() | async) as user">
         <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
