@@ -155,7 +155,6 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
   
   .create__btn:active {
     background-color: #F0F0F1;
-    border-color: rgba(0, 0, 0, 0.15);
     box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
     color: #fff;
     transform: translateY(0);

@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './routes/home/home.component';
@@ -32,6 +32,8 @@ import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.co
 import { NgChartsModule } from 'ng2-charts';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
+import { InterceptorInterceptor } from './services/interceptor.interceptor';
+import {  NgxSpinnerModule } from 'ngx-spinner';
 FullCalendarModule.registerPlugins([
   bootstrapPlugin ,
   dayGridPlugin,
@@ -60,6 +62,7 @@ FullCalendarModule.registerPlugins([
   ],
   imports: [
     BrowserModule,
+    NgxSpinnerModule,
     FullCalendarModule ,
     SharedModuleModule,
     FormsModule,
@@ -75,7 +78,8 @@ FullCalendarModule.registerPlugins([
     FontAwesomeModule,
     NgChartsModule,
   ],
-  providers: [ ],
+  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

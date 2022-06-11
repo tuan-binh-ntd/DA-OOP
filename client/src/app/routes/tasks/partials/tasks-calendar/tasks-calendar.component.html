@@ -6,11 +6,29 @@
           <h2 class="text-primary fw-700">Task Calendar </h2>
         </div>
         <div class="col col-6">
-          <button *ngIf="right" class="button-create create__btn float-right text-center" data-toggle="modal"
+          <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
             data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
-            <i class="fa fa-plus mr-2"></i>
-            <span>Create Task</span>
+            <i class="fa fa-plus"></i>
           </button>
+          
+    <!-- <div class="example-container">
+      <button *ngIf="this.isMyTask == true" class="button float-right" (click)="onFilterUser(); this.isMyTask = false">
+        <i class="fa fa-calendar mr-2"></i>
+        <span>Assign</span>
+      </button>
+      <button *ngIf="this.isMyTask == false" class="button float-right" (click)="onFilterUser(); this.isMyTask = true">
+        <i class="fa fa-calendar mr-2"></i>
+        <span>My Task</span>
+      </button>
+        <h2>Open</h2>
+        <div
+          cdkDropList
+          #listProgress="cdkDropList"
+          [cdkDropListData]="openTasks"
+          [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of openTasks" cdkDrag>{{item.taskName}}</div> -->
         </div>
       </div>
     </div>

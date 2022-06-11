@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { LoadingService } from 'src/app/services/loading.service';
 import { AuthenticationService } from '../../services/authentication.service';
 const emailRegex = '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/'
 @Component({
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -47,14 +50,17 @@ export class LoginComponent implements OnInit {
             })
           )
           .subscribe((response) => {
+            debugger
             if (!response) {
               this.loggedIn = true;
               this.toastr.success('Login success!', '', {
                 timeOut: 1000,
               });
+              this.spinner.show();
               setTimeout(() => {
-                this.router.navigateByUrl('home');
-              }, 800);
+              this.spinner.hide();
+              this.router.navigateByUrl('home');
+              }, 3000);
             }
             else{
               this.toastr.error('Email or password not correct!', '', {
