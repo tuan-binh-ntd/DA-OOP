@@ -58,7 +58,7 @@ export class ModalTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.projectId = params['projectId'];
+      this.projectId = params['id'];
     })
     this.fetchUserData();
     this.fetchDepartmentData();
@@ -147,11 +147,11 @@ export class ModalTaskComponent implements OnInit {
     this.modalForm.controls['createUserId'].disable();
     this.modalForm.controls['completeDate'].disable();
     this.modalForm.controls['createDate'].disable();
+    this.modalForm.controls['projectId'].disable();
     if (Number(this.user.permissionCode) == 3) {
       this.modalForm.controls['taskName'].disable();
       this.modalForm.controls['taskType'].disable();
       this.modalForm.controls['taskCode'].disable();
-      this.modalForm.controls['projectId'].disable();
       this.modalForm.controls['appUserId'].disable();
       this.modalForm.controls['description'].disable();
       this.modalForm.controls['priorityCode'].disable();

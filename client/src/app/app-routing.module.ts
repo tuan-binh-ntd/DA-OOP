@@ -16,7 +16,6 @@ import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
-import { MessagesComponent } from './routes/messages/messages.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -43,7 +42,6 @@ const routes: Routes = [
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'change-password', component: ChangePasswordComponent },
-      { path: 'message', component: MessagesComponent },
       { path: 'forbidden', component: ForbiddenComponent },
       {
         path: '**', pathMatch: 'full',

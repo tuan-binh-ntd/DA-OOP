@@ -32,7 +32,6 @@ import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.co
 import { NgChartsModule } from 'ng2-charts';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
-import { MessagesComponent } from './routes/messages/messages.component';
 FullCalendarModule.registerPlugins([
   bootstrapPlugin ,
   dayGridPlugin,
@@ -58,7 +57,6 @@ FullCalendarModule.registerPlugins([
     PageNotFoundComponent,
     ContentLayoutComponent,
     TaskStatusComponent,
-    MessagesComponent,
   ],
   imports: [
     BrowserModule,
