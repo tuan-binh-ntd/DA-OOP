@@ -132,33 +132,6 @@
   .dropdown:hover>.dropdown-menu {
     display: block;
   }
-  
-  .nav-link{
-    align-items: center;
-    border: 2px solid;
-    border-radius: 0.25rem;
-    border-color: rgba(0, 0, 0, 0.15);
-    padding: 5px 20px;
-    box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
-    color: rgba(0, 0, 0, 0.85);
-  }
-  
-  .nav-active:hover{
-    color: var(--primary-color);
-  }
-  
-  .nav-active::after{
-    content: "";
-    display: block;
-    width: 0;
-    height: 2.5px;
-    background-color: var(--primary-color);
-    transition: width 0.5s;
-  }
-  
-  .nav-active:hover::after{
-   width: 90%;
-  }
   @keyframes DropDown{
   0%{
     transform: scaleY(0);

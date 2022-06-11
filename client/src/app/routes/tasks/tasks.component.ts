@@ -63,6 +63,9 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.projectId = params['id'];
+    })
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
@@ -74,9 +77,6 @@ export class TasksComponent implements OnInit {
   }
 
   fetchTaskData() {
-    this.route.params.subscribe(params => {
-      this.projectId = params['projectId'];
-    })
     this.sub = this.taskService
       .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
@@ -209,10 +209,15 @@ export class TasksComponent implements OnInit {
     this.getAllTask.completeDateTo = null;
     this.fetchTaskData();
   }
-  onViewTask(): any {
-    this.user = JSON.parse(localStorage.getItem('user'));
-    if(Number(this.user.permissionCode) === Permission.Employee){
-      this.router.navigate(['projects/tasks/mytask']);
+  onViewTask(view: any){
+    if (view == 'list') {
+      this.router.navigate(['projects/tasks', this.projectId]);
+    }
+    else if (view == 'calendar') {
+      this.router.navigate(['projects/tasks', this.projectId, 'calendar']);
+    }
+    else {
+      this.router.navigate(['projects/tasks', this.projectId, 'status']);
     }
   }
 }

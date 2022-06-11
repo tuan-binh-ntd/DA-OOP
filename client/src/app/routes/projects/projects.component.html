@@ -22,7 +22,7 @@
     <div class="card-columns">
       <div class="card " *ngFor="let item of projects" style="display: inline-block"
         [routerLink]="['tasks', item.id]">
-        <div class="card-body" (click)="onViewTask(item.id)">
+        <div class="card-body">
           <div class="row no-gutters">
             <div class="col col-10" style="line-height: 16px">
               <span class="font-weight-light" style="line-height: 32px">

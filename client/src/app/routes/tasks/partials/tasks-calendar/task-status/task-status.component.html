@@ -4,27 +4,26 @@
       <h2 class="mb-3 text-primary fw-700">Task Status </h2>
     </div>
     <div class="col col-1">
-      <ul class="navbar-nav nav-active-list col-md-auto">
-        <li class="nav-item nav-active dropdown" *ngIf="right">
-          <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
-            aria-expanded="false" id="navbarDropdown2" data-target="target2">
-            <span class="mr-2">View</span>
-          </a>
-          <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-            <a class="dropdown-item" href="projects/tasks">
-              <i class="fa fa-list-alt mr-2" aria-hidden="true"></i>
-              List</a>
+      <div *ngIf="projectId" class="navbar-nav dropdown col-md-auto">
+        <button class="button dropdown-toggle" data-toggle="dropdown2" aria-haspopup="true" aria-expanded="false"
+          id="navbarDropdown2" data-target="target2">
+          <i class="fa fa-sliders"></i>
+          <span class="mr-2">View</span>
+        </button>
+        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
+          <a class="dropdown-item" (click)="onViewTask('list')">
+            <i class="fa fa-list-alt mr-2"></i>
+            List</a>
 
-            <a class="dropdown-item" href="projects/tasks/calendar">
-              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
-              Calendar</a>
+          <a class="dropdown-item" (click)="onViewTask('calendar')">
+            <i class="fa fa-calendar mr-2"></i>
+            Calendar</a>
 
-            <a class="dropdown-item" href="projects/tasks/status">
-              <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
-              Status</a>
-          </div>
-        </li>
-      </ul>
+          <a class="dropdown-item" (click)="onViewTask('status')">
+            <i class="fa fa-calendar mr-2"></i>
+            Status</a>
+        </div>
+      </div>
     </div>
     <div class="col col-1">
       <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
