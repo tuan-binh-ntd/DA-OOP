@@ -85,6 +85,10 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
 .fsz-14{
     font-size: 14px;
 }
+.fw-400{
+  font-weight: 400;
+}
+
 
 .fw-600{
     font-weight: 600;

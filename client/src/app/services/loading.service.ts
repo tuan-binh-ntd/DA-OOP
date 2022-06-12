@@ -9,7 +9,6 @@ export class LoadingService {
   constructor(private spinnerService: NgxSpinnerService) { }
 
   loading(){
-    this.loadingCount++;
     this.spinnerService.show();
 
   }

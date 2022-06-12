@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
             })
           )
           .subscribe((response) => {
-            debugger
             if (!response) {
               this.loggedIn = true;
               this.toastr.success('Login success!', '', {
@@ -58,9 +57,9 @@ export class LoginComponent implements OnInit {
               });
               this.spinner.show();
               setTimeout(() => {
-              this.spinner.hide();
+              // this.spinner.hide();
               this.router.navigateByUrl('home');
-              }, 3000);
+              }, 2500);
             }
             else{
               this.toastr.error('Email or password not correct!', '', {
