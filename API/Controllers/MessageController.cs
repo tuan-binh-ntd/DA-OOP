@@ -48,7 +48,7 @@ namespace API.Controllers
             return Ok(message);
         }
 
-        [HttpGet("message/get")]
+        [HttpGet("message/getall")]
         public async Task<ActionResult> GetMessagesThread(Guid senderId, Guid recipientId)
         {
             var messages = await _dataContext.Messages.Where(e => e.SenderId == senderId && e.RecipientId == recipientId)

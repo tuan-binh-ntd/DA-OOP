@@ -49,3 +49,30 @@
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(0);
   }
+  .dropdown-item:active{
+    background-color: var(--heavy-color);
+  }
+  
+  .dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  
+  @keyframes DropDown{
+  0%{
+    transform: scaleY(0);
+  }
+  80%{
+    transform: scaleY(1.1);
+  }
+  100%{
+    transform: scaleY(1);
+  }
+  }
+  .navbar-dropdown{
+    animation: DropDown 0.5s ease-in-out forwards;
+    transform-origin: top center;
+    margin-top: 1;
+    z-index: 1000;
+    position: absolute;
+    
+  }

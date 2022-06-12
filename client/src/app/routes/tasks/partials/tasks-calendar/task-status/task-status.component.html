@@ -1,14 +1,35 @@
 <div class="container-fluid ">
   <div class="row no-gutters mt-4">
-    <div class="col col-2">
+    <div class="col col-10">
       <h2 class="mb-3 text-primary fw-700">Task Status </h2>
     </div>
-    <div class="col col-10">
+    <div class="col col-1">
+      <div *ngIf="projectId" class="navbar-nav dropdown col-md-auto">
+        <button class="button dropdown-toggle" data-toggle="dropdown2" aria-haspopup="true" aria-expanded="false"
+          id="navbarDropdown2" data-target="target2">
+          <i class="fa fa-sliders"></i>
+          <span class="mr-2">View</span>
+        </button>
+        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
+          <a class="dropdown-item" (click)="onViewTask('list')">
+            <i class="fa fa-list-alt mr-2"></i>
+            List</a>
+
+          <a class="dropdown-item" (click)="onViewTask('calendar')">
+            <i class="fa fa-calendar mr-2"></i>
+            Calendar</a>
+
+          <a class="dropdown-item" (click)="onViewTask('status')">
+            <i class="fa fa-calendar mr-2"></i>
+            Status</a>
+        </div>
+      </div>
+    </div>
+    <div class="col col-1">
       <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
         <i class="fa fa-calendar mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
-
     </div>
     <div class="col col-6">
       <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
