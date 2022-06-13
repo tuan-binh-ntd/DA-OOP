@@ -28,6 +28,7 @@ namespace API.Entity
         public string TaskType { get; set; }
         [Required, StringLength(50)]
         public string TaskCode { get; set; }
+        public string ReasonForDelay { get; set; }
         [Required]
         [ForeignKey("Project")]
         public Guid ProjectId { get; set; }
