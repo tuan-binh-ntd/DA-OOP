@@ -180,7 +180,7 @@ namespace API.Controllers
                 StatusCode = Enum.StatusCode.Open,
                 DepartmentId = input.DepartmentId
             };
-            _dataContext.Project.Add(data);
+            await _dataContext.Project.AddAsync(data);
             await _dataContext.SaveChangesAsync();
             return Ok(data);
         }

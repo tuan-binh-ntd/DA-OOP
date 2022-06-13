@@ -43,7 +43,7 @@ namespace API.Controllers
                 Recipient = recipient,
                 Content = createMessageDto.Content,
             };
-            await _dataContext.AddAsync(message);
+            await _dataContext.Messages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
             return Ok(message);
         }
