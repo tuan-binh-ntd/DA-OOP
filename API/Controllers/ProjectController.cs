@@ -212,17 +212,17 @@ namespace API.Controllers
                     return Ok(project);
                 }
 
-                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (input.PermissionCode == Permission.Leader)
                 {
-                    project.StatusCode = input.StatusCode;
-                    _dataContext.Project.Update(project);
-                    await _dataContext.SaveChangesAsync();
-                    return Ok(project);
-                }
-                else if (input.PermissionCode == Permission.Leader && input.StatusCode == Enum.StatusCode.Resolve)
-                {
-                    project.StatusCode = input.StatusCode;
-                    project.CompleteDate = DateTime.Now;
+                    if(input.StatusCode == Enum.StatusCode.InProgress)
+                    {
+                        project.StatusCode = input.StatusCode;
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.Resolve)
+                    {
+                        project.StatusCode = input.StatusCode;
+                        project.CompleteDate = DateTime.Now;
+                    }
                     _dataContext.Project.Update(project);
                     await _dataContext.SaveChangesAsync();
                     return Ok(project);
