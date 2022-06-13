@@ -5,7 +5,7 @@
     display: inline-block;
     vertical-align: top;
   }
-  
+
   .example-list {
     border: solid 1px #ccc;
     min-height: 60px;
@@ -14,7 +14,7 @@
     overflow: hidden;
     display: block;
   }
-  
+
   .example-box {
     padding: 20px 10px;
     border-bottom: solid 1px #ccc;
@@ -38,11 +38,11 @@
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
- 
+
   .cdk-drag-placeholder {
     opacity: 0;
   }
-  
+
   .list-wrap1:after{
     content: '';
     display: block;
@@ -86,9 +86,9 @@
     background: linear-gradient(90deg,#00ff87 100%,#00ff87 0);
 
   }
-  
-  
-    
+
+
+
   .countTask{
     border-radius: 50%;
     padding: 10px;
@@ -122,13 +122,12 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: baseline;
-    min-width: 75px;
-    
+    min-width: 80px;
   }
   .dropdown-item:active{
     background-color: var(--heavy-color);
   }
-  
+
   .dropdown:hover>.dropdown-menu {
     display: block;
   }
@@ -149,5 +148,5 @@
     margin-top: 1;
     z-index: 1000;
     position: absolute;
-    
+
   }

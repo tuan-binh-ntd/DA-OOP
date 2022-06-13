@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="col col-1">
-      <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
+      <button *ngIf="right" class="button float-right p-0" (click)="onFilterUser(); this.isMyTask = !isMyTask">
         <i class="fa fa-calendar mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
@@ -36,7 +36,7 @@
         data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
         <i class="fa fa-plus"></i>
       </button>
-      
+
 <!-- <div class="example-container">
   <button *ngIf="this.isMyTask == true" class="button float-right" (click)="onFilterUser(); this.isMyTask = false">
     <i class="fa fa-calendar mr-2"></i>
@@ -87,9 +87,9 @@
         </div>
       </div>
     </div>
-  
+
     <div class="col col-3">
-  
+
   <div class="example-container">
     <div class="d-flex mb-3" style="height:40px">
       <h6 class="mr-2 fw-700 list-wrap2" style="line-height:40px; letter-spacing: 2px;">OPEN</h6>
@@ -116,7 +116,7 @@
     </div>
     </div>
     <div class="col col-3">
-    
+
     <div class="example-container">
       <div class="d-flex mb-3" style="height:40px">
         <h6 class="mr-2 fw-700 list-wrap3" style="line-height:40px; letter-spacing: 2px;">INPROGRESS</h6>
@@ -143,7 +143,7 @@
     </div>
   </div>
   <div class="col col-3">
-  
+
     <div class="example-container">
       <div class="d-flex mb-3" style="height:40px">
       <h6 class="mr-2 fw-700 list-wrap4" style="line-height:40px; letter-spacing: 2px;">COMPLETED</h6>
