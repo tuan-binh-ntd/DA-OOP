@@ -174,14 +174,22 @@
     <div class="modal-footer">
         <div class="w-100 ">
             <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+                <i class="fa fa-remove"></i>
                 Close
             </button>
-            <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right"
-                (click)="onChangeEdit(true)">Edit</button>
-            <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">Save
-                changes</button>
+            <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">
+                <i class="fa fa-edit"></i>
+                Edit
+            </button>
+            <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
+                <i class="fa fa-save"></i>
+                Save changes
+            </button>
             <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right"
-                (click)="onChangeEdit(false)">Cancel</button>
+                (click)="onChangeEdit(false)">
+                <i class="fa fa-undo"></i>
+                Cancel
+            </button>
         </div>
     </div>
 </div>

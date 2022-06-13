@@ -9,7 +9,7 @@
         data-toggle="modal"
         data-target="#createUserModal"
         (click)="modalUser.openModal(null, 'create', true);this.isShowModal = true">
-        <i class="fa fa-plus mr-2"></i>
+        <i class="fa fa-user-plus mr-2"></i>
           Create User
         </button>
     </div>
@@ -23,6 +23,7 @@
         <th>Phone</th>
         <th>Department</th>
         <th>Permission</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,14 @@
         <td>{{ user.phone }}</td>
         <td>{{ getDepartmentName(user.departmentId) }}</td>
         <td>{{ user.permission }}</td>
+        <td>
+          <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
+            <i class="fa fa-lg fa-edit"></i>
+          </button>
+          <button class="btn btn-outline-danger" (click)="openDetailModal(user, 'delete', true)">
+            <i class="fa fa-lg fa-user-times"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>

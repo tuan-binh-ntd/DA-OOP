@@ -67,10 +67,14 @@ export class TasksComponent implements OnInit {
       this.projectId = params['id'];
     })
     this.user = JSON.parse(localStorage.getItem('user'));
-    if (Number(this.user.permissionCode) === Permission.ProjectManager || Number(this.user.permissionCode) === Permission.Leader) {
+    if (Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
     }
-    this.getAllTask.userId = this.user.id;
+    if (Number(this.user.permissionCode) === Permission.ProjectManager) {
+      this.getAllTask.userId = null;
+    } else {
+      this.getAllTask.userId = this.user.id;
+    }
     this.fetchUserData();
     this.fetchProjectData();
     this.fetchTaskData();
