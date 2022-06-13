@@ -40,7 +40,7 @@
                         <label class="form-label col-2" for="name">Email</label>
                         <div class="col-10">
                             <mat-form-field class="w-100">
-                                <input matInput placeholder="Enter email" formControlName="email" />
+                                <input matInput placeholder="Enter email" formControlName="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"/>
                             </mat-form-field>
                         </div>
                     </div>
