@@ -24,12 +24,12 @@ export class PresenceService {
       .start()
       .catch(error => console.log(error));
 
-    this.hubConnection.on('UserIsOnline', () => {
-      this.toastr.info(user.userName + ' has connected');
+    this.hubConnection.on('UserIsOnline', username => {
+      this.toastr.info(username + ' has connected');
     })
 
-    this.hubConnection.on('UserIsOffline', () => {
-      this.toastr.warning(user.userName + ' has disconnected');
+    this.hubConnection.on('UserIsOffline', username => {
+      this.toastr.warning(username + ' has disconnected');
     })
   }
                          
