@@ -25,7 +25,7 @@
     vertical-align: baseline;
     width: auto;
   }
-  
+
   .button-create:hover,
   .button-create:focus {
     border-color: rgba(0, 0, 0, 0.15);
@@ -33,11 +33,11 @@
     color: rgba(0, 0, 0, 0.65);
     cursor: pointer;
   }
-  
+
   .button-create:hover {
     transform: translateY(-1px);
   }
-  
+
   .button-create:active {
     background-color: #F0F0F1;
     border-color: rgba(0, 0, 0, 0.15);
@@ -45,11 +45,11 @@
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(0);
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   /* CSS */
   .button-filter {
     background: #fff;
@@ -76,19 +76,19 @@
     -webkit-user-select: none;
     touch-action: manipulation;
   }
-  
+
   .button-filter:not(:disabled):hover {
     transform: scale(1.05);
   }
-  
+
   .button-filter:not(:disabled):hover:active {
     transform: scale(1.05) translateY(.125rem);
   }
-  
+
   .button-filter:focus {
     outline: 0 solid transparent;
   }
-  
+
   .button-filter:focus:before {
     content: "";
     left: calc(-1*.375rem);
@@ -98,15 +98,24 @@
     transition: border-radius;
     user-select: none;
   }
-  
+
   .button-filter:focus:not(:focus-visible) {
     outline: 0 solid transparent;
   }
-  
+
   .button-filter:focus:not(:focus-visible):before {
     border-width: 0;
   }
-  
+
   .button-filter:not(:disabled):active {
     transform: translateY(.125rem);
+  }
+
+  @keyframes fa-blink{
+    0%{opacity:1;}
+    100%{opacity:0.4;}
+}
+  .is-online {
+    animation:fa-blink 1.5s linear infinite;
+    color:rgb(1,189,42);
   }

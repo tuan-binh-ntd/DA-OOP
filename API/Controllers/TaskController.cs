@@ -97,7 +97,6 @@ namespace API.Controllers
                      ProjectId = t.ProjectId,
                      AppUserId = t.AppUserId,
                      CreateUserId = t.CreateUserId
-
                  }).AsNoTracking().ToListAsync(); ;
             return Ok(taskListForView);
         }
@@ -108,24 +107,32 @@ namespace API.Controllers
             var task = await _dataContext.Task.AsNoTracking().FirstOrDefaultAsync(e => e.ProjectId == input.ProjectId
                 && e.TaskName.ToLower() == input.TaskName.ToLower());
             if (task != null) return BadRequest("TaskName was existed");
-            var newTask = new Tasks
+            var project = await _dataContext.Project.FindAsync(input.ProjectId);
+            if (input.DeadlineDate.Date > project.DeadlineDate.Date)
             {
-                Id = new Guid(),
-                TaskName = input.TaskName,
-                CreateUserId = input.CreateUserId,
-                CreateDate = DateTime.Now,
-                DeadlineDate = input.DeadlineDate,
-                PriorityCode = input.PriorityCode,
-                StatusCode = Enum.StatusCode.Open,
-                Description = input.Description,
-                TaskType = input.TaskType,
-                TaskCode = input.TaskCode,
-                ProjectId = input.ProjectId,
-                AppUserId = input.AppUserId
-            };
-            await _dataContext.Task.AddAsync(newTask);
-            await _dataContext.SaveChangesAsync();
-            return Ok(newTask);
+                return BadRequest("Task deadline date must less than or equal porject deadline date");
+            }
+            else
+            {
+                var newTask = new Tasks
+                {
+                    Id = new Guid(),
+                    TaskName = input.TaskName,
+                    CreateUserId = input.CreateUserId,
+                    CreateDate = DateTime.Now,
+                    DeadlineDate = input.DeadlineDate,
+                    PriorityCode = input.PriorityCode,
+                    StatusCode = Enum.StatusCode.Open,
+                    Description = input.Description,
+                    TaskType = input.TaskType,
+                    TaskCode = input.TaskCode,
+                    ProjectId = input.ProjectId,
+                    AppUserId = input.AppUserId
+                };
+                await _dataContext.Task.AddAsync(newTask);
+                await _dataContext.SaveChangesAsync();
+                return Ok(newTask);
+            }
         }
 
         [HttpPut("update")]
@@ -134,41 +141,51 @@ namespace API.Controllers
             var task = await _dataContext.Task.FindAsync(input.Id);
             if (task != null)
             {
-                if (input.PermissionCode == Permission.Leader)
+                var project = await _dataContext.Project.FindAsync(input.ProjectId);
+                if (input.DeadlineDate.Date > project.DeadlineDate.Date)
+                {
+                    return BadRequest("Task deadline date must less than or equal porject deadline date");
+                }
+                else if (input.PermissionCode == Permission.Leader)
                 {
                     task.TaskName = input.TaskName;
                     task.CreateUserId = input.CreateUserId;
                     task.DeadlineDate = input.DeadlineDate;
                     task.PriorityCode = input.PriorityCode;
-                    task.StatusCode = input.StatusCode;
                     task.Description = input.Description;
                     task.TaskType = input.TaskType;
                     task.TaskCode = input.TaskCode;
                     task.ProjectId = input.ProjectId;
                     task.AppUserId = input.AppUserId;
-
-                    if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+                    if (input.StatusCode == Enum.StatusCode.InProgress)
+                    {
+                        task.StatusCode = input.StatusCode;
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
                     {
                         task.StatusCode = input.StatusCode;
                         task.CompleteDate = DateTime.Now;
-
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.Reopened)
+                    {
+                        task.StatusCode = input.StatusCode;
+                        task.DeadlineDate = input.DeadlineDate;
                     }
                     _dataContext.Task.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
                 }
-
-                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.InProgress)
+                else if (input.PermissionCode == Permission.Employee)
                 {
-                    task.StatusCode = input.StatusCode;
-                    _dataContext.Update(task);
-                    await _dataContext.SaveChangesAsync();
-                    return Ok(task);
-                }
-                else if (input.PermissionCode == Permission.Employee && input.StatusCode == Enum.StatusCode.Resolve)
-                {
-                    task.StatusCode = input.StatusCode;
-                    task.CompleteDate = DateTime.Now;
+                    if(input.StatusCode == Enum.StatusCode.InProgress)
+                    {
+                        task.StatusCode = input.StatusCode;
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.Resolve)
+                    {
+                        task.StatusCode = input.StatusCode;
+                        task.CompleteDate = input.CompleteDate;
+                    }
                     _dataContext.Update(task);
                     await _dataContext.SaveChangesAsync();
                     return Ok(task);
@@ -192,7 +209,7 @@ namespace API.Controllers
             task.StatusCode = input.StatusCode;
             _dataContext.Update(task);
             await _dataContext.SaveChangesAsync();
-            return Ok("Successfully"); 
+            return Ok("Successfully");
         }
 
         [HttpDelete("delete")]

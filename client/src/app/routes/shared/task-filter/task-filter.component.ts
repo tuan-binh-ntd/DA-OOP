@@ -45,7 +45,11 @@ export class TaskFilterComponent implements OnInit {
     { value: Priority.Normal, viewValue: 'Normal' },
     { value: Priority.Low, viewValue: 'Low' },
   ];
-  constructor(private projectService: ProjectService, private fb: FormBuilder, public datepipe: DatePipe) { }
+  constructor(
+    private projectService: ProjectService, 
+    private fb: FormBuilder, 
+    public datepipe: DatePipe
+    ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -91,7 +95,6 @@ export class TaskFilterComponent implements OnInit {
     }
     this.onSubmitForm.emit(payload);
   }
-
 
   onFilterType(type: any) {
     this.typeName = type.viewValue;

@@ -3,43 +3,55 @@
     <div class="col col-6 mb-4">
       <h2 class="m-0 pt-1">Employees</h2>
     </div>
-    <div *ngIf="!disable"class="col col-6 mb-4">
-      <button
-        class="button-create float-right"
-        data-toggle="modal"
-        data-target="#createUserModal"
+    <div *ngIf="!disable" class="col col-6 mb-4">
+      <button class="button-create float-right" data-toggle="modal" data-target="#createUserModal"
         (click)="modalUser.openModal(null, 'create', true);this.isShowModal = true">
-        <i class="fa fa-plus mr-2"></i>
-          Create User
-        </button>
+        <i class="fa fa-user-plus mr-2"></i>
+        Create User
+      </button>
     </div>
   </div>
   <table id="example" class="table table-hover table-bordered" style="width:100%">
     <thead>
       <tr>
+        <th>Online</th>
         <th>Name</th>
         <th>Address</th>
         <th>Email</th>
         <th>Phone</th>
         <th>Department</th>
         <th>Permission</th>
+        <th>Operator</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
+        <td class="text-center align-middle" >
+          <span [class.is-online]="(presence.onlineUsers | async).includes(user.userName)">
+            <i class="fa fa-user"></i>
+          </span>
+        </td>
         <td>{{ user.userName }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
         <td>{{ getDepartmentName(user.departmentId) }}</td>
         <td>{{ user.permission }}</td>
+        <td>
+          <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
+            <i class="fa fa-lg fa-edit"></i>
+          </button>
+          <button class="btn btn-outline-danger" (click)="openDetailModal(user, 'delete', true)">
+            <i class="fa fa-lg fa-user-times"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="modal fade" id="createUserModal" tabindex="-1" [hidden]="!isShowModal" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="createUserModal" tabindex="-1" [hidden]="!isShowModal" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <app-modal-user #modalUser (onChangeUser)="onChangeUser()"></app-modal-user>
   </div>

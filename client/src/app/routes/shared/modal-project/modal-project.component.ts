@@ -22,6 +22,7 @@ export class ModalProjectComponent implements OnInit {
   users: any[] = [];
   data: any;
   isEdit: boolean = false;
+  delete: boolean = false;
   user: User;
   leader: any[] = [];
   constructor(
@@ -111,11 +112,9 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.get('appUserId')?.disable();
       this.modalForm.get('statusCode')?.disable();
       this.modalForm.get('createDate')?.disable();
-    } else if (mode === 'detail') {
-      this.modalForm.patchValue(data);
-      this.checkEditForm();
     } else {
       this.modalForm.patchValue(data);
+      this.checkEditForm();
     }
   }
 
@@ -143,6 +142,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   submitForm() {
+    debugger
     for (const i in this.modalForm.controls) {
       this.modalForm.controls[i].markAsDirty();
       this.modalForm.controls[i].updateValueAndValidity();
@@ -164,7 +164,7 @@ export class ModalProjectComponent implements OnInit {
               this.toastr.error('Failed');
             }
           });
-      } else if (this.mode === 'detail') {
+      } else {
         this.modalForm.value.permissionCode = this.user.permissionCode;
         this.projectService
           .updateProject(this.modalForm.value)
@@ -181,22 +181,26 @@ export class ModalProjectComponent implements OnInit {
             }
             this.onChangeProject.emit();
           });
-      } else {
-        this.projectService
-          .deleteProject(this.modalForm.value.id)
-          .pipe(catchError((err) => { return of(err); }))
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!', '', {
-                timeOut: 1000,
-              });
-              this.onChangeProject.emit();
-            } else {
-              this.toastr.error('You not permission');
-            }
-          });
       }
     }
+  }
+
+  deleteProject(){
+    this.projectService
+          .deleteProject(this.modalForm.value.id)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+              this.onChangeProject.emit();
+            } else {
+              this.toastr.error('Failed');
+            }
+          });
   }
 
   onChangeDepartment() {

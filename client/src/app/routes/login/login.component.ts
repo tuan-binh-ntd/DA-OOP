@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
-import { LoadingService } from 'src/app/services/loading.service';
 import { AuthenticationService } from '../../services/authentication.service';
-const emailRegex = '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

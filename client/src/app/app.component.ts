@@ -1,3 +1,4 @@
+import { PresenceService } from './services/presence.service';
 import { User } from './models/user';
 import { Component, OnInit } from '@angular/core';
 import { catchError, of } from 'rxjs';
@@ -13,7 +14,8 @@ export class AppComponent implements OnInit {
   users: User;
   constructor(
     private userService: UserService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private presence: PresenceService
     ) { }
   ngOnInit(): void {
     this.getUser();
@@ -22,7 +24,10 @@ export class AppComponent implements OnInit {
 
   setCurrentUser() {
     const user: User = JSON.parse(localStorage.getItem('user'));
-    this.authenticationService.setCurrentUser(user);
+    if(user) {
+      this.authenticationService.setCurrentUser(user);
+      this.presence.createHubConnection(user);
+    }
   }
 
   getUser() {

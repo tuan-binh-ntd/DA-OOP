@@ -241,7 +241,6 @@ D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
 D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 D:\DA OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 F:\DA-OOP\DA-OOP\API\bin\Debug\net5.0\API.StaticWebAssets.xml
-F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache
 D:\DA-OOP\API\bin\Debug\net5.0\API.StaticWebAssets.xml
 D:\DA-OOP\API\bin\Debug\net5.0\Dapper.dll
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\bin\Debug\net5.0\appsettings.Development.json
@@ -306,3 +305,4 @@ C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\refint\API.
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\API.pdb
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
+F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache

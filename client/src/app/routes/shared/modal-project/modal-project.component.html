@@ -1,12 +1,7 @@
-<div class="modal-content"  *ngIf="mode ==='create' || mode ==='detail'">
+<div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title" id="createProjectModal">{{title}}</h5>
-    <button
-      type="button"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -18,12 +13,7 @@
             <label class="form-label col-2" for="name">Name</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <input
-                  matInput
-                  placeholder="Enter project name"
-                  formControlName="projectName"
-                  [disabled]="true"
-                />
+                <input matInput placeholder="Enter project name" formControlName="projectName" [disabled]="true" />
               </mat-form-field>
             </div>
           </div>
@@ -32,11 +22,7 @@
             <label class="form-label col-2" for="name">Code</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <input
-                  matInput
-                  placeholder="Enter project code"
-                  formControlName="projectCode"
-                />
+                <input matInput placeholder="Enter project code" formControlName="projectCode" />
               </mat-form-field>
             </div>
           </div>
@@ -45,14 +31,8 @@
             <label class="form-label col-2">Type</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <mat-select
-                  placeholder="Enter project type"
-                  formControlName="projectType"
-                >
-                  <mat-option
-                    *ngFor="let type of projectTypes"
-                    [value]="type.value"
-                  >
+                <mat-select placeholder="Enter project type" formControlName="projectType">
+                  <mat-option *ngFor="let type of projectTypes" [value]="type.value">
                     {{ type.viewValue }}
                   </mat-option>
                 </mat-select>
@@ -65,15 +45,9 @@
             <div class="col-10">
               <mat-form-field class="w-100">
 
-                <mat-select
-                  placeholder="Enter project department"
-                  formControlName="departmentId"
-                  (ngModelChange)="onChangeDepartment()"
-                >
-                  <mat-option
-                    *ngFor="let department of departments"
-                    [value]="department.id"
-                  >
+                <mat-select placeholder="Enter project department" formControlName="departmentId"
+                  (ngModelChange)="onChangeDepartment()">
+                  <mat-option *ngFor="let department of departments" [value]="department.id">
                     {{ department.departmentName }}
                   </mat-option>
                 </mat-select>
@@ -85,18 +59,11 @@
             <label class="form-label col-2" for="name">Leader</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <mat-select
-                [disabled]="true"
-                placeholder="Enter project leader"
-                formControlName="appUserId"
-              >
-                <mat-option
-                  *ngFor="let user of users"
-                  [value]="user.appUserId"
-                >
-                  {{ user.userName }}
-                </mat-option>
-              </mat-select>
+                <mat-select [disabled]="true" placeholder="Enter project leader" formControlName="appUserId">
+                  <mat-option *ngFor="let user of users" [value]="user.appUserId">
+                    {{ user.userName }}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
           </div>
@@ -106,14 +73,8 @@
             <label class="form-label col-2">Status</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <mat-select
-                  placeholder="Enter project status"
-                  formControlName="statusCode"
-                >
-                  <mat-option
-                    *ngFor="let code of statusCode"
-                    [value]="code.value"
-                  >
+                <mat-select placeholder="Enter project status" formControlName="statusCode">
+                  <mat-option *ngFor="let code of statusCode" [value]="code.value">
                     {{ code.viewValue }}
                   </mat-option>
                 </mat-select>
@@ -126,14 +87,8 @@
             <label class="form-label col-2">Priority</label>
             <div class="col-10">
               <mat-form-field class="w-100">
-                <mat-select
-                  placeholder="Enter project priority"
-                  formControlName="priorityCode"
-                >
-                  <mat-option
-                    *ngFor="let code of priorityCode"
-                    [value]="code.value"
-                  >
+                <mat-select placeholder="Enter project priority" formControlName="priorityCode">
+                  <mat-option *ngFor="let code of priorityCode" [value]="code.value">
                     {{ code.viewValue }}
                   </mat-option>
                 </mat-select>
@@ -147,12 +102,7 @@
             <div class="col-10">
               <mat-form-field class="w-100">
                 <mat-label>Choose a date</mat-label>
-                <input
-                  matInput
-              [disabled]="true"
-                  [matDatepicker]="create"
-                  formControlName="createDate"
-                />
+                <input matInput [disabled]="true" [matDatepicker]="create" formControlName="createDate" />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="create">
                 </mat-datepicker-toggle>
@@ -166,11 +116,7 @@
             <div class="col-10">
               <mat-form-field class="w-100">
                 <mat-label>Choose a date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="deadline"
-                  formControlName="deadlineDate"
-                />
+                <input matInput [matDatepicker]="deadline" formControlName="deadlineDate" />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="deadline">
                 </mat-datepicker-toggle>
@@ -184,11 +130,7 @@
             <div class="col-10">
               <mat-form-field class="w-100">
                 <mat-label>Choose a date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="complete"
-                  formControlName="completeDate"
-                />
+                <input matInput [matDatepicker]="complete" formControlName="completeDate" />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="complete">
                 </mat-datepicker-toggle>
@@ -200,18 +142,12 @@
           <div class="form-group row">
             <label class="form-label col-2" for="name">Description</label>
             <div class="col-10">
-          <mat-form-field class="w-100">
-            <textarea matInput
-            placeholder="Description"
-            formControlName="description"
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="2"
-            cdkAutosizeMaxRows="5"
-            #autosize="cdkTextareaAutosize"
-            >
+              <mat-form-field class="w-100">
+                <textarea matInput placeholder="Description" formControlName="description" cdkTextareaAutosize
+                  cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" #autosize="cdkTextareaAutosize">
             </textarea>
-          </mat-form-field>
-          </div>
+              </mat-form-field>
+            </div>
           </div>
         </div>
       </div>
@@ -223,24 +159,40 @@
     </form>
   </div>
   <div class="modal-footer">
-    <div class="w-100 ">
-        <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
-            Close
-        </button>
-        <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">Edit</button>
-        <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">Save changes</button>
-        <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right" (click)="onChangeEdit(false)">Cancel</button>
+    <div class="w-100" *ngIf="delete == false">
+      <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+        <i class="fa fa-remove"></i>
+        Close
+      </button>
+      <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">
+        <i class="fa fa-edit"></i>
+        Edit</button>
+      <button *ngIf="!isEdit" type="button" class="btn btn-danger mr-2 btn-info float-right" (click)="delete=!delete">
+        <i class="fa fa-trash"></i>
+        Delete</button>
+      <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
+        <i class="fa fa-save"></i>
+        Save changes</button>
+      <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right"
+        (click)="onChangeEdit(false)">
+        <i class="fa fa-undo"></i>
+        Cancel
+      </button>
     </div>
-</div>
-</div>
-
-<div class="modal-content" *ngIf="mode ==='delete'">
-  <div class="modal-body">
-      <h3>Bạn chắc chắn muốn xóa project này?</h3>
+    <div class="w-100" *ngIf="delete==true">
+      <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
+        <i class="fa fa-remove"></i>
+        Close
+      </button>
+      <button type="button" class="btn btn-danger ml-2 float-right" (click)="deleteProject()">
+        <i class="fa fa-trash"></i>
+        OK
+      </button>
+      <button type="button" class="btn btn-secondary ml-2 float-right" (click)="delete=!delete">
+        <i class="fa fa-undo"></i>
+        Cancel
+      </button>
+      <h4 class="float-right">Bạn chắc chắn muốn xóa project này?</h4>
+    </div>
   </div>
-  <div class="modal-footer">
-      <button type="button" class="btn btn-primary float-left" (click)="submitForm()">OK</button>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
-  </div>
 </div>
-

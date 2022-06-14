@@ -22,10 +22,11 @@ export class NavBarComponent implements OnInit {
   left:boolean = true;
   users: any[] = [];
   user: User;
-  constructor(private authenticationService: AuthenticationService, private userService: UserService, private router: Router,) {
-  
-   }
-
+  constructor(
+    private authenticationService: AuthenticationService, 
+    private userService: UserService, 
+    private router: Router,
+    ) { }
 
   fetchUserData() {
     this.userService
@@ -39,9 +40,9 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
     this.userName = user.name;    
-    this.right = user.permissionCode !== Permission.ProjectManager
+    this.right = user.permissionCode == Permission.ProjectManager;
+    this.left = user.permissionCode == Permission.Employee;
     this.fetchUserData();
-
   }
   logout() {
     this.authenticationService.logout();
