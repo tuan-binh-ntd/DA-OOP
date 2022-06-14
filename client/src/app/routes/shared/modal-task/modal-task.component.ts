@@ -19,6 +19,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
   @Output() onChangeTask = new EventEmitter();
+  isLoading: boolean = false;
   mode: string = 'create';
   title: string = 'New Task';
   users: any[] = [];
@@ -124,6 +125,9 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.user.id);
       this.modalForm.get('projectId').setValue(this.projectId);
+      if(this.projectId){
+        this.modalForm.controls['projectId'].disable();
+      }
       this.modalForm.controls['createUserId'].disable();
       this.modalForm.controls['statusCode'].disable();
       this.modalForm.controls['createDate'].disable();
@@ -165,8 +169,8 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      this.modalForm.value.createUserId = this.user.id;
-      if (this.mode === 'create') {
+        this.modalForm.value.createUserId = this.user.id;
+        if (this.mode === 'create') {
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(
@@ -184,6 +188,7 @@ export class ModalTaskComponent implements OnInit {
           });
       } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode = this.user.permissionCode;
+        this.modalForm.value.projectId = this.data.projectId;
         this.taskService
           .updateTask(this.modalForm.value)
           .pipe(catchError((err) => { return of(err); }))
