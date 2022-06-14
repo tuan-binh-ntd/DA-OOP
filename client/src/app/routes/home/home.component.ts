@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: 'bottom',
         labels:{
           padding: 30,
@@ -74,25 +74,25 @@ async fetchProjectData() {
     this.completeProject = this.projects.filter(project=> project.statusCode === StatusCode.Resolved).length;
     var ctx = this.baseChart.nativeElement.getContext("2d");
     var gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
-    var gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+    var gradient2 = ctx.createLinearGradient(0, 0, 0, 600);
 
-    gradient1.addColorStop(0, '#ebf4f5');   
-    gradient1.addColorStop(1, '#b5c6e0');
-    gradient2.addColorStop(0, '#6ff7e8');   
-    gradient2.addColorStop(1, '#1f7ea1');
+    gradient1.addColorStop(0, '#f9b16e');   
+    gradient1.addColorStop(1, '#ef7ba1');
+    gradient2.addColorStop(0, '#7c828d');   
+    gradient2.addColorStop(1, '#ac8d9a');
     var gradient3= ctx.createLinearGradient(0, 0, 0, 400);
 
-    gradient3.addColorStop(0, '#aefb2a');   
-    gradient3.addColorStop(1, '#57ebde');
+    gradient3.addColorStop(0, '#17a2b8');   
+    // gradient3.addColorStop(1, '#ef7ba1');
     var gradient4= ctx.createLinearGradient(0, 0, 0, 400);
 
-    gradient4.addColorStop(0, '#0974f1');   
+    gradient4.addColorStop(0, '#00ff87');   
     gradient4.addColorStop(1, '#9fccfa');
     this.pieChartData = {
 
-      labels: ['Reopened', 'Open', 'Completed', 'Inprogress' ],
+      labels: ['Reopened', 'Open', 'Inprogress', 'Completed' ],
       datasets: [ {
-        data: [ this.reopenedProject, this.openProject, this.completeProject, this.inProgressProject],
+        data: [ this.reopenedProject, this.openProject, this.inProgressProject, this.completeProject],
         backgroundColor: [
          gradient1,gradient2,gradient3,gradient4
       ],

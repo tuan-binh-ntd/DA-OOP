@@ -5580,16 +5580,11 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\DELL\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\linhd\\.nuget\\packages\\": {}
->>>>>>> c1041af59fcb87173e1275f739940cb0c8d20b96
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "D:\\DA-OOP\\API\\API.csproj",
       "projectName": "API",
       "projectPath": "D:\\DA-OOP\\API\\API.csproj",
@@ -5598,16 +5593,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-      "projectUniqueName": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj",
-      "projectName": "API",
-      "projectPath": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\linhd\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\linhd\\OneDrive\\Documents\\GitHub\\DA-OOP\\API\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\linhd\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> c1041af59fcb87173e1275f739940cb0c8d20b96
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5685,12 +5670,16 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
->>>>>>> c1041af59fcb87173e1275f739940cb0c8d20b96
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\DA-OOP\\API\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

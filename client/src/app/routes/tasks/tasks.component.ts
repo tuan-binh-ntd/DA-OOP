@@ -2,6 +2,7 @@ import { Component, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Calendar } from '@fullcalendar/angular';
 import * as bootstrap from 'bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
@@ -22,6 +23,7 @@ import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
 })
 export class TasksComponent implements OnInit {
   @ViewChild('modalTask') modalTask!: ModalTaskComponent;
+  isLoading: boolean = false;
   $: any;
   tasks: any[] = [];
   users: any[] = [];
@@ -56,7 +58,8 @@ export class TasksComponent implements OnInit {
     protected userService: UserService,
     protected route: ActivatedRoute,
     protected router: Router,
-    protected toastr: ToastrService
+    protected toastr: ToastrService,
+    protected spinner: NgxSpinnerService,
 
   ) {
     forwardRef(() => Calendar);

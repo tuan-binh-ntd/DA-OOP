@@ -23,6 +23,8 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      this.isLoading = true;
+      this.spinner.show();
       let payload;
       if(event.container.id === 'reopen') {
          payload = {
@@ -46,6 +48,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         }
       }
       else{
+
          payload = {
           // @ts-ignore
           taskId:  event.previousContainer.data[event.previousIndex].id,
@@ -58,6 +61,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+      this.showLoading();
       this.taskService
       .patchTask(payload)
       .pipe(
@@ -67,15 +71,25 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response) {
-          this.toastr.success('Update status successfully!');
+          this.toastr.success('Successfully!');
+          this.hideLoading();
+          this.isLoading = false;
+          setTimeout(()=>{
+            this.toastr.clear()
+          },700)
         } else {
           this.toastr.error('Failed');
+          this.hideLoading();
+          this.isLoading = false;
         }
       });
+      // this.spinner.hide();
     }
   }
 
   fetchTaskData() {
+    this.isLoading = true;
+    this.showLoading();
     this.sub = this.taskService
       .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
@@ -89,6 +103,18 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
         this.inProgressCount = this.inProgressTask.length;
         this.resolvedTask = this.tasks.filter(task=> task.statusCode === StatusCode.Resolved);
         this.resolvedCount = this.resolvedTask.length;
+        this.hideLoading();
+        this.isLoading = false;
       });
+  }
+
+  hideLoading(){
+    document.getElementById('spinner')
+    .style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner')
+              .style.display = 'block';
   }
 }
