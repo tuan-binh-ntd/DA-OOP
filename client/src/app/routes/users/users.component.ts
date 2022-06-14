@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
-import { catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { DepartmentService } from 'src/app/services/department.service';
+import { PresenceService } from 'src/app/services/presence.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 
@@ -20,16 +21,20 @@ export class UsersComponent implements OnInit {
     { value: Permission.Leader, viewValue: 'Leader' },
     { value: Permission.Employee, viewValue: 'Employee' }
   ]
-  constructor(private departmentService: DepartmentService,
+  constructor(
+    private departmentService: DepartmentService,
     private userService: UserService,
+    public presence: PresenceService
   ) { }
   users: any[] = [];
   departments: any[] = [];
   disable: boolean = false;
+
   ngOnInit(): void {
     this.disable = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Employee;
     this.fetchUserData();
     this.fetchDepartmentData();
+
   }
 
   fetchUserData() {
