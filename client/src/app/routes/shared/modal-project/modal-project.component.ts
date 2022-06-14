@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -17,6 +18,7 @@ import { Priority } from '../priority-icon/priority-icon.component';
 export class ModalProjectComponent implements OnInit {
   @Input() departments: any[] = [];
   @Output() onChangeProject = new EventEmitter();
+  isLoading: boolean = false;
   mode: string = 'create';
   title: string = 'New Project';
   users: any[] = [];
@@ -142,7 +144,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   submitForm() {
-    debugger
+    this.isLoading = true;
     for (const i in this.modalForm.controls) {
       this.modalForm.controls[i].markAsDirty();
       this.modalForm.controls[i].updateValueAndValidity();
@@ -154,7 +156,7 @@ export class ModalProjectComponent implements OnInit {
           .pipe(
             catchError((err) => {
               return of(err);
-            })
+            }), finalize(() => this.isLoading = false)
           )
           .subscribe((response) => {
             if (response) {
@@ -171,7 +173,7 @@ export class ModalProjectComponent implements OnInit {
           .pipe(
             catchError((err) => {
               return of(err);
-            })
+            }), finalize(() => this.isLoading = false)
           )
           .subscribe((response) => {
             if (response.id) {
@@ -185,22 +187,22 @@ export class ModalProjectComponent implements OnInit {
     }
   }
 
-  deleteProject(){
+  deleteProject() {
     this.projectService
-          .deleteProject(this.modalForm.value.id)
-          .pipe(
-            catchError((err) => {
-              return of(err);
-            })
-          )
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!');
-              this.onChangeProject.emit();
-            } else {
-              this.toastr.error('Failed');
-            }
-          });
+      .deleteProject(this.modalForm.value.id)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        }), finalize(() => this.isLoading = false)
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.toastr.success('Successfully!');
+          this.onChangeProject.emit();
+        } else {
+          this.toastr.error('Failed');
+        }
+      });
   }
 
   onChangeDepartment() {
