@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { catchError, Observable, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
+import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department.service';
 import { PresenceService } from 'src/app/services/presence.service';
 import { UserService } from 'src/app/services/user.service';
@@ -29,8 +30,9 @@ export class UsersComponent implements OnInit {
   users: any[] = [];
   departments: any[] = [];
   disable: boolean = false;
-
+  user: User;
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.disable = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Employee;
     this.fetchUserData();
     this.fetchDepartmentData();
@@ -43,7 +45,7 @@ export class UsersComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
-        this.users = this.users.filter(e => e.permission == 'Leader' || e.permission == 'Employee');
+        this.users = this.users.filter(e => Number(this.user.permissionCode) === Permission.ProjectManager || ((e.permission == 'Leader' || e.permission == 'Employee') && e.departmentId == this.user.departmentId));
       });
   }
 

@@ -33,6 +33,7 @@ export class TasksComponent implements OnInit {
   isShowModal: boolean = false;
   isMyTask: boolean = false;
   right: boolean = false;
+  employee: boolean = false;
   user: User;
   filterUserTask: string = 'Assign';
   priorityCode: any[] = [
@@ -72,6 +73,9 @@ export class TasksComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
     if (Number(this.user.permissionCode) === Permission.Leader) {
       this.right = true
+    }
+    if (Number(this.user.permissionCode) === Permission.Employee) {
+      this.employee = true
     }
     if (Number(this.user.permissionCode) === Permission.ProjectManager) {
       this.getAllTask.userId = null;

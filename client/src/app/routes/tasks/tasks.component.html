@@ -82,7 +82,7 @@
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(task, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
-          <button class="btn btn-outline-danger" (click)="openDetailModal(task, 'delete', true)">
+          <button  class="btn btn-outline-danger" *ngIf="!employee" (click)="openDetailModal(task, 'delete', true)">
             <i class="fa fa-lg fa-trash"></i>
           </button>
         </td>

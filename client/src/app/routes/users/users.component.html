@@ -28,7 +28,7 @@
       <tr *ngFor="let user of users">
         <td class="text-center align-middle" >
           <span [class.is-online]="(presence.onlineUsers | async).includes(user.userName)">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-user mr-2"></i>
           </span>
         </td>
         <td>{{ user.userName }}</td>
@@ -39,10 +39,10 @@
         <td>{{ user.permission }}</td>
         <td>
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
-            <i class="fa fa-lg fa-edit"></i>
+            <i class="fa fa-lg fa-edit mr-2"></i>
           </button>
           <button class="btn btn-outline-danger" (click)="openDetailModal(user, 'delete', true)">
-            <i class="fa fa-lg fa-user-times"></i>
+            <i class="fa fa-lg fa-user-times mr-2"></i>
           </button>
         </td>
       </tr>
