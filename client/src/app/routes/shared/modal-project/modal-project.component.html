@@ -170,7 +170,7 @@
       <button *ngIf="!isEdit" type="button" class="btn btn-danger mr-2 btn-info float-right" (click)="delete=!delete">
         <i class="fa fa-trash"></i>
         Delete</button>
-      <button *ngIf="isEdit" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
+      <button *ngIf="isEdit" [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
         <i class="fa fa-save"></i>
         Save changes</button>
       <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right"

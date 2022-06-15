@@ -19,8 +19,6 @@ export class AuthenticationService {
       map((response: User) => {
         const user = response;
         if(user) {
-          //localStorage.setItem('user', JSON.stringify(user));
-          //this.currentUserSource.next(user);
           this.setCurrentUser(user);
           this.presence.createHubConnection(user);
         }
