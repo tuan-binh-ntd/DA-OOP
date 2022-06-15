@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTO.MessageDto;
 using API.Entity;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,16 @@ namespace API.Controllers
     public class MessageController : ControllerBase
     {
         private readonly DataContext _dataContext;
+        private readonly IMessageRepository _messageRepository;
 
-        public MessageController(DataContext dataContext)
+        public MessageController(DataContext dataContext, IMessageRepository messageRepository)
         {
             _dataContext = dataContext;
+            _messageRepository = messageRepository;
         }
 
         [HttpPost("message/create")]
-        public async Task<ActionResult<MessagesDto>> CreateMessage(CreateMessageDto createMessageDto)
+        public async Task<ActionResult> CreateMessage(CreateMessageDto createMessageDto)
         {
             var sender = await _dataContext.AppUser.FindAsync(createMessageDto.SenderId);
             var recipient = await _dataContext.AppUser.FindAsync(createMessageDto.RecipientId);
