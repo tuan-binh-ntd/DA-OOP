@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
-
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -26,6 +26,7 @@ export class ModalTaskComponent implements OnInit {
   departments: any[] = [];
   modalForm!: FormGroup;
   isEdit: boolean = false;
+  
   projectId: string = '';
   data: any;
   user: User;
@@ -164,6 +165,7 @@ export class ModalTaskComponent implements OnInit {
   }
 
   submitForm() {
+    this.isLoading = true;
     for (const i in this.modalForm.controls) {
       this.modalForm.controls[i].markAsDirty();
       this.modalForm.controls[i].updateValueAndValidity();
@@ -177,7 +179,7 @@ export class ModalTaskComponent implements OnInit {
           .pipe(
             catchError((err) => {
               return of(err);
-            })
+            }), finalize(() => this.isLoading = false)
           )
           .subscribe((response) => {
             if (response) {
@@ -192,7 +194,7 @@ export class ModalTaskComponent implements OnInit {
         this.modalForm.value.projectId = this.data.projectId;
         this.taskService
           .updateTask(this.modalForm.value)
-          .pipe(catchError((err) => { return of(err); }))
+          .pipe(catchError((err) => { return of(err); }), finalize(() => this.isLoading = false))
           .subscribe((response) => {
             if (response.id) {
               this.toastr.success('Successfully!', '', {

@@ -6,7 +6,7 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { UserService } from 'src/app/services/user.service';
-
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-modal-user',
   templateUrl: './modal-user.component.html',
@@ -14,6 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ModalUserComponent implements OnInit {
   @Output() onChangeUser = new EventEmitter();
+  isLoading: boolean = false;
   mode: string = 'create';
   title: string = 'New Employee';
   isEdit: boolean = false;
@@ -101,6 +102,7 @@ export class ModalUserComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     for (const i in this.modalForm.controls) {
       this.modalForm.controls[i].markAsDirty();
       this.modalForm.controls[i].updateValueAndValidity();
@@ -113,7 +115,7 @@ export class ModalUserComponent implements OnInit {
           .pipe(
             catchError((err) => {
               return of(err);
-            })
+            }), finalize(() => this.isLoading = false)
           )
           .subscribe((response) => {
             if (response.id) {
@@ -130,7 +132,7 @@ export class ModalUserComponent implements OnInit {
           .pipe(
             catchError((err) => {
               return of(err);
-            })
+            }), finalize(() => this.isLoading = false)
           )
           .subscribe((response) => {
             if (response) {
