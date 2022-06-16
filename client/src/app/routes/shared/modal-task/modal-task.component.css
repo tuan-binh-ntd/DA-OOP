@@ -1,0 +1,25 @@
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: var(--primary-color) !important;
+}
+
+::ng-deep.mat-form-field-wrapper {
+    padding-bottom: 0.75rem;
+}
+
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 0.75rem;
+
+}
+
+.chat-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 467px;
+}
+
+.chat{
+    background-color: red;
+    margin: auto;
+}

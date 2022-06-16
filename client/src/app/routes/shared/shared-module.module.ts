@@ -24,6 +24,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {  NgChartsModule } from 'ng2-charts';
 import { TaskFilterComponent } from './task-filter/task-filter.component';
 import { ButtonBusyDirective } from './utils/button-busy.directive';
+import {MatTabsModule} from '@angular/material/tabs';
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -54,6 +55,7 @@ import { ButtonBusyDirective } from './utils/button-busy.directive';
     MdePopoverModule,
     MatMenuModule,
     NgChartsModule,
+    MatTabsModule,
   ],
   exports:[
     PriorityIconComponent,
@@ -63,7 +65,8 @@ import { ButtonBusyDirective } from './utils/button-busy.directive';
     ModalUserComponent,
     ProjectFilterComponent,
     TaskFilterComponent,
-    ButtonBusyDirective
+    ButtonBusyDirective,
+    
   ],
   providers:[ MatDatepickerModule,
     MatNativeDateModule,

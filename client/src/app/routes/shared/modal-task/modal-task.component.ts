@@ -11,6 +11,7 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
+import { MessageService } from 'src/app/services/message.service';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -21,12 +22,13 @@ export class ModalTaskComponent implements OnInit {
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
   mode: string = 'create';
+  index:number = 0;
   title: string = 'New Task';
   users: any[] = [];
   departments: any[] = [];
   modalForm!: FormGroup;
   isEdit: boolean = false;
-  
+  messages: any[] = [];
   projectId: string = '';
   data: any;
   user: User;
@@ -55,7 +57,8 @@ export class ModalTaskComponent implements OnInit {
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -64,6 +67,7 @@ export class ModalTaskComponent implements OnInit {
     })
     this.fetchUserData();
     this.fetchDepartmentData();
+    this.fetchMessage();
     this.getCurrentUser();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -82,6 +86,10 @@ export class ModalTaskComponent implements OnInit {
       .subscribe((response) => {
         this.users = response;
       });
+  }
+
+  fetchMessage(){
+
   }
 
   fetchDepartmentData() {
@@ -113,6 +121,7 @@ export class ModalTaskComponent implements OnInit {
   }
 
   openModal(data: any, mode: string, isEdit: boolean) {
+    this.index = 0;
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;

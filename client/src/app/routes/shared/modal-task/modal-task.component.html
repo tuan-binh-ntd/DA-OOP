@@ -1,4 +1,4 @@
-<div class="modal-content" *ngIf="mode ==='create' || mode ==='detail'">
+<div class="modal-content" *ngIf="mode ==='create' || mode ==='detail'" style="max-height: 92vh">
     <div class="modal-header">
         <h5 class="modal-title" id="createTaskModal">{{title}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,163 +7,170 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="modalForm">
-            <div class="row">
-                <div class="col col-6">
-                    <div class="form-group row">
-                        <label class="form-label col-2">Project</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter project name" formControlName="projectId">
-                                    <mat-option *ngFor="let project of projects" [value]="project.id">
-                                        {{ project.projectName }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+            <mat-tab-group dynamicHeight [(selectedIndex)]="index" headerPosition="above">
+                <mat-tab label="Information" >
+                <div class="row mt-2">
+                    <div class="col col-6">
+                        <div class="form-group row">
+                            <label class="form-label col-3">Project</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter project name" formControlName="projectId">
+                                        <mat-option *ngFor="let project of projects" [value]="project.id">
+                                            {{ project.projectName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Task Name</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Enter task name" formControlName="taskName" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3">Type</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter task type" formControlName="taskType">
+                                        <mat-option *ngFor="let type of taskTypes" [value]="type.value">
+                                            {{ type.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Code</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <input matInput placeholder="Enter task code" formControlName="taskCode" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Assignee</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter task leader" formControlName="createUserId">
+                                        <mat-option *ngFor="let user of users" [value]="user.appUserId">
+                                            {{ user.userName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Assigned to</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter employee name" formControlName="appUserId">
+                                        <mat-option *ngFor="let user of users" [value]="user.appUserId">
+                                            {{ user.userName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <div class="col col-6">
+                        <div class="form-group row">
+                            <label class="form-label col-3">Status</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter task status" formControlName="statusCode">
+                                        <mat-option *ngFor="let code of statusCode" [value]="code.value">
+                                            {{ code.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3">Priority</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-select placeholder="Enter task priority" formControlName="priorityCode">
+                                        <mat-option *ngFor="let code of priorityCode" [value]="code.value">
+                                            {{ code.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+    
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Create</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Choose a date</mat-label>
+                                    <input matInput [disabled]="true" [matDatepicker]="create"
+                                        formControlName="createDate" />
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="create">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #create></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Deadline</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Choose a date</mat-label>
+                                    <input matInput [matDatepicker]="deadline" formControlName="deadlineDate" />
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="deadline">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #deadline></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div [hidden]="mode === 'create'" class="form-group row">
+                            <label class="form-label col-3" for="name">Complete</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Choose a date</mat-label>
+                                    <input matInput [matDatepicker]="complete" formControlName="completeDate" />
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="complete">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #complete></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="form-label col-3" for="name">Description</label>
+                            <div class="col-9">
+                                <mat-form-field class="w-100">
+                                    <textarea matInput placeholder="Description" formControlName="description"
+                                        cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"
+                                        #autosize="cdkTextareaAutosize">
+                                    </textarea>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Task Name</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <input matInput placeholder="Enter task name" formControlName="taskName" />
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2">Type</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter task type" formControlName="taskType">
-                                    <mat-option *ngFor="let type of taskTypes" [value]="type.value">
-                                        {{ type.viewValue }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Code</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <input matInput placeholder="Enter task code" formControlName="taskCode" />
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Assignee</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter task leader" formControlName="createUserId">
-                                    <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.userName }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Assigned to</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter employee name" formControlName="appUserId">
-                                    <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.userName }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
                 </div>
-                <div class="col col-6">
-                    <div class="form-group row">
-                        <label class="form-label col-2">Status</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter task status" formControlName="statusCode">
-                                    <mat-option *ngFor="let code of statusCode" [value]="code.value">
-                                        {{ code.viewValue }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2">Priority</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter task priority" formControlName="priorityCode">
-                                    <mat-option *ngFor="let code of priorityCode" [value]="code.value">
-                                        {{ code.viewValue }}
-                                    </mat-option>
-                                </mat-select>
-
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Create</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-label>Choose a date</mat-label>
-                                <input matInput [disabled]="true" [matDatepicker]="create"
-                                    formControlName="createDate" />
-                                <mat-hint>MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matSuffix [for]="create">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #create></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Deadline</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="deadline" formControlName="deadlineDate" />
-                                <mat-hint>MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matSuffix [for]="deadline">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #deadline></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div [hidden]="mode === 'create'" class="form-group row">
-                        <label class="form-label col-2" for="name">Complete</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="complete" formControlName="completeDate" />
-                                <mat-hint>MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matSuffix [for]="complete">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #complete></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Description</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <textarea matInput placeholder="Description" formControlName="description"
-                                    cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"
-                                    #autosize="cdkTextareaAutosize">
-                                </textarea>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </mat-tab>
+            <mat-tab label="Discussion">
+               
+</mat-tab>
+            </mat-tab-group>
             <style>
                 ::ng-deep .cdk-overlay-container {
                     z-index: 2000;
