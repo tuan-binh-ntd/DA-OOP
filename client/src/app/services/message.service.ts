@@ -18,9 +18,9 @@ export class MessageService {
 
   constructor(private http: HttpClient) { }
 
-  createHubConnection(user: User, otherUserName: string) {
+  createHubConnection(user: User, otherUserName: string, taskId: string) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(this.hubUrl + 'message?user=' + otherUserName, {
+      .withUrl(this.hubUrl + 'message?user=' + otherUserName + '?taskId=' + taskId, {
         accessTokenFactory: () => user.token
       })
       .withAutomaticReconnect()
