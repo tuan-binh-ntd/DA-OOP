@@ -52,11 +52,10 @@ namespace API.Controllers
         }
 
         [HttpGet("message/getall")]
-        public async Task<ActionResult> GetMessagesThread(Guid senderId, Guid recipientId)
+        public async Task<ActionResult> GetMessagesThread(string currentUserName, string recipientUserName, Guid taskId)
         {
-            var messages = await _dataContext.Messages.Where(e => e.SenderId == senderId && e.RecipientId == recipientId)
-                .OrderBy(m => m.MessageSent).ToListAsync();
-            return Ok(messages);
+            var message = await _messageRepository.GetMessageThread(currentUserName, recipientUserName, taskId);
+            return Ok(message);
         }
     }
 }

@@ -4,8 +4,6 @@ using API.Entity;
 using API.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.SignalR
@@ -25,9 +23,10 @@ namespace API.SignalR
         {
             var httpContext = Context.GetHttpContext();
             var otherUser = httpContext.Request.Query["user"].ToString();
+            var taskId = httpContext.Request.Query["taskId"].ToString();
             var groupName = GetGroupName(Context.User.Identity.Name, otherUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            var messages = await _messageRepository.GetMessageThread(Context.User.Identity.Name, otherUser);
+            var messages = await _messageRepository.GetMessageThread(Context.User.Identity.Name, otherUser, Guid.Parse(taskId));
             await Clients.Group(groupName).SendAsync("ReceiveMessageThread", messages);
         }
 
