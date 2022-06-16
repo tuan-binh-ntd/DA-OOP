@@ -47,6 +47,11 @@
       </button>
     </div>
   </div>
+  <div class="my-box d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
   <table *ngIf="tasks.length !== 0" id="example" class="table table-hover mt-4" style="width:100%">
     <thead>
       <tr>
@@ -82,7 +87,7 @@
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(task, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
-          <button class="btn btn-outline-danger" (click)="openDetailModal(task, 'delete', true)">
+          <button  class="btn btn-outline-danger" *ngIf="!employee" (click)="openDetailModal(task, 'delete', true)">
             <i class="fa fa-lg fa-trash"></i>
           </button>
         </td>

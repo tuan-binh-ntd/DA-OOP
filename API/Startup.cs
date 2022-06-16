@@ -34,6 +34,7 @@ namespace API
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IDapper, Dapperr>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddControllers();
             services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -91,6 +92,7 @@ namespace API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }

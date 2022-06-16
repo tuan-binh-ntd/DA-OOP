@@ -2,7 +2,7 @@
 
 namespace API.DTO.MessageDto
 {
-    public class MessagesDto
+    public class MessagesForViewDto
     {
         public Guid Id { get; set; }
         public Guid TasksId { get; set; }
