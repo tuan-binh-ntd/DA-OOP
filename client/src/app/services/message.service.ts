@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Message } from '../models/message';
 import { User } from '../models/user';
@@ -20,7 +20,7 @@ export class MessageService {
 
   createHubConnection(user: User, otherUserName: string, taskId: string) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(this.hubUrl + 'message?user=' + otherUserName + '?taskId=' + taskId, {
+      .withUrl(this.hubUrl + 'message?user=' + otherUserName + '&taskId=' + taskId, {
         accessTokenFactory: () => user.token
       })
       .withAutomaticReconnect()
@@ -31,15 +31,30 @@ export class MessageService {
       this.hubConnection.on('ReceiveMessageThread', messages => {
         this.messageThreadSource.next(messages);
       });
+
+      this.hubConnection.on('NewMessage', message => {
+        this.messageThread.pipe(take(1)).subscribe(messages => {
+          this.messageThreadSource.next([...messages, message])
+        })
+      })
   }
 
   stopHubConnection() {
+    if(this.hubConnection) {
+      this.hubConnection.stop();
+    }
     this.hubConnection.stop();
   }
 
-  getAllMessage():Observable<any>{
-    return this.http.get(this.baseUrl + '/get');
-   }
+  getMessageThread(username: string) {
+    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + username);
+  }
+
+  async sendMessage(payload: any) {
+    return this.hubConnection.invoke('SendMessage', payload)
+    .catch(error => console.log(error));
+  }
+
   createDepartment(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }
