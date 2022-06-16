@@ -88,27 +88,39 @@ export class TasksComponent implements OnInit {
   }
 
   fetchTaskData() {
+    this.isLoading = true;
+    this.showLoading();
     this.sub = this.taskService
       .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
   fetchUserData() {
+    this.isLoading = true;
+    this.showLoading();
     this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
   fetchProjectData() {
+    this.isLoading = true;
+    this.showLoading();
     this.projectService
       .getAllProject(this.getAllProject)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
   getUserName(id: string) {
@@ -230,5 +242,13 @@ export class TasksComponent implements OnInit {
     else {
       this.router.navigate(['projects/tasks', this.projectId, 'status']);
     }
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
 }

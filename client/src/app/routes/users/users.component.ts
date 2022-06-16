@@ -16,6 +16,7 @@ import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 export class UsersComponent implements OnInit {
   @ViewChild('modalUser') modalUser!: ModalUserComponent;
   $: any;
+  isLoading: boolean = false;
   isShowModal: boolean = false;
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
@@ -40,21 +41,29 @@ export class UsersComponent implements OnInit {
   }
 
   fetchUserData() {
+    this.isLoading = true;
+    this.showLoading();
     this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
         this.users = this.users.filter(e => Number(this.user.permissionCode) === Permission.ProjectManager || ((e.permission == 'Leader' || e.permission == 'Employee') && e.departmentId == this.user.departmentId));
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
   fetchDepartmentData() {
+    this.isLoading = true;
+    this.showLoading();
     this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.departments = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
   getDepartmentName(id: string) {
@@ -86,5 +95,13 @@ export class UsersComponent implements OnInit {
     $('.modal-backdrop').remove();
     this.isShowModal = false;
     this.fetchUserData();
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
 }

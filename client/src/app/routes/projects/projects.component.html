@@ -11,14 +11,19 @@
     </div>
   </div>
 
+  <div class="my-box d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
+        <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  
   <div class="row no-gutters">
-    
     <div class="col col-10">
       <app-project-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
-        (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
-        (filterType)="onFilterType($event)" (onSearchProject)="onSearch($event)"></app-project-filter>
+      (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
+      (filterType)="onFilterType($event)" (onSearchProject)="onSearch($event)"></app-project-filter>
     </div>
-
+    
     <div class="card-columns">
       <div class="card " *ngFor="let item of projects" style="display: inline-block"
         [routerLink]="['tasks', item.id]">
