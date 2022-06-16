@@ -26,6 +26,7 @@ export class ProjectsComponent implements OnInit {
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
+  isLoading: boolean = false;
   projects: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
@@ -51,15 +52,21 @@ export class ProjectsComponent implements OnInit {
   }
 
   fetchDepartmentData() {
+    this.isLoading = true;
+    this.showLoading();
     this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.departments = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
   fetchProjectData() {
+    this.isLoading = true;
+    this.showLoading();
     if (!this.right) {
       this.getAllProject.departmentId = this.user.departmentId
     }
@@ -69,6 +76,8 @@ export class ProjectsComponent implements OnInit {
       .subscribe((response) => {
         this.projects = response;
         this.allRecord = this.projects.length;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
@@ -157,5 +166,13 @@ export class ProjectsComponent implements OnInit {
     this.getAllProject.completeDateFrom = null;
     this.getAllProject.completeDateTo = null;
     this.fetchProjectData();
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
 }

@@ -11,6 +11,11 @@
       </button>
     </div>
   </div>
+  <div class="my-box d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
+        <span class="sr-only">Loading...</span>
+    </div>
+  </div>
   <table id="example" class="table table-hover table-bordered" style="width:100%">
     <thead>
       <tr>
@@ -28,7 +33,7 @@
       <tr *ngFor="let user of users">
         <td class="text-center align-middle" >
           <span [class.is-online]="(presence.onlineUsers | async).includes(user.userName)">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-user mr-2"></i>
           </span>
         </td>
         <td>{{ user.userName }}</td>
@@ -39,10 +44,10 @@
         <td>{{ user.permission }}</td>
         <td>
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
-            <i class="fa fa-lg fa-edit"></i>
+            <i class="fa fa-lg fa-edit mr-2"></i>
           </button>
           <button class="btn btn-outline-danger" (click)="openDetailModal(user, 'delete', true)">
-            <i class="fa fa-lg fa-user-times"></i>
+            <i class="fa fa-lg fa-user-times mr-2"></i>
           </button>
         </td>
       </tr>

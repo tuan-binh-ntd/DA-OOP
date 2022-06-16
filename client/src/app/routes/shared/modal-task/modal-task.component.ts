@@ -205,21 +205,23 @@ export class ModalTaskComponent implements OnInit {
             }
             this.onChangeTask.emit();
           });
-      } else {
-        this.taskService
-          .deleteTask(this.modalForm.value.id)
-          .pipe(catchError((err) => { return of(err); }))
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!', '', {
-                timeOut: 1000,
-              });
-              this.onChangeTask.emit();
-            } else {
-              this.toastr.error('You not permission');
-            }
-          });
-      }
+      } 
+    }
+    if(this.mode === 'delete')
+    {
+      this.taskService
+        .deleteTask(this.modalForm.value.id)
+        .pipe(catchError((err) => { return of(err); }))
+        .subscribe((response) => {
+          if (response) {
+            this.toastr.success('Successfully!', '', {
+              timeOut: 1000,
+            });
+            this.onChangeTask.emit();
+          } else {
+            this.toastr.error('You not permission');
+          }
+        }); 
     }
   }
 

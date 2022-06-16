@@ -33,6 +33,8 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
   };
 
   fetchTaskData() {
+    this.isLoading = true;
+    this.showLoading();
     this.sub = this.taskService
       .getAllTask(this.projectId, this.getAllTask)
       .pipe(catchError((err) => of(err)))
@@ -63,6 +65,8 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
           eventColor: '#00b4d8',
           height: 600,
         };
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
@@ -73,6 +77,14 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
   pipeDate(date: any) {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(date, 'dd-MM-yyyy');
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
   
 }

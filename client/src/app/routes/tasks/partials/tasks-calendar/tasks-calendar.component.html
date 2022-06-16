@@ -33,6 +33,11 @@
       </div>
     </div>
   </div>
+  <div class="my-box d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
   <div class="row no-gutters">
     <div class="col col-10 p-0">
       <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"

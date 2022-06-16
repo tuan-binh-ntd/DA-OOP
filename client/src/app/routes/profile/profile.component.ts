@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  isLoading: boolean = false;
   users: any[] = [];
   user: User;
   departments: any[] = [];
@@ -30,21 +31,29 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchUserData() {
+    this.isLoading = true;
+    this.showLoading();
     this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
         this.currentUser = this.users.find(e => e.appUserId == this.user.id);
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
   fetchDepartmentData() {
+    this.isLoading = true;
+    this.showLoading();
     this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.departments = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
@@ -54,6 +63,14 @@ export class ProfileComponent implements OnInit {
 
   getPermission(permission: string){
     return this.permission.find((permissionCode) => permissionCode.value == permission)?.viewValue;
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
 }
 

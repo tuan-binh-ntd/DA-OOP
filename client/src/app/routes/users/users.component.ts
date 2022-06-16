@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { catchError, Observable, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
+import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department.service';
 import { PresenceService } from 'src/app/services/presence.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,6 +16,7 @@ import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 export class UsersComponent implements OnInit {
   @ViewChild('modalUser') modalUser!: ModalUserComponent;
   $: any;
+  isLoading: boolean = false;
   isShowModal: boolean = false;
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
@@ -29,8 +31,9 @@ export class UsersComponent implements OnInit {
   users: any[] = [];
   departments: any[] = [];
   disable: boolean = false;
-
+  user: User;
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.disable = Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Employee;
     this.fetchUserData();
     this.fetchDepartmentData();
@@ -38,21 +41,29 @@ export class UsersComponent implements OnInit {
   }
 
   fetchUserData() {
+    this.isLoading = true;
+    this.showLoading();
     this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
-        this.users = this.users.filter(e => e.permission == 'Leader' || e.permission == 'Employee');
+        this.users = this.users.filter(e => Number(this.user.permissionCode) === Permission.ProjectManager || ((e.permission == 'Leader' || e.permission == 'Employee') && e.departmentId == this.user.departmentId));
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
 
   fetchDepartmentData() {
+    this.isLoading = true;
+    this.showLoading();
     this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.departments = response;
+        this.hideLoading();
+        this.isLoading = false;
       });
   }
   getDepartmentName(id: string) {
@@ -84,5 +95,13 @@ export class UsersComponent implements OnInit {
     $('.modal-backdrop').remove();
     this.isShowModal = false;
     this.fetchUserData();
+  }
+
+  hideLoading(){
+    document.getElementById('spinner').style.display = 'none';
+  }
+
+  showLoading(){
+      document.getElementById('spinner').style.display = 'block';
   }
 }
