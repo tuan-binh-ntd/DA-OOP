@@ -48,10 +48,10 @@ namespace API.Controllers
             };
             await _dataContext.Messages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
-            return Ok(message);
+            return Ok("Success");
         }
 
-        [HttpGet("message/getall")]
+        [HttpGet("message/thread")]
         public async Task<ActionResult> GetMessagesThread(string currentUserName, string recipientUserName, Guid taskId)
         {
             var message = await _messageRepository.GetMessageThread(currentUserName, recipientUserName, taskId);
