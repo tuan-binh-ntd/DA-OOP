@@ -126,7 +126,7 @@ export class TasksComponent implements OnInit {
   }
   getUserName(id: string) {
     const user = this.users.find((user) => user.appUserId === id)
-    return user?.userName;
+    return user?.firstName + ' ' + user?.lastName;
   }
 
   getProjectName(id: string) {

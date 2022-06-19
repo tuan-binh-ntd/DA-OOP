@@ -49,8 +49,7 @@ export class UsersComponent implements OnInit {
       .subscribe((response) => {
         this.users = response;
         this.users = this.users.filter(e => Number(this.user.permissionCode) === Permission.ProjectManager || 
-        ((e.permission == 'Leader' || e.permission == 'Employee') && e.departmentId == this.user.departmentId) ||
-        e.appUserId == this.user.id);
+        ((e.permissionCode == Permission.Leader || e.permissionCode == Permission.Employee) && e.departmentId == this.user.departmentId && e.appUserId !== this.user.id));
         this.hideLoading();
         this.isLoading = false;
       });

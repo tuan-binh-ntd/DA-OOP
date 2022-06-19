@@ -61,7 +61,7 @@
               <mat-form-field class="w-100">
                 <mat-select [disabled]="true" placeholder="Enter project leader" formControlName="appUserId">
                   <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                    {{ user.userName }}
+                    {{ user.firstName }} {{ user.lastName }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -161,35 +161,35 @@
   <div class="modal-footer">
     <div class="w-100" *ngIf="delete == false">
       <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
-        <i class="fa fa-remove"></i>
+        <i class="fa fa-remove mr-1"></i>
         Close
       </button>
       <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">
-        <i class="fa fa-edit"></i>
+        <i class="fa fa-edit mr-1"></i>
         Edit</button>
       <button *ngIf="!isEdit" type="button" class="btn btn-danger mr-2 btn-info float-right" (click)="delete=!delete">
-        <i class="fa fa-trash"></i>
+        <i class="fa fa-trash mr-1"></i>
         Delete</button>
       <button *ngIf="isEdit" [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
-        <i class="fa fa-save"></i>
+        <i class="fa fa-save mr-1"></i>
         Save changes</button>
       <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right"
         (click)="onChangeEdit(false)">
-        <i class="fa fa-undo"></i>
+        <i class="fa fa-undo mr-1"></i>
         Cancel
       </button>
     </div>
     <div class="w-100" *ngIf="delete==true">
       <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
-        <i class="fa fa-remove"></i>
+        <i class="fa fa-remove mr-1"></i>
         Close
       </button>
       <button type="button" class="btn btn-danger ml-2 float-right" (click)="deleteProject()">
-        <i class="fa fa-trash"></i>
+        <i class="fa fa-trash mr-1"></i>
         OK
       </button>
       <button type="button" class="btn btn-secondary ml-2 float-right" (click)="delete=!delete">
-        <i class="fa fa-undo"></i>
+        <i class="fa fa-undo mr-1"></i>
         Cancel
       </button>
       <h4 class="float-right">Bạn chắc chắn muốn xóa project này?</h4>
