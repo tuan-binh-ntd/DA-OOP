@@ -59,7 +59,7 @@
                             <mat-form-field class="w-100">
                                 <mat-select placeholder="Enter task leader" formControlName="createUserId">
                                     <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.userName }}
+                                        {{ user.firstName }} {{ user.lastName }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -72,7 +72,7 @@
                             <mat-form-field class="w-100">
                                 <mat-select placeholder="Enter employee name" formControlName="appUserId">
                                     <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.userName }}
+                                        {{ user.firstName }} {{ user.lastName }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
