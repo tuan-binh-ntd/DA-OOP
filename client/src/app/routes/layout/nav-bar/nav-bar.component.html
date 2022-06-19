@@ -11,10 +11,10 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav nav-active-list col-md-auto">
       <li class="nav-item nav-active">
-        <a class="nav-link font-weight-bold" href="home">Home</a>
+        <a class="nav-link font-weight-bold" [routerLink]="['home']">Home</a>
       </li>
       <li class="nav-item nav-active">
-        <a class="nav-link font-weight-bold" href="projects">My Projects</a>
+        <a class="nav-link font-weight-bold" [routerLink]="['projects']">My Projects</a>
       </li>
       <!-- <li *ngIf="right" class="nav-item nav-active">
           <a 
@@ -39,25 +39,25 @@
         </li> -->
       <li class="nav-item nav-active dropdown" *ngIf="!right">
         <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
-          aria-expanded="false" id="navbarDropdown2" data-target="target2" (click)="onViewTask()">
+          aria-expanded="false" id="navbarDropdown2" data-target="target2">
           <span class="mr-2">My Tasks</span>
         </a>
         <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" href="projects/tasks">
+          <a class="dropdown-item" (click)="onViewTask('list')">
             <i class="fa fa-list mr-2"></i>
             List</a>
 
-          <a class="dropdown-item" href="projects/tasks/calendar">
+          <a class="dropdown-item" (click)="onViewTask('calendar')">
             <i class="fa fa-calendar mr-2"></i>
             Calendar</a>
 
-          <a class="dropdown-item" href="projects/tasks/status">
+          <a class="dropdown-item"  (click)="onViewTask('status')">
             <i class="fa fa-bar-chart mr-2"></i>
             Status</a>
         </div>
       </li>
       <li *ngIf="!left" class="nav-item nav-active">
-        <a class="nav-link font-weight-bold" href="users">Employees</a>
+        <a class="nav-link font-weight-bold" [routerLink]="['users']">Employees</a>
       </li>
       <li class="nav-item nav-active dropdown" *ngIf="(getUser() | async) as user">
         <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
@@ -65,16 +65,16 @@
           <span class="mr-2">{{ user.userName }}</span>
         </a>
         <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" href="profile">
+          <a class="dropdown-item" [routerLink]="['profile']">
             <i class="fa fa-user mr-2"></i>
             Profile
           </a>
-          <a class="dropdown-item" href="change-password">
+          <a class="dropdown-item" [routerLink]="['change-password']">
             <i class="fa fa-cog"></i>
             Change Password
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="login" (click)="logout()">
+          <a class="dropdown-item"  [routerLink]="['login']" (click)="logout()">
             <i class="fa fa-sign-out"></i>
             Sign Out
           </a>

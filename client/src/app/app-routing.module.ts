@@ -21,16 +21,14 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
-    path: '',
-    component: SiteLayoutComponent,
+    path: '', component: SiteLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     ],
   },
 
   {
-    path: '',
-    component: ContentLayoutComponent,
+    path: '', component: ContentLayoutComponent,
     children: [
       { path: 'projects/tasks', component: TasksComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },

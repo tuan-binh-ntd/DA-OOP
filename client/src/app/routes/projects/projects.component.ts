@@ -96,7 +96,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   onViewTask(projectId: string): any {
-    this.router.navigate(['projects/tasks', { projectId }]);
+    document.location.href= 'projects/tasks/' + projectId;
   }
 
   onChangeProject() {

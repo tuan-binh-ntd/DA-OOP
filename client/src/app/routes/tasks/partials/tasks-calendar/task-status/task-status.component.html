@@ -1,65 +1,23 @@
 <div class="container-fluid" style="position: relative;">
   <div class="row no-gutters mt-4">
- 
-    <div class="col col-10">
+    <div class="col col-12">
       <h2 class="mb-3 text-primary fw-700">Task Status </h2>
     </div>
-
-    <div class="col col-1">
-      <div *ngIf="projectId" class="navbar-nav dropdown col-md-auto">
-        <button class="button dropdown-toggle" data-toggle="dropdown2" aria-haspopup="true" aria-expanded="false"
-          id="navbarDropdown2" data-target="target2">
-          <i class="fa fa-sliders"></i>
-          <span class="mr-2">View</span>
-        </button>
-        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" (click)="onViewTask('list')">
-            <i class="fa fa-list-alt mr-2"></i>
-            List</a>
-
-          <a class="dropdown-item" (click)="onViewTask('calendar')">
-            <i class="fa fa-calendar mr-2"></i>
-            Calendar</a>
-
-          <a class="dropdown-item" (click)="onViewTask('status')">
-            <i class="fa fa-calendar mr-2"></i>
-            Status</a>
-        </div>
-      </div>
+    <div class="col col-11">
+      <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
+      (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
+      (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)" (filterProject)="onFilterProject($event)"></app-task-filter>
+      <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
+      data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
+      <i class="fa fa-plus"></i>
+    </button>
     </div>
     <div class="col col-1">
-      <button *ngIf="right" class="button float-right p-0" (click)="onFilterUser(); this.isMyTask = !isMyTask">
-        <i class="fa fa-calendar mr-2"></i>
+      <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
+        <i  *ngIf="isMyTask == false" class="fa fa-file-text mr-2"></i>
+        <i *ngIf="isMyTask == true" class="fa fa-file-text-o mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
-    </div>
-    <div class="col col-10">
-          <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
-            (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
-            (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)"></app-task-filter>
-      <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
-        data-target="#createTaskModal" (click)="modalTask.openModal(null, 'create', true);this.isShowModal = true">
-        <i class="fa fa-plus"></i>
-      </button>
-
-<!-- <div class="example-container">
-  <button *ngIf="this.isMyTask == true" class="button float-right" (click)="onFilterUser(); this.isMyTask = false">
-    <i class="fa fa-calendar mr-2"></i>
-    <span>Assign</span>
-  </button>
-  <button *ngIf="this.isMyTask == false" class="button float-right" (click)="onFilterUser(); this.isMyTask = true">
-    <i class="fa fa-calendar mr-2"></i>
-    <span>My Task</span>
-  </button>
-    <h2>Open</h2>
-    <div
-      cdkDropList
-      #listProgress="cdkDropList"
-      [cdkDropListData]="openTasks"
-      [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of openTasks" cdkDrag [cdkDragDisabled]="isLoading">{{item.taskName}}</div> -->
     </div>
   </div>
   <div class="my-box d-flex justify-content-center">

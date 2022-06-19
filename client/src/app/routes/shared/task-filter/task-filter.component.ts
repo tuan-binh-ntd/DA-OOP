@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
+import { User } from 'src/app/models/user';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -14,6 +16,7 @@ import { ProjectService } from 'src/app/services/project.service';
 })
 export class TaskFilterComponent implements OnInit {
   projects: any[] = [];
+  user: User;
   filterForm!: FormGroup;
   getAllProject: GetAllProject = new GetAllProject();
   @Output() onSubmitForm = new EventEmitter();
@@ -21,9 +24,12 @@ export class TaskFilterComponent implements OnInit {
   @Output() filterStatus = new EventEmitter();
   @Output() filterPriority = new EventEmitter();
   @Output() resetFilter = new EventEmitter();
-@Output() onSearchTask = new EventEmitter();
+  @Output() onSearchTask = new EventEmitter();
+  @Output() filterProject = new EventEmitter();
 
+  projectId: string = '';
   priorityValue: any;
+  projectName: string = 'Project';
   typeName: string = 'Type';
   priorityName: string = 'Priority';
   statusName: string = 'Status';
@@ -48,21 +54,31 @@ export class TaskFilterComponent implements OnInit {
   constructor(
     private projectService: ProjectService, 
     private fb: FormBuilder, 
+    protected route: ActivatedRoute,
+    private router: Router,
     public datepipe: DatePipe
     ) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.route.params.subscribe(params => {
+      this.projectId = params['id'];
+    })
     this.initForm();
     this.fetchProjectData();
   }
 
   fetchProjectData() {
     this.projectService
-      .getAllProject(this.getAllProject)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.projects = response;
-      });
+    .getAllProject(this.getAllProject)
+    .pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.projects = response;
+      this.projects = this.projects.filter(project => project.departmentId === this.user.departmentId);
+      if(this.projectId){
+        this.projectName = this.projects.find((project) => project.id === this.projectId)?.projectName;
+      }
+    });
   }
 
   initForm() {
@@ -77,7 +93,6 @@ export class TaskFilterComponent implements OnInit {
       completeDateTo: [null],
       projectId: [null],
     });
-
   }
 
   onSearch(ev:any){
@@ -96,6 +111,11 @@ export class TaskFilterComponent implements OnInit {
     this.onSubmitForm.emit(payload);
   }
 
+  onFilterProject(project: any) {
+    this.projectName = project.projectName;
+    this.filterProject.emit(project.id);
+  }
+
   onFilterType(type: any) {
     this.typeName = type.viewValue;
     this.filterType.emit(type.value);
@@ -112,6 +132,15 @@ export class TaskFilterComponent implements OnInit {
   }
 
   onResetFilter() {
+    if(document.location.pathname.endsWith('calendar')){
+      this.router.navigate(['projects/tasks/calendar']);
+    }
+    if(document.location.pathname.endsWith('status')){
+      this.router.navigate(['projects/tasks/status']);
+    }
+    else {
+      this.router.navigate(['projects/tasks']);
+    }
     this.typeName = 'Type';
     this.priorityName = 'Priority';
     this.statusName = 'Status';

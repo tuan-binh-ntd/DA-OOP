@@ -36,7 +36,7 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
     this.isLoading = true;
     this.showLoading();
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.getAllTask)
+      .getAllTask(this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
