@@ -34,8 +34,7 @@ namespace API.Data
                 .Where(m => m.TasksId == taskId)
                 .OrderBy(m => m.MessageSent)).ToListAsync();
 
-            var unreadMessages = messages.Where(m => m.DateRead == null
-                  && m.TasksId == taskId).ToList();
+            /*var unreadMessages = messages.Where(m => m.DateRead == null).ToList();
             if (unreadMessages.Any())
             {
                 foreach (var message in unreadMessages)
@@ -43,8 +42,8 @@ namespace API.Data
                     message.DateRead = DateTime.Now;
                 }
                 await _context.SaveChangesAsync();
-            }
-            return unreadMessages;
+            }*/
+            return messages;
         }
 
         public async Task<bool> SaveAllAsync()
