@@ -25,6 +25,8 @@ import {  NgChartsModule } from 'ng2-charts';
 import { TaskFilterComponent } from './task-filter/task-filter.component';
 import { ButtonBusyDirective } from './utils/button-busy.directive';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatListModule} from '@angular/material/list';
+
 @NgModule({
   declarations: [
     PriorityIconComponent,
@@ -56,6 +58,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatMenuModule,
     NgChartsModule,
     MatTabsModule,
+    MatListModule
   ],
   exports:[
     PriorityIconComponent,

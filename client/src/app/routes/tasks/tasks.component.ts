@@ -11,6 +11,7 @@ import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { GetAllTask } from 'src/app/models/getalltask';
 import { User } from 'src/app/models/user';
+import { DepartmentService } from 'src/app/services/department.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,10 +25,14 @@ import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
 export class TasksComponent implements OnInit {
   @ViewChild('modalTask') modalTask!: ModalTaskComponent;
   isLoading: boolean = false;
+  leaderInfo: any;
+  assigneeInfo:any;
+  departmentId:string = '';
   $: any;
   tasks: any[] = [];
   users: any[] = [];
   projects: any[] = [];
+  departments: any[] = [];
   projectId: string = '';
   sub: any;
   isShowModal: boolean = false;
@@ -61,7 +66,7 @@ export class TasksComponent implements OnInit {
     protected router: Router,
     protected toastr: ToastrService,
     protected spinner: NgxSpinnerService,
-
+    protected departmentService: DepartmentService
   ) {
     forwardRef(() => Calendar);
   }
@@ -85,6 +90,20 @@ export class TasksComponent implements OnInit {
     this.fetchUserData();
     this.fetchProjectData();
     this.fetchTaskData();
+    this.fetchDepartmentData();
+  }
+
+  fetchDepartmentData() {
+    this.isLoading = true;
+    this.showLoading();
+    this.departmentService
+      .getAllDepartment()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.departments = response;
+        this.hideLoading();
+        this.isLoading = false;
+      });
   }
 
   fetchTaskData() {
@@ -95,11 +114,13 @@ export class TasksComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
+        this.departmentId = response.departmentId;
         this.hideLoading();
         this.isLoading = false;
       });
   }
   fetchUserData() {
+    this.assigneeInfo = JSON.parse(localStorage.getItem('user'));
     this.isLoading = true;
     this.showLoading();
     this.userService

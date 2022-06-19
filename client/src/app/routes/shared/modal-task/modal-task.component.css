@@ -12,14 +12,12 @@
 
 }
 
-.chat-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 467px;
-}
 
-.chat{
-    background-color: red;
-    margin: auto;
+
+
+
+.chat-content{
+    box-shadow: 0 5px 10px rgb(16 30 54 / 15%);
+    border-radius: 10px;
+    height: 100%;
 }

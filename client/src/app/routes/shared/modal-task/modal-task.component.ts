@@ -12,6 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
 import { MessageService } from 'src/app/services/message.service';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -19,6 +20,10 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
+  leaderInfo: any;
+  employeeInfo: any;
+  departmentName:any;
+  currentUserInfo:any;
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
   mode: string = 'create';
@@ -61,42 +66,49 @@ export class ModalTaskComponent implements OnInit {
     private messageService: MessageService
   ) { }
 
-  ngOnInit(): void {
+ async ngOnInit() {
     this.route.params.subscribe(params => {
       this.projectId = params['id'];
     })
-    this.fetchUserData();
-    this.fetchDepartmentData();
-    this.fetchMessage();
-    this.getCurrentUser();
+    this.currentUserInfo =  JSON.parse(localStorage.getItem('user'));
     this.initForm();
+    this.fetchMessage();
+  await  this.fetchDepartmentData();
+  await  this.fetchUserData();
+  this.leaderInfo = this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permission === 'Leader');
+  this.employeeInfo =  this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permission === 'Employee');
+  this.departmentName = this.getDepartmentName(this.leaderInfo.departmentId)
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  getCurrentUser() {
-    return this.authenticationService.currentUser
-      .pipe(catchError((err) => of(err)))
-      .subscribe((user) => (this.user = user));
+  getDepartmentName(id: string) {
+    return this.departments.find((department) => department.id === id)
+      ?.departmentName;
   }
+ 
 
-  fetchUserData() {
-    this.userService
+ async fetchUserData() {
+   await this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
+      .toPromise().then((response) => {
         this.users = response;
-      });
+ 
+      
+  });
   }
 
   fetchMessage(){
 
   }
 
-  fetchDepartmentData() {
-    this.departmentService
+ 
+
+ async fetchDepartmentData() {
+  await  this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
+      .toPromise().then((response) => {
         this.departments = response;
       });
   }
