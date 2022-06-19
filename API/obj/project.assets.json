@@ -5624,7 +5624,11 @@
   },
   "packageFolders": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "C:\\Users\\DELL\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+>>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
 =======
     "C:\\Users\\Admin\\.nuget\\packages\\": {}
 >>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
@@ -5640,7 +5644,11 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
 <<<<<<< HEAD
+<<<<<<< HEAD
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
 =======
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
 >>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55

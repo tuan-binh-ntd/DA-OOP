@@ -1,6 +1,7 @@
 {
   "version": 2,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "dgSpecHash": "EaQMt+Wnk24gqAt4vWYbnmQOVA64ts4XPI+yYuuZwPcS1Q/TnJfGF1fAdZ5FhwvMNXaa5dotAwLfPQ3z8J1z2Q==",
   "success": true,
   "projectFilePath": "D:\\DA-OOP\\API\\API.csproj",
@@ -107,6 +108,8 @@
     "C:\\Users\\DELL\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
 =======
+=======
+>>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
   "dgSpecHash": "QSDOcMgMyY834ZetKBDaGmbtiWk83gicdiUqg6SzTY18z1ynMum9aQYfbMtT1i5Erd5gbuhL76Q03wdA9zK/ZQ==",
   "success": true,
   "projectFilePath": "D:\\DA-OOP\\API\\API.csproj",
@@ -212,6 +215,9 @@
     "C:\\Users\\Admin\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+<<<<<<< HEAD
+>>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
+=======
 >>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
   ],
   "logs": [
