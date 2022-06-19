@@ -135,7 +135,7 @@ export class TaskFilterComponent implements OnInit {
     if(document.location.pathname.endsWith('calendar')){
       this.router.navigate(['projects/tasks/calendar']);
     }
-    if(document.location.pathname.endsWith('status')){
+    else if(document.location.pathname.endsWith('status')){
       this.router.navigate(['projects/tasks/status']);
     }
     else {
