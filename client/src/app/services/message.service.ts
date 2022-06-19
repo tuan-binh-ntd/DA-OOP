@@ -46,8 +46,8 @@ export class MessageService {
     this.hubConnection.stop();
   }
 
-  getMessageThread(username: string) {
-    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + username);
+  getMessageThread(taskId: string) {
+    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + taskId);
   }
 
   async sendMessage(payload: any) {

@@ -13,11 +13,24 @@
 }
 
 
-
+.chat-content-img{
+    max-width: 100%;
+    max-width: 35px;
+    min-width: 35px;
+    height: 35px;
+      object-fit: cover;
+      border-radius: 50%;
+  }
 
 
 .chat-content{
     box-shadow: 0 5px 10px rgb(16 30 54 / 15%);
     border-radius: 10px;
     height: 100%;
+}
+
+.chat-content-icon{
+    padding:0 5px 0 15px;   
+  text-shadow:  1px 1px 3px var(--primary-color);
+
 }

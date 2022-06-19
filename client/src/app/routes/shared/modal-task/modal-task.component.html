@@ -18,7 +18,7 @@
       >
         <mat-tab label="Information">
           <mat-card>
-            <mat-card-content>
+            <mat-card-content style="height: 365px">
               <div class="row mt-2">
                 <div class="col col-6">
                   <div class="form-group row">
@@ -245,17 +245,45 @@
         </mat-tab>
         <mat-tab label="Discussion">
           <mat-card>
-            <mat-card-content style="height: 400px">
-              <div class="row">
-                <div class="col col-9" >
+            <mat-card-content style="height: 365px">
+              <div class="row" style="height: 100%">
+                <div class="col col-9">
                   <div class="chat-content">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                    <div class="float-left">
+                      <img
+                        src="assets/defaultUser.png"
+                        class="chat-content-img m-2"
+                        alt=""
+                      />
+                      <span *ngIf="currentUserInfo.permissionCode === 3">
+                        {{ leaderInfo?.firstName }}
+                        {{ leaderInfo?.lastName }}
+                      </span  >
+                      <span *ngIf="currentUserInfo.permissionCode === 2">
+                        {{ employeeInfo.firstName }}
+                        {{ employeeInfo.lastName }}
+                      </span>
+                    </div>
+                    <div class="float-right  fsz-25">
+                        <i class="fa fa-info-circle mr-2 text-primary chat-content-icon" aria-hidden="true"></i>
+                    </div>
+                
+                </div>
+
+                    <mat-divider class="mb-3" inset></mat-divider>
 
                   </div>
                 </div>
-                <div class="col col-3" *ngIf="currentUserInfo.permision === 'Employee'">
+                <div
+                  class="col col-3"
+                  *ngIf="currentUserInfo.permissionCode === 3"
+                >
                   <div>
                     <h5 class="text-center">
-                      {{ leaderInfo.userName }}
+                      {{ leaderInfo?.firstName }}
+                      {{ leaderInfo?.lastName }}
                     </h5>
                     <p class="text-center fw-500">
                       Leader: {{ departmentName }}
@@ -263,36 +291,40 @@
                     <mat-divider class="mb-3" inset></mat-divider>
                     <span>Email: </span>
                     <br />
-                    <p class="fw-500">{{ leaderInfo.email }}</p>
+                    <p class="fw-500">{{ leaderInfo?.email }}</p>
                     <span>Phone: </span>
                     <br />
-                    <p class="fw-500">{{ leaderInfo.phone }}</p>
+                    <p class="fw-500">{{ leaderInfo?.phone }}</p>
                     <span>Address: </span>
                     <br />
-                    <p class="fw-500">{{ leaderInfo.address }}</p>
+                    <p class="fw-500">{{ leaderInfo?.address }}</p>
                   </div>
                 </div>
 
-                <div class="col col-3" *ngIf="currentUserInfo.permision === 'Leader'">
-                    <div>
-                      <h5 class="text-center">
-                        {{ employeeInfo.userName }}
-                      </h5>
-                      <p class="text-center fw-500">
-                        Leader: {{ departmentName }}
-                      </p>
-                      <mat-divider class="mb-3" inset></mat-divider>
-                      <span>Email: </span>
-                      <br />
-                      <p class="fw-500">{{ employeeInfo.email }}</p>
-                      <span>Phone: </span>
-                      <br />
-                      <p class="fw-500">{{ employeeInfo.phone }}</p>
-                      <span>Address: </span>
-                      <br />
-                      <p class="fw-500">{{ employeeInfo.address }}</p>
-                    </div>
+                <div
+                  class="col col-3"
+                  *ngIf="currentUserInfo.permissionCode === 2"
+                >
+                  <div>
+                    <h5 class="text-center">
+                      {{ employeeInfo.firstName }}
+                      {{ employeeInfo.lastName }}
+                    </h5>
+                    <p class="text-center fw-500">
+                      Leader: {{ departmentName }}
+                    </p>
+                    <mat-divider class="mb-3" inset></mat-divider>
+                    <span>Email: </span>
+                    <br />
+                    <p class="fw-500">{{ employeeInfo.email }}</p>
+                    <span>Phone: </span>
+                    <br />
+                    <p class="fw-500">{{ employeeInfo.phone }}</p>
+                    <span>Address: </span>
+                    <br />
+                    <p class="fw-500">{{ employeeInfo.address }}</p>
                   </div>
+                </div>
               </div>
             </mat-card-content>
           </mat-card>

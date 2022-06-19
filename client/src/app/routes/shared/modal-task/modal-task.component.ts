@@ -20,6 +20,7 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 })
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
+  message:any [] = [];
   leaderInfo: any;
   employeeInfo: any;
   departmentName:any;
@@ -72,13 +73,11 @@ export class ModalTaskComponent implements OnInit {
     })
     this.currentUserInfo =  JSON.parse(localStorage.getItem('user'));
     this.initForm();
-    this.fetchMessage();
   await  this.fetchDepartmentData();
   await  this.fetchUserData();
-  this.leaderInfo = this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permission === 'Leader');
-  this.employeeInfo =  this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permission === 'Employee');
+  this.leaderInfo = this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permissionCode === Permission.Leader);
+  this.employeeInfo =  this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permissionCode === Permission.Employee);
   this.departmentName = this.getDepartmentName(this.leaderInfo.departmentId)
-    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   getDepartmentName(id: string) {
@@ -98,8 +97,12 @@ export class ModalTaskComponent implements OnInit {
   });
   }
 
-  fetchMessage(){
-
+  fetchMessage(id:string){
+    this.messageService.getMessageThread(id).toPromise().then(res=>{
+      if(res){
+        this.message = res;
+      }
+    })
   }
 
  
@@ -138,14 +141,14 @@ export class ModalTaskComponent implements OnInit {
     this.mode = mode;
     this.data = data;
     this.modalForm.reset();
-    this.modalForm.get('createUserId').setValue(this.user.id)
+    this.modalForm.get('createUserId').setValue(this.currentUserInfo.id)
     if (mode === 'create') {
       this.modalForm.enable();
       this.title = 'New Task';
       this.modalForm.get('priorityCode')?.setValue(Priority.Medium);
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
-      this.modalForm.get('createUserId').setValue(this.user.id);
+      this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
       this.modalForm.get('projectId').setValue(this.projectId);
       if(this.projectId){
         this.modalForm.controls['projectId'].disable();
@@ -155,6 +158,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls['createDate'].disable();
     } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
+    this.fetchMessage(data.taskId);
       this.checkEditForm();
     } else {
       this.modalForm.patchValue(data);
@@ -174,7 +178,7 @@ export class ModalTaskComponent implements OnInit {
     this.modalForm.controls['completeDate'].disable();
     this.modalForm.controls['createDate'].disable();
     this.modalForm.controls['projectId'].disable();
-    if (Number(this.user.permissionCode) == 3) {
+    if (Number(this.currentUserInfo.permissionCode) == 3) {
       this.modalForm.controls['taskName'].disable();
       this.modalForm.controls['taskType'].disable();
       this.modalForm.controls['taskCode'].disable();
@@ -192,7 +196,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-        this.modalForm.value.createUserId = this.user.id;
+        this.modalForm.value.createUserId = this.currentUserInfo.id;
         if (this.mode === 'create') {
         this.modalForm.value.projectId = this.projectId;
         this.taskService
@@ -211,7 +215,7 @@ export class ModalTaskComponent implements OnInit {
             }
           });
       } else if (this.mode === 'detail') {
-        this.modalForm.value.permissionCode = this.user.permissionCode;
+        this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
         this.modalForm.value.projectId = this.data.projectId;
         this.taskService
           .updateTask(this.modalForm.value)
