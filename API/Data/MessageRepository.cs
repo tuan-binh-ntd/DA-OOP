@@ -28,17 +28,13 @@ namespace API.Data
             _context.Messages.Remove(message);
         }
 
-        public async Task<IEnumerable<Message>> GetMessageThread(string currentUserName, string recipientUserName, Guid taskId)
+        public async Task<IEnumerable<Message>> GetMessageThread(Guid taskId)
         {
             var messages = await (_context.Messages
                 .Where(m => m.TasksId == taskId)
-                .Where(m => m.Recipient.FirstName + " " + m.Recipient.LastName == recipientUserName
-                && m.Sender.FirstName + " " + m.Recipient.LastName == currentUserName
-                || m.Recipient.FirstName + " " + m.Recipient.LastName == currentUserName
-                && m.Sender.FirstName + " " + m.Recipient.LastName == recipientUserName).OrderBy(m => m.MessageSent)).ToListAsync();
+                .OrderBy(m => m.MessageSent)).ToListAsync();
 
             var unreadMessages = messages.Where(m => m.DateRead == null
-                  && m.Recipient.FirstName + " " + m.Recipient.LastName == currentUserName
                   && m.TasksId == taskId).ToList();
             if (unreadMessages.Any())
             {

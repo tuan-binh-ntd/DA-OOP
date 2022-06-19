@@ -26,7 +26,7 @@ namespace API.SignalR
             var taskId = httpContext.Request.Query["taskId"].ToString();
             var groupName = GetGroupName(Context.User.Identity.Name, otherUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            var messages = await _messageRepository.GetMessageThread(Context.User.Identity.Name, otherUser, Guid.Parse(taskId));
+            var messages = await _messageRepository.GetMessageThread(Guid.Parse(taskId));
             await Clients.Group(groupName).SendAsync("ReceiveMessageThread", messages);
         }
 
