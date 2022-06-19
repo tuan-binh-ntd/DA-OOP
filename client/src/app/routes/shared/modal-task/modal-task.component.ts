@@ -20,7 +20,6 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 })
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
-  message:any [] = [];
   leaderInfo: any;
   employeeInfo: any;
   departmentName:any;
@@ -100,7 +99,7 @@ export class ModalTaskComponent implements OnInit {
   fetchMessage(id:string){
     this.messageService.getMessageThread(id).toPromise().then(res=>{
       if(res){
-        this.message = res;
+        this.messages = res;
       }
     })
   }
@@ -158,7 +157,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls['createDate'].disable();
     } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
-    this.fetchMessage(data.taskId);
+    this.fetchMessage(data.id);
       this.checkEditForm();
     } else {
       this.modalForm.patchValue(data);

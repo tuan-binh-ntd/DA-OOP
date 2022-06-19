@@ -47,7 +47,7 @@ export class MessageService {
   }
 
   getMessageThread(taskId: string) {
-    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + taskId);
+    return this.http.get<Message[]>(this.baseUrl + '/thread/?taskId=' + taskId);
   }
 
   async sendMessage(payload: any) {

@@ -85,7 +85,6 @@
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <div class="form-group row">
                     <label class="form-label col-3" for="name">Assignee</label>
                     <div class="col-9">
@@ -102,23 +101,9 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-=======
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Assignee</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter task leader" formControlName="createUserId">
-                                    <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.firstName }} {{ user.lastName }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
->>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <div class="form-group row">
                     <label class="form-label col-3" for="name"
                       >Assigned to</label
@@ -137,19 +122,6 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-=======
-                    <div class="form-group row">
-                        <label class="form-label col-2" for="name">Assigned to</label>
-                        <div class="col-10">
-                            <mat-form-field class="w-100">
-                                <mat-select placeholder="Enter employee name" formControlName="appUserId">
-                                    <mat-option *ngFor="let user of users" [value]="user.appUserId">
-                                        {{ user.firstName }} {{ user.lastName }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
->>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
                     </div>
                   </div>
                 </div>
@@ -273,12 +245,11 @@
         </mat-tab>
         <mat-tab label="Discussion">
           <mat-card>
-            <mat-card-content style="height: 365px">
+            <mat-card-content style="height: 430px">
               <div class="row" style="height: 100%">
                 <div class="col col-9">
                   <div class="chat-content">
                     <div class="d-flex justify-content-between align-items-center">
-
                     <div class="float-left">
                       <img
                         src="assets/defaultUser.png"
@@ -290,8 +261,8 @@
                         {{ leaderInfo?.lastName }}
                       </span  >
                       <span *ngIf="currentUserInfo.permissionCode === 2">
-                        {{ employeeInfo.firstName }}
-                        {{ employeeInfo.lastName }}
+                        {{ employeeInfo?.firstName }}
+                        {{ employeeInfo?.lastName }}
                       </span>
                     </div>
                     <div class="float-right  fsz-25">
@@ -299,10 +270,10 @@
                     </div>
                 
                 </div>
-<<<<<<< HEAD
 
                     <mat-divider class="mb-3" inset></mat-divider>
-
+                    <ng-container *ngFor="let message of messages"></ng-container>
+                    
                   </div>
                 </div>
                 <div
@@ -336,8 +307,8 @@
                 >
                   <div>
                     <h5 class="text-center">
-                      {{ employeeInfo.firstName }}
-                      {{ employeeInfo.lastName }}
+                      {{ employeeInfo?.firstName }}
+                      {{ employeeInfo?.lastName }}
                     </h5>
                     <p class="text-center fw-500">
                       Leader: {{ departmentName }}
@@ -345,13 +316,13 @@
                     <mat-divider class="mb-3" inset></mat-divider>
                     <span>Email: </span>
                     <br />
-                    <p class="fw-500">{{ employeeInfo.email }}</p>
+                    <p class="fw-500">{{ employeeInfo?.email }}</p>
                     <span>Phone: </span>
                     <br />
-                    <p class="fw-500">{{ employeeInfo.phone }}</p>
+                    <p class="fw-500">{{ employeeInfo?.phone }}</p>
                     <span>Address: </span>
                     <br />
-                    <p class="fw-500">{{ employeeInfo.address }}</p>
+                    <p class="fw-500">{{ employeeInfo?.address }}</p>
                   </div>
                 </div>
               </div>
@@ -406,36 +377,6 @@
         <i class="fa fa-undo mr-2"></i>
         Cancel
       </button>
-=======
-            </div>
-            <style>
-                ::ng-deep .cdk-overlay-container {
-                    z-index: 2000;
-                }
-            </style>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="w-100 ">
-            <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">
-                <i class="fa fa-remove mr-1"></i>
-                Close
-            </button>
-            <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">
-                <i class="fa fa-edit mr-1"></i>
-                Edit
-            </button>
-            <button *ngIf="isEdit" [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
-                <i class="fa fa-save mr-1"></i>
-                Save changes
-            </button>
-            <button [hidden]="mode === 'create'" *ngIf="isEdit" type="button" class="btn btn-secondary float-right"
-                (click)="onChangeEdit(false)">
-                <i class="fa fa-undo mr-1"></i>
-                Cancel
-            </button>
-        </div>
->>>>>>> 2a7f2ad2e399494814fc9c011ae8bb982a3f8e55
     </div>
   </div>
 </div>
