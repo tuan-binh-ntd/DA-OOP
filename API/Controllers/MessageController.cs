@@ -52,9 +52,9 @@ namespace API.Controllers
         }
 
         [HttpGet("message/thread")]
-        public async Task<ActionResult> GetMessagesThread(string currentUserName, string recipientUserName, Guid taskId)
+        public async Task<ActionResult> GetMessagesThread(Guid taskId)
         {
-            var message = await _messageRepository.GetMessageThread(currentUserName, recipientUserName, taskId);
+            var message = await _messageRepository.GetMessageThread(taskId);
             return Ok(message);
         }
     }

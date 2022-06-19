@@ -141,6 +141,7 @@ export class TaskFilterComponent implements OnInit {
     else {
       this.router.navigate(['projects/tasks']);
     }
+    this.projectName = 'Project';
     this.typeName = 'Type';
     this.priorityName = 'Priority';
     this.statusName = 'Status';

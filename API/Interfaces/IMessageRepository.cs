@@ -9,7 +9,7 @@ namespace API.Interfaces
     {
         public void AddMessage(Message message);
         public void DeleteMessage(Message message);
-        public Task<IEnumerable<Message>> GetMessageThread(string currentUserName, string recipientUserName, Guid taskId);
+        public Task<IEnumerable<Message>> GetMessageThread(Guid taskId);
         Task<bool> SaveAllAsync();
     }
 }
