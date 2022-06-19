@@ -87,6 +87,7 @@ export class TasksComponent implements OnInit {
     } else {
       this.getAllTask.userId = this.user.id;
     }
+    this.getAllTask.projectId = this.projectId;
     this.fetchUserData();
     this.fetchProjectData();
     this.fetchTaskData();
@@ -110,7 +111,7 @@ export class TasksComponent implements OnInit {
     this.isLoading = true;
     this.showLoading();
     this.sub = this.taskService
-      .getAllTask(this.projectId, this.getAllTask)
+      .getAllTask(this.getAllTask)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
@@ -211,6 +212,11 @@ export class TasksComponent implements OnInit {
     this.fetchTaskData();
   }
 
+  onFilterProject(project: any) {
+    this.getAllTask.projectId = project;
+    this.fetchTaskData();
+  }
+
   onFilterType(type: any) {
     this.getAllTask.taskType = type;
     this.fetchTaskData();
@@ -251,6 +257,7 @@ export class TasksComponent implements OnInit {
     this.getAllTask.deadlineDateTo = null;
     this.getAllTask.completeDateFrom = null;
     this.getAllTask.completeDateTo = null;
+    this.getAllTask.projectId = this.projectId;
     this.fetchTaskData();
   }
   onViewTask(view: any){

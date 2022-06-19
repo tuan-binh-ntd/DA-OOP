@@ -8,10 +8,11 @@ import { Observable } from 'rxjs';
 export class TaskService {
   baseUrl = "https://localhost:5001/api/task";
   constructor(private http: HttpClient) { }
-  getAllTask(projectId?: string, payload?: any): Observable<any> {
-    let taskType, userId, keyWord, createUserId, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
+  getAllTask(payload?: any): Observable<any> {
+    let taskType, userId, projectId, keyWord, createUserId, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
       taskType = payload.taskType ? 'taskType=' + payload.taskType : ''
       userId = payload.userId ? '&userId=' + payload.userId : ''
+      projectId = payload.projectId ? '&projectId=' + payload.projectId : ''
       createUserId = payload.createUserId ? '&createUserId=' + payload.createUserId : ''
       keyWord = payload.keyWord ? '&keyWord=' + payload.keyWord : ''
       priorityCode = payload.priorityCode ? '&priorityCode=' + payload.priorityCode : ''
@@ -22,12 +23,7 @@ export class TaskService {
       deadlineDateTo = payload.deadlineDateTo ? '&deadlineDateTo=' + payload.deadlineDateTo : ''
       completeDateFrom = payload.completeDateFrom ? '&completeDateFrom=' + payload.completeDateFrom : ''
       completeDateTo = payload.completeDateTo ? '&completeDateTo=' + payload.completeDateTo : ''
-    if (projectId) {
-      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + '&projectId=' + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
-    }
-    else {
-      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
-    }
+      return this.http.get(this.baseUrl + '/getall?' + taskType + userId + projectId + createUserId + keyWord + priorityCode + statusCode + createDateFrom + createDateTo + deadlineDateFrom + deadlineDateTo + completeDateFrom + completeDateTo);
   }
 
   createTask(payload: any): Observable<any> {

@@ -41,11 +41,13 @@ namespace API.Controllers
                                           ProjectName = p.ProjectName,
                                           TaskName = t.TaskName,
                                           AppUserId = u.Id,
-                                          UserName = u.FirstName + " " + u.LastName,
+                                          FirstName = u.FirstName,
+                                          LastName = u.LastName,
                                           Address = u.Address,
                                           Email = u.Email,
+                                          Password = u.Password,
                                           Phone = u.Phone,
-                                          Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee",
+                                          PermissionCode = u.PermissionCode,
                                           DepartmentId = p.DepartmentId,
                                       }).AsNoTracking().ToListAsync();
                 /*var groupUserList = userList.GroupBy(e => e.AppUserId).Select(e => new { AppUserId = e.Key, Count = e.Count()}).ToList();
@@ -74,11 +76,13 @@ namespace API.Controllers
                                           DepartmentId = d.Id,
                                           DepartmentName = d.DepartmentName,
                                           AppUserId = u.Id,
-                                          UserName = u.FirstName + " " + u.LastName,
+                                          UFirstName = u.FirstName,
+                                          LastName = u.LastName,
                                           Address = u.Address,
+                                          Password = u.Password,
                                           Email = u.Email,
                                           Phone = u.Phone,
-                                          Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                          PermissionCode = u.PermissionCode
                                       }).AsNoTracking().ToListAsync();
                 //userList.GroupBy(e => e.AppUserId);
                 return Ok(userList);
@@ -92,12 +96,13 @@ namespace API.Controllers
                                              DepartmentId = d.Id,
                                              DepartmentName = d.DepartmentName,
                                              AppUserId = u.Id,
-                                             UserName = u.FirstName + " " + u.LastName,
+                                             FirstName = u.FirstName,
+                                             LastName = u.LastName,
                                              Address = u.Address,
                                              Email = u.Email,
+                                             Password = u.Password,
                                              Phone = u.Phone,
-                                             Permission = u.PermissionCode == Permission.ProjectManager ? "ProjectManager"
-                                                 : u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
+                                             PermissionCode = u.PermissionCode
                                          }).AsNoTracking().ToListAsync();
                 return Ok(appUserList);
             }

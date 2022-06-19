@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid"  style="position: relative;">
   <div class="row no-gutters">
     <div class="col col-12 p-0 mb-3">
       <div class="row">
@@ -39,36 +39,15 @@
     </div>
 </div>
   <div class="row no-gutters">
-    <div class="col col-10 p-0">
+    <div class="col col-11 p-0">
       <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
         (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
-        (filterType)="onFilterType($event)"></app-task-filter>
+        (filterType)="onFilterType($event)" (onSearchTask)="onSearch($event)" (filterProject)="onFilterProject($event)"></app-task-filter>
     </div>
     <div class="col col-1">
-      <div *ngIf="projectId" class="navbar-nav dropdown col-md-auto">
-        <button class="button dropdown-toggle" data-toggle="dropdown2" aria-haspopup="true" aria-expanded="false"
-          id="navbarDropdown2" data-target="target2">
-          <i class="fa fa-sliders"></i>
-          <span class="mr-2">View</span>
-        </button>
-        <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" (click)="onViewTask('list')">
-            <i class="fa fa-list-alt mr-2"></i>
-            List</a>
-
-          <a class="dropdown-item" (click)="onViewTask('calendar')">
-            <i class="fa fa-calendar mr-2"></i>
-            Calendar</a>
-
-          <a class="dropdown-item" (click)="onViewTask('status')">
-            <i class="fa fa-calendar mr-2"></i>
-            Status</a>
-        </div>
-      </div>
-    </div>
-    <div class="col col-1">
-      <button *ngIf="right" class="button float-right p-0" (click)="onFilterUser(); this.isMyTask = !isMyTask">
-        <i class="fa fa-calendar mr-2"></i>
+      <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
+        <i  *ngIf="isMyTask == false" class="fa fa-file-text mr-2"></i>
+        <i *ngIf="isMyTask == true" class="fa fa-file-text-o mr-2"></i>
         <span>{{ filterUserTask }}</span>
       </button>
     </div>

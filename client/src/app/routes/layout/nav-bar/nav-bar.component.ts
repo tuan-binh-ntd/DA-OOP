@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
@@ -16,17 +17,21 @@ import { TasksComponent } from '../../tasks/tasks.component';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  userName!:string;
-  loggedIn:boolean = false;
-  right:boolean = true;
-  left:boolean = true;
+  userName!: string;
+  projectId: string = '';
+  loggedIn: boolean = false;
+  right: boolean = true;
+  left: boolean = true;
   users: any[] = [];
   user: User;
   constructor(
-    private authenticationService: AuthenticationService, 
-    private userService: UserService, 
+    private authenticationService: AuthenticationService,
+    private userService: UserService,
+    protected route: ActivatedRoute,
     private router: Router,
-    ) { }
+  ) {
+    
+   }
 
   fetchUserData() {
     this.userService
@@ -39,7 +44,7 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
-    this.userName = user.name;    
+    this.userName = user.name;
     this.right = user.permissionCode == Permission.ProjectManager;
     this.left = user.permissionCode == Permission.Employee;
     this.fetchUserData();
@@ -48,7 +53,7 @@ export class NavBarComponent implements OnInit {
     this.authenticationService.logout();
   }
 
-  getUser(){
+  getUser() {
     return this.authenticationService.currentUser;
   }
 
@@ -57,10 +62,30 @@ export class NavBarComponent implements OnInit {
     return user?.userName;
   }
 
-  onViewTask(): any {
-    this.user = JSON.parse(localStorage.getItem('user'));
-    if(Number(this.user.permissionCode) === Permission.Employee){
-      this.router.navigate(['projects/tasks/mytask']);
+  onViewTask(view: any) {
+    var u = document.location.pathname;
+    this.projectId = u.substring(16,52);
+    if(this.projectId && this.projectId !== 'calendar' && this.projectId !== 'status'){
+      if (view == 'list') {
+        this.router.navigate(['projects/tasks', this.projectId]);
+      }
+      else if (view == 'calendar') {
+        this.router.navigate(['projects/tasks', this.projectId, 'calendar']);
+      }
+      else {
+        this.router.navigate(['projects/tasks', this.projectId, 'status']);
+      }
+    } else {
+      if (view == 'list') {
+        this.router.navigate(['projects/tasks']);
+        }
+        else if (view == 'calendar') {
+          this.router.navigate(['projects/tasks/calendar']);
+        }
+        else {
+          this.router.navigate(['projects/tasks/status']);
+        }
     }
   }
 }
+
