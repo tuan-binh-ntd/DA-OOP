@@ -12,6 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
 import { Permission } from 'src/app/helpers/PermisionEnum';
+import { ProjectService } from 'src/app/services/project.service';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -28,7 +29,7 @@ export class ModalTaskComponent implements OnInit {
   modalForm!: FormGroup;
   isEdit: boolean = false;
 
-  projectId: string = '';
+  pId: string = '';
   data: any;
   user: User;
   taskTypes: any[] = [{ value: 'bug', viewValue: 'Bug' },
@@ -53,6 +54,7 @@ export class ModalTaskComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private departmentService: DepartmentService,
+    private projectService: ProjectService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
@@ -61,9 +63,10 @@ export class ModalTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.projectId = params['id'];
+      this.pId = params['id'];
     })
     this.fetchUserData();
+    this.fetchProjectData();
     this.fetchDepartmentData();
     this.getCurrentUser();
     this.initForm();
@@ -84,6 +87,16 @@ export class ModalTaskComponent implements OnInit {
       .subscribe((response) => {
         this.users = response;
         this.users = this.users.filter(u => u.departmentId == this.user.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
+      });
+  }
+
+  fetchProjectData(){
+    this.projectService
+      .getAllProject()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.projects = response;
+        this.projects = this.projects.filter(p => p.departmentId == this.user.departmentId);
       });
   }
 
@@ -128,8 +141,8 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.user.id);
-      this.modalForm.get('projectId').setValue(this.projectId);
-      if(this.projectId){
+      this.modalForm.get('projectId').setValue(this.pId);
+      if(this.pId){
         this.modalForm.controls['projectId'].disable();
       }
       this.modalForm.controls['createUserId'].disable();
@@ -174,9 +187,9 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
+      console.log(this.modalForm.value)
         this.modalForm.value.createUserId = this.user.id;
         if (this.mode === 'create') {
-        this.modalForm.value.projectId = this.projectId;
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(

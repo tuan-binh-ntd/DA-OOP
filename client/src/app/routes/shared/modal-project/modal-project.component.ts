@@ -75,6 +75,7 @@ export class ModalProjectComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
+        console.log(this.users)
       });
   }
 
@@ -101,7 +102,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   openModal(data: any, mode: string, isEdit: boolean) {
-    this.leader = this.users.filter(e => e.permission == 'Leader');
+    this.leader = this.users.filter(e => Number(e.permissionCode) == Permission.Leader);
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;
@@ -214,7 +215,7 @@ export class ModalProjectComponent implements OnInit {
       (department) => department.id === this.modalForm.value.departmentId
     );
     const user = this.users.find(
-      (user) => user.departmentId === department?.id && user.permission == 'Leader'
+      (user) => user.departmentId === department?.id && Number(user.permissionCode) == Permission.Leader
     );
     this.modalForm.get('appUserId')?.setValue(user?.appUserId);
   }
