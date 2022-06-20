@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department.service';

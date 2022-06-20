@@ -26,7 +26,6 @@ export class ModalUserComponent implements OnInit {
   data: any;
   user: User;
   permission: any[] = [
-    { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
     { value: Permission.Leader, viewValue: 'Leader' },
     { value: Permission.Employee, viewValue: 'Employee' }
   ]
@@ -40,7 +39,6 @@ export class ModalUserComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.fetchUserData();
     this.fetchDepartmentData();
-    Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Leader ? this.permission.shift() : null;
     this.initForm();
   }
 
