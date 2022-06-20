@@ -14,6 +14,11 @@ export class UserService {
     return this.http.get(this.baseUrl + '/getall');
   }
 
+  getUser(model: any):Observable<any>{
+    const id = 'id=' + model;
+    return this.http.get(this.baseUrl + '/get?' + id);
+  }
+
   updateUser(payload:any):Observable<any>{
     return this.http.put(this.baseUrl + '/update',payload);
   }

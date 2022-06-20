@@ -6,12 +6,12 @@
   </div>
     <div class="row mt-4">
       <div class="col col-12">
-        <h2>{{ user.userName}}</h2>
+        <h2>{{ currentUser.firstName + ' ' + currentUser.lastName }}</h2>
         <h2>{{ currentUser.email }}</h2>
         <h2>{{ currentUser.phone }}</h2>
-        <h2>{{ getDepartmentName(user.departmentId) }}</h2>
+        <h2>{{ getDepartmentName(currentUser.departmentId) }}</h2>
         <h2>{{ currentUser.address }}</h2>
-        <h2>{{ currentUser.permission }}</h2>
+        <h2>{{ getPermission(currentUser.permissionCode) }}</h2>
       </div>
     </div>
 </div>
