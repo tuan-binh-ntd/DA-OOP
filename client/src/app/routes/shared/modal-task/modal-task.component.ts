@@ -109,7 +109,9 @@ export class ModalTaskComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
-        this.projects = this.projects.filter(p => p.departmentId == this.currentUserInfo.departmentId);
+        if(this.currentUserInfo.departmentId){
+          this.projects = this.projects.filter(p => p.departmentId == this.currentUserInfo.departmentId);
+        }
       });
   }
 
@@ -182,22 +184,36 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
       this.modalForm.patchValue(data);
       await this.fetchDepartmentData();
       await this.fetchUserData();
-      this.leaderInfo = this.users.find(
-        (user) =>
-          user.departmentId === this.currentUserInfo.departmentId &&
-          user.permissionCode === Permission.Leader
-      );
-      this.employeeInfo = this.users.find(
-        (user) =>
-          user.departmentId === this.currentUserInfo.departmentId &&
-          user.permissionCode === Permission.Employee &&
-          user.appUserId === this.data.appUserId
-      );
-      this.users = this.users.filter(u => u.departmentId == this.currentUserInfo.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
+      if(this.currentUserInfo.departmentId){
+        this.leaderInfo = this.users.find(
+          (user) =>
+            user.departmentId === this.currentUserInfo.departmentId &&
+            user.permissionCode === Permission.Leader
+        );
+        this.employeeInfo = this.users.find(
+          (user) =>
+            user.departmentId === this.currentUserInfo.departmentId &&
+            user.permissionCode === Permission.Employee &&
+            user.appUserId === this.data.appUserId
+        );
+        this.users = this.users.filter(u => u.departmentId == this.currentUserInfo.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
+        
+      }else{
+        this.leaderInfo = this.users.find(
+          (user) =>
+            user.permissionCode === Permission.Leader
+        );
+        this.employeeInfo = this.users.find(
+          (user) => 
+            user.permissionCode === Permission.Employee &&
+            user.appUserId === this.data.appUserId
+        );
+        this.users = this.users.filter(u => Number(u.permissionCode) !== Permission.ProjectManager);
+       
+      }
       this.departmentName = this.getDepartmentName(
         this.leaderInfo.departmentId
       );
-
       this.fetchMessage();
       this.checkEditForm();
     } else {
