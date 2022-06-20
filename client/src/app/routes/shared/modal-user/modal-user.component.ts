@@ -135,15 +135,18 @@ export class ModalUserComponent implements OnInit {
               return of(err);
             }), finalize(() => this.isLoading = false)
           )
-          .subscribe((response) => {
-            if (response) {
+          .subscribe(response => {
+            if (response.id) {
               this.toastr.success('Successfully!');
               this.onChangeUser.emit();
             } else {
-              this.toastr.error('Failed');
+              this.toastr.error(response.error);
             }
           });
       }
+    } else {
+      this.toastr.warning("Invalid data")
+      this.isLoading = false;
     }
   }
 

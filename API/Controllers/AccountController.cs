@@ -206,6 +206,15 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateUser(UpdateUserDto input)
         {
             var user = await _dataContext.AppUser.FindAsync(input.Id);
+            var leader = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.DepartmentId == input.DepartmentId);
+            if(input.PermissionCode == Permission.ProjectManager)
+            {
+                return BadRequest("Company had project manager");
+            }
+            if (leader != null && input.PermissionCode == Permission.Leader)
+            {
+                return BadRequest("Department had leader");
+            }
             if (user != null)
             {
                 if (input.PermissionCode == Permission.Employee)
