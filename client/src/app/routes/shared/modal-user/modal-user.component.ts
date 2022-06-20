@@ -127,6 +127,7 @@ export class ModalUserComponent implements OnInit {
           });
       }
       else {
+        this.modalForm.value.id = this.data.appUserId;
         this.userService
           .updateUser(this.modalForm.value)
           .pipe(

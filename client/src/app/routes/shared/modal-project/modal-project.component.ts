@@ -60,6 +60,7 @@ export class ModalProjectComponent implements OnInit {
     this.fetchUserData();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
+    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
   }
 
   getCurrentUser() {

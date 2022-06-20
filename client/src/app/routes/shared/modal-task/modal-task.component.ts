@@ -11,6 +11,7 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -67,6 +68,7 @@ export class ModalTaskComponent implements OnInit {
     this.getCurrentUser();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
+    Number(this.user.permissionCode) === Permission.Employee ? this.statusCode.shift() && this.statusCode.pop() : null;
   }
 
   getCurrentUser() {
@@ -81,6 +83,7 @@ export class ModalTaskComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
+        this.users = this.users.filter(u => u.departmentId == this.user.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
       });
   }
 
