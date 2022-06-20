@@ -75,7 +75,6 @@ export class ModalProjectComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response;
-        console.log(this.users)
       });
   }
 

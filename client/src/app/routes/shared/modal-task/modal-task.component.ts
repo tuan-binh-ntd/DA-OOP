@@ -187,9 +187,11 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      console.log(this.modalForm.value)
         this.modalForm.value.createUserId = this.user.id;
         if (this.mode === 'create') {
+          if(this.pId){
+            this.modalForm.value.projectId = this.pId;
+          }
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(
