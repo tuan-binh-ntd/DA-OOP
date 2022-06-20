@@ -60,6 +60,7 @@ export class ModalProjectComponent implements OnInit {
     this.fetchUserData();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
+    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
   }
 
   getCurrentUser() {
@@ -100,7 +101,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   openModal(data: any, mode: string, isEdit: boolean) {
-    this.leader = this.users.filter(e => e.permission == 'Leader');
+    this.leader = this.users.filter(e => Number(e.permissionCode) == Permission.Leader);
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;
@@ -184,6 +185,9 @@ export class ModalProjectComponent implements OnInit {
             this.onChangeProject.emit();
           });
       }
+    } else {
+      this.toastr.warning("Invalid data");
+      this.isLoading = false;
     }
   }
 
@@ -210,7 +214,7 @@ export class ModalProjectComponent implements OnInit {
       (department) => department.id === this.modalForm.value.departmentId
     );
     const user = this.users.find(
-      (user) => user.departmentId === department?.id && user.permission == 'Leader'
+      (user) => user.departmentId === department?.id && Number(user.permissionCode) == Permission.Leader
     );
     this.modalForm.get('appUserId')?.setValue(user?.appUserId);
   }

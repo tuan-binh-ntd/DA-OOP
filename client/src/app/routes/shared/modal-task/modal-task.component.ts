@@ -18,6 +18,8 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
+import { Permission } from 'src/app/helpers/PermisionEnum';
+import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 @Component({
@@ -44,7 +46,7 @@ export class ModalTaskComponent implements OnInit {
   modalForm!: FormGroup;
   isEdit: boolean = false;
   messages: any[] = [];
-  projectId: string = '';
+  pId: string = '';
   user: User;
   taskTypes: any[] = [
     { value: 'bug', viewValue: 'Bug' },
@@ -69,6 +71,7 @@ export class ModalTaskComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private departmentService: DepartmentService,
+    private projectService: ProjectService,
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
@@ -78,11 +81,13 @@ export class ModalTaskComponent implements OnInit {
 
   async ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.projectId = params['id'];
+      this.pId = params['id'];
     });
     this.currentUserInfo = JSON.parse(localStorage.getItem('user'));
+    this.fetchProjectData();
     this.initForm();
    
+    Number(this.user.permissionCode) === Permission.Employee ? this.statusCode.shift() && this.statusCode.pop() : null;
   }
 
   getDepartmentName(id: string) {
@@ -97,6 +102,17 @@ export class ModalTaskComponent implements OnInit {
       .toPromise()
       .then((response) => {
         this.users = response;
+        this.users = this.users.filter(u => u.departmentId == this.user.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
+      });
+  }
+
+  fetchProjectData(){
+    this.projectService
+      .getAllProject()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.projects = response;
+        this.projects = this.projects.filter(p => p.departmentId == this.user.departmentId);
       });
   }
 
@@ -157,7 +173,7 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
       this.modalForm.get('statusCode')?.setValue(StatusCode.Open);
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
-      this.modalForm.get('projectId').setValue(this.projectId);
+      this.modalForm.get('projectId').setValue(this.pId);
       if (this.projectId) {
         this.modalForm.controls['projectId'].disable();
       }
@@ -223,11 +239,14 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
     if (this.modalForm.valid) {
       this.modalForm.value.createUserId = this.currentUserInfo.id;
       if (this.mode === 'create') {
-        this.modalForm.value.projectId = this.projectId;
+          if(this.pId){
+            this.modalForm.value.projectId = this.pId;
+          }
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(
             catchError((err) => {
+              this.toastr.error("Task deadline date must less than or equal porject deadline date")
               return of(err);
             }),
             finalize(() => (this.isLoading = false))
@@ -263,6 +282,9 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
             this.onChangeTask.emit();
           });
       }
+    } else {
+      this.toastr.warning("Invalid data")
+      this.isLoading = false;
     }
     if (this.mode === 'delete') {
       this.taskService

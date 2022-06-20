@@ -21,8 +21,8 @@ namespace API.Entity
         public string Phone { get; set; }
         [Required, StringLength(100)]
         public string Password { get; set; }
-        [Required, ForeignKey("Department")]
-        public Guid DepartmentId { get; set; }
+        [ForeignKey("Department")]
+        public Guid? DepartmentId { get; set; }
         [Required, StringLength(50)]
         public Permission PermissionCode { get; set; }
         public ICollection<Tasks> Task { get; set; }

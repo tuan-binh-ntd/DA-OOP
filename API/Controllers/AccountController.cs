@@ -25,7 +25,12 @@ namespace API.Controllers
             _dataContext = dataContext;
             _tokenService = tokenService;
         }
-
+        [HttpGet("get")]
+        public async Task<ActionResult> GetUser(Guid id)
+        {
+            var user = await _dataContext.AppUser.FindAsync(id);
+            return Ok(user);
+        }
         [HttpGet("getall")]
         [AllowAnonymous]
         public async Task<ActionResult> GetAllUser(Guid? projectId, Guid? departmentId)
@@ -35,7 +40,7 @@ namespace API.Controllers
                 var userList = await (from p in _dataContext.Project
                                       join t in _dataContext.Task on p.Id equals t.ProjectId
                                       join u in _dataContext.AppUser on t.AppUserId equals u.Id
-                                      where p.Id == projectId && u.PermissionCode != Permission.ProjectManager
+                                      where p.Id == projectId
                                       select new
                                       {
                                           ProjectName = p.ProjectName,
@@ -70,11 +75,10 @@ namespace API.Controllers
             {
                 var userList = await (from d in _dataContext.Department
                                       join u in _dataContext.AppUser on d.Id equals u.DepartmentId
-                                      where d.Id == departmentId && u.PermissionCode != Permission.ProjectManager
+                                      where d.Id == departmentId
                                       select new
                                       {
                                           DepartmentId = d.Id,
-                                          DepartmentName = d.DepartmentName,
                                           AppUserId = u.Id,
                                           UFirstName = u.FirstName,
                                           LastName = u.LastName,
@@ -91,10 +95,10 @@ namespace API.Controllers
             {
                 var appUserList = await (from d in _dataContext.Department
                                          join u in _dataContext.AppUser on d.Id equals u.DepartmentId
+
                                          select new
                                          {
                                              DepartmentId = d.Id,
-                                             DepartmentName = d.DepartmentName,
                                              AppUserId = u.Id,
                                              FirstName = u.FirstName,
                                              LastName = u.LastName,
@@ -187,7 +191,7 @@ namespace API.Controllers
                 UserName = user.FirstName + " " + user.LastName,
                 PermissionCode = user.PermissionCode,
                 Email = user.Email,
-                DepartmentId = user.DepartmentId,
+                DepartmentId = user.DepartmentId == null ? null : user.DepartmentId,
                 Token = _tokenService.CreateToken(user)
             };
         }
@@ -206,6 +210,15 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateUser(UpdateUserDto input)
         {
             var user = await _dataContext.AppUser.FindAsync(input.Id);
+            var leader = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.DepartmentId == input.DepartmentId);
+            if(input.PermissionCode == Permission.ProjectManager)
+            {
+                return BadRequest("Company had project manager");
+            }
+            if (leader != null && input.PermissionCode == Permission.Leader)
+            {
+                return BadRequest("Department had leader");
+            }
             if (user != null)
             {
                 if (input.PermissionCode == Permission.Employee)

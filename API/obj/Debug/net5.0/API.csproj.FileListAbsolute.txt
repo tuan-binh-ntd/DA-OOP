@@ -244,7 +244,6 @@ C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\refint\API.
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\API.pdb
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 C:\Users\linhd\OneDrive\Documents\GitHub\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
-F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.GeneratedMSBuildEditorConfig.editorconfig
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.AssemblyInfoInputs.cache
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.AssemblyInfo.cs
@@ -306,3 +305,4 @@ F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.dll
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\ref\API.dll
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.pdb
 F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.genruntimeconfig.cache
+F:\DA-OOP\DA-OOP\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache

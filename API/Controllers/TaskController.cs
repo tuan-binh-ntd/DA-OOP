@@ -184,7 +184,7 @@ namespace API.Controllers
                     else if (input.StatusCode == Enum.StatusCode.Resolve)
                     {
                         task.StatusCode = input.StatusCode;
-                        task.CompleteDate = input.CompleteDate;
+                        task.CompleteDate = DateTime.Now;
                     }
                     _dataContext.Update(task);
                     await _dataContext.SaveChangesAsync();
