@@ -34,3 +34,16 @@
   text-shadow:  1px 1px 3px var(--primary-color);
 
 }
+
+.chat-content-message{
+    max-width: 400px;
+    white-space: initial;
+    word-break: break-word;
+    box-shadow: 0 5px 10px rgb(16 30 54 / 15%);
+    border-radius: 10px;
+}
+
+.chat-content-sender{
+    color:#fff;
+    background-color: var(--primary-color);
+}

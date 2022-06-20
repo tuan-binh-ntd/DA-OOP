@@ -55,7 +55,7 @@ export class MessageService {
     .catch(error => console.log(error));
   }
 
-  createDepartment(payload:any):Observable<any>{
+  createMessage(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }
 }

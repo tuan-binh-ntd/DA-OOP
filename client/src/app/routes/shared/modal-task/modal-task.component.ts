@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ComponentRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -20,14 +27,17 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 })
 export class ModalTaskComponent implements OnInit {
   @Input() projects: any[] = [];
+  @Input() data;
+  any;
   leaderInfo: any;
   employeeInfo: any;
-  departmentName:any;
-  currentUserInfo:any;
+  departmentName: any;
+  currentUserInfo: any;
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
+  messageForm: FormGroup;
   mode: string = 'create';
-  index:number = 0;
+  index: number = 0;
   title: string = 'New Task';
   users: any[] = [];
   departments: any[] = [];
@@ -35,11 +45,12 @@ export class ModalTaskComponent implements OnInit {
   isEdit: boolean = false;
   messages: any[] = [];
   projectId: string = '';
-  data: any;
   user: User;
-  taskTypes: any[] = [{ value: 'bug', viewValue: 'Bug' },
-  { value: 'feature', viewValue: 'Feature' },
-  { value: 'rnd', viewValue: 'RnD' }];
+  taskTypes: any[] = [
+    { value: 'bug', viewValue: 'Bug' },
+    { value: 'feature', viewValue: 'Feature' },
+    { value: 'rnd', viewValue: 'RnD' },
+  ];
   statusCode: any[] = [
     { value: StatusCode.Reopened, viewValue: 'Reopened' },
     { value: StatusCode.Resolved, viewValue: 'Resolved' },
@@ -54,7 +65,6 @@ export class ModalTaskComponent implements OnInit {
     { value: Priority.Normal, viewValue: 'Normal' },
     { value: Priority.Low, viewValue: 'Low' },
   ];
-
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
@@ -64,53 +74,49 @@ export class ModalTaskComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private messageService: MessageService
-  ) { }
+  ) {}
 
- async ngOnInit() {
-    this.route.params.subscribe(params => {
+  async ngOnInit() {
+    this.route.params.subscribe((params) => {
       this.projectId = params['id'];
-    })
-    this.currentUserInfo =  JSON.parse(localStorage.getItem('user'));
+    });
+    this.currentUserInfo = JSON.parse(localStorage.getItem('user'));
     this.initForm();
-  await  this.fetchDepartmentData();
-  await  this.fetchUserData();
-  this.leaderInfo = this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permissionCode === Permission.Leader);
-  this.employeeInfo =  this.users.find(user=> user.departmentId === this.currentUserInfo.departmentId && user.permissionCode === Permission.Employee);
-  this.departmentName = this.getDepartmentName(this.leaderInfo.departmentId)
+   
   }
 
   getDepartmentName(id: string) {
     return this.departments.find((department) => department.id === id)
       ?.departmentName;
   }
- 
 
- async fetchUserData() {
-   await this.userService
+  async fetchUserData() {
+    await this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
-      .toPromise().then((response) => {
+      .toPromise()
+      .then((response) => {
         this.users = response;
- 
-      
-  });
+      });
   }
 
-  fetchMessage(id:string){
-    this.messageService.getMessageThread(id).toPromise().then(res=>{
-      if(res){
-        this.messages = res;
-      }
-    })
+  fetchMessage(id: string) {
+    this.messageService
+      .getMessageThread(id)
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          this.messages = res;
+        }
+      });
   }
 
- 
-
- async fetchDepartmentData() {
-  await  this.departmentService
+  async fetchDepartmentData() {
+    await this.departmentService
       .getAllDepartment()
       .pipe(catchError((err) => of(err)))
-      .toPromise().then((response) => {
+      .toPromise()
+      .then((response) => {
         this.departments = response;
       });
   }
@@ -121,7 +127,7 @@ export class ModalTaskComponent implements OnInit {
       taskName: [null, Validators.required],
       taskType: [null, Validators.required],
       taskCode: [null, Validators.required],
-      createUserId: [null, Validators.required,],
+      createUserId: [null, Validators.required],
       createDate: [null, Validators.required],
       deadlineDate: [null, Validators.required],
       priorityCode: [Priority.Medium, Validators.required],
@@ -132,15 +138,18 @@ export class ModalTaskComponent implements OnInit {
       completeDate: [null],
       permissionCode: [null],
     });
+    this.messageForm = this.fb.group({
+      content: [null],
+    });
   }
 
-  openModal(data: any, mode: string, isEdit: boolean) {
+async  openModal(data: any, mode: string, isEdit: boolean) {
     this.index = 0;
     this.isEdit = isEdit;
     this.mode = mode;
     this.data = data;
     this.modalForm.reset();
-    this.modalForm.get('createUserId').setValue(this.currentUserInfo.id)
+    this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
     if (mode === 'create') {
       this.modalForm.enable();
       this.title = 'New Task';
@@ -149,7 +158,7 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
       this.modalForm.get('projectId').setValue(this.projectId);
-      if(this.projectId){
+      if (this.projectId) {
         this.modalForm.controls['projectId'].disable();
       }
       this.modalForm.controls['createUserId'].disable();
@@ -157,7 +166,24 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls['createDate'].disable();
     } else if (mode === 'detail') {
       this.modalForm.patchValue(data);
-    this.fetchMessage(data.id);
+      await this.fetchDepartmentData();
+      await this.fetchUserData();
+      this.leaderInfo = this.users.find(
+        (user) =>
+          user.departmentId === this.currentUserInfo.departmentId &&
+          user.permissionCode === Permission.Leader
+      );
+      this.employeeInfo = this.users.find(
+        (user) =>
+          user.departmentId === this.currentUserInfo.departmentId &&
+          user.permissionCode === Permission.Employee &&
+          this.data.appUserId === user.appUserId
+      );
+      this.departmentName = this.getDepartmentName(
+        this.leaderInfo.departmentId
+      );
+
+      this.fetchMessage(data.id);
       this.checkEditForm();
     } else {
       this.modalForm.patchValue(data);
@@ -195,15 +221,16 @@ export class ModalTaskComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-        this.modalForm.value.createUserId = this.currentUserInfo.id;
-        if (this.mode === 'create') {
+      this.modalForm.value.createUserId = this.currentUserInfo.id;
+      if (this.mode === 'create') {
         this.modalForm.value.projectId = this.projectId;
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(
             catchError((err) => {
               return of(err);
-            }), finalize(() => this.isLoading = false)
+            }),
+            finalize(() => (this.isLoading = false))
           )
           .subscribe((response) => {
             if (response) {
@@ -214,11 +241,17 @@ export class ModalTaskComponent implements OnInit {
             }
           });
       } else if (this.mode === 'detail') {
-        this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
+        this.modalForm.value.permissionCode =
+          this.currentUserInfo.permissionCode;
         this.modalForm.value.projectId = this.data.projectId;
         this.taskService
           .updateTask(this.modalForm.value)
-          .pipe(catchError((err) => { return of(err); }), finalize(() => this.isLoading = false))
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            }),
+            finalize(() => (this.isLoading = false))
+          )
           .subscribe((response) => {
             if (response.id) {
               this.toastr.success('Successfully!', '', {
@@ -229,13 +262,16 @@ export class ModalTaskComponent implements OnInit {
             }
             this.onChangeTask.emit();
           });
-      } 
+      }
     }
-    if(this.mode === 'delete')
-    {
+    if (this.mode === 'delete') {
       this.taskService
         .deleteTask(this.modalForm.value.id)
-        .pipe(catchError((err) => { return of(err); }))
+        .pipe(
+          catchError((err) => {
+            return of(err);
+          })
+        )
         .subscribe((response) => {
           if (response) {
             this.toastr.success('Successfully!', '', {
@@ -245,7 +281,7 @@ export class ModalTaskComponent implements OnInit {
           } else {
             this.toastr.error('You not permission');
           }
-        }); 
+        });
     }
   }
 
@@ -254,5 +290,30 @@ export class ModalTaskComponent implements OnInit {
     if (this.mode === 'detail') {
       this.checkEditForm();
     }
+  }
+
+  onChat(ev: any) {
+    if (ev.key === 'Enter') {
+      const payload = {
+        taskId: this.data.id,
+        senderId: this.currentUserInfo.id,
+        recipientId:
+          this.currentUserInfo.permissionCode === Permission.Leader
+            ? this.employeeInfo.appUserId
+            : this.leaderInfo.appUserId,
+        content: this.messageForm.value.content,
+      };
+      this.messageService.createMessage(payload).subscribe((res) => {
+        if (res) {
+          this.messageForm.reset();
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    debugger;
   }
 }

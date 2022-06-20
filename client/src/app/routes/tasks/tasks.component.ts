@@ -31,6 +31,7 @@ export class TasksComponent implements OnInit {
   $: any;
   tasks: any[] = [];
   users: any[] = [];
+  taskDetail:any;
   projects: any[] = [];
   departments: any[] = [];
   projectId: string = '';
@@ -172,9 +173,17 @@ export class TasksComponent implements OnInit {
     var myModal = new bootstrap.Modal(
       document.getElementById('createTaskModal')!
     );
-    myModal.show();
+
+    this.taskDetail = data;
     this.isShowModal = true;
-    this.modalTask.openModal(data, mode, isEdit);
+    debugger
+    setTimeout(()=>{
+    if(this.isShowModal){
+      myModal.show();
+      this.modalTask.openModal(data, mode, isEdit);}
+    }
+    ,300)
+   
   }
 
   onChangeTask() {
@@ -185,6 +194,7 @@ export class TasksComponent implements OnInit {
     // $('#createProjectModal').modal('hide')
     // $('#createProjectModal').hide;
     myModal.hide();
+    this.isShowModal = false;
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
     this.isShowModal = false;
