@@ -187,7 +187,7 @@ namespace API.Controllers
                 UserName = user.FirstName + " " + user.LastName,
                 PermissionCode = user.PermissionCode,
                 Email = user.Email,
-                DepartmentId = user.DepartmentId,
+                DepartmentId = user.DepartmentId == null ? null : user.DepartmentId,
                 Token = _tokenService.CreateToken(user)
             };
         }

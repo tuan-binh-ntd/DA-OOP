@@ -27,7 +27,7 @@ export class ModalTaskComponent implements OnInit {
   departments: any[] = [];
   modalForm!: FormGroup;
   isEdit: boolean = false;
-  
+
   projectId: string = '';
   data: any;
   user: User;
@@ -181,6 +181,7 @@ export class ModalTaskComponent implements OnInit {
           .createTask(this.modalForm.value)
           .pipe(
             catchError((err) => {
+              this.toastr.error("Task deadline date must less than or equal porject deadline date")
               return of(err);
             }), finalize(() => this.isLoading = false)
           )
@@ -208,7 +209,7 @@ export class ModalTaskComponent implements OnInit {
             }
             this.onChangeTask.emit();
           });
-      } 
+      }
     }
     if(this.mode === 'delete')
     {
@@ -224,7 +225,7 @@ export class ModalTaskComponent implements OnInit {
           } else {
             this.toastr.error('You not permission');
           }
-        }); 
+        });
     }
   }
 
