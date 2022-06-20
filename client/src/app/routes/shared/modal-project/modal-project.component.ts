@@ -185,6 +185,9 @@ export class ModalProjectComponent implements OnInit {
             this.onChangeProject.emit();
           });
       }
+    } else {
+      this.toastr.warning("Invalid data");
+      this.isLoading = false;
     }
   }
 

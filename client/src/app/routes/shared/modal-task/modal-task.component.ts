@@ -210,6 +210,9 @@ export class ModalTaskComponent implements OnInit {
             this.onChangeTask.emit();
           });
       }
+    } else {
+      this.toastr.warning("Invalid data")
+      this.isLoading = false;
     }
     if(this.mode === 'delete')
     {
