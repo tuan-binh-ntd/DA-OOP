@@ -245,17 +245,16 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
           .createTask(this.modalForm.value)
           .pipe(
             catchError((err) => {
-              this.toastr.error("Task deadline date must less than or equal porject deadline date")
               return of(err);
-            }),
-            finalize(() => (this.isLoading = false))
-          )
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!');
-              this.onChangeTask.emit();
-            } else {
-              this.toastr.error('Failed');
+
+            }), finalize(() => this.isLoading = false)
+            )
+            .subscribe((response) => {
+              if (response.id) {
+                this.toastr.success('Successfully!');
+                this.onChangeTask.emit();
+              } else {
+              this.toastr.error(response.error);
             }
           });
       } else if (this.mode === 'detail') {
@@ -276,7 +275,7 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
                 timeOut: 1000,
               });
             } else {
-              this.toastr.error('You not permission');
+              this.toastr.error(response.error);
             }
             this.onChangeTask.emit();
           });

@@ -176,7 +176,6 @@ export class TasksComponent implements OnInit {
 
     this.taskDetail = data;
     this.isShowModal = true;
-    debugger
     setTimeout(()=>{
     if(this.isShowModal){
       myModal.show();
