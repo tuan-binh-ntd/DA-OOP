@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 @Component({
   selector: 'app-modal-user',
   templateUrl: './modal-user.component.html',
@@ -23,6 +24,7 @@ export class ModalUserComponent implements OnInit {
   users: any[] = [];
   departments: any[] = [];
   data: any;
+  user: User;
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
     { value: Permission.Leader, viewValue: 'Leader' },
@@ -35,6 +37,7 @@ export class ModalUserComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.fetchUserData();
     this.fetchDepartmentData();
     Number(JSON.parse(localStorage.getItem('user')).permissionCode) === Permission.Leader ? this.permission.shift() : null;
@@ -84,6 +87,7 @@ export class ModalUserComponent implements OnInit {
     if (mode === 'create') {
       this.title = 'New Employee';
       this.modalForm.get('permissionCode')?.setValue(Permission.Employee);
+      this.modalForm.get('departmentId')?.setValue(this.user.departmentId);
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
