@@ -1,35 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\DA-OOP\\DA-OOP\\API\\API.csproj": {}
+    "D:\\DA-OOP\\API\\API.csproj": {}
   },
   "projects": {
-    "F:\\DA-OOP\\DA-OOP\\API\\API.csproj": {
+    "D:\\DA-OOP\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\DA-OOP\\DA-OOP\\API\\API.csproj",
+        "projectUniqueName": "D:\\DA-OOP\\API\\API.csproj",
         "projectName": "API",
-<<<<<<< HEAD
         "projectPath": "D:\\DA-OOP\\API\\API.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
         "outputPath": "D:\\DA-OOP\\API\\obj\\",
-=======
-        "projectPath": "F:\\DA-OOP\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\S_member\\.nuget\\packages\\",
-        "outputPath": "F:\\DA-OOP\\DA-OOP\\API\\obj\\",
->>>>>>> 48a68368f8adc1ca04031541c775f8591a54b041
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "F:\\DevExpress 21.2\\Components\\Offline Packages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-<<<<<<< HEAD
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-          "C:\\Users\\S_member\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
->>>>>>> 48a68368f8adc1ca04031541c775f8591a54b041
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -37,11 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-<<<<<<< HEAD
           "http://nuget.s-erp.vn/nuget/": {},
-=======
-          "F:\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
->>>>>>> 48a68368f8adc1ca04031541c775f8591a54b041
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -107,12 +88,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.15, 5.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -121,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

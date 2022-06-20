@@ -18,7 +18,6 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { finalize } from 'rxjs/operators';
-import { Permission } from 'src/app/helpers/PermisionEnum';
 import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
@@ -47,7 +46,6 @@ export class ModalTaskComponent implements OnInit {
   isEdit: boolean = false;
   messages: any[] = [];
   pId: string = '';
-  user: User;
   taskTypes: any[] = [
     { value: 'bug', viewValue: 'Bug' },
     { value: 'feature', viewValue: 'Feature' },
@@ -87,7 +85,7 @@ export class ModalTaskComponent implements OnInit {
     this.fetchProjectData();
     this.initForm();
    
-    Number(this.user.permissionCode) === Permission.Employee ? this.statusCode.shift() && this.statusCode.pop() : null;
+    Number(this.currentUserInfo.permissionCode) === Permission.Employee ? this.statusCode.shift() && this.statusCode.pop() : null;
   }
 
   getDepartmentName(id: string) {
@@ -102,7 +100,6 @@ export class ModalTaskComponent implements OnInit {
       .toPromise()
       .then((response) => {
         this.users = response;
-        this.users = this.users.filter(u => u.departmentId == this.user.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
       });
   }
 
@@ -112,13 +109,13 @@ export class ModalTaskComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
-        this.projects = this.projects.filter(p => p.departmentId == this.user.departmentId);
+        this.projects = this.projects.filter(p => p.departmentId == this.currentUserInfo.departmentId);
       });
   }
 
-  fetchMessage(id: string) {
+  fetchMessage() {
     this.messageService
-      .getMessageThread(id)
+      .getMessageThread(this.data.id)
       .toPromise()
       .then((res) => {
         if (res) {
@@ -165,6 +162,7 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
     this.mode = mode;
     this.data = data;
     this.modalForm.reset();
+    this.messageForm.reset();
     this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
     if (mode === 'create') {
       this.modalForm.enable();
@@ -174,7 +172,7 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
       this.modalForm.get('projectId').setValue(this.pId);
-      if (this.projectId) {
+      if (this.pId) {
         this.modalForm.controls['projectId'].disable();
       }
       this.modalForm.controls['createUserId'].disable();
@@ -193,13 +191,14 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
         (user) =>
           user.departmentId === this.currentUserInfo.departmentId &&
           user.permissionCode === Permission.Employee &&
-          this.data.appUserId === user.appUserId
+          user.appUserId === this.data.appUserId
       );
+      this.users = this.users.filter(u => u.departmentId == this.currentUserInfo.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
       this.departmentName = this.getDepartmentName(
         this.leaderInfo.departmentId
       );
 
-      this.fetchMessage(data.id);
+      this.fetchMessage();
       this.checkEditForm();
     } else {
       this.modalForm.patchValue(data);
@@ -325,17 +324,14 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
             : this.leaderInfo.appUserId,
         content: this.messageForm.value.content,
       };
-      this.messageService.createMessage(payload).subscribe((res) => {
-        if (res) {
-          this.messageForm.reset();
-        }
+      this.messageService.createMessage(payload).pipe(catchError((err) => of(err)))
+      .toPromise()
+      .then((response) => {
+        this.messages.push(payload)
+        this.messageForm.reset();
       });
     }
   }
 
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    debugger;
-  }
+ 
 }

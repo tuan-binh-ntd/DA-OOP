@@ -47,3 +47,8 @@
     color:#fff;
     background-color: var(--primary-color);
 }
+.chat-wrapper{
+   height:300px; 
+   margin: 0 20px;
+    overflow: hidden scroll;
+}
