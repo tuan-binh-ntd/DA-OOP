@@ -97,7 +97,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{ user.userName }}
+                            {{ user.firstName + " " + user.lastName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -118,7 +118,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{ user.userName }}
+                            {{user.firstName + " " + user.lastName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
