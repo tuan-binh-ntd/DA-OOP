@@ -21,6 +21,7 @@ import { finalize } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
+import { PresenceService } from 'src/app/services/presence.service';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -74,7 +75,9 @@ export class ModalTaskComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public presenceService: PresenceService
+
   ) {}
 
   async ngOnInit() {

@@ -52,3 +52,18 @@
    margin: 0 20px;
     overflow: hidden scroll;
 }
+
+@keyframes fa-blink{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0.4;
+
+    }
+}
+
+.is-online{
+    animation: fa-blink 1.5s linear infinite;
+    color: rgb(1,189,42);
+}

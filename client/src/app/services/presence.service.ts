@@ -36,6 +36,7 @@ export class PresenceService {
     })
 
     this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
+      debugger;
       this.onlineUserSource.next(usernames);
     })
   }
