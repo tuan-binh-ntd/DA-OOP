@@ -1,9 +1,10 @@
 export interface Message {
-  id: number;
-  senderId: number;
-  senderUsername: string;
-  recipientId: number;
-  recipientUsername: string;
+  id: string;
+  taskId: string;
+  senderId: string;
+  senderUserName: string;
+  recipientId: string;
+  recipientUserName: string;
   content: string;
   dateRead?: Date;
   messageSent: Date;

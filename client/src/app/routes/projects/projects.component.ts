@@ -9,8 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/services/department.service';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { User } from 'src/app/models/user';
-import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
-import { Priority } from '../shared/priority-icon/priority-icon.component';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',

@@ -48,7 +48,17 @@ namespace API.Controllers
             };
             await _dataContext.Messages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
-            return Ok("Success");
+            var result = new MessageForViewDto
+            {
+                Id = message.Id,
+                TasksId = createMessageDto.TaskId,
+                SenderId = sender.Id,
+                SenderUserName = sender.FirstName + " " + sender.LastName,
+                RecipientId = recipient.Id,
+                RecipientUserName = recipient.FirstName + " " + recipient.LastName,
+                Content = createMessageDto.Content,
+            };
+            return Ok(result);
         }
 
         [HttpGet("message/thread")]

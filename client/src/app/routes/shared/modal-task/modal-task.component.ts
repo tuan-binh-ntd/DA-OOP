@@ -1,8 +1,8 @@
 import {
   Component,
-  ComponentRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -13,7 +13,6 @@ import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -27,14 +26,14 @@ import { PresenceService } from 'src/app/services/presence.service';
   templateUrl: './modal-task.component.html',
   styleUrls: ['./modal-task.component.css'],
 })
-export class ModalTaskComponent implements OnInit {
+export class ModalTaskComponent implements OnInit, OnDestroy {
   @Input() projects: any[] = [];
   @Input() data;
   any;
   leaderInfo: any;
   employeeInfo: any;
   departmentName: any;
-  currentUserInfo: any;
+  currentUserInfo: User;
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
   messageForm: FormGroup;
@@ -72,7 +71,6 @@ export class ModalTaskComponent implements OnInit {
     private departmentService: DepartmentService,
     private projectService: ProjectService,
     private userService: UserService,
-    private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private messageService: MessageService,
@@ -80,15 +78,21 @@ export class ModalTaskComponent implements OnInit {
 
   ) {}
 
+
   async ngOnInit() {
     this.route.params.subscribe((params) => {
       this.pId = params['id'];
     });
     this.currentUserInfo = JSON.parse(localStorage.getItem('user'));
     this.fetchProjectData();
+    this.fetchUserData();
     this.initForm();
-   
-    Number(this.currentUserInfo.permissionCode) === Permission.Employee ? this.statusCode.shift() && this.statusCode.pop() : null;
+    Number(this.currentUserInfo.permissionCode) === Permission.Employee
+      ? this.statusCode.shift() && this.statusCode.pop()
+      : null;
+      this.userService.getUser(this.data.appUserId).subscribe((res) => {
+        this.employeeInfo = res;
+      });
   }
 
   getDepartmentName(id: string) {
@@ -106,13 +110,17 @@ export class ModalTaskComponent implements OnInit {
       });
   }
 
-  fetchProjectData(){
+  fetchProjectData() {
     this.projectService
       .getAllProject()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
-        this.projects = this.projects.filter(p => p.departmentId == this.currentUserInfo.departmentId);
+        if (this.currentUserInfo.departmentId) {
+          this.projects = this.projects.filter(
+            (p) => p.departmentId == this.currentUserInfo.departmentId
+          );
+        }
       });
   }
 
@@ -137,6 +145,16 @@ export class ModalTaskComponent implements OnInit {
       });
   }
 
+  connectHub() {
+    this.messageService.createHubConnection(
+      this.currentUserInfo,
+      this.currentUserInfo.permissionCode == Permission.Leader
+      ? this.employeeInfo.firstName + '-' + this.employeeInfo.lastName
+      : this.leaderInfo.firstName + '-' + this.leaderInfo.lastName,
+      this.data.id
+    );
+  }
+
   initForm() {
     this.modalForm = this.fb.group({
       id: [null],
@@ -159,7 +177,7 @@ export class ModalTaskComponent implements OnInit {
     });
   }
 
-async  openModal(data: any, mode: string, isEdit: boolean) {
+  async openModal(data: any, mode: string, isEdit: boolean) {
     this.index = 0;
     this.isEdit = isEdit;
     this.mode = mode;
@@ -185,21 +203,42 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
       this.modalForm.patchValue(data);
       await this.fetchDepartmentData();
       await this.fetchUserData();
-      this.leaderInfo = this.users.find(
-        (user) =>
-          user.departmentId === this.currentUserInfo.departmentId &&
-          user.permissionCode === Permission.Leader
-      );
-      this.employeeInfo = this.users.find(
-        (user) =>
-          user.departmentId === this.currentUserInfo.departmentId &&
-          user.permissionCode === Permission.Employee &&
-          user.appUserId === this.data.appUserId
-      );
-      this.users = this.users.filter(u => u.departmentId == this.currentUserInfo.departmentId && Number(u.permissionCode) !== Permission.ProjectManager);
+      if (this.currentUserInfo.departmentId) {
+        this.leaderInfo = this.users.find(
+          (user) =>
+            user.departmentId === this.currentUserInfo.departmentId &&
+            user.permissionCode === Permission.Leader
+        );
+        this.employeeInfo = this.users.find(
+          (user) =>
+            user.departmentId === this.currentUserInfo.departmentId &&
+            user.permissionCode === Permission.Employee &&
+            user.appUserId === this.data.appUserId
+        );
+        this.users = this.users.filter(
+          (u) =>
+            u.departmentId == this.currentUserInfo.departmentId &&
+            Number(u.permissionCode) !== Permission.ProjectManager
+        );
+      } else {
+        this.leaderInfo = this.users.find(
+          (user) => user.permissionCode === Permission.Leader
+        );
+        this.employeeInfo = this.users.find(
+          (user) =>
+            user.permissionCode === Permission.Employee &&
+            user.appUserId === this.data.appUserId
+        );
+        this.users = this.users.filter(
+          (u) => Number(u.permissionCode) !== Permission.ProjectManager
+        );
+      }
       this.departmentName = this.getDepartmentName(
         this.leaderInfo.departmentId
       );
+      if(this.data.appUserId != this.data.createUserId) {
+        this.connectHub();
+      }
 
       this.fetchMessage();
       this.checkEditForm();
@@ -207,6 +246,8 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
       this.modalForm.patchValue(data);
     }
   }
+
+
 
   checkEditForm() {
     this.modalForm.patchValue(this.data);
@@ -241,24 +282,23 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
     if (this.modalForm.valid) {
       this.modalForm.value.createUserId = this.currentUserInfo.id;
       if (this.mode === 'create') {
-          if(this.pId){
-            this.modalForm.value.projectId = this.pId;
-          }
+        if (this.pId) {
+          this.modalForm.value.projectId = this.pId;
+        }
         this.taskService
           .createTask(this.modalForm.value)
           .pipe(
             catchError((err) => {
-              this.toastr.error("Task deadline date must less than or equal porject deadline date")
               return of(err);
             }),
             finalize(() => (this.isLoading = false))
           )
           .subscribe((response) => {
-            if (response) {
+            if (response.id) {
               this.toastr.success('Successfully!');
               this.onChangeTask.emit();
             } else {
-              this.toastr.error('Failed');
+              this.toastr.error(response.error);
             }
           });
       } else if (this.mode === 'detail') {
@@ -279,13 +319,13 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
                 timeOut: 1000,
               });
             } else {
-              this.toastr.error('You not permission');
+              this.toastr.error(response.error);
             }
             this.onChangeTask.emit();
           });
       }
     } else {
-      this.toastr.warning("Invalid data")
+      this.toastr.warning('Invalid data');
       this.isLoading = false;
     }
     if (this.mode === 'delete') {
@@ -327,14 +367,16 @@ async  openModal(data: any, mode: string, isEdit: boolean) {
             : this.leaderInfo.appUserId,
         content: this.messageForm.value.content,
       };
-      this.messageService.createMessage(payload).pipe(catchError((err) => of(err)))
-      .toPromise()
-      .then((response) => {
-        this.messages.push(payload)
-        this.messageForm.reset();
-      });
+      this.messageService
+        .sendMessage(payload)
+        .then(() => {
+          this.messages.push(payload);
+          this.messageForm.reset();
+        });
     }
   }
 
- 
+  ngOnDestroy() {
+    this.messageService.stopHubConnection();
+  }
 }

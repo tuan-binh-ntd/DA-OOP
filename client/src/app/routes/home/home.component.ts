@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { Router } from '@angular/router';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { catchError, of } from 'rxjs';
 import { ProjectService } from 'src/app/services/project.service';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';

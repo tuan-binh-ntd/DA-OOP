@@ -10,6 +10,8 @@ using System.Linq;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using API.DTO.UserDto;
+using Dapper;
+using System.Data;
 
 namespace API.Controllers
 {
@@ -19,11 +21,13 @@ namespace API.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly ITokenService _tokenService;
+        private readonly IDapper _dapper;
 
-        public AccountController(DataContext dataContext, ITokenService tokenService)
+        public AccountController(DataContext dataContext, ITokenService tokenService, IDapper dapper)
         {
             _dataContext = dataContext;
             _tokenService = tokenService;
+            _dapper = dapper;
         }
         [HttpGet("get")]
         public async Task<ActionResult> GetUser(Guid id)
@@ -37,7 +41,7 @@ namespace API.Controllers
         {
             if (projectId != null)
             {
-                var userList = await (from p in _dataContext.Project
+                /*var userList = await (from p in _dataContext.Project
                                       join t in _dataContext.Task on p.Id equals t.ProjectId
                                       join u in _dataContext.AppUser on t.AppUserId equals u.Id
                                       where p.Id == projectId
@@ -49,51 +53,46 @@ namespace API.Controllers
                                           FirstName = u.FirstName,
                                           LastName = u.LastName,
                                           Address = u.Address,
+                                          UserName = u.FirstName + " " + u.LastName,
                                           Email = u.Email,
                                           Password = u.Password,
                                           Phone = u.Phone,
                                           PermissionCode = u.PermissionCode,
                                           DepartmentId = p.DepartmentId,
-                                      }).AsNoTracking().ToListAsync();
-                /*var groupUserList = userList.GroupBy(e => e.AppUserId).Select(e => new { AppUserId = e.Key, Count = e.Count()}).ToList();
-                var result = await (from p in _dataContext.Project
-                                    join t in _dataContext.Task on p.Id equals t.ProjectId
-                                    join u in _dataContext.AppUser on t.AppUserId equals u.Id
-                                    from g in groupUserList 
-                                    select new
-                                    {
-                                        ProjectName = p.ProjectName,
-                                        TaskName = t.TaskName,
-                                        AppUserId = u.Id,
-                                        UserName = u.FirstName + " " + u.LastName,
-                                        DepartmentId = p.DepartmentId,
-                                        Permission = u.PermissionCode == Permission.Leader ? "Leader" : "Employee"
-                                    }).AsNoTracking().ToListAsync();*/
+                                      }).AsNoTracking().ToListAsync();*/
+                var dp_params = new DynamicParameters();
+                dp_params.Add("@projectId", projectId, DbType.Guid);
+                var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUserForProject", dp_params,
+                    commandType: System.Data.CommandType.StoredProcedure));
                 return Ok(userList);
             }
             if (departmentId != null)
             {
-                var userList = await (from d in _dataContext.Department
+                /*var userList = await (from d in _dataContext.Department
                                       join u in _dataContext.AppUser on d.Id equals u.DepartmentId
                                       where d.Id == departmentId
                                       select new
                                       {
                                           DepartmentId = d.Id,
                                           AppUserId = u.Id,
-                                          UFirstName = u.FirstName,
+                                          FirstName = u.FirstName,
                                           LastName = u.LastName,
+                                          UserName = u.FirstName + " " + u.LastName,
                                           Address = u.Address,
                                           Password = u.Password,
                                           Email = u.Email,
                                           Phone = u.Phone,
                                           PermissionCode = u.PermissionCode
-                                      }).AsNoTracking().ToListAsync();
-                //userList.GroupBy(e => e.AppUserId);
+                                      }).AsNoTracking().ToListAsync();*/
+                var dp_params = new DynamicParameters();
+                dp_params.Add("@departmentId", departmentId, DbType.Guid);
+                var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUserForDepartment", dp_params,
+                    commandType: System.Data.CommandType.StoredProcedure));
                 return Ok(userList);
             }
             if (projectId == null && departmentId == null)
             {
-                var appUserList = await (from d in _dataContext.Department
+                /*var appUserList = await (from d in _dataContext.Department
                                          join u in _dataContext.AppUser on d.Id equals u.DepartmentId
 
                                          select new
@@ -102,13 +101,17 @@ namespace API.Controllers
                                              AppUserId = u.Id,
                                              FirstName = u.FirstName,
                                              LastName = u.LastName,
+                                             UserName = u.FirstName + " " + u.LastName,
                                              Address = u.Address,
                                              Email = u.Email,
                                              Password = u.Password,
                                              Phone = u.Phone,
                                              PermissionCode = u.PermissionCode
-                                         }).AsNoTracking().ToListAsync();
-                return Ok(appUserList);
+                                         }).AsNoTracking().ToListAsync();*/
+                var dp_params = new DynamicParameters();
+                var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUser", dp_params,
+                    commandType: System.Data.CommandType.StoredProcedure));
+                return Ok(userList);
             }
             return Ok();
         }

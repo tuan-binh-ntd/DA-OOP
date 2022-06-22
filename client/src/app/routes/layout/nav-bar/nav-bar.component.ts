@@ -1,16 +1,10 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from '@angular/router';
-import * as bootstrap from 'bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
-import { ChangePasswordComponent } from '../../change-password/change-password.component';
-import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
-import { TasksComponent } from '../../tasks/tasks.component';
-
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -30,7 +24,7 @@ export class NavBarComponent implements OnInit {
     protected route: ActivatedRoute,
     private router: Router,
   ) {
-    
+
    }
 
   fetchUserData() {

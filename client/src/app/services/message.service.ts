@@ -43,7 +43,6 @@ export class MessageService {
     if(this.hubConnection) {
       this.hubConnection.stop();
     }
-    this.hubConnection.stop();
   }
 
   getMessageThread(taskId: string) {

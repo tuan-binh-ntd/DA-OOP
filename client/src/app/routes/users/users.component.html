@@ -32,7 +32,7 @@
     <tbody>
       <tr *ngFor="let user of users">
         <td class="text-center align-middle" >
-          <span [class.is-online]="(presence.onlineUsers | async).includes(user.userName)">
+          <span [class.is-online]="(presence.onlineUsers | async).includes(user.firstName + ' ' + user.lastName)">
             <i class="fa fa-user mr-2"></i>
           </span>
         </td>

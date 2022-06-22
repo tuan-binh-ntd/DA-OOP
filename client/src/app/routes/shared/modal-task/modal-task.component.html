@@ -97,7 +97,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{ user.userName }}
+                            {{ user.firstName + " " + user.lastName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -118,7 +118,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{ user.userName }}
+                            {{user.firstName + " " + user.lastName}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -274,12 +274,18 @@
                     <div class="float-right  fsz-25">
                         <i class="fa fa-info-circle mr-2 text-primary chat-content-icon" aria-hidden="true"></i>
                     </div>
-                
+
                 </div>
 
                     <mat-divider class="mb-3" inset></mat-divider>
                     <div class="chat-wrapper">
-                      <ng-container *ngFor="let message of messages">
+                      <ng-container *ngIf="(messageService.messageThread | async)?.length === 0">
+                        <div>
+                          No message yet... say hi by using the message box below
+                        </div>
+                      </ng-container>
+
+                      <ng-container *ngFor="let message of (messageService.messageThread | async)">
                         <div class="row">
                           <div class="col col-12">
                               <div *ngIf="message.senderId === currentUserInfo.id;else receiper" >
@@ -314,7 +320,7 @@
                       </div>
                     </form>
 
-                    
+
                   </div>
                 </div>
                 <div
