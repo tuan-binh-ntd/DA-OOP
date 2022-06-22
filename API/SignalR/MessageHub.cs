@@ -22,7 +22,7 @@ namespace API.SignalR
         public override async Task OnConnectedAsync()
         {
             var httpContext = Context.GetHttpContext();
-            var otherUser = httpContext.Request.Query["user"].ToString();
+            var otherUser = httpContext.Request.Query["user"].ToString().Replace('-', ' ');
             var taskId = httpContext.Request.Query["taskId"].ToString();
             var groupName = GetGroupName(Context.User.Identity.Name, otherUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
@@ -56,8 +56,18 @@ namespace API.SignalR
             };
             await _dataContext.Messages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
+            var result = new MessageForViewDto
+            {
+                Id = message.Id,
+                TasksId = createMessageDto.TaskId,
+                SenderId = sender.Id,
+                SenderUserName = sender.FirstName + " " + sender.LastName,
+                RecipientId = recipient.Id,
+                RecipientUserName = recipient.FirstName + " " + recipient.LastName,
+                Content = createMessageDto.Content,
+            };
             var group = GetGroupName(sender.FirstName + " " + sender.LastName, recipient.FirstName + " " + recipient.LastName);
-            await Clients.Group(group).SendAsync("NewMessage", message);
+            await Clients.Group(group).SendAsync("NewMessage", result);
         }
 
         private string GetGroupName(string caller, string other)
