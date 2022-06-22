@@ -3,7 +3,6 @@ import { CanActivate, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Permission } from '../helpers/PermisionEnum';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({

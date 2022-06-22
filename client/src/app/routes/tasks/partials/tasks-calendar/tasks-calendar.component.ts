@@ -2,21 +2,12 @@ import { DatePipe } from '@angular/common';
 import {
   Component,
   ElementRef,
-  forwardRef,
-  Injector,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Calendar } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/daygrid';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import listPlugin from '@fullcalendar/list';
-import timegridPlugin from '@fullcalendar/timegrid';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { catchError, of } from 'rxjs';
-import { Permission } from 'src/app/helpers/PermisionEnum';
 import { TasksComponent } from '../../tasks.component';
-
 @Component({
   selector: 'app-tasks-calendar',
   templateUrl: './tasks-calendar.component.html',
@@ -25,7 +16,6 @@ import { TasksComponent } from '../../tasks.component';
 export class TasksCalendarComponent extends TasksComponent implements OnInit {
   @ViewChild('fullcalendar') fullcalendar: ElementRef;
   calendarOptions: CalendarOptions = {
-  
     initialView: 'dayGridMonth',
     weekends: true,
     editable: true,
@@ -71,20 +61,19 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
   }
 
   onDateClick(res: any) {
-   const task = this.tasks.find(task=> task.id === res.event._def.publicId);
-   this.openDetailModal(task,'detail',false);
+    const task = this.tasks.find((task) => task.id === res.event._def.publicId);
+    this.openDetailModal(task, 'detail', false);
   }
   pipeDate(date: any) {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(date, 'dd-MM-yyyy');
   }
 
-  hideLoading(){
+  hideLoading() {
     document.getElementById('spinner').style.display = 'none';
   }
 
-  showLoading(){
-      document.getElementById('spinner').style.display = 'block';
+  showLoading() {
+    document.getElementById('spinner').style.display = 'block';
   }
-  
 }

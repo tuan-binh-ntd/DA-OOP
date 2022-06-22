@@ -1,6 +1,5 @@
 import {
   Component,
-  ComponentRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -14,7 +13,6 @@ import { catchError, of } from 'rxjs';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { User } from 'src/app/models/user';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -22,7 +20,6 @@ import { finalize } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
-import { AppUser } from 'src/app/models/user.model';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -73,7 +70,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     private departmentService: DepartmentService,
     private projectService: ProjectService,
     private userService: UserService,
-    private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     public messageService: MessageService
