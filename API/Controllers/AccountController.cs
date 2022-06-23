@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using API.DTO.UserDto;
 using Dapper;
 using System.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -22,17 +23,19 @@ namespace API.Controllers
         private readonly DataContext _dataContext;
         private readonly ITokenService _tokenService;
         private readonly IDapper _dapper;
+        private readonly IPhotoService _photoService;
 
-        public AccountController(DataContext dataContext, ITokenService tokenService, IDapper dapper)
+        public AccountController(DataContext dataContext, ITokenService tokenService, IDapper dapper, IPhotoService photoService)
         {
             _dataContext = dataContext;
             _tokenService = tokenService;
             _dapper = dapper;
+            _photoService = photoService;
         }
-        [HttpGet("get")]
+        [HttpGet("get", Name="GetUser")]
         public async Task<ActionResult> GetUser(Guid id)
         {
-            var user = await _dataContext.AppUser.FindAsync(id);
+            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
             return Ok(user);
         }
         [HttpGet("getall")]
@@ -310,6 +313,31 @@ namespace API.Controllers
             {
                 return BadRequest();
             }
+        }
+        [HttpPost("addphoto")]
+        public async Task<ActionResult> AddPhoto(IFormFile file, Guid id)
+        {
+            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            if(user.Photos.Count == 0)
+            {
+                photo.IsMain = true;
+            }
+
+            user.Photos.Add(photo);
+
+            await _dataContext.Photos.AddAsync(photo);
+            await _dataContext.SaveChangesAsync();
+            return CreatedAtRoute("GetUser", new { username = user.FirstName + ' ' + user.LastName }, photo);
         }
     }
 }

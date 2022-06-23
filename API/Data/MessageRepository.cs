@@ -1,5 +1,4 @@
-﻿using API.DTO.MessageDto;
-using API.Entity;
+﻿using API.Entity;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,11 +29,7 @@ namespace API.Data
 
         public async Task<IEnumerable<Message>> GetMessageThread(Guid taskId)
         {
-            var messages = await (_context.Messages
-                .Where(m => m.TasksId == taskId)
-                .OrderBy(m => m.MessageSent)).ToListAsync();
-
-            /*var unreadMessages = messages.Where(m => m.DateRead == null).ToList();
+            var unreadMessages = await (_context.Messages.Where(m => m.DateRead == null && m.TasksId == taskId)).OrderBy(m => m.MessageSent).ToListAsync();
             if (unreadMessages.Any())
             {
                 foreach (var message in unreadMessages)
@@ -42,7 +37,8 @@ namespace API.Data
                     message.DateRead = DateTime.Now;
                 }
                 await _context.SaveChangesAsync();
-            }*/
+            }
+            var messages = await (_context.Messages.Where(m => m.TasksId == taskId).OrderBy(m => m.MessageSent)).ToListAsync();
             return messages;
         }
 
