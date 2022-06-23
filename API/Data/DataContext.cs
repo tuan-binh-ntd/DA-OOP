@@ -12,6 +12,7 @@ namespace API.Data
         public DbSet<Project> Project { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
