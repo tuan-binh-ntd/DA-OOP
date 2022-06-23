@@ -1,10 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -27,6 +29,8 @@ import { PresenceService } from 'src/app/services/presence.service';
   styleUrls: ['./modal-task.component.css'],
 })
 export class ModalTaskComponent implements OnInit, OnDestroy {
+  @ViewChild('chatContent') private chatContent: ElementRef;
+
   @Input() projects: any[] = [];
   @Input() data;
   any;
@@ -80,6 +84,16 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   ) {}
 
 
+
+  ngAfterViewChecked() {        
+      this.scrollToBottom();        
+  } 
+
+  scrollToBottom(): void {
+      try {
+          this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
+      } catch(err) { }                 
+  }
   async ngOnInit() {
     this.route.params.subscribe((params) => {
       this.pId = params['id'];
@@ -96,6 +110,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           this.employeeInfo = res;
         });
       }
+      this.scrollToBottom();
   }
 
   getDepartmentName(id: string) {
@@ -246,7 +261,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
 
       this.fetchMessage();
       this.checkEditForm();
-      this.getOnline();
     } else {
       this.modalForm.patchValue(data);
     }
@@ -362,7 +376,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   }
 
   onChat(ev: any) {
-    if (ev.key === 'Enter') {
+    if (ev.key === 'Enter' && ev.target.value) {
       const payload = {
         taskId: this.data.id,
         senderId: this.currentUserInfo.id,
@@ -384,13 +398,8 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.messageService.stopHubConnection();
   }
-  getOnline(){
-    this.presenceService.onlineUsers.subscribe(res=>{
-      debugger
-      console.log(res[0])
-      if(res[0]=== this.employeeInfo.firstName + this.employeeInfo.lastName)
-      console.log(this.employeeInfo.firstName + this.employeeInfo.lastName)
-     this.isUserOnline = true
-    })
-  }
+
+
 }
+
+

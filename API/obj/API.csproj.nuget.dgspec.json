@@ -1,7 +1,6 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "D:\\DA-OOP\\API\\API.csproj": {}
   },
   "projects": {
@@ -16,27 +15,6 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-    "F:\\DA-OOP\\DA-OOP\\API\\API.csproj": {}
-  },
-  "projects": {
-    "F:\\DA-OOP\\DA-OOP\\API\\API.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "F:\\DA-OOP\\DA-OOP\\API\\API.csproj",
-        "projectName": "API",
-        "projectPath": "F:\\DA-OOP\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\S_member\\.nuget\\packages\\",
-        "outputPath": "F:\\DA-OOP\\DA-OOP\\API\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "F:\\DevExpress 21.2\\Components\\Offline Packages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\S_member\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
->>>>>>> 6ae2b86c0f0bb2340864dd8de6f3f2a652340dcd
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -44,11 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-<<<<<<< HEAD
           "http://nuget.s-erp.vn/nuget/": {},
-=======
-          "F:\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
->>>>>>> 6ae2b86c0f0bb2340864dd8de6f3f2a652340dcd
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -118,12 +92,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.15, 5.0.15]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -132,11 +100,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
->>>>>>> 6ae2b86c0f0bb2340864dd8de6f3f2a652340dcd
         }
       }
     }
