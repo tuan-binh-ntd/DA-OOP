@@ -13,7 +13,7 @@ namespace API.Services
     public class Dapperr : IDapper
     {
         private readonly IConfiguration _config;
-        private string Connectionstring = "DefaultConnection";
+        private readonly string Connectionstring = "DefaultConnection";
         public Dapperr(IConfiguration config)
         {
             _config = config;
@@ -21,6 +21,20 @@ namespace API.Services
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            var _connection = GetDbConnection();
+            if (disposing)
+            {
+                if (GetDbConnection() != null)
+                {
+                    _connection.Dispose();
+                }
+            }
         }
 
         public int Execute(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
