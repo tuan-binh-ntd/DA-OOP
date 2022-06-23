@@ -36,6 +36,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   currentUserInfo: User;
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
+  isUserOnline: boolean = false;
   messageForm: FormGroup;
   mode: string = 'create';
   index: number = 0;
@@ -73,7 +74,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private messageService: MessageService,
+    public messageService: MessageService,
     public presenceService: PresenceService
 
   ) {}
@@ -90,9 +91,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     Number(this.currentUserInfo.permissionCode) === Permission.Employee
       ? this.statusCode.shift() && this.statusCode.pop()
       : null;
-      this.userService.getUser(this.data.appUserId).subscribe((res) => {
-        this.employeeInfo = res;
-      });
+      // this.userService.getUser(this.data.appUserId).subscribe((res) => {
+      //   this.employeeInfo = res;
+      // });
   }
 
   getDepartmentName(id: string) {
@@ -203,6 +204,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.patchValue(data);
       await this.fetchDepartmentData();
       await this.fetchUserData();
+      debugger
       if (this.currentUserInfo.departmentId) {
         this.leaderInfo = this.users.find(
           (user) =>
@@ -242,6 +244,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
 
       this.fetchMessage();
       this.checkEditForm();
+      this.getOnline();
     } else {
       this.modalForm.patchValue(data);
     }
@@ -378,5 +381,14 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.messageService.stopHubConnection();
+  }
+  getOnline(){
+    this.presenceService.onlineUsers.subscribe(res=>{
+      debugger
+      console.log(res[0])
+      if(res[0]=== this.employeeInfo.firstName + this.employeeInfo.lastName)
+      console.log(this.employeeInfo.firstName + this.employeeInfo.lastName)
+     this.isUserOnline = true
+    })
   }
 }

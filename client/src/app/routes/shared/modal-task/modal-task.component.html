@@ -260,13 +260,13 @@
                         {{ leaderInfo?.firstName }}
                         {{ leaderInfo?.lastName }}
                         <span [class.is-online]="(presenceService.onlineUsers | async).includes(leaderInfo?.firstName + leaderInfo?.lastName)">
-                          <i class="fa fa-circle" aria-hidden="true"></i>
+                          <i class="fa fa-circle" aria-hidden="true"></i> 
                         </span>
                       </span  >
                       <span *ngIf="currentUserInfo.permissionCode === 2">
                         {{ employeeInfo?.firstName }}
                         {{ employeeInfo?.lastName }}
-                        <span [class.is-online]="(presenceService.onlineUsers | async).includes(employeeInfo?.firstName + employeeInfo?.lastName)">
+                        <span [class.is-online]="getOnline()">
                           <i class="fa fa-circle" aria-hidden="true"></i>
                         </span>
                       </span>
