@@ -1,4 +1,5 @@
 using API.Data;
+using API.Helpers;
 using API.Interfaces;
 using API.Services;
 using API.SignalR;
@@ -29,7 +30,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<PresenceTracker>();
+            services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));

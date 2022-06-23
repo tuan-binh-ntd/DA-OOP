@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { GetAllProject } from 'src/app/models/getallproject';
@@ -74,7 +75,7 @@ export class TaskFilterComponent implements OnInit {
     .pipe(catchError((err) => of(err)))
     .subscribe((response) => {
       this.projects = response;
-      this.projects = this.projects.filter(project => project.departmentId === this.user.departmentId);
+      this.projects = this.projects.filter(project => project.departmentId === this.user.departmentId || this.user.permissionCode===Permission.ProjectManager);
       if(this.projectId){
         this.projectName = this.projects.find((project) => project.id === this.projectId)?.projectName;
       }

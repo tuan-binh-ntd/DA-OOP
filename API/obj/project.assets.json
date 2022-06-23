@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "CloudinaryDotNet/1.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/CloudinaryDotNet.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/CloudinaryDotNet.dll": {}
+        }
+      },
       "Dapper/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -472,6 +484,15 @@
             "assetType": "runtime",
             "rid": "win"
           }
+        }
+      },
+      "Newtonsoft.Json/12.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.native.System/4.3.0": {
@@ -1530,6 +1551,21 @@
     }
   },
   "libraries": {
+    "CloudinaryDotNet/1.11.0": {
+      "sha512": "pPz/CnKc1kkqjRtLiXDxVl/xjFKNBEKjhSy2266LL4/Y0NngXaJVjI4Lw7Yhh+yCiwM6Rwo40V1j1jzFgoyLsA==",
+      "type": "package",
+      "path": "cloudinarydotnet/1.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "cloudinarydotnet.1.11.0.nupkg.sha512",
+        "cloudinarydotnet.nuspec",
+        "lib/net45/CloudinaryDotNet.dll",
+        "lib/net45/CloudinaryDotNet.xml",
+        "lib/netstandard1.3/CloudinaryDotNet.dll",
+        "lib/netstandard1.3/CloudinaryDotNet.xml"
+      ]
+    },
     "Dapper/2.0.4": {
       "sha512": "DrNPDqK3nR4RpwAPX2R0R34YhlT+k5Fbw7UnqxQ2aH+wSWvEIj+fCDXB8RJWgw6fGFZLavq7nuJ6J/eAqSrIpw==",
       "type": "package",
@@ -2298,6 +2334,45 @@
         "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Newtonsoft.Json/12.0.1": {
+      "sha512": "pBR3wCgYWZGiaZDYP+HHYnalVnPJlpP1q55qvVb+adrDHmFMDc1NAKio61xTwftK3Pw5h7TZJPJEEVMd6ty8rg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.pdb",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.pdb",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.pdb",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.pdb",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.pdb",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.pdb",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.pdb",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.pdb",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.pdb",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec"
       ]
     },
     "runtime.native.System/4.3.0": {
@@ -4655,6 +4730,7 @@
       "path": "system.security.claims/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -4857,6 +4933,7 @@
       "path": "system.security.principal/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -5696,6 +5773,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "CloudinaryDotNet >= 1.11.0",
       "Dapper >= 2.0.4",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.0",
       "Microsoft.EntityFrameworkCore >= 5.0.16",
@@ -5746,6 +5824,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "CloudinaryDotNet": {
+            "target": "Package",
+            "version": "[1.11.0, )"
+          },
           "Dapper": {
             "target": "Package",
             "version": "[2.0.4, )"
@@ -5804,5 +5886,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\DA-OOP\\API\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

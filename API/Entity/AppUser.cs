@@ -28,5 +28,6 @@ namespace API.Entity
         public ICollection<Tasks> Task { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }

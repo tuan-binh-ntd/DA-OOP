@@ -81,7 +81,7 @@ namespace API.Controllers
                 taskList = taskList.Where(t => t.ProjectId == projectId);
             }
             var taskListForView = await taskList.OrderByDescending(t => t.CreateDate).Select(
-                 t => new
+                 t => new GetAllTaskForViewDto
                  {
                      Id = t.Id,
                      TaskName = t.TaskName,

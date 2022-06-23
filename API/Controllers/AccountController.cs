@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using API.DTO.UserDto;
 using Dapper;
 using System.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -22,17 +23,19 @@ namespace API.Controllers
         private readonly DataContext _dataContext;
         private readonly ITokenService _tokenService;
         private readonly IDapper _dapper;
+        private readonly IPhotoService _photoService;
 
-        public AccountController(DataContext dataContext, ITokenService tokenService, IDapper dapper)
+        public AccountController(DataContext dataContext, ITokenService tokenService, IDapper dapper, IPhotoService photoService)
         {
             _dataContext = dataContext;
             _tokenService = tokenService;
             _dapper = dapper;
+            _photoService = photoService;
         }
-        [HttpGet("get")]
+        [HttpGet("get", Name="GetUser")]
         public async Task<ActionResult> GetUser(Guid id)
         {
-            var user = await _dataContext.AppUser.FindAsync(id);
+            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
             return Ok(user);
         }
         [HttpGet("getall")]
@@ -311,5 +314,73 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
+        [HttpPost("addphoto")]
+        public async Task<ActionResult> AddPhoto(IFormFile file, Guid id)
+        {
+            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            if(user.Photos.Count == 0)
+            {
+                photo.IsMain = true;
+            }
+
+            user.Photos.Add(photo);
+
+            await _dataContext.Photos.AddAsync(photo);
+            await _dataContext.SaveChangesAsync();
+            return CreatedAtRoute("GetUser", new { username = user.FirstName + ' ' + user.LastName }, photo);
+        }
+
+        [HttpPut("setmainphoto/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(Guid photoId, Guid id)
+        {
+            var user = await _dataContext.AppUser.FindAsync(id);
+
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+
+            if (photo.IsMain) return BadRequest("This is already your main photo");
+
+            var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
+            if (currentMain != null) currentMain.IsMain = false;
+            photo.IsMain = true;
+
+            if (await _dataContext.SaveChangesAsync() > 0) return NoContent();
+
+            return BadRequest("Failed to set main photo");
+        }
+
+        [HttpDelete("delete-photo/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(Guid photoId, Guid id)
+        {
+            var user = await _dataContext.AppUser.FindAsync(id);
+
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+
+            if (photo == null) return NotFound();
+
+            if (photo.IsMain) return BadRequest("You cannot delete your main photo");
+
+            if (photo.PublicId != null)
+            {
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+                if (result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            user.Photos.Remove(photo);
+
+            if (await _dataContext.SaveChangesAsync() > 0) return Ok();
+
+            return BadRequest("Failed to delete your photo");
+        }
+
     }
 }
