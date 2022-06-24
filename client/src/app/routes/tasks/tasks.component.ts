@@ -182,7 +182,6 @@ export class TasksComponent implements OnInit {
       this.modalTask.openModal(data, mode, isEdit);}
     }
     ,300)
-   
   }
 
   onChangeTask() {
