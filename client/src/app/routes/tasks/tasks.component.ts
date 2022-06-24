@@ -23,7 +23,7 @@ import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-  @ViewChild('modalTask') modalTask!: ModalTaskComponent;
+  @ViewChild('modalTask', {static: true}) modalTask!: ModalTaskComponent;
   isLoading: boolean = false;
   leaderInfo: any;
   assigneeInfo:any;
@@ -179,10 +179,11 @@ export class TasksComponent implements OnInit {
     setTimeout(()=>{
     if(this.isShowModal){
       myModal.show();
-      this.modalTask.openModal(data, mode, isEdit);}
+      this.modalTask.openModal(data, mode, isEdit);
+    }
     }
     ,300)
-   
+
   }
 
   onChangeTask() {

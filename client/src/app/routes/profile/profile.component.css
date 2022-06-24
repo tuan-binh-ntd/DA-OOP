@@ -1,10 +1,23 @@
+.my-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
+}
 
-.my-box{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 100px;
-    height: 100px;
-  }
+/* img.img-thumbnail {
+  height: 100px;
+  min-width: 100px;
+  margin-bottom: 2px;
+} */
+
+.nv-file-over {
+  border: dotted 3px red;
+}
+
+input[type=file] {
+  color: transparent;
+}

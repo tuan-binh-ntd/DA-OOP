@@ -1,17 +1,118 @@
-<div class="container-fluid"  style="position: relative;">
+<div class="container-fluid" style="position: relative;">
   <div class="my-box d-flex justify-content-center">
-    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
-        <span class="sr-only">Loading...</span>
+    <div class="spinner-border text-primary" role="status" id="spinner"
+      style="width: 3rem; height: 3rem; z-index: 9999;">
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
-    <div class="row mt-4">
-      <div class="col col-12">
-        <h2>{{ currentUser.firstName + ' ' + currentUser.lastName }}</h2>
-        <h2>{{ currentUser.email }}</h2>
-        <h2>{{ currentUser.phone }}</h2>
-        <h2>{{ getDepartmentName(currentUser.departmentId) }}</h2>
-        <h2>{{ currentUser.address }}</h2>
-        <h2>{{ getPermission(currentUser.permissionCode) }}</h2>
+  <div class="row">
+    <div class="col col-4">
+      <h1>Your Profile</h1>
+    </div>
+    <div class="col-8"></div>
+    <div class="col col-4">
+      <div class="card">
+        <img src="{{user.photoUrl}}" alt="{{user.email}}" class="card-img-top img-thumbnail">
+        <div class="card-body">
+          <div>
+            <strong>FullName:</strong>
+            <p>{{ currentUser.firstName + ' ' + currentUser.lastName }}</p>
+          </div>
+          <div>
+            <strong>Email:</strong>
+            <p>{{currentUser.email}}</p>
+          </div>
+          <div>
+            <strong>Phone:</strong>
+            <p>{{currentUser.phone}}</p>
+          </div>
+          <div>
+            <strong>Department:</strong>
+            <p>{{getDepartmentName(currentUser.departmentId)}}</p>
+          </div>
+          <div>
+            <strong>Address:</strong>
+            <p>{{currentUser.address}}</p>
+          </div>
+          <div>
+            <strong>Permission:</strong>
+            <p>{{getPermission(currentUser.permissionCode)}}</p>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="col col-6">
+      <div class="row">
+        <div class="col col-2" *ngFor="let photo of currentUser.photos">
+          <img src="{{photo.url}}" alt="{{photo.id}}" class="img-thumbnail p-1">
+          <div class="text-center">
+            <button class="btn">Main</button>
+            <button class="btn btn-danger">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <h3>Add Photos</h3>
+          <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+            [uploader]="uploader" class="card p-3 text-center mb-3 my-drop-zone">
+            <i class="fa fa-upload fa-3x"></i>
+            Drop photos here
+          </div>
+          Multiple
+          <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
+          Single
+          <input type="file" ng2FileSelect [uploader]="uploader" />
+        </div>
+
+        <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
+          <h3>Upload queue</h3>
+          <p>Queue length: {{ uploader?.queue?.length }}</p>
+          <table class="table">
+            <thead>
+              <tr>
+                  <th width="50%">Name</th>
+                  <th>Size</th>
+              </tr>
+              </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader.queue">
+                <td><strong>{{ item?.file?.name }}</strong></td>
+                <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                <td *ngIf="uploader.options.isHTML5"></td>
+                <td class="text-center">
+                  <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                  <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                  <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div>
+              Queue progress:
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+              [disabled]="!uploader.getNotUploadedItems().length">
+              <span class="glyphicon glyphicon-upload"></span> Upload all
+            </button>
+            <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
+              [disabled]="!uploader.isUploading">
+              <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+            </button>
+            <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
+              [disabled]="!uploader.queue.length">
+              <span class="glyphicon glyphicon-trash"></span> Remove all
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

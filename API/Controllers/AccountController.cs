@@ -187,7 +187,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AppUserDto>> Login(LoginDto input)
         {
-            var user = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email);
+            var user = await _dataContext.AppUser.AsNoTracking().Include(p => p.Photos).FirstOrDefaultAsync(e => e.Email == input.Email);
             if (user == null) return Unauthorized("Invalid username");
             var pass = await _dataContext.AppUser.AsNoTracking().FirstOrDefaultAsync(e => e.Email == input.Email && e.Password == input.Password);
             if (pass == null) return Unauthorized("Invalid password");
@@ -198,7 +198,8 @@ namespace API.Controllers
                 PermissionCode = user.PermissionCode,
                 Email = user.Email,
                 DepartmentId = user.DepartmentId == null ? null : user.DepartmentId,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 
@@ -314,7 +315,7 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("addphoto")]
+        [HttpPost("add-photo")]
         public async Task<ActionResult> AddPhoto(IFormFile file, Guid id)
         {
             var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
@@ -340,7 +341,7 @@ namespace API.Controllers
             return CreatedAtRoute("GetUser", new { username = user.FirstName + ' ' + user.LastName }, photo);
         }
 
-        [HttpPut("setmainphoto/{photoId}")]
+        [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(Guid photoId, Guid id)
         {
             var user = await _dataContext.AppUser.FindAsync(id);
@@ -353,7 +354,7 @@ namespace API.Controllers
             if (currentMain != null) currentMain.IsMain = false;
             photo.IsMain = true;
 
-            if (await _dataContext.SaveChangesAsync() > 0) return NoContent();
+            if (await _dataContext.SaveChangesAsync() > 0) return Ok(photo);
 
             return BadRequest("Failed to set main photo");
         }
@@ -377,7 +378,7 @@ namespace API.Controllers
 
             user.Photos.Remove(photo);
 
-            if (await _dataContext.SaveChangesAsync() > 0) return Ok();
+            if (await _dataContext.SaveChangesAsync() > 0) return Ok(photo);
 
             return BadRequest("Failed to delete your photo");
         }

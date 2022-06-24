@@ -26,6 +26,7 @@ import { TaskFilterComponent } from './task-filter/task-filter.component';
 import { ButtonBusyDirective } from './utils/button-busy.directive';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {MatListModule} from '@angular/material/list';
     MatMenuModule,
     NgChartsModule,
     MatTabsModule,
-    MatListModule
+    MatListModule,
+    FileUploadModule
   ],
   exports:[
     PriorityIconComponent,
@@ -69,10 +71,12 @@ import {MatListModule} from '@angular/material/list';
     ProjectFilterComponent,
     TaskFilterComponent,
     ButtonBusyDirective,
-    
+    FileUploadModule,
   ],
-  providers:[ MatDatepickerModule,
+  providers:[
+    MatDatepickerModule,
     MatNativeDateModule,
-    DatePipe, ]
+    DatePipe,
+  ]
 })
 export class SharedModuleModule { }

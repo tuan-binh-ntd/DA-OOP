@@ -26,4 +26,13 @@ export class UserService {
   changePassword(payload:any):Observable<any>{
     return this.http.put(this.baseUrl + '/changepassword',payload);
   }
+
+  setMainPhoto(photoId: string) {
+    return this.http.put(this.baseUrl + '/set-main-photo/' + photoId, {});
+  }
+
+  deletePhoto(photoId: string) {
+    return this.http.delete(this.baseUrl + '/delete-photo/' + photoId);
+  }
+
 }

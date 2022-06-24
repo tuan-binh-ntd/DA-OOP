@@ -85,6 +85,7 @@
   <div class="modal fade" id="createTaskModal"  [hidden]="!isShowModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-      <app-modal-task *ngIf="isShowModal" #modalTask [data]="taskDetail" [projects]="projects" (onChangeTask)="onChangeTask()" ></app-modal-task>
+      <app-modal-task #modalTask [data]="taskDetail" [projects]="projects" (onChangeTask)="onChangeTask()" ></app-modal-task>
     </div>
   </div>
+

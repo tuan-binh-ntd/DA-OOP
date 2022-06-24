@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './routes/home/home.component';
@@ -9,7 +9,6 @@ import { TasksComponent } from './routes/tasks/tasks.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './routes/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProfileComponent } from './routes/profile/profile.component';
 import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
@@ -17,11 +16,10 @@ import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.com
 import { CommonModule } from '@angular/common';
 import { ProjectsComponent } from './routes/projects/projects.component';
 import { SharedModuleModule } from './routes/shared/shared-module.module';
-import * as bootstrap from "bootstrap";
 import { UsersComponent } from './routes/users/users.component';
 import { TasksCalendarComponent } from './routes/tasks/partials/tasks-calendar/tasks-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -32,15 +30,16 @@ import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.co
 import { NgChartsModule } from 'ng2-charts';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
-import { InterceptorInterceptor } from './services/interceptor.interceptor';
-import {  NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ProfileComponent } from './routes/profile/profile.component';
+
 FullCalendarModule.registerPlugins([
-  bootstrapPlugin ,
+  bootstrapPlugin,
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
-  interactionPlugin
-])
+  interactionPlugin,
+]);
 
 @NgModule({
   declarations: [
@@ -63,7 +62,7 @@ FullCalendarModule.registerPlugins([
   imports: [
     BrowserModule,
     NgxSpinnerModule,
-    FullCalendarModule ,
+    FullCalendarModule,
     SharedModuleModule,
     FormsModule,
     CommonModule,
@@ -78,9 +77,9 @@ FullCalendarModule.registerPlugins([
     FontAwesomeModule,
     NgChartsModule,
   ],
-  providers: [],
+  providers: [
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { 
-}
+export class AppModule {}

@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { HomeComponent } from './routes/home/home.component';
 import { LoginComponent } from './routes/login/login.component';
-import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
-import { ProfileComponent } from './routes/profile/profile.component';
 import { ProjectsComponent } from './routes/projects/projects.component';
 import { TasksComponent } from './routes/tasks/tasks.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
@@ -16,6 +14,7 @@ import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
+import { ProfileComponent } from './routes/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
