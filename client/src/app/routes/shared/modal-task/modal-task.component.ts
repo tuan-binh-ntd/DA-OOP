@@ -30,7 +30,6 @@ import { PresenceService } from 'src/app/services/presence.service';
 })
 export class ModalTaskComponent implements OnInit, OnDestroy {
   @ViewChild('chatContent') private chatContent: ElementRef;
-
   @Input() projects: any[] = [];
   @Input() data;
   any;
@@ -82,8 +81,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     public presenceService: PresenceService
 
   ) {}
-
-
 
   ngAfterViewChecked() {        
       this.scrollToBottom();        
@@ -221,7 +218,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.patchValue(data);
       await this.fetchDepartmentData();
       await this.fetchUserData();
-      debugger
       if (this.currentUserInfo.departmentId) {
         this.leaderInfo = this.users.find(
           (user) =>
@@ -265,8 +261,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.patchValue(data);
     }
   }
-
-
 
   checkEditForm() {
     this.modalForm.patchValue(this.data);
@@ -398,8 +392,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.messageService.stopHubConnection();
   }
-
-
 }
 
 

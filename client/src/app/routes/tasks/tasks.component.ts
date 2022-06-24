@@ -183,7 +183,10 @@ export class TasksComponent implements OnInit {
     }
     }
     ,300)
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
   }
 
   onChangeTask() {
