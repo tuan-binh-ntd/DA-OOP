@@ -3,6 +3,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Photo } from 'src/app/models/photo';
+import { PhotoInput } from 'src/app/models/photo-input';
 import { User } from 'src/app/models/user';
 import { AppUser } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit {
   currentUser: AppUser = new AppUser();
   mainPhoto: Photo[];
   uploader: FileUploader;
-
+  photoInput: PhotoInput = new PhotoInput();
   hasBaseDropZoneOver: false;
   baseUrl = "https://localhost:5001/api";
 
@@ -94,7 +95,9 @@ export class ProfileComponent implements OnInit {
 
 
   setMainPhoto(photo: Photo) {
-    this.userService.setMainPhoto(photo.id).subscribe(() => {
+    this.photoInput.id = this.user.id;
+    this.photoInput.photoId = photo.id;
+    this.userService.setMainPhoto(this.photoInput).subscribe(() => {
       this.user.photoUrl = photo.url;
       this.authenticationService.setCurrentUser(this.user);
       this.user.photoUrl = photo.url;
@@ -107,7 +110,7 @@ export class ProfileComponent implements OnInit {
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + 'user/add-photo',
+      url: this.baseUrl + '/user/add-photo',
       authToken: 'Bearer ' + this.user.token,
       isHTML5: true,
       allowedFileType: ['image'],
@@ -131,9 +134,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  deletePhoto(photoId: string) {
-    this.userService.deletePhoto(photoId).subscribe(() => {
-      this.currentUser.photos = this.currentUser.photos.filter(x => x.id != photoId);
+  deletePhoto(photo: Photo) {
+    this.photoInput.id = this.user.id;
+    this.photoInput.photoId = photo.id;
+    this.userService.deletePhoto(this.photoInput).subscribe(() => {
+      this.currentUser.photos = this.currentUser.photos.filter(x => x.id != this.photoInput.photoId);
     })
   }
 

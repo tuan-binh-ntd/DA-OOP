@@ -13,6 +13,8 @@ using API.DTO.UserDto;
 using Dapper;
 using System.Data;
 using Microsoft.AspNetCore.Http;
+using API.DTO.PhotoDto;
+using API.Extensions;
 
 namespace API.Controllers
 {
@@ -315,10 +317,13 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
         [HttpPost("add-photo")]
-        public async Task<ActionResult> AddPhoto(IFormFile file, Guid id)
+        public async Task<ActionResult> AddPhoto(IFormFile file)
         {
-            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == id);
+            var user = await _dataContext.AppUser.Include(p => p.Photos)
+                .FirstOrDefaultAsync(e => (e.FirstName + ' ' + e.LastName).Trim().Contains(User.GetUserName().Trim()));
             var result = await _photoService.AddPhotoAsync(file);
 
             if (result.Error != null) return BadRequest(result.Error.Message);
@@ -342,11 +347,11 @@ namespace API.Controllers
         }
 
         [HttpPut("set-main-photo/{photoId}")]
-        public async Task<ActionResult> SetMainPhoto(Guid photoId, Guid id)
+        public async Task<ActionResult> SetMainPhoto(PhotoInputDto input)
         {
-            var user = await _dataContext.AppUser.FindAsync(id);
+            var user = await _dataContext.AppUser.Include(p => p.Photos).FirstOrDefaultAsync(e => e.Id == input.Id);
 
-            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            var photo = user.Photos.FirstOrDefault(x => x.Id == input.PhotoId);
 
             if (photo.IsMain) return BadRequest("This is already your main photo");
 
@@ -359,12 +364,12 @@ namespace API.Controllers
             return BadRequest("Failed to set main photo");
         }
 
-        [HttpDelete("delete-photo/{photoId}")]
-        public async Task<ActionResult> DeletePhoto(Guid photoId, Guid id)
+        [HttpPost("delete-photo/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(PhotoInputDto input)
         {
-            var user = await _dataContext.AppUser.FindAsync(id);
+            var user = await _dataContext.AppUser.Include(p=> p.Photos).FirstOrDefaultAsync(e => e.Id == input.Id);
 
-            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            var photo = user.Photos.FirstOrDefault(x => x.Id == input.PhotoId);
 
             if (photo == null) return NotFound();
 

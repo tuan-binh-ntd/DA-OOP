@@ -43,13 +43,14 @@
     </div>
     <div class="col col-6">
       <div class="row">
-        <div class="col col-2" *ngFor="let photo of currentUser.photos">
+        <div class="col col-3" *ngFor="let photo of currentUser.photos">
           <img src="{{photo.url}}" alt="{{photo.id}}" class="img-thumbnail p-1">
-          <div class="text-center">
-            <button class="btn">Main</button>
-            <button class="btn btn-danger">
-              <i class="fa fa-trash"></i>
-            </button>
+          <div class="mt-2">
+            <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
+              [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm">
+              Main</button>
+            <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
+              <i class="fa fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -74,10 +75,10 @@
           <table class="table">
             <thead>
               <tr>
-                  <th width="50%">Name</th>
-                  <th>Size</th>
+                <th width="50%">Name</th>
+                <th>Size</th>
               </tr>
-              </thead>
+            </thead>
             <tbody>
               <tr *ngFor="let item of uploader.queue">
                 <td><strong>{{ item?.file?.name }}</strong></td>

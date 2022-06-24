@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PhotoInput } from '../models/photo-input';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +28,12 @@ export class UserService {
     return this.http.put(this.baseUrl + '/changepassword',payload);
   }
 
-  setMainPhoto(photoId: string) {
-    return this.http.put(this.baseUrl + '/set-main-photo/' + photoId, {});
+  setMainPhoto(model: PhotoInput) {
+    return this.http.put(this.baseUrl + '/set-main-photo/' + model.photoId, model);
   }
 
-  deletePhoto(photoId: string) {
-    return this.http.delete(this.baseUrl + '/delete-photo/' + photoId);
+  deletePhoto(model: PhotoInput) {
+    return this.http.post(this.baseUrl + '/delete-photo/' + model.photoId, model);
   }
 
 }
