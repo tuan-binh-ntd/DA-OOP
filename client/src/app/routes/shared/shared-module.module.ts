@@ -27,6 +27,7 @@ import { ButtonBusyDirective } from './utils/button-busy.directive';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     TaskFilterComponent,
     ProjectFilterComponent,
     ButtonBusyDirective,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,
@@ -72,6 +74,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     TaskFilterComponent,
     ButtonBusyDirective,
     FileUploadModule,
+    ChangePasswordComponent,
   ],
   providers:[
     MatDatepickerModule,

@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as bootstrap from 'bootstrap';
 import { catchError, of } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import { ChangePasswordComponent } from '../../shared/change-password/change-password.component';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  @ViewChild('modalChangePassword') modalChangePassword!: ChangePasswordComponent;
   userName!: string;
   projectId: string = '';
   loggedIn: boolean = false;
   right: boolean = true;
   left: boolean = true;
   users: any[] = [];
+  isShowModal: boolean = false;
   user: User;
   constructor(
     private authenticationService: AuthenticationService,
@@ -54,6 +58,15 @@ export class NavBarComponent implements OnInit {
   getUserName(id: string) {
     const user = this.users.find((user) => user.appUserId === id);
     return user?.userName;
+  }
+
+  openModal(data: any) {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('changePasswordModal')!
+    );
+    myModal.show();
+    this.isShowModal = true;
+    this.modalChangePassword.openModal(data);
   }
 
   onViewTask(view: any) {

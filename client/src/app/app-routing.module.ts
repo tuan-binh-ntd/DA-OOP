@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { HomeComponent } from './routes/home/home.component';
 import { LoginComponent } from './routes/login/login.component';
 import { ProjectsComponent } from './routes/projects/projects.component';
@@ -38,7 +37,6 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'change-password', component: ChangePasswordComponent },
       { path: 'forbidden', component: ForbiddenComponent },
       {
         path: '**', pathMatch: 'full',

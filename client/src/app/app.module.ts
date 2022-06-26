@@ -9,7 +9,6 @@ import { TasksComponent } from './routes/tasks/tasks.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './routes/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
@@ -49,7 +48,6 @@ FullCalendarModule.registerPlugins([
     ProjectsComponent,
     LoginComponent,
     ProfileComponent,
-    ChangePasswordComponent,
     NavBarComponent,
     SiteLayoutComponent,
     UsersComponent,

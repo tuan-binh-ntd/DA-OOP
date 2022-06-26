@@ -208,7 +208,7 @@ namespace API.Controllers
         [HttpPut("changepassword")]
         public async Task<ActionResult> ChangePassword(ChangePasswordDto input)
         {
-            var user = await _dataContext.AppUser.SingleOrDefaultAsync(e => e.Email == input.Email);
+            var user = await _dataContext.AppUser.SingleOrDefaultAsync(e => e.Id == input.Id);
             user.Password = input.Password;
             _dataContext.AppUser.Update(user);
             await _dataContext.SaveChangesAsync();
