@@ -1,39 +1,40 @@
 <div *ngIf="departmentName !== 'Phòng CNTT'">
-    <span style="width: 100px" class=" fsz-16">
-        <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-        {{ departmentName }}
-      </span> 
-<div *ngIf="departmentName === 'Phòng marketing'">
-  <span style="width: 100px" class="open ">
+  <span  class="fsz-15 department-icon bg-cntt">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+  <div *ngIf="departmentName === 'Phòng marketing'">
+    <span  class=" fsz-15 department-icon bg-mkt">
+      <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+      {{ departmentName }}
+    </span>
+  </div>
+  <div>
+    <span
+      
+      *ngIf="departmentName === 'Phòng tài vụ'"
+      class="fsz-15 department-icon bg-tv"
+    >
+      <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+      {{ departmentName }}</span
+    >
+  </div>
+  <div>
+    <span
+      
+      *ngIf="departmentName === 'Phòng nghiên cứu và phát triển'"
+      class="fsz-15 department-icon bg-rnd"
+    >
+      <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+      {{ departmentName }}</span
+    >
+  </div>
+  <span
+    
+    *ngIf="departmentName === 'Phòng chăm sóc khách hàng'"
+    class="fsz-15 department-icon bg-user"
+  >
     <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
     {{ departmentName }}
   </span>
 </div>
-<div>
-  <span
-    style="width: 100px"
-    *ngIf="departmentName === 'Phòng tài vụ'"
-    class="complete "
-  >
-    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-    {{ departmentName }}</span
-  >
-</div>
-<div>
-  <span
-    style="width: 100px"
-    *ngIf="departmentName === 'Phòng nghiên cứu và phát triển'"
-    class="inProgress "
-  >
-    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-    {{ departmentName }}</span
-  >
-</div>
-<span
-  style="width: 100px"
-  *ngIf="departmentName === 'Phòng chăm sóc khách hàng'"
-  class="closed "
->
-  <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-  {{ departmentName }}
-</span>

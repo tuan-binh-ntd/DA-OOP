@@ -49,13 +49,8 @@
           <div class="row no-gutters">
             
             <div class="col col-6 d-flex align-items-center" style="line-height: 16px">
-              <app-priority-icon
-            class="float-left mr-2"
-            [priorityCode]="item.priorityCode"
-          ></app-priority-icon>
-              <span class="font-weight-light" style="line-height: 32px">
-                {{ item.taskCount }} Tasks
-              </span>
+              <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)"></app-department-icon>
+            
             </div>
             <div class="col col-6">
               <div
@@ -97,13 +92,23 @@
               </div>
             </div>
           </div>
-          <h5 class="card-title">{{ item.projectName }}</h5>
+         
+          <h5 class="card-title mb-2">{{ item.projectName }}</h5>
+          <div class="d-flex align-items-center">
+            <app-priority-icon
+            class="float-left mr-2"
+            [priorityCode]="item.priorityCode"
+          ></app-priority-icon>
+              <span class="font-weight-light" style="line-height: 32px">
+                {{ item.taskCount }} Tasks
+              </span>
+          </div>
   
           <!-- <p class="card-text">{{ item.description }}</p> -->
           <div class="row no-gutters">
             <div class="col col-8">
-              <app-department-icon [departmentName]="getDepartmentName(item.departmentId)"></app-department-icon>
               <p
+              class="mt-2"
                 *ngIf="item.completeDate; else notComplete"
                 class="card-text text-success"
               >
@@ -113,7 +118,7 @@
               <ng-template #notComplete>
                 <ng-container
                   *ngIf="item.dayLefts > 0; else overtime"
-                  class="card-text text-warning"
+                  class="card-text mt-2 text-warning"
                 >
                   <i
                     class="fa fa-clock-o mr-2 text-warning"

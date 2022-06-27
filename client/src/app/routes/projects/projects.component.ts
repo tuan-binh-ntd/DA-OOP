@@ -42,7 +42,7 @@ export class ProjectsComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
-    if (user.permissionCode === Permission.ProjectManager) {
+    if (user?.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
     this.fetchDepartmentData();
@@ -66,7 +66,7 @@ export class ProjectsComponent implements OnInit {
     this.isLoading = true;
     this.showLoading();
     if (!this.right) {
-      this.getAllProject.departmentId = this.user.departmentId
+      this.getAllProject.departmentId = this.user?.departmentId
     }
     this.projectService
       .getAllProject(this.getAllProject)
