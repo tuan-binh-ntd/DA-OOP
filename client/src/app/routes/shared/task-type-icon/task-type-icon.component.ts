@@ -37,14 +37,14 @@ export class TaskTypeObject {
 }
 
 export const TaskColors = {
-  ['bug']: '#FF0000',
-  ['feature']: '#00FF00',
-  ['rnd']: '#0000FF',
+  ['bug']: '#e60b09',
+  ['feature']: '#57A55A',
+  ['rnd']: '#45caff',
 };
 
 export const TaskIcon = {
   ['bug']: 'fa fa-bug',
-  ['feature']: 'fa fa-gg-circle',
+  ['feature']: 'fa fa-eercast',
   ['rnd']: 'fa fa-line-chart',
 };
 
