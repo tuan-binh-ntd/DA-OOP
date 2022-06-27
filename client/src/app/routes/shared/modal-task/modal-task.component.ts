@@ -122,6 +122,11 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((response) => {
         this.users = response;
+        if (this.currentUserInfo.departmentId) {
+          this.users = this.users.filter(
+            (p) => p.departmentId == this.currentUserInfo.departmentId
+          );
+        }
       });
   }
 

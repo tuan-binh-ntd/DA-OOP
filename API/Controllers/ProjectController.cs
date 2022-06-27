@@ -193,7 +193,7 @@ namespace API.Controllers
             {
                 if (input.PermissionCode == Permission.ProjectManager)
                 {
-                    project.ProjectName = project.ProjectName;
+                    project.ProjectName = input.ProjectName;
                     project.Description = input.Description;
                     project.ProjectCode = input.ProjectCode;
                     project.ProjectType = input.ProjectType;
