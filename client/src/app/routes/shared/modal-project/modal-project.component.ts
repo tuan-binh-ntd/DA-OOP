@@ -129,9 +129,11 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.projectName;
     }
+    this.modalForm.controls['projectId'].disable();
     this.modalForm.controls['appUserId'].disable();
     this.modalForm.controls['completeDate'].disable();
     this.modalForm.controls['createDate'].disable();
+   
     if (Number(this.user.permissionCode) == 2) {
       this.modalForm.controls['projectName'].disable();
       this.modalForm.controls['projectType'].disable();
@@ -200,7 +202,9 @@ export class ModalProjectComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response) {
-          this.toastr.success('Successfully!');
+          this.toastr.success('Successfully!', '', {
+            timeOut: 1000,
+          });
           this.onChangeProject.emit();
         } else {
           this.toastr.error('Failed');

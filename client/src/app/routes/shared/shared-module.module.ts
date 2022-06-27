@@ -28,7 +28,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+<<<<<<< HEAD
 import { DepartmentIconComponent } from './department-icon/department-icon.component';
+=======
+import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
+import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component';
+>>>>>>> 475205703c93d0f71924542b3a6c7ddd294550d3
 
 @NgModule({
   declarations: [
@@ -42,7 +47,12 @@ import { DepartmentIconComponent } from './department-icon/department-icon.compo
     ProjectFilterComponent,
     ButtonBusyDirective,
     ChangePasswordComponent,
+<<<<<<< HEAD
     DepartmentIconComponent,
+=======
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
+>>>>>>> 475205703c93d0f71924542b3a6c7ddd294550d3
   ],
   imports: [
     CommonModule,
@@ -77,7 +87,12 @@ import { DepartmentIconComponent } from './department-icon/department-icon.compo
     ButtonBusyDirective,
     FileUploadModule,
     ChangePasswordComponent,
+<<<<<<< HEAD
     DepartmentIconComponent,
+=======
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
+>>>>>>> 475205703c93d0f71924542b3a6c7ddd294550d3
   ],
   providers:[
     MatDatepickerModule,
