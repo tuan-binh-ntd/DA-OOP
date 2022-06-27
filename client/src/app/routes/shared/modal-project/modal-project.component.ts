@@ -60,8 +60,7 @@ export class ModalProjectComponent implements OnInit {
     this.fetchUserData();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
-    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
-  }
+    }
 
   getCurrentUser() {
     return this.authenticationService.currentUser
@@ -220,6 +219,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   onChangeEdit(ev: any) {
+    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
     this.isEdit = ev;
     if (Number(this.user.permissionCode) == Permission.Employee) {
       this.isEdit = false;
