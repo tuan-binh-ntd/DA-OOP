@@ -28,7 +28,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-<<<<<<< HEAD
+import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
+import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component';
 import { DepartmentIconComponent } from './department-icon/department-icon.component';
 =======
 import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
@@ -47,6 +48,8 @@ import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component
     ProjectFilterComponent,
     ButtonBusyDirective,
     ChangePasswordComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
 <<<<<<< HEAD
     DepartmentIconComponent,
 =======
@@ -89,6 +92,8 @@ import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component
     ChangePasswordComponent,
 <<<<<<< HEAD
     DepartmentIconComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
 =======
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
