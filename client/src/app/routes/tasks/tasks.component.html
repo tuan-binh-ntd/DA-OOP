@@ -46,7 +46,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td class="text-center align-middle" style="width: 5%;">{{ task.taskType }}</td>
+        <td class="text-center align-middle" style="width: 5%;">
+          <app-task-type-icon [taskType]="task.taskType"></app-task-type-icon>
+          {{ task.taskType }}
+        </td>
         <td class="align-middle" style="width: auto;">{{ getProjectName(task.projectId) }}</td>
         <td class="align-middle" style="width: auto;">{{ task.taskName }}</td>
         <td class="align-middle" style="width: 10%;">{{ getUserName(task.createUserId) }}</td>

@@ -28,6 +28,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
+import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     ProjectFilterComponent,
     ButtonBusyDirective,
     ChangePasswordComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +79,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     ButtonBusyDirective,
     FileUploadModule,
     ChangePasswordComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
   ],
   providers:[
     MatDatepickerModule,
