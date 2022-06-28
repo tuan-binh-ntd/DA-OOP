@@ -12,6 +12,7 @@ import { User } from 'src/app/models/user';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -20,11 +21,12 @@ import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 export class ProjectsComponent implements OnInit {
 
   constructor(
-    private projectService: ProjectService,
-    private departmentService: DepartmentService,
-    private router: Router,
+    protected projectService: ProjectService,
+    protected userService: UserService,
+    protected departmentService: DepartmentService,
+    protected router: Router,
     protected spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    protected toastr: ToastrService
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;

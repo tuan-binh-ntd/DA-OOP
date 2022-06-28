@@ -1,4 +1,6 @@
-
+.dropdown-item {
+  cursor: pointer;
+}
 
 .dropdown-item:active{
     background-color: var(--heavy-color);
@@ -44,5 +46,3 @@
     transform-origin: top center;
     margin-top: 0;
   }
-
- 

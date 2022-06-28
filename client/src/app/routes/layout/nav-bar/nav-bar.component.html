@@ -51,7 +51,7 @@
             <i class="fa fa-calendar mr-2"></i>
             Calendar</a>
 
-          <a class="dropdown-item"  (click)="onViewTask('status')">
+          <a class="dropdown-item" (click)="onViewTask('status')">
             <i class="fa fa-bar-chart mr-2"></i>
             Status</a>
         </div>
@@ -83,11 +83,3 @@
     </ul>
   </div>
 </nav>
-
-<div class="modal fade" id="changePasswordModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl" role="document">
-        <app-change-password #modalChangePassword>
-        </app-change-password>
-      </div>
-</div>

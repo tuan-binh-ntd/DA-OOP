@@ -14,6 +14,7 @@ import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.co
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
 import { ProfileComponent } from './routes/profile/profile.component';
+import { ProjectListComponent } from './routes/projects/project-list/project-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'projects/tasks/:id/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/:id', component: TasksComponent },
       { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
+      { path: 'projects/list', component: ProjectListComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'forbidden', component: ForbiddenComponent },
