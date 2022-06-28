@@ -31,6 +31,7 @@ import { ContentLayoutComponent } from './routes/layout/content-layout/content-l
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProfileComponent } from './routes/profile/profile.component';
+import { ProjectListComponent } from './routes/projects/project-list/project-list.component';
 
 FullCalendarModule.registerPlugins([
   bootstrapPlugin,
@@ -56,6 +57,7 @@ FullCalendarModule.registerPlugins([
     PageNotFoundComponent,
     ContentLayoutComponent,
     TaskStatusComponent,
+    ProjectListComponent,
   ],
   imports: [
     BrowserModule,

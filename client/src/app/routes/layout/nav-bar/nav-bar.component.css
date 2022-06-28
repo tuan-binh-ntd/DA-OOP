@@ -1,9 +1,13 @@
-
+.dropdown-item {
+  cursor: pointer;
+}
 
 .dropdown-item:active{
-    background-color: var(--heavy-color);
+    /* background-color: var(--heavy-color); */
     color:#fff;
+    
   }
+  
 
   .dropdown:hover>.dropdown-menu {
     display: block;
@@ -44,5 +48,3 @@
     transform-origin: top center;
     margin-top: 0;
   }
-
- 

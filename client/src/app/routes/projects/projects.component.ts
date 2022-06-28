@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { catchError, of,take } from 'rxjs';
 import { ProjectService } from '../../services/project.service';
 import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
 import * as bootstrap from 'bootstrap';
@@ -21,9 +21,10 @@ import { UserService } from 'src/app/services/user.service';
 export class ProjectsComponent implements OnInit {
 
   constructor(
-    private projectService: ProjectService,
-    private departmentService: DepartmentService,
-    private router: Router,
+    protected projectService: ProjectService,
+    protected userService: UserService,
+    protected departmentService: DepartmentService,
+    protected router: Router,
     protected spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private userService: UserService
@@ -34,6 +35,7 @@ export class ProjectsComponent implements OnInit {
   projects: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
+  users: any[] = [];
   resolvedRecord: number = 0;
   inProgressRecord: number = 0;
   closedRecord: number = 0;
@@ -52,6 +54,7 @@ export class ProjectsComponent implements OnInit {
   resolvedCount: number = 0;
   reOpendCount: number = 0;
   user: User;
+  assigneeInfo:any;
   getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -61,6 +64,21 @@ export class ProjectsComponent implements OnInit {
     }
     this.fetchDepartmentData();
     this.fetchProjectData();
+    this.fetchUserData();
+  }
+
+  fetchUserData() {
+    this.assigneeInfo = JSON.parse(localStorage.getItem('user'));
+    this.isLoading = true;
+    this.showLoading();
+    this.userService
+      .getAllUser()
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.users = response;
+        this.hideLoading();
+        this.isLoading = false;
+      });
   }
  
   fetchDepartmentData() {
@@ -164,10 +182,10 @@ export class ProjectsComponent implements OnInit {
     this.fetchProjectData();
   }
 
-  // onFilterStatus(status: any) {
-  //   this.getAllProject.statusCode = status;
-  //   this.fetchProjectData();
-  // }
+  onFilterStatus(status: any) {
+    this.getAllProject.statusCode = status;
+    this.fetchProjectData();
+  }
 
   onFilterPriority(priority: any) {
     this.getAllProject.priorityCode = priority;
@@ -176,7 +194,7 @@ export class ProjectsComponent implements OnInit {
 
   onResetFilter() {
     this.getAllProject.projectType = null;
-    //this.getAllProject.statusCode = null;
+    this.getAllProject.statusCode = null;
     this.getAllProject.priorityCode = null;
     this.getAllProject.keyWord = null;
     this.getAllProject.createDateFrom = null;

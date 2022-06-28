@@ -122,7 +122,7 @@ export class TaskFilterComponent implements OnInit {
       this.router.navigate(['projects/tasks', project.id, 'status']);
     }
     else {
-      this.router.navigate(['projects/tasks', project.id]);
+      this.router.navigate(['projects/tasks', project.id, 'list']);
     }
   }
 
@@ -149,7 +149,7 @@ export class TaskFilterComponent implements OnInit {
       this.router.navigate(['projects/tasks/status']);
     }
     else {
-      this.router.navigate(['projects/tasks']);
+      this.router.navigate(['projects/tasks/list']);
     }
     this.projectName = 'Project';
     this.typeName = 'Type';

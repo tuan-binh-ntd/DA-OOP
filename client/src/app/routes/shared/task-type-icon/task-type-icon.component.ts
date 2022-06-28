@@ -51,5 +51,5 @@ export const TaskIcon = {
 export const TaskLabel = {
   ['bug']: 'Bug',
   ['feature']: 'Feature',
-  ['rnd']: 'Rnd',
+  ['rnd']: 'RnD',
 };
