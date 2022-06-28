@@ -35,6 +35,6 @@ namespace API.Entity
         [ForeignKey("AppUser")]
         public Guid? AppUserId { get; set; }
         public ICollection<Message> Message { get; set; }
-
+        public ICollection<SubTask> SubTask { get; set; }
     }
 }
