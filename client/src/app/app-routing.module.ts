@@ -29,15 +29,15 @@ const routes: Routes = [
   {
     path: '', component: ContentLayoutComponent,
     children: [
-      { path: 'projects/tasks', component: TasksComponent },
+      { path: 'projects/tasks/list', component: TasksComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },
       { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/:id/status', component: TaskStatusComponent },
       { path: 'projects/tasks/:id/calendar', component: TasksCalendarComponent },
-      { path: 'projects/tasks/:id', component: TasksComponent },
+      { path: 'projects/tasks/:id/list', component: TasksComponent },
       { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
       { path: 'projects/list', component: ProjectListComponent },
-      { path: 'projects', component: ProjectsComponent },
+      { path: 'projects/status', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'forbidden', component: ForbiddenComponent },
       {

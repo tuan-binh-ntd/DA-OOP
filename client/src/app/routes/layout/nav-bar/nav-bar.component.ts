@@ -72,9 +72,9 @@ export class NavBarComponent implements OnInit {
   onViewTask(view: any) {
     var u = document.location.pathname;
     this.projectId = u.substring(16,52);
-    if(this.projectId && this.projectId !== 'calendar' && this.projectId !== 'status'){
+    if(this.projectId && this.projectId !== 'calendar' && this.projectId !== 'status' && this.projectId !== 'list'){
       if (view == 'list') {
-        this.router.navigate(['projects/tasks', this.projectId]);
+        this.router.navigate(['projects/tasks', this.projectId, 'list']);
       }
       else if (view == 'calendar') {
         this.router.navigate(['projects/tasks', this.projectId, 'calendar']);
@@ -84,7 +84,7 @@ export class NavBarComponent implements OnInit {
       }
     } else {
       if (view == 'list') {
-        this.router.navigate(['projects/tasks']);
+        this.router.navigate(['projects/tasks/list']);
         }
         else if (view == 'calendar') {
           this.router.navigate(['projects/tasks/calendar']);
