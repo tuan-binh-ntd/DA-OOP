@@ -11,8 +11,12 @@ export class UserService {
 
   constructor(private http: HttpClient, ) { }
 
-  getAllUser():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
+  getAllUser(projectId?:string, departmentId?:string):Observable<any>{
+    if(projectId){
+      return this.http.get(this.baseUrl + '/getall?' + 'projectId=' + projectId );
+    }else{
+      return this.http.get(this.baseUrl + '/getall');
+    }
   }
 
   getUser(model: any):Observable<any>{

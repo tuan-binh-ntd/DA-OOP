@@ -12,6 +12,7 @@ import { User } from 'src/app/models/user';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -24,7 +25,8 @@ export class ProjectsComponent implements OnInit {
     private departmentService: DepartmentService,
     private router: Router,
     protected spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userService: UserService
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
@@ -60,7 +62,7 @@ export class ProjectsComponent implements OnInit {
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
-
+ 
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();

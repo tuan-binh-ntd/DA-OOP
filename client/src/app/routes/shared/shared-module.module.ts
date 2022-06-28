@@ -31,6 +31,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
 import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component';
 import { DepartmentIconComponent } from './department-icon/department-icon.component';
+import { AvatarModule } from 'ngx-avatar';
+import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { DepartmentIconComponent } from './department-icon/department-icon.compo
     DepartmentIconComponent,
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
+    UserAvatarComponent,
   ],
   imports: [
     CommonModule,
@@ -70,7 +73,9 @@ import { DepartmentIconComponent } from './department-icon/department-icon.compo
     NgChartsModule,
     MatTabsModule,
     MatListModule,
-    FileUploadModule
+    FileUploadModule,
+    AvatarModule
+
   ],
   exports:[
     PriorityIconComponent,
