@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, of } from 'rxjs';
+import { Permission } from 'src/app/helpers/PermisionEnum';
 import { ProjectsComponent } from '../projects.component';
 
 @Component({
@@ -9,24 +10,12 @@ import { ProjectsComponent } from '../projects.component';
 })
 export class ProjectListComponent extends ProjectsComponent implements OnInit {
   users: any[] = [];
-
-  fetchUserData() {
-    this.isLoading = true;
-    this.showLoading();
-    this.userService
-      .getAllUser()
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.users = response;
-        this.hideLoading();
-        this.isLoading = false;
-      });
-  }
-
+  
   getLeader(departmentId: any){
-    return this.users.find((user) => user.departmentId == departmentId)?.firstName + ' ' +  this.users.find((user) => user.departmentId == departmentId)?.lastName;
+    const user = this.users.find((user) => user.departmentId === departmentId && user.permissionCode===Permission.Leader)
+    return user?.firstName + ' ' + user?.lastName;
   }
-
+  
   goBack() {
     this.router.navigateByUrl("home")
   }

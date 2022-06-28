@@ -117,6 +117,7 @@ export class TasksComponent implements OnInit {
       .subscribe((response) => {
         this.tasks = response;
         this.departmentId = response.departmentId;
+        
         this.hideLoading();
         this.isLoading = false;
       });
@@ -251,6 +252,7 @@ export class TasksComponent implements OnInit {
       this.filterUserTask = 'Assign';
       this.getAllTask.createUserId = null;
       this.getAllTask.userId = this.user.id;
+       
     }
     this.fetchTaskData();
   }
