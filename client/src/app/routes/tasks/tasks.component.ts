@@ -288,4 +288,8 @@ export class TasksComponent implements OnInit {
   showLoading(){
       document.getElementById('spinner').style.display = 'block';
   }
+
+  get StatusCode(){
+    return StatusCode
+  }
 }
