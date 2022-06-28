@@ -129,7 +129,6 @@ export class ModalProjectComponent implements OnInit {
       this.modalForm.disable();
       this.title = 'View: ' + this.data.projectName;
     }
-    this.modalForm.controls['projectId'].disable();
     this.modalForm.controls['appUserId'].disable();
     this.modalForm.controls['completeDate'].disable();
     this.modalForm.controls['createDate'].disable();
