@@ -1,7 +1,6 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "D:\\DA-OOP\\API\\API.csproj": {}
   },
   "projects": {
@@ -16,26 +15,6 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-    "D:\\DA OOP\\DA-OOP\\API\\API.csproj": {}
-  },
-  "projects": {
-    "D:\\DA OOP\\DA-OOP\\API\\API.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\DA OOP\\DA-OOP\\API\\API.csproj",
-        "projectName": "API",
-        "projectPath": "D:\\DA OOP\\DA-OOP\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\DA OOP\\DA-OOP\\API\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
->>>>>>> c5025617375f4c69634ff2bb18c7e0b23909787e
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,10 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-<<<<<<< HEAD
           "http://nuget.s-erp.vn/nuget/": {},
-=======
->>>>>>> c5025617375f4c69634ff2bb18c7e0b23909787e
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -124,11 +100,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
->>>>>>> c5025617375f4c69634ff2bb18c7e0b23909787e
         }
       }
     }

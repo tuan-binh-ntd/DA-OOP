@@ -4,7 +4,7 @@ import { Calendar } from '@fullcalendar/angular';
 import * as bootstrap from 'bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, of } from 'rxjs';
+import { catchError, of,take } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
@@ -127,7 +127,7 @@ export class TasksComponent implements OnInit {
     this.showLoading();
     this.userService
       .getAllUser()
-      .pipe(catchError((err) => of(err)))
+      .pipe(take(1))
       .subscribe((response) => {
         this.users = response;
         this.hideLoading();

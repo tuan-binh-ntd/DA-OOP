@@ -1,29 +1,32 @@
 .example-container {
     width: 100%;
     max-width: 100%;
+    padding:5px 5px;
     margin: 0 25px 25px 0;
     display: inline-block;
     vertical-align: top;
   }
 
   .example-list {
-    border: solid 1px #ccc;
     min-height: 60px;
-    background: white;
     border-radius: 4px;
-    overflow: hidden;
-    height: 58vh;
+    overflow-y: scroll;
+    padding: 5px;
+    height: 56vh;
     display: block;
   }
 
   .example-box {
+    margin-right: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin-bottom: 1rem;
+    border-radius: 10px;
     padding: 20px 10px;
-    border-bottom: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    flex-direction: row;
+    /* display: flex; */
+    /* flex-direction: row; */
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     box-sizing: border-box;
     cursor: move;
     background: white;
@@ -159,6 +162,15 @@
   margin-left: -50px;
   width: 100px;
   height: 100px;
+}
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
 }
 
 

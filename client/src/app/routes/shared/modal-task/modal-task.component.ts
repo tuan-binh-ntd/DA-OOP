@@ -97,7 +97,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     });
     this.currentUserInfo = JSON.parse(localStorage.getItem('user'));
     this.fetchProjectData();
-    this.fetchUserData();
+    // this.fetchUserData();
     this.initForm();
     Number(this.currentUserInfo.permissionCode) === Permission.Employee
       ? this.statusCode.shift() && this.statusCode.pop()
@@ -388,7 +388,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.messageService
         .sendMessage(payload)
         .then(() => {
-          this.messages.push(payload);
+          // this.messages.push(payload);
           this.messageForm.reset();
         });
     }

@@ -14,25 +14,12 @@
   color: #aaa;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px #fff;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--light-text),var(--light-text));
-  border-radius: 10px;
-}
 
 tbody {
   display:block;
-  max-height:500px;
-  overflow-y:auto;
+  max-height:415px;
+  overflow-y:scroll;
 }
 thead, tbody tr {
   display:table;
