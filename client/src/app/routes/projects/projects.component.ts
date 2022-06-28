@@ -9,6 +9,9 @@ import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/services/department.service';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { User } from 'src/app/models/user';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -20,6 +23,7 @@ export class ProjectsComponent implements OnInit {
     private projectService: ProjectService,
     private departmentService: DepartmentService,
     private router: Router,
+    protected spinner: NgxSpinnerService,
     private toastr: ToastrService
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
@@ -37,6 +41,14 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+  openProjects: any[] = [];
+  inProgressProject: any[] = [];
+  resolvedProject: any[] = [];
+  reOpenProject: any[] = [];
+  openCount: number = 0;
+  inProgressCount: number = 0;
+  resolvedCount: number = 0;
+  reOpendCount: number = 0;
   user: User;
   getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
@@ -74,6 +86,14 @@ export class ProjectsComponent implements OnInit {
       .subscribe((response) => {
         this.projects = response;
         this.allRecord = this.projects.length;
+        this.reOpenProject = this.projects.filter(project=> project.statusCode === StatusCode.Reopened);
+        this.reOpendCount = this.reOpenProject.length;
+        this.openProjects = this.projects.filter(project=> project.statusCode === StatusCode.Open);
+        this.openCount = this.openProjects.length;
+        this.inProgressProject = this.projects.filter(project=> project.statusCode === StatusCode.InProgress);
+        this.inProgressCount = this.inProgressProject.length;
+        this.resolvedProject = this.projects.filter(project=> project.statusCode === StatusCode.Resolved);
+        this.resolvedCount = this.resolvedProject.length;
         this.hideLoading();
         this.isLoading = false;
       });
@@ -142,10 +162,10 @@ export class ProjectsComponent implements OnInit {
     this.fetchProjectData();
   }
 
-  onFilterStatus(status: any) {
-    this.getAllProject.statusCode = status;
-    this.fetchProjectData();
-  }
+  // onFilterStatus(status: any) {
+  //   this.getAllProject.statusCode = status;
+  //   this.fetchProjectData();
+  // }
 
   onFilterPriority(priority: any) {
     this.getAllProject.priorityCode = priority;
@@ -154,7 +174,7 @@ export class ProjectsComponent implements OnInit {
 
   onResetFilter() {
     this.getAllProject.projectType = null;
-    this.getAllProject.statusCode = null;
+    //this.getAllProject.statusCode = null;
     this.getAllProject.priorityCode = null;
     this.getAllProject.keyWord = null;
     this.getAllProject.createDateFrom = null;
@@ -172,5 +192,73 @@ export class ProjectsComponent implements OnInit {
 
   showLoading(){
       document.getElementById('spinner').style.display = 'block';
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      this.isLoading = true;
+      this.spinner.show();
+      let payload;
+      if(event.container.id === 'reopen') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Reopened
+        }
+      }
+      else if(event.container.id === 'open') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Open
+        }
+      }
+      else if(event.container.id === 'inProgress') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.InProgress
+        }
+      }
+      else{
+
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Resolved
+        }
+      }
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      this.showLoading();
+      this.projectService
+      .patchProject(payload)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.toastr.success('Successfully!');
+          this.hideLoading();
+          this.isLoading = false;
+          setTimeout(()=>{
+            this.toastr.clear()
+          },700)
+        } else {
+          this.toastr.error('Failed');
+          this.hideLoading();
+          this.isLoading = false;
+        }
+      });
+      // this.spinner.hide();
+    }
   }
 }

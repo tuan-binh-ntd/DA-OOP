@@ -41,12 +41,6 @@ tr {
 
   /* CSS */
 
-
-  .fa {
-    padding-top: 2px;
-    padding-right: 5px;
-  }
-
   .button{
     align-items: center;
     background-color: #FFFFFF;
@@ -138,5 +132,9 @@ tr {
   height: 100px;
 }
 
+.fa-link {
+  transform: rotate(90deg);
+  opacity: 0.3;
+}
 
 

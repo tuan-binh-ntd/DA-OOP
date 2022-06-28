@@ -142,14 +142,14 @@
       </button>
     </mat-menu>
 
-    <button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
+    <!-- <button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
       <i class="fa fa-signal mr-2" aria-hidden="true"></i>
       {{ statusName }}</button>
     <mat-menu #statusMenu="matMenu">
       <button mat-menu-item *ngFor="let status of statusCode" (click)="onFilterStatus(status)">
         {{ status.viewValue }}
       </button>
-    </mat-menu>
+    </mat-menu> -->
 
     <button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
       <i class="fa fa-chevron-up mr-2" aria-hidden="true"></i>

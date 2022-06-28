@@ -41,4 +41,7 @@ export class ProjectService {
   deleteProject(id: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete?id=' + id);
   }
+  patchProject(payload:any): Observable<any> {
+    return this.http.patch(this.baseUrl + '/update' + '/status',payload);
+  }
 }

@@ -238,6 +238,16 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("update/status")]
+        public async Task<ActionResult> UpdateStatus(UpdateProjectStatusDto input)
+        {
+            var project = await _dataContext.Project.FindAsync(input.ProjectId);
+            project.StatusCode = input.StatusCode;
+            _dataContext.Update(project);
+            await _dataContext.SaveChangesAsync();
+            return Ok("Successfully");
+        }
+
         [HttpDelete("delete")]
         public async Task<ActionResult> DeleteProject(Guid id)
         {

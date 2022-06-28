@@ -99,10 +99,10 @@ export class ProjectFilterComponent implements OnInit {
     this.filterType.emit(type.value);
   }
 
-  onFilterStatus(status: any) {
-    this.statusName = status.viewValue;
-    this.filterStatus.emit(status.value);
-  }
+  // onFilterStatus(status: any) {
+  //   this.statusName = status.viewValue;
+  //   this.filterStatus.emit(status.value);
+  // }
 
   onFilterPriority(priority: any) {
     this.priorityName = priority.viewValue;
@@ -112,7 +112,7 @@ export class ProjectFilterComponent implements OnInit {
   onResetFilter() {
     this.typeName = 'Type';
     this.priorityName = 'Priority';
-    this.statusName = 'Status';
+    //this.statusName = 'Status';
     this.filterForm.reset();
     this.resetFilter.emit()
   }
