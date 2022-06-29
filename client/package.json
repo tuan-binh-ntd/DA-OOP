@@ -31,6 +31,7 @@
     "@fullcalendar/timegrid": "^5.11.0",
     "@material-extended/mde": "^3.0.3",
     "@microsoft/signalr": "^6.0.6",
+    "@swimlane/ngx-charts": "^20.1.0",
     "@types/bootstrap": "^5.1.11",
     "bootstrap": "^4.0.0",
     "chart.js": "^3.8.0",

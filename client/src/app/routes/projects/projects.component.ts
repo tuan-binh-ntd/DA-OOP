@@ -27,7 +27,6 @@ export class ProjectsComponent implements OnInit {
     protected router: Router,
     protected spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private userService: UserService
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;

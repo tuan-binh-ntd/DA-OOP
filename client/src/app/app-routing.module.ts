@@ -15,6 +15,7 @@ import { ContentLayoutComponent } from './routes/layout/content-layout/content-l
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
 import { ProfileComponent } from './routes/profile/profile.component';
 import { ProjectListComponent } from './routes/projects/project-list/project-list.component';
+import { HomeV2Component } from './routes/home-v2/home-v2.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -22,7 +23,7 @@ const routes: Routes = [
   {
     path: '', component: SiteLayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+      { path: 'home', component: HomeV2Component, canActivate: [AuthGuard] },
     ],
   },
 

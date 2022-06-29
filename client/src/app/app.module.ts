@@ -32,6 +32,9 @@ import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProfileComponent } from './routes/profile/profile.component';
 import { ProjectListComponent } from './routes/projects/project-list/project-list.component';
+import { HomeV2Component } from './routes/home-v2/home-v2.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatCardModule } from '@angular/material/card';
 
 FullCalendarModule.registerPlugins([
   bootstrapPlugin,
@@ -58,12 +61,15 @@ FullCalendarModule.registerPlugins([
     ContentLayoutComponent,
     TaskStatusComponent,
     ProjectListComponent,
+    HomeV2Component,
   ],
   imports: [
     BrowserModule,
     NgxSpinnerModule,
     FullCalendarModule,
     SharedModuleModule,
+    MatCardModule,
+
     FormsModule,
     CommonModule,
     AppRoutingModule,
@@ -75,7 +81,7 @@ FullCalendarModule.registerPlugins([
       preventDuplicates: true,
     }),
     FontAwesomeModule,
-    NgChartsModule,
+    NgxChartsModule,
   ],
   providers: [
   ],
