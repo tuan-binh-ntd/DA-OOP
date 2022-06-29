@@ -8,6 +8,7 @@ using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -136,6 +137,8 @@ namespace API.Controllers
             var countTaskComplete = await Task.FromResult(_dapper.GetAll<TaskNumDto>("[dbo].[GetTask]", dp_params,
                 commandType: System.Data.CommandType.StoredProcedure));
 
+            
+
 
             foreach (var project in projectList)
             {
@@ -155,7 +158,12 @@ namespace API.Controllers
                         break;
                     }
                 }
-
+                dp_params = new DynamicParameters();
+                dp_params.Add("@projectId", project.Id, DbType.Guid);
+                var userList = await Task.FromResult(_dapper.GetAll<Guid>("GetAllUserForProject", dp_params,
+                    commandType: System.Data.CommandType.StoredProcedure));
+                project.UserList = new List<Guid>();
+                project.UserList = userList;
             }
             return Ok(projectList);
         }
