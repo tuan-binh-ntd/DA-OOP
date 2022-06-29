@@ -119,8 +119,7 @@ export class TasksComponent implements OnInit {
         this.departmentId = response.departmentId;
         if(this.filterUserTask == 'My Task'){
           this.tasks = this.tasks.filter(t => t.createUserId !== t.appUserId);
-        }
-        console.log(this.tasks);
+        }     
         this.hideLoading();
         this.isLoading = false;
       });
