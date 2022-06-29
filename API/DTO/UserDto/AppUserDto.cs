@@ -12,5 +12,6 @@ namespace API.DTO
         public string Token { get; set; }
         public Permission PermissionCode { get; set; }
         public Guid? DepartmentId { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

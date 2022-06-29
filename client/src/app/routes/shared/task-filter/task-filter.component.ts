@@ -115,6 +115,15 @@ export class TaskFilterComponent implements OnInit {
   onFilterProject(project: any) {
     this.projectName = project.projectName;
     this.filterProject.emit(project.id);
+    if(document.location.pathname.endsWith('calendar')){
+      this.router.navigate(['projects/tasks', project.id, 'calendar']);
+    }
+    else if(document.location.pathname.endsWith('status')){
+      this.router.navigate(['projects/tasks', project.id, 'status']);
+    }
+    else {
+      this.router.navigate(['projects/tasks', project.id, 'list']);
+    }
   }
 
   onFilterType(type: any) {
@@ -140,7 +149,7 @@ export class TaskFilterComponent implements OnInit {
       this.router.navigate(['projects/tasks/status']);
     }
     else {
-      this.router.navigate(['projects/tasks']);
+      this.router.navigate(['projects/tasks/list']);
     }
     this.projectName = 'Project';
     this.typeName = 'Type';

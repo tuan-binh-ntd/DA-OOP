@@ -210,6 +210,33 @@ namespace API.Migrations
                     b.ToTable("Project");
                 });
 
+            modelBuilder.Entity("API.Entity.SubTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SubTaskName")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<Guid>("TasksId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("TimeTracking")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("SubTasks");
+                });
+
             modelBuilder.Entity("API.Entity.Tasks", b =>
                 {
                     b.Property<Guid>("Id")
@@ -324,6 +351,15 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Entity.SubTask", b =>
+                {
+                    b.HasOne("API.Entity.Tasks", null)
+                        .WithMany("SubTask")
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("API.Entity.Tasks", b =>
                 {
                     b.HasOne("API.Entity.AppUser", null)
@@ -363,6 +399,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entity.Tasks", b =>
                 {
                     b.Navigation("Message");
+
+                    b.Navigation("SubTask");
                 });
 #pragma warning restore 612, 618
         }

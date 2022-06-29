@@ -7,4 +7,5 @@ export interface User {
   departmentId: string,
   permissionCode: Permission,
   token: string
+  photoUrl: string;
 }

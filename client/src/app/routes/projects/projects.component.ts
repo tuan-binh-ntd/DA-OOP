@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { catchError, of,take } from 'rxjs';
 import { ProjectService } from '../../services/project.service';
 import { ModalProjectComponent } from '../shared/modal-project/modal-project.component';
 import * as bootstrap from 'bootstrap';
@@ -9,6 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/services/department.service';
 import { GetAllProject } from 'src/app/models/getallproject';
 import { User } from 'src/app/models/user';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -17,10 +21,12 @@ import { User } from 'src/app/models/user';
 export class ProjectsComponent implements OnInit {
 
   constructor(
-    private projectService: ProjectService,
-    private departmentService: DepartmentService,
-    private router: Router,
-    private toastr: ToastrService
+    protected projectService: ProjectService,
+    protected userService: UserService,
+    protected departmentService: DepartmentService,
+    protected router: Router,
+    protected spinner: NgxSpinnerService,
+    protected toastr: ToastrService
   ) { }
   @ViewChild('modalProject') modalProject!: ModalProjectComponent;
   $: any;
@@ -28,6 +34,7 @@ export class ProjectsComponent implements OnInit {
   projects: any[] = [];
   departments: any[] = [];
   allRecord: number = 0;
+  users: any[] = [];
   resolvedRecord: number = 0;
   inProgressRecord: number = 0;
   closedRecord: number = 0;
@@ -37,18 +44,42 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+  openProjects: any[] = [];
+  inProgressProject: any[] = [];
+  resolvedProject: any[] = [];
+  reOpenProject: any[] = [];
+  openCount: number = 0;
+  inProgressCount: number = 0;
+  resolvedCount: number = 0;
+  reOpendCount: number = 0;
   user: User;
+  assigneeInfo:any;
   getAllProject: GetAllProject = new GetAllProject();
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
-    if (user.permissionCode === Permission.ProjectManager) {
+    if (user?.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
     this.fetchDepartmentData();
     this.fetchProjectData();
+    this.fetchUserData();
   }
 
+  fetchUserData() {
+    this.assigneeInfo = JSON.parse(localStorage.getItem('user'));
+    this.isLoading = true;
+    this.showLoading();
+    this.userService
+      .getAllUser()
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.users = response;
+        this.hideLoading();
+        this.isLoading = false;
+      });
+  }
+  
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();
@@ -66,7 +97,7 @@ export class ProjectsComponent implements OnInit {
     this.isLoading = true;
     this.showLoading();
     if (!this.right) {
-      this.getAllProject.departmentId = this.user.departmentId
+      this.getAllProject.departmentId = this.user?.departmentId
     }
     this.projectService
       .getAllProject(this.getAllProject)
@@ -74,6 +105,14 @@ export class ProjectsComponent implements OnInit {
       .subscribe((response) => {
         this.projects = response;
         this.allRecord = this.projects.length;
+        this.reOpenProject = this.projects.filter(project=> project.statusCode === StatusCode.Reopened);
+        this.reOpendCount = this.reOpenProject.length;
+        this.openProjects = this.projects.filter(project=> project.statusCode === StatusCode.Open);
+        this.openCount = this.openProjects.length;
+        this.inProgressProject = this.projects.filter(project=> project.statusCode === StatusCode.InProgress);
+        this.inProgressCount = this.inProgressProject.length;
+        this.resolvedProject = this.projects.filter(project=> project.statusCode === StatusCode.Resolved);
+        this.resolvedCount = this.resolvedProject.length;
         this.hideLoading();
         this.isLoading = false;
       });
@@ -172,5 +211,73 @@ export class ProjectsComponent implements OnInit {
 
   showLoading(){
       document.getElementById('spinner').style.display = 'block';
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      this.isLoading = true;
+      this.spinner.show();
+      let payload;
+      if(event.container.id === 'reopen') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Reopened
+        }
+      }
+      else if(event.container.id === 'open') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Open
+        }
+      }
+      else if(event.container.id === 'inProgress') {
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.InProgress
+        }
+      }
+      else{
+
+         payload = {
+          // @ts-ignore
+          projectId:  event.previousContainer.data[event.previousIndex].id,
+         statusCode: StatusCode.Resolved
+        }
+      }
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      this.showLoading();
+      this.projectService
+      .patchProject(payload)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.toastr.success('Successfully!');
+          this.hideLoading();
+          this.isLoading = false;
+          setTimeout(()=>{
+            this.toastr.clear()
+          },700)
+        } else {
+          this.toastr.error('Failed');
+          this.hideLoading();
+          this.isLoading = false;
+        }
+      });
+      // this.spinner.hide();
+    }
   }
 }

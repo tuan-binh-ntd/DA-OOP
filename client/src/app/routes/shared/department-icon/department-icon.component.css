@@ -1,0 +1,35 @@
+.department-icon{
+    color: #fff;
+    max-width: 200px;
+    /* width: 100px; */
+    max-width: 200px;
+    padding: 5px 5px;
+    border-radius: 10px;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.department-icon:hover{
+    transform: translateY(-5px);
+}
+
+.bg-cntt{
+    background-color: #696eff;
+}
+
+.bg-mkt{
+    background-color: #f68080;
+}
+
+.bg-tv{
+    background-color: #103783;
+}
+
+.bg-rnd{
+    background-color: #e8b595;
+}
+.bg-user{
+    background-color: #00ff87;
+
+}

@@ -1,0 +1,30 @@
+<div *ngIf="departmentName !== 'Phòng CNTT'">
+  <span class="fsz-15 department-icon bg-cntt">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+</div>
+<div *ngIf="departmentName === 'Phòng marketing'">
+  <span class=" fsz-15 department-icon bg-mkt">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+</div>
+<div *ngIf="departmentName === 'Phòng tài vụ'">
+  <span class="fsz-15 department-icon bg-tv">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+</div>
+<div *ngIf="departmentName === 'Phòng nghiên cứu và phát triển'">
+  <span class="fsz-15 department-icon bg-rnd">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+</div>
+<div *ngIf="departmentName === 'Phòng chăm sóc khách hàng'">
+  <span class="fsz-15 department-icon bg-user">
+    <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
+    {{ departmentName }}
+  </span>
+</div>

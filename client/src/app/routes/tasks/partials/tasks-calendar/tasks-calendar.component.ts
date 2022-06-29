@@ -53,7 +53,7 @@ export class TasksCalendarComponent extends TasksComponent implements OnInit {
           droppable: true,
           themeSystem: 'bootstrap',
           eventColor: '#00b4d8',
-          height: 600,
+          height: 500,
         };
         this.hideLoading();
         this.isLoading = false;

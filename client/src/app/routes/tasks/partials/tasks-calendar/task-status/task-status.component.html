@@ -1,7 +1,8 @@
 <div class="container-fluid" style="position: relative;">
   <div class="row no-gutters mt-4">
-    <div class="col col-12">
-      <h2 class="mb-3 text-primary fw-700">Task Status </h2>
+    <div class="col col-12 d-flex">
+      <h2 *ngIf="projectId" class="mb-3 text-primary fw-700">{{ getProjectName(projectId)}} / </h2>
+      <h2 class="mb-3 text-primary fw-700">Tasks</h2>
     </div>
     <div class="col col-11">
       <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
@@ -30,7 +31,7 @@
   <div class="col col-3">
 
     <div class="example-container">
-      <div class="d-flex mb-3" style="height:40px">
+      <div class="d-flex mb-3 ml-2" style="height:40px">
         <h6 class="mr-2 fw-700 list-wrap1" style="line-height:40px; letter-spacing: 2px;">REOPEN</h6>
         <div class="countTask">{{reOpendCount}}</div>
         </div>
@@ -44,16 +45,87 @@
           [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
           class="example-list"
           (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let item of reOpenTask" cdkDrag [cdkDragDisabled]="isLoading">
-            <div class="w-100">
-              <div>
-                <span>{{item.taskName}}</span>
-                <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+          <div class="example-box mb-4" *ngFor="let item of reOpenTask" cdkDrag [cdkDragDisabled]="isLoading">
+            <div class="w-100 row no-gutters">
+                <div class="col col-11">
+                  <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <span class="text-truncate text-primary fw-700">{{getProjectName(item.projectId)}}</span>
+                </div>
+                <div
+                class="float-right dropdown dropleft col col-1"
+                (click)="$event.stopPropagation()">
+                <button
+                class="btn-icon float-right"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+              </button>
+              <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', false)
+                  "
+                >
+                  <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                  View</a
+                >
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', true)
+                  "
+                >
+                  <i class="fa fa-edit mr-2"></i>
+                  Update</a
+                >
               </div>
-              <span>{{item.taskCode}}</span>
             </div>
-
             </div>
+            
+            <div class="w-100 row no-gutters" >
+              <span class="col col-12 d-flex mb-1 ">
+               <app-task-type-icon [taskType]="item.taskType" class="mr-2"></app-task-type-icon> 
+               <span class="text-truncate ">
+                 [{{item.taskCode}}] - {{item.taskName}}</span>
+               </span>
+                 <p class=" p-text mb-2">{{item.description}}</p>
+              </div> 
+            <div >
+              <p
+              class="mt-1"
+                *ngIf="item.completeDate; else notComplete"
+                class="card-text text-success"
+              >
+                <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                {{ item.completeDate | date: "dd/MM/yyyy" }}
+              </p>
+              <ng-template #notComplete>
+                <ng-container
+                  *ngIf="item.dayLefts > 0; else overtime"
+                  class="card-text mt-2 text-warning"
+                >
+                  <i
+                    class="fa fa-clock-o mr-2 text-warning"
+                    aria-hidden="true"
+                  ></i>
+                  <span class="text-warning">{{ item.dayLefts }} Days</span>
+                </ng-container>
+              </ng-template>
+              <ng-template #overtime>
+                <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                  <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                  <span>Overtime</span>
+                </p>
+              </ng-template>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +133,7 @@
     <div class="col col-3">
 
   <div class="example-container">
-    <div class="d-flex mb-3" style="height:40px">
+    <div class="d-flex mb-3  ml-2" style="height:40px">
       <h6 class="mr-2 fw-700 list-wrap2" style="line-height:40px; letter-spacing: 2px;">OPEN</h6>
       <div class="countTask">{{openCount}}</div>
       </div>
@@ -75,13 +147,85 @@
         [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of openTasks" cdkDrag [cdkDragDisabled]="isLoading">
-          <div class="w-100">
-            <div>
-              <span>{{item.taskName}}</span>
-              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+        <div class="example-box mb-4" *ngFor="let item of openTasks" cdkDrag [cdkDragDisabled]="isLoading">
+          <div class="w-100 row no-gutters">
+              <div class="col col-11">
+                <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                <span class="text-truncate text-primary fw-700">{{getProjectName(item.projectId)}}</span>
+              </div>
+              <div
+              class="float-right dropdown dropleft col col-1"
+              (click)="$event.stopPropagation()">
+              <button
+              class="btn-icon float-right"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', false)
+                "
+              >
+                <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                View</a
+              >
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', true)
+                "
+              >
+                <i class="fa fa-edit mr-2"></i>
+                Update</a
+              >
             </div>
-            <span>{{item.taskCode}}</span>
+          </div>
+          </div>
+          
+          <div class="w-100 row no-gutters" >
+            <span class="col col-12 d-flex mb-1 ">
+             <app-task-type-icon [taskType]="item.taskType" class="mr-2"></app-task-type-icon> 
+             <span class="text-truncate ">
+               [{{item.taskCode}}] - {{item.taskName}}</span>
+             </span>
+               <p class=" p-text mb-2">{{item.description}}</p>
+            </div> 
+          <div >
+            <p
+            class="mt-1"
+              *ngIf="item.completeDate; else notComplete"
+              class="card-text text-success"
+            >
+              <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+              {{ item.completeDate | date: "dd/MM/yyyy" }}
+            </p>
+            <ng-template #notComplete>
+              <ng-container
+                *ngIf="item.dayLefts > 0; else overtime"
+                class="card-text mt-2 text-warning"
+              >
+                <i
+                  class="fa fa-clock-o mr-2 text-warning"
+                  aria-hidden="true"
+                ></i>
+                <span class="text-warning">{{ item.dayLefts }} Days</span>
+              </ng-container>
+            </ng-template>
+            <ng-template #overtime>
+              <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                <span>Overtime</span>
+              </p>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -90,7 +234,7 @@
     <div class="col col-3">
 
     <div class="example-container">
-      <div class="d-flex mb-3" style="height:40px">
+      <div class="d-flex mb-3  ml-2" style="height:40px">
         <h6 class="mr-2 fw-700 list-wrap3" style="line-height:40px; letter-spacing: 2px;">INPROGRESS</h6>
         <span class="countTask">{{inProgressCount}}</span>
       </div>
@@ -104,22 +248,95 @@
         [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of inProgressTask" cdkDrag [cdkDragDisabled]="isLoading">
-          <div class="w-100">
-            <div>
-              <span>{{item.taskName}}</span>
-              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+        <div class="example-box mb-4" *ngFor="let item of inProgressTask" cdkDrag [cdkDragDisabled]="isLoading">
+          <div class="w-100 row no-gutters">
+              <div class="col col-11">
+                <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                <span class="text-truncate text-primary fw-700">{{getProjectName(item.projectId)}}</span>
+              </div>
+              <div
+              class="float-right dropdown dropleft col col-1"
+              (click)="$event.stopPropagation()">
+              <button
+              class="btn-icon float-right"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', false)
+                "
+              >
+                <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                View</a
+              >
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', true)
+                "
+              >
+                <i class="fa fa-edit mr-2"></i>
+                Update</a
+              >
             </div>
-            <span>{{item.taskCode}}</span>
+          </div>
+          </div>
+          
+          <div class="w-100 row no-gutters" >
+            <span class="col col-12 d-flex mb-1 ">
+             <app-task-type-icon [taskType]="item.taskType" class="mr-2"></app-task-type-icon> 
+             <span class="text-truncate ">
+               [{{item.taskCode}}] - {{item.taskName}}</span>
+             </span>
+               <p class=" p-text mb-2">{{item.description}}</p>
+            </div> 
+          <div >
+            <p
+            class="mt-1"
+              *ngIf="item.completeDate; else notComplete"
+              class="card-text text-success"
+            >
+              <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+              {{ item.completeDate | date: "dd/MM/yyyy" }}
+            </p>
+            <ng-template #notComplete>
+              <ng-container
+                *ngIf="item.dayLefts > 0; else overtime"
+                class="card-text mt-2 text-warning"
+              >
+                <i
+                  class="fa fa-clock-o mr-2 text-warning"
+                  aria-hidden="true"
+                ></i>
+                <span class="text-warning">{{ item.dayLefts }} Days</span>
+              </ng-container>
+            </ng-template>
+            <ng-template #overtime>
+              <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                <span>Overtime</span>
+              </p>
+            </ng-template>
           </div>
         </div>
+        
       </div>
     </div>
   </div>
   <div class="col col-3">
 
     <div class="example-container">
-      <div class="d-flex mb-3" style="height:40px">
+      <div class="d-flex mb-3  ml-2" style="height:40px">
       <h6 class="mr-2 fw-700 list-wrap4" style="line-height:40px; letter-spacing: 2px;">COMPLETED</h6>
       <span class="countTask">{{resolvedCount}}</span>
       </div>
@@ -133,13 +350,85 @@
         [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of resolvedTask" cdkDrag [cdkDragDisabled]="isLoading">
-          <div class="w-100">
-            <div>
-              <span>{{item.taskName}}</span>
-              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
+        <div class="example-box mb-4" *ngFor="let item of resolvedTask" cdkDrag [cdkDragDisabled]="isLoading">
+          <div class="w-100 row no-gutters">
+              <div class="col col-11">
+                <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                <span class="text-truncate text-primary fw-700">{{getProjectName(item.projectId)}}</span>
+              </div>
+              <div
+              class="float-right dropdown dropleft col col-1"
+              (click)="$event.stopPropagation()">
+              <button
+              class="btn-icon float-right"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', false)
+                "
+              >
+                <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                View</a
+              >
+              <a
+                class="dropdown-item"
+                (click)="
+                  $event.stopPropagation();
+                  openDetailModal(item, 'detail', true)
+                "
+              >
+                <i class="fa fa-edit mr-2"></i>
+                Update</a
+              >
             </div>
-            <span>{{item.taskCode}}</span>
+          </div>
+          </div>
+          
+          <div class="w-100 row no-gutters" >
+            <span class="col col-12 d-flex mb-1 ">
+             <app-task-type-icon [taskType]="item.taskType" class="mr-2"></app-task-type-icon> 
+             <span class="text-truncate ">
+               [{{item.taskCode}}] - {{item.taskName}}</span>
+             </span>
+               <p class=" p-text mb-2">{{item.description}}</p>
+            </div> 
+          <div >
+            <p
+            class="mt-1"
+              *ngIf="item.completeDate; else notComplete"
+              class="card-text text-success"
+            >
+              <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+              {{ item.completeDate | date: "dd/MM/yyyy" }}
+            </p>
+            <ng-template #notComplete>
+              <ng-container
+                *ngIf="item.dayLefts > 0; else overtime"
+                class="card-text mt-2 text-warning"
+              >
+                <i
+                  class="fa fa-clock-o mr-2 text-warning"
+                  aria-hidden="true"
+                ></i>
+                <span class="text-warning">{{ item.dayLefts }} Days</span>
+              </ng-container>
+            </ng-template>
+            <ng-template #overtime>
+              <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                <span>Overtime</span>
+              </p>
+            </ng-template>
           </div>
         </div>
       </div>

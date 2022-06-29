@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="margin-left: 120px;">
-  <a class="navbar-brand font-weight-bolder" href="home" style="font-size: 30px">
+  <a class="navbar-brand font-weight-bolder" [routerLink]="['home']" style="font-size: 30px">
     <img src="assets/logo.png" style="width: 50px" alt="Logo">
     HeadUp
   </a>
@@ -14,7 +14,7 @@
         <a class="nav-link font-weight-bold" [routerLink]="['home']">Home</a>
       </li>
       <li class="nav-item nav-active">
-        <a class="nav-link font-weight-bold" [routerLink]="['projects']">My Projects</a>
+        <a class="nav-link font-weight-bold" [routerLink]="['projects/status']">My Projects</a>
       </li>
       <!-- <li *ngIf="right" class="nav-item nav-active">
           <a 
@@ -51,7 +51,7 @@
             <i class="fa fa-calendar mr-2"></i>
             Calendar</a>
 
-          <a class="dropdown-item"  (click)="onViewTask('status')">
+          <a class="dropdown-item" (click)="onViewTask('status')">
             <i class="fa fa-bar-chart mr-2"></i>
             Status</a>
         </div>
@@ -69,7 +69,7 @@
             <i class="fa fa-user mr-2"></i>
             Profile
           </a>
-          <a class="dropdown-item" [routerLink]="['change-password']">
+          <a class="dropdown-item" (click)="openModal(user)">
             <i class="fa fa-cog"></i>
             Change Password
           </a>

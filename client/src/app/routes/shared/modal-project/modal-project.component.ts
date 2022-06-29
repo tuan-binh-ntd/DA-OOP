@@ -60,8 +60,7 @@ export class ModalProjectComponent implements OnInit {
     this.fetchUserData();
     this.initForm();
     this.user = JSON.parse(localStorage.getItem('user'));
-    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
-  }
+    }
 
   getCurrentUser() {
     return this.authenticationService.currentUser
@@ -133,6 +132,7 @@ export class ModalProjectComponent implements OnInit {
     this.modalForm.controls['appUserId'].disable();
     this.modalForm.controls['completeDate'].disable();
     this.modalForm.controls['createDate'].disable();
+   
     if (Number(this.user.permissionCode) == 2) {
       this.modalForm.controls['projectName'].disable();
       this.modalForm.controls['projectType'].disable();
@@ -201,7 +201,9 @@ export class ModalProjectComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response) {
-          this.toastr.success('Successfully!');
+          this.toastr.success('Successfully!', '', {
+            timeOut: 1000,
+          });
           this.onChangeProject.emit();
         } else {
           this.toastr.error('Failed');
@@ -220,6 +222,7 @@ export class ModalProjectComponent implements OnInit {
   }
 
   onChangeEdit(ev: any) {
+    Number(this.user.permissionCode) === Permission.Leader ? this.statusCode.shift() && this.statusCode.pop() : null;
     this.isEdit = ev;
     if (Number(this.user.permissionCode) == Permission.Employee) {
       this.isEdit = false;

@@ -26,6 +26,11 @@ import { TaskFilterComponent } from './task-filter/task-filter.component';
 import { ButtonBusyDirective } from './utils/button-busy.directive';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ProjectTypeIconComponent } from './project-type-icon/project-type-icon.component';
+import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component';
+import { DepartmentIconComponent } from './department-icon/department-icon.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +43,12 @@ import {MatListModule} from '@angular/material/list';
     TaskFilterComponent,
     ProjectFilterComponent,
     ButtonBusyDirective,
+    ChangePasswordComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
+    DepartmentIconComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +69,8 @@ import {MatListModule} from '@angular/material/list';
     MatMenuModule,
     NgChartsModule,
     MatTabsModule,
-    MatListModule
+    MatListModule,
+    FileUploadModule
   ],
   exports:[
     PriorityIconComponent,
@@ -69,10 +81,18 @@ import {MatListModule} from '@angular/material/list';
     ProjectFilterComponent,
     TaskFilterComponent,
     ButtonBusyDirective,
-    
+    FileUploadModule,
+    ChangePasswordComponent,
+    DepartmentIconComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
+    ProjectTypeIconComponent,
+    TaskTypeIconComponent,
   ],
-  providers:[ MatDatepickerModule,
+  providers:[
+    MatDatepickerModule,
     MatNativeDateModule,
-    DatePipe, ]
+    DatePipe,
+  ]
 })
 export class SharedModuleModule { }

@@ -1,108 +1,437 @@
-<div class="container-fluid"  style="position: relative;">
+<div class="container-fluid" style="position: relative">
   <div class="row no-gutters mt-4">
     <div class="col col-6 p-0">
       <h2 class="mb-3 text-primary fw-700">Projects</h2>
     </div>
     <div *ngIf="right" class="col col-6">
-      <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal" data-target="#createProjectModal"
-        (click)="openModal()">
+      <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
+        data-target="#createProjectModal" (click)="openModal()">
         <i class="fa fa-plus mr-1"></i>
       </button>
     </div>
   </div>
 
   <div class="my-box d-flex justify-content-center">
-    <div class="spinner-border text-primary" role="status" id="spinner"  style="width: 3rem; height: 3rem; z-index: 9999;">
-        <span class="sr-only">Loading...</span>
+    <div class="spinner-border text-primary" role="status" id="spinner"
+      style="width: 3rem; height: 3rem; z-index: 9999">
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
-  
+
   <div class="row no-gutters">
     <div class="col col-11">
       <app-project-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
-      (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"
-      (filterType)="onFilterType($event)" (onSearchProject)="onSearch($event)"></app-project-filter>
+        (filterPriority)="onFilterPriority($event)" (filterType)="onFilterType($event)" 
+        (onSearchProject)="onSearch($event)" (filterStatus)="onFilterStatus($event)"></app-project-filter>
     </div>
-    
-    <div class="card-columns">
-      <div class="card " *ngFor="let item of projects" style="display: inline-block">
-        <div class="card-body" href="#" (click)="onViewTask(item.id)">
-          <div class="row no-gutters">
-            <div class="col col-6" style="line-height: 16px">
-              <span class="font-weight-light" style="line-height: 32px">
-                {{ item.taskCount }} Tasks
-              </span>
-            </div>
-            <div class="col col-6">
-              <app-priority-icon class="float-right" [priorityCode]="item.priorityCode"></app-priority-icon>
-            </div>
-          </div>
-          <h5 class="card-title">{{ item.projectName }}</h5>
-          <!-- <p class="card-text">{{ item.description }}</p> -->
-          <div class="row no-gutters">
-            <div class="col col-8">
-              <p class="card-text">
-                <i class="fa fa-thumb-tack mr-2" aria-hidden="true"></i>
-                <span class="department">{{
-                  getDepartmentName(item.departmentId)
-                  }}</span>
-              </p>
-              <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
-                <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
-                {{ item.completeDate | date: "dd/MM/yyyy" }}
-              </p>
-              <ng-template #notComplete>
-                <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text text-warning">
-                  <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
-                  <span class="text-warning">{{ item.dayLefts }} Days</span>
-                </ng-container>
-              </ng-template>
-              <ng-template #overtime>
-                <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
-                  <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
-                  <span>Overtime</span>
-                </p>
-              </ng-template>
-            </div>
-            <div class="col col-4">
-              <button class="home__btn float-right" (click)="
-                  $event.stopPropagation();
-                  openDetailModal(item, 'detail', false)
-                ">
-                Update
-              </button>
-            </div>
-          </div>
+    <div class="col col-1">
+      <button class="button float-right">
+        View
+      </button>
+    </div>
+  </div>
 
-          <hr />
-          <div class="row no-gutters text-center">
-            <div class="col col-6">
-              <h6>Leader</h6>
-              <span>{{ item.leaderName }}</span>
-            </div>
-            <div class="col col-6">
-              <h6>Progress</h6>
-              <div class="progress">
-                <div style="display: flex" class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                  [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0" aria-valuemax="100">
-                  <span class="text-center">{{
-                    roundProgress(item.taskProgress)
-                    }}</span>
+  <div class="row ml-0 mr-0">
+    <div class="col col-3">
+      <div class="example-container">
+        <div class="d-flex mb-3" style="height:40px">
+          <h6 class="mr-2 fw-700 list-wrap1" style="line-height:40px; letter-spacing: 2px;">REOPEN</h6>
+          <div class="countProject">{{reOpendCount}}</div>
+        </div>
+        <div cdkDropList id="reopen" cdkDropListSortingDisabled #listReopen="cdkDropList"
+          [cdkDropListAutoScrollDisabled]="false" [cdkDropListData]="reOpenProject"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of reOpenProject" cdkDrag [cdkDragDisabled]="isLoading">
+            <!-- <div class="card" style="display: inline-block"> -->
+              <div class="card-body" href="#" (click)="onViewTask(item.id)">
+                <div class="row no-gutters">
+  
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
+                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                    </app-department-icon>
+  
+                  </div>
+                  <div class="col col-1">
+                    <div class="float-right dropdown droptop" (click)="$event.stopPropagation()">
+                      <button class="btn-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', false)
+                  ">
+                          <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                          View</a>
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', true)
+                  ">
+                          <i class="fa fa-edit mr-2"></i>
+                          Update</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <h5 class="card-title mb-2">{{ item.projectName }}</h5>
+                <div class="d-flex align-items-center">
+                  <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <span class="font-weight-light" style="line-height: 32px">
+                    {{ item.taskCount }} Tasks
+                  </span>
+                </div>
+  
+                <!-- <p class="card-text">{{ item.description }}</p> -->
+                <div class="row no-gutters">
+                  <div class="col col-8">
+                    <p class="mt-2" *ngIf="item.completeDate; else notComplete" class="card-text text-success">
+                      <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                      {{ item.completeDate | date: "dd/MM/yyyy" }}
+                    </p>
+                    <ng-template #notComplete>
+                      <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
+                        <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                        <span class="text-warning">{{ item.dayLefts }} Days</span>
+                      </ng-container>
+                    </ng-template>
+                    <ng-template #overtime>
+                      <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                        <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                        <span>Overtime</span>
+                      </p>
+                    </ng-template>
+                  </div>
+                  <div class="col col-4"></div>
+                </div>
+  
+                <hr />
+                <div class="row no-gutters text-center">
+                  <div class="col col-6">
+                    <span>{{ item.leaderName }}</span>
+                  </div>
+                  <div class="col col-6">
+                    <div class="progress">
+                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                        role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
+                        aria-valuemax="100">
+                        <span class="text-center">{{
+                          roundProgress(item.taskProgress)
+                          }}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            <!-- </div> -->
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col col-3">
+      <div class="example-container">
+        <div class="d-flex mb-3" style="height:40px">
+          <h6 class="mr-2 fw-700 list-wrap2" style="line-height:40px; letter-spacing: 2px;">OPEN</h6>
+          <div class="countProject">{{openCount}}</div>
+        </div>
+        <div cdkDropList id="open" #listOpen="cdkDropList" cdkDropListSortingDisabled
+          [cdkDropListAutoScrollDisabled]="false" [cdkDropListData]="openProjects"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of openProjects" cdkDrag [cdkDragDisabled]="isLoading">
+            <!-- <div class="card" style="display: inline-block"> -->
+              <div class="card-body" href="#" (click)="onViewTask(item.id)">
+                <div class="row no-gutters">
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
+                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                    </app-department-icon>
+                  </div>
+                  <div class="col col-1">
+                    <div class="float-right dropdown droptop" (click)="$event.stopPropagation()">
+                      <button class="btn-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', false)
+                  ">
+                          <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                          View</a>
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', true)
+                  ">
+                          <i class="fa fa-edit mr-2"></i>
+                          Update</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <h5 class="card-title mb-2">{{ item.projectName }}</h5>
+                <div class="d-flex align-items-center">
+                  <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <span class="font-weight-light" style="line-height: 32px">
+                    {{ item.taskCount }} Tasks
+                  </span>
+                </div>
+  
+                <!-- <p class="card-text">{{ item.description }}</p> -->
+                <div class="row no-gutters">
+                  <div class="col col-8">
+                    <p class="mt-2" *ngIf="item.completeDate; else notComplete" class="card-text text-success">
+                      <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                      {{ item.completeDate | date: "dd/MM/yyyy" }}
+                    </p>
+                    <ng-template #notComplete>
+                      <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
+                        <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                        <span class="text-warning">{{ item.dayLefts }} Days</span>
+                      </ng-container>
+                    </ng-template>
+                    <ng-template #overtime>
+                      <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                        <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                        <span>Overtime</span>
+                      </p>
+                    </ng-template>
+                  </div>
+                  <div class="col col-4"></div>
+                </div>
+  
+                <hr />
+                <div class="row no-gutters text-center">
+                  <div class="col col-6">
+                    <span>{{ item.leaderName }}</span>
+                  </div>
+                  <div class="col col-6">
+                    <div class="progress">
+                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                        role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
+                        aria-valuemax="100">
+                        <span class="text-center">{{
+                          roundProgress(item.taskProgress)
+                          }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="createProjectModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl" role="document">
-        <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()">
-        </app-modal-project>
+    <div class="col col-3">
+      <div class="example-container">
+        <div class="d-flex mb-3" style="height:40px">
+          <h6 class="mr-2 fw-700 list-wrap3" style="line-height:40px; letter-spacing: 2px;">INPROGRESS</h6>
+          <span class="countProject">{{inProgressCount}}</span>
+        </div>
+        <div cdkDropList id="inProgress" cdkDropListSortingDisabled #listProgress="cdkDropList"
+          [cdkDropListData]="inProgressProject" [cdkDropListAutoScrollDisabled]="false"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of inProgressProject" cdkDrag [cdkDragDisabled]="isLoading">
+            <!-- <div class="card" style="display: inline-block"> -->
+              <div class="card-body" href="#" (click)="onViewTask(item.id)">
+                <div class="row no-gutters">
+  
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
+                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                    </app-department-icon>
+  
+                  </div>
+                  <div class="col col-1">
+                    <div class="float-right dropdown droptop" (click)="$event.stopPropagation()">
+                      <button class="btn-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', false)
+                  ">
+                          <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                          View</a>
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', true)
+                  ">
+                          <i class="fa fa-edit mr-2"></i>
+                          Update</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <h5 class="card-title mb-2">{{ item.projectName }}</h5>
+                <div class="d-flex align-items-center">
+                  <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <span class="font-weight-light" style="line-height: 32px">
+                    {{ item.taskCount }} Tasks
+                  </span>
+                </div>
+  
+                <!-- <p class="card-text">{{ item.description }}</p> -->
+                <div class="row no-gutters">
+                  <div class="col col-8">
+                    <p class="mt-2" *ngIf="item.completeDate; else notComplete" class="card-text text-success">
+                      <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                      {{ item.completeDate | date: "dd/MM/yyyy" }}
+                    </p>
+                    <ng-template #notComplete>
+                      <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
+                        <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                        <span class="text-warning">{{ item.dayLefts }} Days</span>
+                      </ng-container>
+                    </ng-template>
+                    <ng-template #overtime>
+                      <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                        <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                        <span>Overtime</span>
+                      </p>
+                    </ng-template>
+                  </div>
+                  <div class="col col-4"></div>
+                </div>
+  
+                <hr />
+                <div class="row no-gutters text-center">
+                  <div class="col col-6">
+                    <span>{{ item.leaderName }}</span>
+                  </div>
+                  <div class="col col-6">
+                    <div class="progress">
+                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                        role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
+                        aria-valuemax="100">
+                        <span class="text-center">{{
+                          roundProgress(item.taskProgress)
+                          }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="col col-3">
+      <div class="example-container">
+        <div class="d-flex mb-3" style="height:40px">
+          <h6 class="mr-2 fw-700 list-wrap4" style="line-height:40px; letter-spacing: 2px;">COMPLETED</h6>
+          <span class="countProject">{{resolvedCount}}</span>
+        </div>
+        <div cdkDropList id="resolved" cdkDropListSortingDisabled [cdkDropListAutoScrollDisabled]="false"
+          #listResolve="cdkDropList" [cdkDropListData]="resolvedProject"
+          [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of resolvedProject" cdkDrag [cdkDragDisabled]="isLoading">
+            <!-- <div class="card" style="display: inline-block"> -->
+              <div class="card-body" href="#" (click)="onViewTask(item.id)">
+                <div class="row no-gutters">
+  
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
+                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                    </app-department-icon>
+  
+                  </div>
+                  <div class="col col-1">
+                    <div class="float-right dropdown droptop" (click)="$event.stopPropagation()">
+                      <button class="btn-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                      <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', false)
+                  ">
+                          <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                          View</a>
+                        <a class="dropdown-item" (click)="
+                    $event.stopPropagation();
+                    openDetailModal(item, 'detail', true)
+                  ">
+                          <i class="fa fa-edit mr-2"></i>
+                          Update</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <h5 class="card-title mb-2">{{ item.projectName }}</h5>
+                <div class="d-flex align-items-center">
+                  <app-priority-icon class="float-left mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <span class="font-weight-light" style="line-height: 32px">
+                    {{ item.taskCount }} Tasks
+                  </span>
+                </div>
+  
+                <!-- <p class="card-text">{{ item.description }}</p> -->
+                <div class="row no-gutters">
+                  <div class="col col-8">
+                    <p class="mt-2" *ngIf="item.completeDate; else notComplete" class="card-text text-success">
+                      <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                      {{ item.completeDate | date: "dd/MM/yyyy" }}
+                    </p>
+                    <ng-template #notComplete>
+                      <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
+                        <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                        <span class="text-warning">{{ item.dayLefts }} Days</span>
+                      </ng-container>
+                    </ng-template>
+                    <ng-template #overtime>
+                      <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                        <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                        <span>Overtime</span>
+                      </p>
+                    </ng-template>
+                  </div>
+                  <div class="col col-4"></div>
+                </div>
+  
+                <hr />
+                <div class="row no-gutters text-center">
+                  <div class="col col-6">
+                    <span>{{ item.leaderName }}</span>
+                  </div>
+                  <div class="col col-6">
+                    <div class="progress">
+                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                        role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
+                        aria-valuemax="100">
+                        <span class="text-center">{{
+                          roundProgress(item.taskProgress)
+                          }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="createProjectModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <app-modal-project #modalProject [departments]="departments" (onChangeProject)="onChangeProject()">
+    </app-modal-project>
   </div>
 </div>

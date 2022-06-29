@@ -247,7 +247,7 @@
           <mat-card>
             <mat-card-content style="height: 430px">
               <div class="row" style="height: 100%">
-                <div class="col col-9">
+                <div class="col col-9" style="max-height:100%;">
                   <div class="chat-content">
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="float-left">
@@ -259,10 +259,16 @@
                       <span *ngIf="currentUserInfo.permissionCode === 3">
                         {{ leaderInfo?.firstName }}
                         {{ leaderInfo?.lastName }}
+                        <span [class.is-online]="(presenceService.onlineUsers | async).includes(leaderInfo?.firstName + ' ' + leaderInfo?.lastName)">
+                          <i class="fa fa-circle" aria-hidden="true"></i> 
+                        </span>
                       </span  >
                       <span *ngIf="currentUserInfo.permissionCode === 2">
                         {{ employeeInfo?.firstName }}
                         {{ employeeInfo?.lastName }}
+                        <span [class.is-online]="(presenceService.onlineUsers | async).includes(employeeInfo?.firstName + ' ' + employeeInfo?.lastName)">
+                          <i class="fa fa-circle" aria-hidden="true"></i>
+                        </span>
                       </span>
                     </div>
                     <div class="float-right  fsz-25">
@@ -272,7 +278,7 @@
                 </div>
 
                     <mat-divider class="mb-3" inset></mat-divider>
-                    <div class="chat-wrapper">
+                    <div class="chat-wrapper" #chatContent>
                       <ng-container *ngIf="(messageService.messageThread | async)?.length === 0">
                         <div>
                           No message yet... say hi by using the message box below
@@ -283,22 +289,24 @@
                         <div class="row">
                           <div class="col col-12">
                               <div *ngIf="message.senderId === currentUserInfo.id;else receiper" >
-                              <div class="chat-content-sender chat-content-message mb-2 float-right">
-                                <span class="ml-3 mr-3  d-inline-block">
+                              <div class="chat-content-sender chat-content-message mb-2 mr-2 float-right">
+                                <span class="ml-3 mr-3 mt-2 mb-2  d-inline-block">
                                   {{message.content}}
                                 </span>
                               </div>
                               </div>
                             <ng-template #receiper>
-                              <div class="chat-content-message float-left">
-                                <img
-                                src="assets/defaultUser.png"
-                                class="chat-content-img m-2"
-                                alt=""
-                              />
-                                <span class="ml-3 mr-3 d-inline-block">
-                                  {{message.content}}
-                                </span>
+                          <div class="col col-12">
+                            <div class="chat-content-message mb-2 mr-2 float-left">
+                                  <img
+                                  src="assets/defaultUser.png"
+                                  class="chat-content-img m-2"
+                                  alt=""
+                                  />
+                                  <span class="mr-2 mt-2 mr-3 mb-2  d-inline-block">
+                                    {{message.content}}
+                                  </span>
+                                </div>
                               </div>
                             </ng-template>
                           </div>
@@ -307,10 +315,7 @@
                     </div>
                     <form [formGroup]="messageForm">
                       <div class="input-group">
-                      <input type="text" class="form-control" formControlName="content" placeholder="Recipient's username" (keydown)="onChat($event)" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button">Button</button>
-                      </div>
+                      <input type="text" class="form-control" formControlName="content" placeholder="Aa" (keydown)="onChat($event)" aria-label="Recipient's username" aria-describedby="basic-addon2">
                       </div>
                     </form>
 
@@ -385,7 +390,7 @@
         class="btn btn-secondary float-left"
         data-dismiss="modal"
       >
-        <i class="fa fa-remove mr-2"></i>
+        <i class="fa fa-remove mr-2" style="color: rgb(255, 255, 255);"></i>
         Close
       </button>
       <button

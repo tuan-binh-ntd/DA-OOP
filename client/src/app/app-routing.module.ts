@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChangePasswordComponent } from './routes/change-password/change-password.component';
 import { HomeComponent } from './routes/home/home.component';
 import { LoginComponent } from './routes/login/login.component';
-import { NavBarComponent } from './routes/layout/nav-bar/nav-bar.component';
-import { ProfileComponent } from './routes/profile/profile.component';
 import { ProjectsComponent } from './routes/projects/projects.component';
 import { TasksComponent } from './routes/tasks/tasks.component';
 import { SiteLayoutComponent } from './routes/layout/site-layout/site-layout.component';
@@ -16,6 +13,8 @@ import { ForbiddenComponent } from './routes/forbidden/forbidden.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { ContentLayoutComponent } from './routes/layout/content-layout/content-layout.component';
 import { TaskStatusComponent } from './routes/tasks/partials/tasks-calendar/task-status/task-status.component';
+import { ProfileComponent } from './routes/profile/profile.component';
+import { ProjectListComponent } from './routes/projects/project-list/project-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,16 +29,16 @@ const routes: Routes = [
   {
     path: '', component: ContentLayoutComponent,
     children: [
-      { path: 'projects/tasks', component: TasksComponent },
+      { path: 'projects/tasks/list', component: TasksComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },
       { path: 'projects/tasks/calendar', component: TasksCalendarComponent },
       { path: 'projects/tasks/:id/status', component: TaskStatusComponent },
       { path: 'projects/tasks/:id/calendar', component: TasksCalendarComponent },
-      { path: 'projects/tasks/:id', component: TasksComponent },
+      { path: 'projects/tasks/:id/list', component: TasksComponent },
       { path: 'users', component: UsersComponent, canActivate: [AuthRightGuard] },
-      { path: 'projects', component: ProjectsComponent },
+      { path: 'projects/list', component: ProjectListComponent },
+      { path: 'projects/status', component: ProjectsComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'change-password', component: ChangePasswordComponent },
       { path: 'forbidden', component: ForbiddenComponent },
       {
         path: '**', pathMatch: 'full',

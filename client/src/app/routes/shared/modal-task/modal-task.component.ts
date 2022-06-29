@@ -1,10 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -20,12 +22,14 @@ import { finalize } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
+import { PresenceService } from 'src/app/services/presence.service';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
   styleUrls: ['./modal-task.component.css'],
 })
 export class ModalTaskComponent implements OnInit, OnDestroy {
+  @ViewChild('chatContent') private chatContent: ElementRef;
   @Input() projects: any[] = [];
   @Input() data;
   any;
@@ -35,6 +39,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   currentUserInfo: User;
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
+  isUserOnline: boolean = false;
   messageForm: FormGroup;
   mode: string = 'create';
   index: number = 0;
@@ -72,17 +77,27 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public presenceService: PresenceService
+
   ) {}
 
+  ngAfterViewChecked() {        
+      this.scrollToBottom();        
+  } 
 
+  scrollToBottom(): void {
+      try {
+          this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
+      } catch(err) { }                 
+  }
   async ngOnInit() {
     this.route.params.subscribe((params) => {
       this.pId = params['id'];
     });
     this.currentUserInfo = JSON.parse(localStorage.getItem('user'));
     this.fetchProjectData();
-    this.fetchUserData();
+    // this.fetchUserData();
     this.initForm();
     Number(this.currentUserInfo.permissionCode) === Permission.Employee
       ? this.statusCode.shift() && this.statusCode.pop()
@@ -92,6 +107,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           this.employeeInfo = res;
         });
       }
+      this.scrollToBottom();
   }
 
   getDepartmentName(id: string) {
@@ -106,6 +122,11 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((response) => {
         this.users = response;
+        if (this.currentUserInfo.departmentId) {
+          this.users = this.users.filter(
+            (p) => p.departmentId == this.currentUserInfo.departmentId
+          );
+        }
       });
   }
 
@@ -246,8 +267,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   checkEditForm() {
     this.modalForm.patchValue(this.data);
     if (this.isEdit) {
@@ -356,7 +375,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   }
 
   onChat(ev: any) {
-    if (ev.key === 'Enter') {
+    if (ev.key === 'Enter' && ev.target.value) {
       const payload = {
         taskId: this.data.id,
         senderId: this.currentUserInfo.id,
@@ -369,7 +388,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.messageService
         .sendMessage(payload)
         .then(() => {
-          this.messages.push(payload);
+          // this.messages.push(payload);
           this.messageForm.reset();
         });
     }
@@ -379,3 +398,5 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     this.messageService.stopHubConnection();
   }
 }
+
+

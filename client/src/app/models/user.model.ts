@@ -1,4 +1,5 @@
 import { Permission } from "../helpers/PermisionEnum";
+import { Photo } from "./photo";
 
 export class AppUser{
     id: string;
@@ -10,4 +11,5 @@ export class AppUser{
     password: string;
     departmentId: string;
     permissionCode: Permission;
+    photos: Photo[]
 }

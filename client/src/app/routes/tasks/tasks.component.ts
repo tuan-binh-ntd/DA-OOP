@@ -4,7 +4,7 @@ import { Calendar } from '@fullcalendar/angular';
 import * as bootstrap from 'bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, of } from 'rxjs';
+import { catchError, of,take } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Priority } from 'src/app/helpers/PriorityEnum';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
@@ -23,7 +23,7 @@ import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-  @ViewChild('modalTask') modalTask!: ModalTaskComponent;
+  @ViewChild('modalTask', {static: true}) modalTask!: ModalTaskComponent;
   isLoading: boolean = false;
   leaderInfo: any;
   assigneeInfo:any;
@@ -117,6 +117,9 @@ export class TasksComponent implements OnInit {
       .subscribe((response) => {
         this.tasks = response;
         this.departmentId = response.departmentId;
+        if(this.filterUserTask == 'My Task'){
+          this.tasks = this.tasks.filter(t => t.createUserId !== t.appUserId);
+        }     
         this.hideLoading();
         this.isLoading = false;
       });
@@ -127,7 +130,7 @@ export class TasksComponent implements OnInit {
     this.showLoading();
     this.userService
       .getAllUser()
-      .pipe(catchError((err) => of(err)))
+      .pipe(take(1))
       .subscribe((response) => {
         this.users = response;
         this.hideLoading();
@@ -179,10 +182,10 @@ export class TasksComponent implements OnInit {
     setTimeout(()=>{
     if(this.isShowModal){
       myModal.show();
-      this.modalTask.openModal(data, mode, isEdit);}
+      this.modalTask.openModal(data, mode, isEdit);
+    }
     }
     ,300)
-   
   }
 
   onChangeTask() {
@@ -287,5 +290,9 @@ export class TasksComponent implements OnInit {
 
   showLoading(){
       document.getElementById('spinner').style.display = 'block';
+  }
+
+  get StatusCode(){
+    return StatusCode
   }
 }
