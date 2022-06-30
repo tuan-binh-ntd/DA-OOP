@@ -126,7 +126,7 @@ transition: all .4s ease-in-out;
   }
   .fixed__card{
     height: 75vh;
-    max-height: calc(60vh);
+    max-height: calc(60vh - 35px);
     overflow:hidden scroll;
     visibility: hidden;
 }
@@ -134,6 +134,7 @@ transition: all .4s ease-in-out;
 .fixed__card-content,
 .fixed__card:hover,
 .fixed__card:focus {
+  height: 100%;
   visibility: visible;
 }
   .button{

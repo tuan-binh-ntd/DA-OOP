@@ -62,11 +62,12 @@
           </h6>
           <div class="countTask">{{ reOpendCount }}</div>
         </div>
-        <div class="fixed__card">
+        <div class="fixed__card" >
         <div
           cdkDropList
           id="reopen"
           cdkDropListSortingDisabled
+          [cdkDropListAutoScrollStep]="35"   
           #listReopen="cdkDropList"
           [cdkDropListAutoScrollDisabled]="false"
           [cdkDropListData]="reOpenTask"
