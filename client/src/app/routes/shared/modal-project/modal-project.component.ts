@@ -19,6 +19,7 @@ export class ModalProjectComponent implements OnInit {
   @Input() departments: any[] = [];
   @Output() onChangeProject = new EventEmitter();
   isLoading: boolean = false;
+  todayDate:Date = new Date();
   mode: string = 'create';
   title: string = 'New Project';
   users: any[] = [];

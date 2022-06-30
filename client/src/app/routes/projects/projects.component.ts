@@ -55,25 +55,25 @@ export class ProjectsComponent implements OnInit {
   user: User;
   assigneeInfo:any;
   getAllProject: GetAllProject = new GetAllProject();
-  ngOnInit(): void {
+ async ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
     if (user?.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
+   await this.fetchUserData();
     this.fetchDepartmentData();
     this.fetchProjectData();
-    this.fetchUserData();
   }
 
-  fetchUserData() {
+  async fetchUserData() {
     this.assigneeInfo = JSON.parse(localStorage.getItem('user'));
     this.isLoading = true;
     this.showLoading();
-    this.userService
+  await  this.userService
       .getAllUser()
       .pipe(take(1))
-      .subscribe((response) => {
+      .toPromise().then((response) => {
         this.users = response;
         this.hideLoading();
         this.isLoading = false;
@@ -117,7 +117,11 @@ export class ProjectsComponent implements OnInit {
         this.isLoading = false;
       });
   }
-
+getUserInvolve(id:string){
+ const prj = this.projects.find(project => project.id === id);
+ const userInvolve = this.users.filter(element => prj.userList.includes(element.appUserId));
+  return userInvolve
+}
   getDepartmentName(id: string) {
     return this.departments.find((department) => department.id === id)
       ?.departmentName;

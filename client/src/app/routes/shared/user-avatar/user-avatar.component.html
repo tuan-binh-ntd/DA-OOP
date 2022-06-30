@@ -1,9 +1,10 @@
-<<ng-container *ngFor="let user of users">
-    <div *ngIf="user.photoUrl; else defaultPhoto">
-        <ngx-avatar size="30" [name]="user.firstName + user.lastName" [src]="user.photoUrl"></ngx-avatar>
+<ng-container *ngFor="let user of users">
+    <div *ngIf="user.photoUrl; else defaultPhoto" >
+        <ngx-avatar  size="30" [name]="user.firstName + user.lastName" [src]="user.photoUrl"
+        data-toggle="tooltip" data-placement="top" [title]="user.firstName + ' ' +  user.lastName"></ngx-avatar>
     </div>
     <ng-template #defaultPhoto>
-        <ngx-avatar size="30" [name]="user.firstName + user.lastName"></ngx-avatar>
+        <ngx-avatar size="15" [name]="user.firstName + user.lastName " data-toggle="tooltip" data-placement="top" [title]="user.firstName + ' ' +  user.lastName"></ngx-avatar>
     </ng-template>
 </ng-container>
 

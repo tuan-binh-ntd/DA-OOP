@@ -108,6 +108,18 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
       });
   }
 
+  getUserAvatar(id:string){
+   const task = this.tasks.find(task=> task.id === id);
+   const leader = this.users.find(user => user.appUserId === task.appUserId)
+   const assignee = this.users.find(user => user.appUserId === task.createUserId)
+   let users= []
+   if(leader.appUserId === assignee.appUserId){
+    users.push(leader)
+   }else{
+    users=[leader,assignee]
+   }
+   return users;
+  }
   hideLoading(){
     document.getElementById('spinner')
     .style.display = 'none';

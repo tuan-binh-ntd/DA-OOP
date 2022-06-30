@@ -40,6 +40,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   @Output() onChangeTask = new EventEmitter();
   isLoading: boolean = false;
   isUserOnline: boolean = false;
+  todayDate:Date = new Date();
   messageForm: FormGroup;
   mode: string = 'create';
   index: number = 0;
@@ -48,6 +49,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   departments: any[] = [];
   modalForm!: FormGroup;
   isEdit: boolean = false;
+  maxDate: Date = new Date();
   messages: any[] = [];
   pId: string = '';
   taskTypes: any[] = [
@@ -213,6 +215,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
       this.modalForm.get('projectId').setValue(this.pId);
+      const projectOfTask = this.projects.find(prj => prj.id === this.pId);
+      this.maxDate = projectOfTask.deadlineDate;
+
       if (this.pId) {
         this.modalForm.controls['projectId'].disable();
       }

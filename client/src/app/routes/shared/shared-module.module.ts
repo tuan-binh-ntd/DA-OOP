@@ -93,6 +93,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     TaskTypeIconComponent,
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
+    UserAvatarComponent
   ],
   providers:[
     MatDatepickerModule,

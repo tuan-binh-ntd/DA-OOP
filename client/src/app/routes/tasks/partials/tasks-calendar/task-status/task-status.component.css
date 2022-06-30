@@ -124,6 +124,18 @@ transition: all .4s ease-in-out;
     background-color: #fff;
     border-radius: 50%;
   }
+  .fixed__card{
+    height: 75vh;
+    max-height: calc(60vh);
+    overflow:hidden scroll;
+    visibility: hidden;
+}
+
+.fixed__card-content,
+.fixed__card:hover,
+.fixed__card:focus {
+  visibility: visible;
+}
   .button{
     align-items: center;
     background-color: #FFFFFF;

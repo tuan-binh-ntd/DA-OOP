@@ -116,7 +116,7 @@
             <div class="col-10">
               <mat-form-field class="w-100">
                 <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="deadline" formControlName="deadlineDate" />
+                <input matInput [matDatepicker]="deadline" [min]="todayDate" formControlName="deadlineDate" />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="deadline">
                 </mat-datepicker-toggle>
