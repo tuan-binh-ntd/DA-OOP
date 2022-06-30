@@ -83,3 +83,11 @@
     </ul>
   </div>
 </nav>
+
+<div class="modal fade" id="changePasswordModal" [hidden]="!isShowModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <app-change-password #modalChangePassword>
+        </app-change-password>
+      </div>
+</div>
