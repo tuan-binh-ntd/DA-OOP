@@ -1,21 +1,63 @@
 <div class="container-fluid" style="position: relative">
   <div class="row">
-    <h5 class="fw-700">Hi {{ user.userName }}</h5>
+    <h6 class="fw-700">Hi {{ user.userName }}</h6>
   </div>
-  <div class="row">
-    <div class="col col-3">
-      <mat-card>
-        <mat-card-subtitle class="mb-2">My Project</mat-card-subtitle>
-        <mat-card-title class="mb-2">{{totalProjects}}</mat-card-title>
-        <mat-card-content>
-            <div style="min-height: 50px; max-height: 50px">
-                <ngx-charts-line-chart  [animations]="true" [results]="data" [scheme]="'nightLights'">
-                </ngx-charts-line-chart>
-            </div>
-        </mat-card-content>
-      </mat-card>
-      
+  <div class="row ">
+    <div class="col col-7">
+      <img width="100%" src="assets/visualize-and-plan.gif" alt="" />
+      <!-- <ngx-charts-advanced-pie-chart [results]="pieData">
+
+      </ngx-charts-advanced-pie-chart> -->
     </div>
+    <div class="col col-5">
+      <div class="row">
+        <div class="col col-6">
+          <mat-card>
+            <h6 class="p-text">Hi</h6>
+            <h3 class="mb-2">
+              <i class="fa fa-user mr-2" aria-hidden="true"></i>
+              {{user.userName}}</h3>
+            <mat-card-content>
+                <div style="min-height: 50px; max-height: 50px">
+                    <ngx-charts-line-chart  [animations]="true" [results]="data" [scheme]="'nightLights'">
+                    </ngx-charts-line-chart>
+                </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col col-6">
+          <mat-card>
+            <h6 class="p-text">My Projects</h6>
+            <h3 class="mb-2">
+          <i class="fa fa-bookmark mr-2" aria-hidden="true"></i>
+              {{totalProjects}}</h3>
+            <mat-card-content>
+                <div style="min-height: 50px; max-height: 50px">
+                    <ngx-charts-line-chart  [animations]="true" [results]="data" [scheme]="'nightLights'">
+                    </ngx-charts-line-chart>
+                </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <table id="example" class="table table-hover mt-4" style="width:100%">
+        <thead>
+          <tr>
+            <th class="text-center align-middle" style="width: 5%;">Task Name</th>
+            <th class="align-middle" style="width: auto;">Priority</th>
+            <th class="align-middle" style="width: auto;">Deadline</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+            </table>
+    </div>
+  
   </div>
 </div>
 
