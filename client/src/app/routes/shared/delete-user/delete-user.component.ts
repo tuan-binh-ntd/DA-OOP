@@ -47,7 +47,7 @@ export class DeleteUserComponent implements OnInit {
       deletedUserId: [null, Validators.required],
       deleteUserPermission: [null, Validators.required],
       deletedUserPermission: [null, Validators.required],
-      newLeaderId: [null, Validators.required],
+      newLeaderId: [null],
     });
   }
 

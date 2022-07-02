@@ -224,7 +224,7 @@ namespace API.Controllers
             {
                 return BadRequest("Company had project manager");
             }
-            if (leader != null && input.PermissionCode == Permission.Leader)
+            if (leader != null && leader != user && user.PermissionCode == Permission.Employee && input.PermissionCode == Permission.Leader)
             {
                 return BadRequest("Department had leader");
             }
