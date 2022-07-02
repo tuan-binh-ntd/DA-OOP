@@ -34,6 +34,7 @@ import { DepartmentIconComponent } from './department-icon/department-icon.compo
 import { AvatarModule } from 'ngx-avatar';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { PermissionIconComponent } from './permission-icon/permission-icon.component';
+import { DeleteUserComponent } from './delete-user/delete-user.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { PermissionIconComponent } from './permission-icon/permission-icon.compo
     TaskTypeIconComponent,
     UserAvatarComponent,
     PermissionIconComponent,
+    DeleteUserComponent,
   ],
   imports: [
     CommonModule,
@@ -96,6 +98,7 @@ import { PermissionIconComponent } from './permission-icon/permission-icon.compo
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
     PermissionIconComponent,
+    DeleteUserComponent,
     UserAvatarComponent
   ],
   providers:[

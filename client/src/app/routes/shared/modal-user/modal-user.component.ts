@@ -110,7 +110,7 @@ export class ModalUserComponent implements OnInit {
       this.modalForm.controls[i].updateValueAndValidity();
     }
     if (this.modalForm.valid) {
-      this.modalForm.value.permissionCreator = Number(JSON.parse(localStorage.getItem('user')).permissionCode)
+      this.modalForm.value.permissionCreator = this.user.permissionCode
       if (this.mode === 'create') {
         this.authenticationService
           .register(this.modalForm.value)

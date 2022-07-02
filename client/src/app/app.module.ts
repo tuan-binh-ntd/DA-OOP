@@ -36,6 +36,7 @@ import { HomeV2Component } from './routes/home-v2/home-v2.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatCardModule } from '@angular/material/card';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
+import { MatDividerModule } from '@angular/material/divider';
 
 FullCalendarModule.registerPlugins([
   bootstrapPlugin,
@@ -71,7 +72,7 @@ FullCalendarModule.registerPlugins([
     SharedModuleModule,
     MatCardModule,
     CdkScrollableModule,
-    
+    MatDividerModule,
     FormsModule,
     CommonModule,
     AppRoutingModule,

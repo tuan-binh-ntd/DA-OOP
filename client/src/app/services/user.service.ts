@@ -40,4 +40,8 @@ export class UserService {
     return this.http.post(this.baseUrl + '/delete-photo/' + model.photoId, model);
   }
 
+  deleteUser(payload: any):Observable<any>{
+    return this.http.delete(this.baseUrl + '/delete', payload);
+  }
+
 }
