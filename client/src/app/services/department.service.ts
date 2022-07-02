@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -6,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DepartmentService {
-  baseUrl = "https://localhost:5001/api/department";
+  baseUrl = environment.apiUrl + "department";
   constructor(private http: HttpClient) { }
 
   getAllDepartment():Observable<any>{

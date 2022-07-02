@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -6,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectService {
-  baseUrl = "https://localhost:5001/api/project";
+  baseUrl = environment.apiUrl + "project";
   constructor(private http: HttpClient) {
   }
   getAllProject(payload?: any):Observable<any>{

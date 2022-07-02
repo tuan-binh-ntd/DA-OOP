@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { catchError, of } from 'rxjs';
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit {
   uploader: FileUploader;
   photoInput: PhotoInput = new PhotoInput();
   hasBaseDropZoneOver: false;
-  baseUrl = "https://localhost:5001/api";
+  baseUrl = environment.apiUrl
 
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },

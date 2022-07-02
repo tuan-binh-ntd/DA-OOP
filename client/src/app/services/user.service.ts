@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,7 +8,7 @@ import { PhotoInput } from '../models/photo-input';
   providedIn: 'root'
 })
 export class UserService {
-  baseUrl = "https://localhost:5001/api/user";
+  baseUrl = environment.apiUrl + "user";
 
   constructor(private http: HttpClient, ) { }
 

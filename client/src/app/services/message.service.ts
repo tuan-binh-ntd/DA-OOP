@@ -10,7 +10,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class MessageService {
-  baseUrl = "https://localhost:5001/api/message";
+  baseUrl = environment.apiUrl + "message";
   hubUrl = environment.hubUrl;
   private hubConnection: HubConnection;
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
