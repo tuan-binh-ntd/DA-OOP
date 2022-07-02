@@ -137,7 +137,7 @@ getUserInvolve(id:string){
   }
 
   onViewTask(projectId: string): any {
-    document.location.href= 'projects/tasks/' + projectId;
+    document.location.href= 'projects/tasks/' + projectId + '/list';
   }
 
   onChangeProject() {

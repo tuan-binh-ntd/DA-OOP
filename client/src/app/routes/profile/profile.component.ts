@@ -91,6 +91,7 @@ export class ProfileComponent implements OnInit {
 
   fileOverBase(e: any) {
     this.hasBaseDropZoneOver = e;
+    this.uploader.uploadAll()
   }
 
 

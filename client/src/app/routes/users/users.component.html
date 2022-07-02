@@ -16,17 +16,17 @@
         <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <table id="example" class="table table-hover table-bordered" style="width:100%">
+  <table id="example" class="table table-hover mt-4" style="width:100%">
     <thead>
       <tr>
-        <th>Online</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Department</th>
-        <th>Permission</th>
-        <th>Operator</th>
+        <th class="text-center align-middle">Online</th>
+        <th class="align-middle">Name</th>
+        <th class="align-middle">Address</th>
+        <th class="align-middle">Email</th>
+        <th class="text-center align-middle">Phone</th>
+        <th class="text-center align-middle">Department</th>
+        <th class="text-center align-middle">Permission</th>
+        <th class="text-center align-middle">Operator</th>
       </tr>
     </thead>
     <tbody>
@@ -36,13 +36,16 @@
             <i class="fa fa-user mr-2"></i>
           </span>
         </td>
-        <td>{{ user.firstName }} {{ user.lastName }}</td>
-        <td>{{ user.address }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.phone }}</td>
-        <td>{{ getDepartmentName(user.departmentId) }}</td>
-        <td>{{ getPermission(user.permissionCode) }}</td>
-        <td>
+        <td class="align-middle">
+          <app-user-avatar [users]="user"></app-user-avatar>
+          {{ user.firstName }} {{ user.lastName }}
+        </td>
+        <td class="align-middle">{{ user.address }}</td>
+        <td class="align-middle">{{ user.email }}</td>
+        <td class="text-center align-middle">{{ user.phone }}</td>
+        <td class="text-center align-middle">{{ getDepartmentName(user.departmentId) }}</td>
+        <td class="text-center align-middle">{{ getPermission(user.permissionCode) }}</td>
+        <td class="text-center align-middle">
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>

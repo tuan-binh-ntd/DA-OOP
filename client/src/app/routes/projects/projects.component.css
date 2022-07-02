@@ -111,29 +111,32 @@ hr {
   .example-container {
     width: 100%;
     max-width: 100%;
+    padding:5px 5px;
     margin: 0 25px 25px 0;
     display: inline-block;
     vertical-align: top;
   }
 
   .example-list {
-    border: solid 1px #ccc;
     min-height: 60px;
-    background: white;
     border-radius: 4px;
-    overflow: hidden;
-    height: 58vh;
+    overflow-y: scroll;
+    padding: 5px;
+    height: 56vh;
     display: block;
   }
 
   .example-box {
+    margin-right: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin-bottom: 1rem;
+    border-radius: 10px;
     padding: 20px 10px;
-    border-bottom: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    flex-direction: row;
+    /* display: flex; */
+    /* flex-direction: row; */
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     box-sizing: border-box;
     cursor: move;
     background: white;
@@ -195,16 +198,120 @@ hr {
     border-radius: 7px;
     position: static;
     background: linear-gradient(90deg,#00ff87 100%,#00ff87 0);
+
   }
-  
+
+
+
   .countProject{
     border-radius: 50%;
-    padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px 0;
     width: 36px;
     height: 36px;
-    padding: 8px;
+    padding: 6px;
     color: var(--light-text);
     text-align: center;
 
   }
+
+  .countProject-icon{
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    margin-left: auto;
+  background-color: #fff;
+cursor: pointer;
+-o-transition: all .4s ease-in-out;
+-webkit-transition: all .4s ease-in-out;
+transition: all .4s ease-in-out;
+  }
+  .countProject-icon:hover{
+    transform: translatey(-2px);
+  }
+  .countProject-icon >  i {
+    color: var(--primary-color);
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  .fixed__card{
+    height: 75vh;
+    max-height: calc(60vh - 35px);
+    overflow:hidden scroll;
+    visibility: hidden;
+}
+
+.fixed__card-content,
+.fixed__card:hover,
+.fixed__card:focus {
+  height: 100%;
+  visibility: visible;
+}
+  .button{
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: .25rem;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 14px;
+    height: 40px;
+    justify-content: center;
+    margin: 0;
+    padding: calc(.875rem - 1px) calc(1rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    min-width: 80px;
+  }
+  .dropdown-item:active{
+    background-color: var(--heavy-color);
+  }
+
+  .dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  @keyframes DropDown{
+  0%{
+    transform: scaleY(0);
+  }
+  80%{
+    transform: scaleY(1.1);
+  }
+  100%{
+    transform: scaleY(1);
+  }
+  }
+  .navbar-dropdown{
+    animation: DropDown 0.5s ease-in-out forwards;
+    transform-origin: top center;
+    margin-top: 1;
+    z-index: 1000;
+    position: absolute;
+  }
+
+.my-box{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
+}
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}

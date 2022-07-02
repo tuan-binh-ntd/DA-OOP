@@ -33,6 +33,7 @@ import { TaskTypeIconComponent } from './task-type-icon/task-type-icon.component
 import { DepartmentIconComponent } from './department-icon/department-icon.component';
 import { AvatarModule } from 'ngx-avatar';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { PermissionIconComponent } from './permission-icon/permission-icon.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
     UserAvatarComponent,
+    PermissionIconComponent,
   ],
   imports: [
     CommonModule,
@@ -93,6 +95,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     TaskTypeIconComponent,
     ProjectTypeIconComponent,
     TaskTypeIconComponent,
+    PermissionIconComponent,
     UserAvatarComponent
   ],
   providers:[
