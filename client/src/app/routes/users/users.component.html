@@ -30,29 +30,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users" >
+      <tr *ngFor="let item of users" >
         <td class="text-center align-middle" style="width:7%">
-          <span [class.is-online]="(presence.onlineUsers | async).includes(user.firstName + ' ' + user.lastName)">
+          <span [class.is-online]="(presence.onlineUsers | async).includes(item.firstName + ' ' + item.lastName)">
             <i class="fa fa-user mr-2"></i>
           </span>
         </td>
         <td class="align-middle">
-          <app-user-avatar [users]="user"></app-user-avatar>
-          {{ user.firstName }} {{ user.lastName }}
+          {{ item.firstName }} {{ item.lastName }}
         </td>
-        <td class="align-middle">{{ user.address }}</td>
-        <td class="align-middle">{{ user.email }}</td>
-        <td class="text-center align-middle">{{ user.phone }}</td>
-        <td class="text-center align-middle">{{ getDepartmentName(user.departmentId) }}</td>
+        <td class="align-middle">{{ item.address }}</td>
+        <td class="align-middle">{{ item.email }}</td>
+        <td class="text-center align-middle">{{ item.phone }}</td>
+        <td class="text-center align-middle">{{ getDepartmentName(item.departmentId) }}</td>
         <td class="text-center align-middle">
-            <app-permission-icon [permission]="user.permissionCode" class="mr-2"></app-permission-icon>
-            {{ getPermission(user.permissionCode) }}
+            <app-permission-icon [permission]="item.permissionCode" class="mr-2"></app-permission-icon>
+            {{ getPermission(item.permissionCode) }}
         </td>
         <td class="text-center align-middle">
-          <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
+          <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(item, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
-          <button class="btn btn-outline-danger" (click)="openDeleteModal(user)">
+          <button class="btn btn-outline-danger" (click)="openDeleteModal(item)">
             <i class="fa fa-lg fa-user-times"></i>
           </button>
         </td>

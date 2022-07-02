@@ -79,6 +79,7 @@ export class DeleteUserComponent implements OnInit {
           .subscribe((response) => {
             if (response) {
               this.toastr.success('Successfully!');
+              this.onDeleteUser.emit();
             } else {
               this.toastr.error("You must had permission or department had leader")
             }
