@@ -1,7 +1,7 @@
 <div class="container-fluid"  style="position: relative;">
   <div class="row mt-4">
     <div class="col col-6 mb-4">
-      <h2 class="m-0 pt-1">Employees</h2>
+      <h2 class="mb-3 text-primary fw-700">Employees</h2>
     </div>
     <div *ngIf="!disable" class="col col-6 mb-4">
       <button class="button-create float-right" data-toggle="modal" data-target="#createUserModal"
@@ -19,7 +19,7 @@
   <table id="example" class="table table-hover mt-4" style="width:100%">
     <thead>
       <tr>
-        <th class="text-center align-middle">Online</th>
+        <th class="text-center align-middle" style="width:7%">Online</th>
         <th class="align-middle">Name</th>
         <th class="align-middle">Address</th>
         <th class="align-middle">Email</th>
@@ -30,8 +30,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users">
-        <td class="text-center align-middle" >
+      <tr *ngFor="let user of users" >
+        <td class="text-center align-middle" style="width:7%">
           <span [class.is-online]="(presence.onlineUsers | async).includes(user.firstName + ' ' + user.lastName)">
             <i class="fa fa-user mr-2"></i>
           </span>
@@ -44,7 +44,10 @@
         <td class="align-middle">{{ user.email }}</td>
         <td class="text-center align-middle">{{ user.phone }}</td>
         <td class="text-center align-middle">{{ getDepartmentName(user.departmentId) }}</td>
-        <td class="text-center align-middle">{{ getPermission(user.permissionCode) }}</td>
+        <td class="text-center align-middle">
+            <app-permission-icon [permission]="user.permissionCode" class="mr-2"></app-permission-icon>
+            {{ getPermission(user.permissionCode) }}
+        </td>
         <td class="text-center align-middle">
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
