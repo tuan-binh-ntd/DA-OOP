@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./delete-user.component.css']
 })
 export class DeleteUserComponent implements OnInit {
-  @Output() onChangeUser = new EventEmitter();
+  @Output() onDeleteUser = new EventEmitter();
   modalForm!: FormGroup;
   data: any;
   p: any;
@@ -79,7 +79,6 @@ export class DeleteUserComponent implements OnInit {
           .subscribe((response) => {
             if (response) {
               this.toastr.success('Successfully!');
-              this.onChangeUser.emit();
             } else {
               this.toastr.error("You must had permission or department had leader")
             }

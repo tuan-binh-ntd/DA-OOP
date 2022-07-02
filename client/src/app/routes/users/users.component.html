@@ -68,6 +68,6 @@
 <div class="modal fade" id="deleteUserModal" tabindex="-1" [hidden]="!isShowModal" role="dialog"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
-    <app-delete-user #modalDeleteUser></app-delete-user>
+    <app-delete-user #modalDeleteUser (onDeleteUser)="onDeleteUser()"></app-delete-user>
   </div>
 </div>
