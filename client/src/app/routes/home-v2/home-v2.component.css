@@ -1,0 +1,25 @@
+.home__detail-icon {
+    box-shadow: 0 15px 15px rgb(16 30 54 / 15%);
+    font-size: 30px;
+    border-radius: 20px;
+    width: 60px;
+    height: 60px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color:#fff;
+  }
+
+  .purple{
+    background: linear-gradient(180deg,#9f8fff 0,#7b68ee 100%);
+  }  
+
+  .blue{
+    background: linear-gradient(180deg,#84dfff .01%,#49ccf9 99.99%);
+  }
