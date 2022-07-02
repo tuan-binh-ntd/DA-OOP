@@ -1,75 +1,97 @@
 <div class="container-fluid" style="position: relative;">
+  <div class="row no-gutters mt-4">
+    <div class="col col-6 d-flex">
+      <h2 class="mb-3 text-primary fw-700">Your Profile</h2>
+    </div>
+  </div>
   <div class="my-box d-flex justify-content-center">
     <div class="spinner-border text-primary" role="status" id="spinner"
       style="width: 3rem; height: 3rem; z-index: 9999;">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <div class="row">
+  <div class="row mb-3" style="height: 80%;">
     <div class="col col-4">
-      <h1>Your Profile</h1>
+      <img src="{{user.photoUrl}}" alt="{{user.email}}" class="avatar">
     </div>
-    <div class="col-8"></div>
-    <div class="col col-4">
-      <div class="card">
-        <img src="{{user.photoUrl}}" alt="{{user.email}}" class="card-img-top img-thumbnail">
-        <div class="card-body">
-          <div>
-            <strong>FullName:</strong>
-            <p>{{ currentUser.firstName + ' ' + currentUser.lastName }}</p>
-          </div>
-          <div>
-            <strong>Email:</strong>
-            <p>{{currentUser.email}}</p>
-          </div>
-          <div>
-            <strong>Phone:</strong>
-            <p>{{currentUser.phone}}</p>
-          </div>
-          <div>
-            <strong>Department:</strong>
-            <p>{{getDepartmentName(currentUser.departmentId)}}</p>
-          </div>
-          <div>
-            <strong>Address:</strong>
-            <p>{{currentUser.address}}</p>
-          </div>
-          <div>
-            <strong>Permission:</strong>
+    <div class="col col-8">
+      <div class="row no-gutters">
+        <div class="col col-6">
+          <h3 class="text-primary fw-700">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h3>
+          <p>{{getDepartmentName(currentUser.departmentId)}}</p>
+          <div class="d-flex">
+            <app-permission-icon [permission]="currentUser.permissionCode"></app-permission-icon>
             <p>{{getPermission(currentUser.permissionCode)}}</p>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col col-6">
-      <div class="row">
-        <div class="col col-3" *ngFor="let photo of currentUser.photos">
-          <img src="{{photo.url}}" alt="{{photo.id}}" class="img-thumbnail p-1">
-          <div class="mt-2">
-            <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
-              [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm">
-              Main</button>
-            <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
-              <i class="fa fa-trash"></i></button>
+        <div class="col col-6">
+          <div class="d-flex">
+            <i class="fa fa-envelope"></i>
+            <p>{{currentUser.email}}</p>
+          </div>
+          <div class="d-flex">
+            <i class="fa fa-phone"></i>
+            <p>{{currentUser.phone}}</p>
+          </div>
+          <div class="d-flex">
+            <i class="fa fa-map-marker"></i>
+            <p>{{currentUser.address}}</p>
           </div>
         </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="col col-10">
+          <div class="example-container">
+            <div class="row">
+              <div *ngFor="let photo of currentUser.photos" class="mr-2">
+                <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
+                <div class="mt-2">
+                  <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
+                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm">
+                    Main</button>
+                  <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
+                    <i class="fa fa-trash"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-2">
+          <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+            [uploader]="uploader" class="float-right card p-3 text-center mb-3 my-drop-zone">
+            <i class="fa fa-upload fa-3x"></i>
+            Add photos here
+          </div>
+          <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-12" style="background-color:rgb(70, 55, 124)">
+    <i class="fa fa-chrome mr-2"></i>
+    <i class="fa fa-facebook-square mr-2"></i>
+    <i class="fa fa-instagram mr-2"></i>
+    <i class="fa fa-globe mr-2"></i>
+  </div>
+</div>
+
+
+<!-- ádasdasdasdsa -->
+
+
+    <!-- <div class="col col-4">
+      <div class="row">
       </div>
 
       <div class="row mt-3">
         <div class="col-md-3">
           <h3>Add Photos</h3>
-          <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-            [uploader]="uploader" class="card p-3 text-center mb-3 my-drop-zone">
-            <i class="fa fa-upload fa-3x"></i>
-            Drop photos here
-          </div>
           Multiple
-          <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
           Single
           <input type="file" ng2FileSelect [uploader]="uploader" />
         </div>
 
-        <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
+        <div class="col-md-9" style="margin-bottom: 40px">
           <h3>Upload queue</h3>
           <p>Queue length: {{ uploader?.queue?.length }}</p>
           <table class="table">
@@ -114,6 +136,4 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </div> -->
