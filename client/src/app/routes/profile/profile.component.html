@@ -42,12 +42,12 @@
       <div class="row no-gutters">
         <div class="col col-10">
           <div class="example-container">
-            <div class="row">
+            <div class="row" style="padding: 0px 20px;">
               <div *ngFor="let photo of currentUser.photos" class="mr-2">
                 <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
                 <div class="mt-2">
                   <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
-                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm">
+                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm mb-2">
                     Main</button>
                   <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
                     <i class="fa fa-trash mr-2"></i></button>
@@ -67,12 +67,12 @@
       </div>
     </div>
   </div>
-  <div class="col col-12" style="background-color:rgb(70, 55, 124)">
+  <!-- <div class="col col-12" style="background-color:rgb(70, 55, 124)">
     <i class="fa fa-chrome mr-2"></i>
     <i class="fa fa-facebook-square mr-2"></i>
     <i class="fa fa-instagram mr-2"></i>
     <i class="fa fa-globe mr-2"></i>
-  </div>
+  </div> -->
 </div>
 
 
