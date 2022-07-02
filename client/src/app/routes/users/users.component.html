@@ -4,10 +4,9 @@
       <h2 class="mb-3 text-primary fw-700">Employees</h2>
     </div>
     <div *ngIf="!disable" class="col col-6 mb-4">
-      <button class="button-create float-right" data-toggle="modal" data-target="#createUserModal"
+      <button class="fixedButton btn--fab color-1 float-right" data-toggle="modal" data-target="#createUserModal"
         (click)="modalUser.openModal(null, 'create', true);this.isShowModal = true">
-        <i class="fa fa-user-plus mr-2"></i>
-        Create User
+        <i class="fa fa-plus" ></i>
       </button>
     </div>
   </div>
