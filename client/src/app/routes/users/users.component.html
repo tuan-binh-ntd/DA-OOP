@@ -49,7 +49,7 @@
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(user, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
-          <button class="btn btn-outline-danger" (click)="openDetailModal(user, 'delete', true)">
+          <button class="btn btn-outline-danger" (click)="openDeleteModal(user)">
             <i class="fa fa-lg fa-user-times"></i>
           </button>
         </td>
@@ -62,5 +62,12 @@
   aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <app-modal-user #modalUser (onChangeUser)="onChangeUser()"></app-modal-user>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" [hidden]="!isShowModal" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <app-delete-user #modalDeleteUser></app-delete-user>
   </div>
 </div>
