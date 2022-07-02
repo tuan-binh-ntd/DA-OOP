@@ -11,7 +11,6 @@ export class DepartmentIconComponent implements OnInit {
   @Input() departmentName:string = ''
   constructor() { }
   ngOnInit(): void {
-    console.log(this.departmentName)
   }
 
 

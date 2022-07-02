@@ -53,22 +53,14 @@ export class ChangePasswordComponent implements OnInit {
     this.modalForm.patchValue(data);
     this.modalForm.get('email').disable();
   }
-
-  checkPassword(ev: any){
-    if (ev.key === "Enter") {
-      if(this.modalForm.value.password == this.users.find(u => u.appUserId == this.data.id).password){
-        this.passwordCheck = true;
-      } else {
-        this.toastr.warning("Password is incorrected");
-      }
-    }
-  }
-
+  
   checkPasswordConfirm(){
-    if(this.modalForm.value.passwordConfirm == this.modalForm.value.newPassword){
+    if(this.modalForm.value.passwordConfirm == this.modalForm.value.newPassword && this.modalForm.value.password == this.users.find(u => u.appUserId == this.data.id).password){
       this.submitForm();
-    } else {
+    } else if(this.modalForm.value.passwordConfirm !== this.modalForm.value.newPassword) {
       this.toastr.warning("PasswordConfirm is incorrected");
+    } else {
+      this.toastr.warning("Password is incorrected");
     }
   }
 
