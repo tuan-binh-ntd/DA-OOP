@@ -95,6 +95,20 @@ export class UsersComponent implements OnInit {
     this.modalDeleteUser.openDeleteUserModal(data);
   }
 
+  onDeleteUser() {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('deleteUserModal')!
+    );
+
+    // $('#createProjectModal').modal('hide')
+    // $('#createProjectModal').hide;
+    myModal.hide();
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
+    this.isShowModal = false;
+    this.fetchUserData();
+  }
+
   onChangeUser() {
     var myModal = new bootstrap.Modal(
       document.getElementById('createUserModal')!
