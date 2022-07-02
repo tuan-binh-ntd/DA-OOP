@@ -13,30 +13,21 @@
       <li class="nav-item nav-active">
         <a class="nav-link font-weight-bold" [routerLink]="['home']">Home</a>
       </li>
-      <li class="nav-item nav-active">
-        <a class="nav-link font-weight-bold" [routerLink]="['projects/status']">My Projects</a>
+      <li class="nav-item nav-active dropdown">
+        <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
+        aria-expanded="false" id="navbarDropdown3" data-target="target2">
+        <span class="mr-2">Projects</span>
+      </a>
+      <div #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown3">
+        <a class="dropdown-item" [routerLink]="['projects/list']">
+          <i class="fa fa-list mr-2"></i>
+          List</a>
+
+        <a class="dropdown-item" [routerLink]="['projects/status']">
+          <i class="fa fa-bar-chart mr-2"></i>
+          Status</a>
+      </div>
       </li>
-      <!-- <li *ngIf="right" class="nav-item nav-active">
-          <a 
-          class="nav-link font-weight-bold dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown2"
-          aria-haspopup="true"
-          aria-expanded="false"
-          id="navbarDropdown2"
-          data-target="target2">My Tasks</a>
-          <div #target1 class="dropdown-menu  navbar-dropdown" aria-labelledby="navbarDropdown1">
-            <a class="dropdown-item " href="projects/tasks">
-              <i class="fa fa-list-alt" aria-hidden="true"></i>
-              List</a>
-            <a class="dropdown-item" href="projects/tasks/calendar">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-              Calendar</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="login" (click)="logout()">Sign Out</a>
-          </div>
-        </li> -->
       <li class="nav-item nav-active dropdown" *ngIf="!right">
         <a class="nav-link font-weight-bold dropdown-toggle" role="button" data-toggle="dropdown2" aria-haspopup="true"
           aria-expanded="false" id="navbarDropdown2" data-target="target2">

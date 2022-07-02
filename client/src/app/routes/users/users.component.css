@@ -129,3 +129,23 @@
     width: 100px;
     height: 100px;
   }
+
+  tbody {
+    display:block;
+    max-height:415px;
+    overflow-y:scroll;
+  }
+  thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+  }
+  thead {
+    width: calc( 100% - 1em )
+  }
+  
+  tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+  }
