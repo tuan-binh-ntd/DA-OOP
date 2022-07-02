@@ -40,4 +40,13 @@ export class UserService {
     return this.http.post(this.baseUrl + '/delete-photo/' + model.photoId, model);
   }
 
+  deleteUser(payload: any):Observable<any>{
+    if(payload.newLeaderId){
+      return this.http.delete(this.baseUrl + '/delete?deleteUserId=' + payload.deleteUserId + '&deletedUserId=' + payload.deletedUserId + '&deleteUserPermission=' + payload.deleteUserPermission + '&deletedUserPermission=' + payload.deletedUserPermission + '&newLeaderId=' + payload.newLeaderId);
+    }
+    else{
+      return this.http.delete(this.baseUrl + '/delete?deleteUserId=' + payload.deleteUserId + '&deletedUserId=' + payload.deletedUserId + '&deleteUserPermission=' + payload.deleteUserPermission + '&deletedUserPermission=' + payload.deletedUserPermission);
+    }
+  }
+
 }

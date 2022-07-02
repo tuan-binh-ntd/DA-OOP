@@ -224,26 +224,13 @@ namespace API.Controllers
             {
                 return BadRequest("Company had project manager");
             }
-            if (leader != null && input.PermissionCode == Permission.Leader)
+            if (leader != null && leader != user && user.PermissionCode == Permission.Employee && input.PermissionCode == Permission.Leader)
             {
                 return BadRequest("Department had leader");
             }
             if (user != null)
             {
-                if (input.PermissionCode == Permission.Employee)
-                {
-                    user.FirstName = user.FirstName;
-                    user.LastName = user.LastName;
-                    user.Address = user.Address;
-                    user.Email = user.Email;
-                    user.Phone = user.Phone;
-                    user.Password = input.Password;
-                    user.DepartmentId = user.DepartmentId;
-                    _dataContext.AppUser.Update(user);
-                    await _dataContext.SaveChangesAsync();
-                    return Ok(user);
-                }
-                else
+                if (input.PermissionCreator == Permission.Leader || input.PermissionCreator == Permission.ProjectManager)
                 {
                     user.FirstName = input.FirstName;
                     user.LastName = input.LastName;
@@ -252,6 +239,19 @@ namespace API.Controllers
                     user.Phone = input.Phone;
                     user.Password = input.Password;
                     user.DepartmentId = input.DepartmentId;
+                    _dataContext.AppUser.Update(user);
+                    await _dataContext.SaveChangesAsync();
+                    return Ok(user);
+                }
+                else
+                {
+                    user.FirstName = user.FirstName;
+                    user.LastName = user.LastName;
+                    user.Address = user.Address;
+                    user.Email = user.Email;
+                    user.Phone = user.Phone;
+                    user.Password = input.Password;
+                    user.DepartmentId = user.DepartmentId;
                     _dataContext.AppUser.Update(user);
                     await _dataContext.SaveChangesAsync();
                     return Ok(user);

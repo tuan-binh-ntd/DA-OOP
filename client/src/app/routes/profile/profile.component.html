@@ -26,15 +26,15 @@
         </div>
         <div class="col col-6">
           <div class="d-flex">
-            <i class="fa fa-envelope"></i>
+            <i class="fa fa-envelope mr-2"></i>
             <p>{{currentUser.email}}</p>
           </div>
           <div class="d-flex">
-            <i class="fa fa-phone"></i>
+            <i class="fa fa-phone mr-2"></i>
             <p>{{currentUser.phone}}</p>
           </div>
           <div class="d-flex">
-            <i class="fa fa-map-marker"></i>
+            <i class="fa fa-map-marker mr-2"></i>
             <p>{{currentUser.address}}</p>
           </div>
         </div>
@@ -42,15 +42,15 @@
       <div class="row no-gutters">
         <div class="col col-10">
           <div class="example-container">
-            <div class="row">
+            <div class="row" style="padding: 0px 20px;">
               <div *ngFor="let photo of currentUser.photos" class="mr-2">
                 <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
                 <div class="mt-2">
                   <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
-                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm">
+                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm mb-2">
                     Main</button>
                   <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
-                    <i class="fa fa-trash"></i></button>
+                    <i class="fa fa-trash mr-2"></i></button>
                 </div>
               </div>
             </div>
@@ -58,8 +58,8 @@
         </div>
         <div class="col col-2">
           <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-            [uploader]="uploader" class="float-right card p-3 text-center mb-3 my-drop-zone">
-            <i class="fa fa-upload fa-3x"></i>
+            [uploader]="uploader" class="float-right card p-2 text-center mb-3 mr-4 my-drop-zone">
+            <i class="fa fa-upload fa-3x mr-2"></i>
             Add photos here
           </div>
           <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br />
@@ -67,12 +67,12 @@
       </div>
     </div>
   </div>
-  <div class="col col-12" style="background-color:rgb(70, 55, 124)">
+  <!-- <div class="col col-12" style="background-color:rgb(70, 55, 124)">
     <i class="fa fa-chrome mr-2"></i>
     <i class="fa fa-facebook-square mr-2"></i>
     <i class="fa fa-instagram mr-2"></i>
     <i class="fa fa-globe mr-2"></i>
-  </div>
+  </div> -->
 </div>
 
 

@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department.service';
 import { PresenceService } from 'src/app/services/presence.service';
 import { UserService } from 'src/app/services/user.service';
+import { DeleteUserComponent } from '../shared/delete-user/delete-user.component';
 import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 
 @Component({
@@ -15,6 +16,7 @@ import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
 })
 export class UsersComponent implements OnInit {
   @ViewChild('modalUser') modalUser!: ModalUserComponent;
+  @ViewChild('modalDeleteUser') modalDeleteUser!: DeleteUserComponent;
   $: any;
   isLoading: boolean = false;
   isShowModal: boolean = false;
@@ -82,6 +84,29 @@ export class UsersComponent implements OnInit {
     myModal.show();
     this.isShowModal = true;
     this.modalUser.openModal(data, mode, isEdit);
+  }
+
+  openDeleteModal(data: any) {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('deleteUserModal')!
+    );
+    myModal.show();
+    this.isShowModal = true;
+    this.modalDeleteUser.openDeleteUserModal(data);
+  }
+
+  onDeleteUser() {
+    var myModal = new bootstrap.Modal(
+      document.getElementById('deleteUserModal')!
+    );
+
+    // $('#createProjectModal').modal('hide')
+    // $('#createProjectModal').hide;
+    myModal.hide();
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
+    this.isShowModal = false;
+    this.fetchUserData();
   }
 
   onChangeUser() {
