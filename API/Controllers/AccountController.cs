@@ -15,6 +15,8 @@ using System.Data;
 using Microsoft.AspNetCore.Http;
 using API.DTO.PhotoDto;
 using API.Extensions;
+using Npgsql;
+using System.IO;
 
 namespace API.Controllers
 {
@@ -46,76 +48,85 @@ namespace API.Controllers
         {
             if (projectId != null)
             {
-                /*var userList = await (from p in _dataContext.Project
-                                      join t in _dataContext.Task on p.Id equals t.ProjectId
+                var userList = await (from t in _dataContext.Task
                                       join u in _dataContext.AppUser on t.AppUserId equals u.Id
-                                      where p.Id == projectId
-                                      select new
+                                      join p in _dataContext.Photos on u.Id equals p.AppUserId
+                                      where p.Id == projectId && p.IsMain == true
+                                      select new GetAllUserDto
                                       {
-                                          ProjectName = p.ProjectName,
-                                          TaskName = t.TaskName,
                                           AppUserId = u.Id,
                                           FirstName = u.FirstName,
                                           LastName = u.LastName,
                                           Address = u.Address,
-                                          UserName = u.FirstName + " " + u.LastName,
+                                          Phone = u.Phone,
                                           Email = u.Email,
                                           Password = u.Password,
-                                          Phone = u.Phone,
-                                          PermissionCode = u.PermissionCode,
-                                          DepartmentId = p.DepartmentId,
-                                      }).AsNoTracking().ToListAsync();*/
-                var dp_params = new DynamicParameters();
+                                          PermissionCode =  u.PermissionCode,
+                                          DepartmentId = u.DepartmentId,
+                                          PhotoUrl = p.Url
+                                      }).AsNoTracking().ToListAsync();
+
+                /*var dp_params = new DynamicParameters();
                 dp_params.Add("@projectId", projectId, DbType.Guid);
                 var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUserForProject", dp_params,
-                    commandType: System.Data.CommandType.StoredProcedure));
+                    commandType: System.Data.CommandType.StoredProcedure));*/
                 return Ok(userList);
             }
             if (departmentId != null)
             {
-                /*var userList = await (from d in _dataContext.Department
-                                      join u in _dataContext.AppUser on d.Id equals u.DepartmentId
-                                      where d.Id == departmentId
-                                      select new
+                var userList = await (from u in _dataContext.AppUser
+                                      join p in _dataContext.Photos on u.Id equals p.AppUserId
+                                      where u.DepartmentId == departmentId && p.IsMain == true
+                                      select new GetAllUserDto
                                       {
-                                          DepartmentId = d.Id,
                                           AppUserId = u.Id,
                                           FirstName = u.FirstName,
                                           LastName = u.LastName,
-                                          UserName = u.FirstName + " " + u.LastName,
                                           Address = u.Address,
-                                          Password = u.Password,
-                                          Email = u.Email,
                                           Phone = u.Phone,
-                                          PermissionCode = u.PermissionCode
-                                      }).AsNoTracking().ToListAsync();*/
-                var dp_params = new DynamicParameters();
+                                          Email = u.Email,
+                                          Password = u.Password,
+                                          PermissionCode = u.PermissionCode,
+                                          DepartmentId = u.DepartmentId,
+                                          PhotoUrl = p.Url
+                                      }).AsNoTracking().ToListAsync();
+
+                /*var dp_params = new DynamicParameters();
                 dp_params.Add("@departmentId", departmentId, DbType.Guid);
                 var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUserForDepartment", dp_params,
-                    commandType: System.Data.CommandType.StoredProcedure));
+                    commandType: System.Data.CommandType.StoredProcedure));*/
                 return Ok(userList);
             }
             if (projectId == null && departmentId == null)
             {
-                /*var appUserList = await (from d in _dataContext.Department
+                var userList = await (from d in _dataContext.Department
                                          join u in _dataContext.AppUser on d.Id equals u.DepartmentId
-
-                                         select new
+                                         join p in _dataContext.Photos on d.Id equals p.AppUserId
+                                         where p.IsMain == true
+                                         select new GetAllUserDto
                                          {
-                                             DepartmentId = d.Id,
                                              AppUserId = u.Id,
                                              FirstName = u.FirstName,
                                              LastName = u.LastName,
-                                             UserName = u.FirstName + " " + u.LastName,
                                              Address = u.Address,
+                                             Phone = u.Phone,
                                              Email = u.Email,
                                              Password = u.Password,
-                                             Phone = u.Phone,
-                                             PermissionCode = u.PermissionCode
-                                         }).AsNoTracking().ToListAsync();*/
-                var dp_params = new DynamicParameters();
+                                             PermissionCode = u.PermissionCode,
+                                             DepartmentId = u.DepartmentId,
+                                             PhotoUrl = p.Url
+                                         }).AsNoTracking().ToListAsync();
+                //SqlServer
+                /*var dp_params = new DynamicParameters();
                 var userList = await Task.FromResult(_dapper.GetAll<GetAllUserDto>("GetUser", dp_params,
-                    commandType: System.Data.CommandType.StoredProcedure));
+                    commandType: System.Data.CommandType.StoredProcedure));*/
+
+                //PostgreSQL
+                /*using (IDbConnection connection = _dapper.GetDbConnection())
+                {
+                    connection.Open();
+                    var userList = await Task.FromResult(connection.Query<GetAllUserDto>("GetUser", null).ToList());
+                }*/
                 return Ok(userList);
             }
             return Ok();
@@ -241,6 +252,7 @@ namespace API.Controllers
                     user.DepartmentId = input.DepartmentId;
                     _dataContext.AppUser.Update(user);
                     await _dataContext.SaveChangesAsync();
+                    await AddPhoto((IFormFile)PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "BasePhoto", "anonymous.jpg"), "text/HTML"));
                     return Ok(user);
                 }
                 else

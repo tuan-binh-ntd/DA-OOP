@@ -119,7 +119,7 @@ namespace API.Controllers
 
             var dp_params = new DynamicParameters();
             dp_params.Add("@statusCode", 0, DbType.Int32);
-            var countTask = await Task.FromResult(_dapper.GetAll<TaskNumDto>("[dbo].[GetTask]", dp_params, 
+            var countTask = await Task.FromResult(_dapper.GetAll<TaskNumDto>("GetTask", dp_params, 
                 commandType: System.Data.CommandType.StoredProcedure));
 
             /*var taskListComplete = await (from p in _dataContext.Project
@@ -134,7 +134,7 @@ namespace API.Controllers
 
             dp_params = new DynamicParameters();
             dp_params.Add("@statusCode", Enum.StatusCode.Closed, DbType.Int32);
-            var countTaskComplete = await Task.FromResult(_dapper.GetAll<TaskNumDto>("[dbo].[GetTask]", dp_params,
+            var countTaskComplete = await Task.FromResult(_dapper.GetAll<TaskNumDto>("GetTask", dp_params,
                 commandType: System.Data.CommandType.StoredProcedure));
 
             

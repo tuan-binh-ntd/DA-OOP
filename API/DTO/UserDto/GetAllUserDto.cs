@@ -13,7 +13,7 @@ namespace API.DTO.UserDto
         public string Email { get; set; }
         public string Password { get; set; }
         public Permission PermissionCode { get; set; }
-        public Guid DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
         public string PhotoUrl { get; set; }
     }
 }
