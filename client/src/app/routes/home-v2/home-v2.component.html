@@ -30,7 +30,7 @@
                 class="mt-3 d-flex"
                 *ngIf="user.permissionCode === 2; else employee"
               >
-                <h6 class="text-primary mr-3 fw-700">Leader Of</h6>
+                <h6 class="text-primary mr-3 fw-700">Leader Of: </h6>
                 <app-department-icon
                   [departmentName]="getDepartmentName()"
                 ></app-department-icon>
@@ -62,14 +62,10 @@
               </div>
             </div>
             <mat-card-content>
-              <div style="min-height: 50px; max-height: 50px">
-                <ngx-charts-line-chart
-                  [animations]="true"
-                  [results]="data"
-                  [scheme]="'nightLights'"
-                  [gradient]="true"
-                >
-                </ngx-charts-line-chart>
+              <mat-divider class="mt-3 mb-2" inset></mat-divider>
+              <div class=" d-flex" >
+                <h6 class="text-primary mr-3 fw-700 d-inline-block">This month:</h6>
+               <h6>{{totalThisMonthProjects}}</h6>
               </div>
             </mat-card-content>
           </mat-card>

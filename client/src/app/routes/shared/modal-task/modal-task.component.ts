@@ -394,6 +394,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         .sendMessage(payload)
         .then(() => {
           // this.messages.push(payload);
+          this.fetchMessage();
           this.messageForm.reset();
         });
     }

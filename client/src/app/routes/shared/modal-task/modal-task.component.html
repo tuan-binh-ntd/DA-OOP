@@ -1,6 +1,6 @@
 <div
   class="modal-content"
-  *ngIf="mode === 'create' || mode === 'detail' &&data "
+  *ngIf="mode === 'create' || (mode === 'detail' && data)"
   style="max-height: 92vh; height: 92vh"
 >
   <div class="modal-header">
@@ -97,7 +97,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{ user.firstName + " " + user.lastName}}
+                            {{ user.firstName + " " + user.lastName }}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -118,7 +118,7 @@
                             *ngFor="let user of users"
                             [value]="user.appUserId"
                           >
-                            {{user.firstName + " " + user.lastName}}
+                            {{ user.firstName + " " + user.lastName }}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -244,68 +244,160 @@
             </mat-card-content>
           </mat-card>
         </mat-tab>
-        <mat-tab label="Discussion" *ngIf="mode !== 'create' && data.appUserId !== data.createUserId">
+        <mat-tab
+          label="Discussion"
+          *ngIf="mode !== 'create' && data.appUserId !== data.createUserId"
+        >
           <mat-card>
             <mat-card-content style="height: 430px">
               <div class="row" style="height: 100%">
-                <div class="col col-9" style="max-height:100%;">
+                <div class="col col-9" style="max-height: 100%">
                   <div class="chat-content">
-                    <div class="d-flex justify-content-between align-items-center">
-                    <div class="float-left">
-                      <img
-                        src="assets/defaultUser.png"
-                        class="chat-content-img m-2"
-                        alt=""
-                      />
-                      <span *ngIf="currentUserInfo.permissionCode === 3">
-                        {{ leaderInfo?.firstName }}
-                        {{ leaderInfo?.lastName }}
-                        <span [class.is-online]="(presenceService.onlineUsers | async).includes(leaderInfo?.firstName + ' ' + leaderInfo?.lastName)">
-                          <i class="fa fa-circle" aria-hidden="true"></i> 
-                        </span>
-                      </span  >
-                      <span *ngIf="currentUserInfo.permissionCode === 2">
-                        {{ employeeInfo?.firstName }}
-                        {{ employeeInfo?.lastName }}
-                        <span [class.is-online]="(presenceService.onlineUsers | async).includes(employeeInfo?.firstName + ' ' + employeeInfo?.lastName)">
-                          <i class="fa fa-circle" aria-hidden="true"></i>
-                        </span>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                      style="padding: 10px"
+                    >
+                      <div class="float-left">
+                        <div
+                        *ngIf="
+                          currentUserInfo.permissionCode === 3;
+                          else leader
+                        "
+                      >
+                        <!-- <app-user-avatar
+                          class="mr-2 d-inline-block"
+                          [users]="[employeeInfo]"
+                        ></app-user-avatar> -->
+                      </div>
+                      <ng-template #leader>
+                        <!-- <app-user-avatar
+                          class="mr-2 d-inline-block"
+                          [users]="[leaderInfo]"
+                        ></app-user-avatar> -->
+                      </ng-template>
+                        <span *ngIf="currentUserInfo.permissionCode === 3">
+                          {{ leaderInfo?.firstName }}
+                          {{ leaderInfo?.lastName }}
+                          <br>
+                          <span  
+                          [class.is-online]=" (presenceService.onlineUsers | async).includes(
+                            employeeInfo?.firstName +
+                              ' ' +
+                              employeeInfo?.lastName
+                          )"
+                          *ngIf="
+                          (presenceService.onlineUsers | async).includes(
+                            employeeInfo?.firstName +
+                              ' ' +
+                              employeeInfo?.lastName
+                          )
+                          ;else noneActive">Active
+                        <i class="fa fa-circle ml-1" aria-hidden="true"></i>
                       </span>
+                          <ng-template #noneActive>
+                            <span>InActive</span>
+                            </ng-template>
+                        </span>
+                        <span *ngIf="currentUserInfo.permissionCode === 2">
+                          {{ employeeInfo?.firstName }}
+                          {{ employeeInfo?.lastName }}
+                          <br>
+                          <span
+                          class="p-text"
+                            [class.is-online]="
+                              (presenceService.onlineUsers | async).includes(
+                                employeeInfo?.firstName +
+                                  ' ' +
+                                  employeeInfo?.lastName
+                              )
+                            "
+                          >
+                          <span  
+                          [class.is-online]=" (presenceService.onlineUsers | async).includes(
+                            employeeInfo?.firstName +
+                              ' ' +
+                              employeeInfo?.lastName
+                          )"
+                          *ngIf="
+                          (presenceService.onlineUsers | async).includes(
+                            employeeInfo?.firstName +
+                              ' ' +
+                              employeeInfo?.lastName
+                          )
+                          ;else noneActive">Active
+                        <i class="fa fa-circle ml-1" aria-hidden="true"></i>
+                      </span>
+                          <ng-template #noneActive>
+                            <span>InActive</span>
+                            </ng-template>
+                        </span>
+                        </span>
+                      </div>
+                      <div class="float-right fsz-25">
+                        <i
+                          class="fa fa-info-circle mr-2 text-primary chat-content-icon"
+                          aria-hidden="true"
+                        ></i>
+                      </div>
                     </div>
-                    <div class="float-right  fsz-25">
-                        <i class="fa fa-info-circle mr-2 text-primary chat-content-icon" aria-hidden="true"></i>
-                    </div>
-
-                </div>
 
                     <mat-divider class="mb-3" inset></mat-divider>
                     <div class="chat-wrapper" #chatContent>
-                      <ng-container *ngIf="(messageService.messageThread | async)?.length === 0">
-                        <div>
-                          No message yet... say hi by using the message box below
-                        </div>
-                      </ng-container>
-
-                      <ng-container *ngFor="let message of (messageService.messageThread | async)">
+                      <ng-container
+                        *ngFor="
+                          let message of messages
+                        "
+                      >
                         <div class="row">
                           <div class="col col-12">
-                              <div *ngIf="message.senderId === currentUserInfo.id;else receiper" >
-                              <div class="chat-content-sender chat-content-message mb-2 mr-2 float-right">
-                                <span class="ml-3 mr-3 mt-2 mb-2  d-inline-block">
-                                  {{message.content}}
+                            <div
+                              *ngIf="
+                                message.senderId === currentUserInfo.id;
+                                else receiper
+                              "
+                            >
+                              <div
+                                class="chat-content-sender chat-content-message mb-2 mr-2 float-right"
+                              >
+                                <span
+                                  class="ml-3 mr-3 mt-2 mb-2 d-inline-block"
+                                >
+                                  {{ message.content }}
                                 </span>
                               </div>
-                              </div>
+                            </div>
                             <ng-template #receiper>
-                          <div class="col col-12">
-                            <div class="chat-content-message mb-2 mr-2 float-left">
-                                  <img
-                                  src="assets/defaultUser.png"
-                                  class="chat-content-img m-2"
-                                  alt=""
-                                  />
-                                  <span class="mr-2 mt-2 mr-3 mb-2  d-inline-block">
-                                    {{message.content}}
+                              <div class="col col-12">
+                                <div
+                                  class="chat-content-message mb-2 mr-2 float-left"
+                                  style="padding: 8px"
+                                >
+                                  <div class="d-flex align-items-center">
+                                    <div
+                                      *ngIf="
+                                        currentUserInfo.permissionCode === 3;
+                                        else leader
+                                      "
+                                    >
+                                      <app-user-avatar
+                                        class="mr-2 d-inline-block"
+                                        [users]="[leaderInfo]"
+                                      ></app-user-avatar>
+                                    </div>
+                                    <ng-template #leader>
+                                      <app-user-avatar
+                                        class="mr-2 d-inline-block"
+                                        [users]="[employeeInfo]"
+                                      ></app-user-avatar>
+                                    </ng-template>
+                                    <span
+                                      class="mr-2 mt-2 mr-3 mb-2 d-inline-block"
+                                    >
+                                      {{ message.content }}
+                                    </span>
+                                  </div>
+                                  <span class="p-text fsz-12">
+                                    {{ message.messageSent | date }}
                                   </span>
                                 </div>
                               </div>
@@ -316,11 +408,17 @@
                     </div>
                     <form [formGroup]="messageForm">
                       <div class="input-group">
-                      <input type="text" class="form-control" formControlName="content" placeholder="Aa" (keydown)="onChat($event)" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="content"
+                          placeholder="Aa"
+                          (keydown)="onChat($event)"
+                          aria-label="Recipient's username"
+                          aria-describedby="basic-addon2"
+                        />
                       </div>
                     </form>
-
-
                   </div>
                 </div>
                 <div
@@ -332,10 +430,17 @@
                       {{ leaderInfo?.firstName }}
                       {{ leaderInfo?.lastName }}
                     </h5>
-                    <p class="text-center fw-500">
-                      Leader: {{ departmentName }}
-                    </p>
+                    <div class="d-flex justify-content-center">
+                      <p class="text-center mb-2 mr-2 fw-500">
+                        Leader: 
+                      </p>
+                      <app-department-icon [departmentName]="departmentName"></app-department-icon>
+                    </div>
                     <mat-divider class="mb-3" inset></mat-divider>
+                    <div class="mb-3 text-center">
+                      <ngx-avatar [round]="false" class="d-inline-block"  size="120" [name]="leaderInfo?.firstName + leaderInfo?.lastName" [src]="leaderInfo?.photoUrl"
+                     ></ngx-avatar>
+                    </div>
                     <span>Email: </span>
                     <br />
                     <p class="fw-500">{{ leaderInfo?.email }}</p>
@@ -357,10 +462,17 @@
                       {{ employeeInfo?.firstName }}
                       {{ employeeInfo?.lastName }}
                     </h5>
-                    <p class="text-center fw-500">
-                      Employee: {{ departmentName }}
-                    </p>
-                    <mat-divider class="mb-3" inset></mat-divider>
+                    <div class="d-flex justify-content-center">
+                      <p class="text-center mb-2 mr-2 fw-500">
+                        Employee: 
+                      </p>
+                      <app-department-icon [departmentName]="departmentName"></app-department-icon>
+                    </div>
+                    <mat-divider class="mb-3 mt-2" inset></mat-divider>
+                    <div class="mb-3 text-center">
+                      <ngx-avatar [round]="false" class="d-inline-block"  size="120" [name]="employeeInfo?.firstName + employeeInfo?.lastName" [src]="employeeInfo?.photoUrl"
+                     ></ngx-avatar>
+                    </div>
                     <span>Email: </span>
                     <br />
                     <p class="fw-500">{{ employeeInfo?.email }}</p>
@@ -391,7 +503,7 @@
         class="btn btn-secondary float-left"
         data-dismiss="modal"
       >
-        <i class="fa fa-remove mr-2" style="color: rgb(255, 255, 255);"></i>
+        <i class="fa fa-remove mr-2" style="color: rgb(255, 255, 255)"></i>
         Close
       </button>
       <button
@@ -428,29 +540,33 @@
   </div>
 </div>
 
-<div class="modal-content" *ngIf="mode === 'delete'" style="width: 600px; transform: translate(65%, 150%);">
+<div
+  class="modal-content"
+  *ngIf="mode === 'delete'"
+  style="width: 600px; transform: translate(65%, 150%)"
+>
   <div class="modal-body">
     <h3>Are you sure you want to delete this task?</h3>
   </div>
   <div class="modal-footer">
     <button
-    type="button"
-    class="btn btn-secondary"
-    data-dismiss="modal"
-    aria-label="Close"
-    style="transform: translate(-220%, 0);"
+      type="button"
+      class="btn btn-secondary"
+      data-dismiss="modal"
+      aria-label="Close"
+      style="transform: translate(-220%, 0)"
     >
-    <i class="fa fa-remove"></i>
-    Cancel
-  </button>
-  <button
-    type="button"
-    class="btn btn-danger"
-    (click)="submitForm()"
-    style="transform: translate(-310%, 0);"
-  >
-  <i class="fa fa-trash"></i>
-    OK
-  </button>
+      <i class="fa fa-remove"></i>
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="submitForm()"
+      style="transform: translate(-310%, 0)"
+    >
+      <i class="fa fa-trash"></i>
+      OK
+    </button>
   </div>
 </div>
