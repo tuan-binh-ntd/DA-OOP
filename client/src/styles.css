@@ -94,11 +94,18 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
 .fsz-35{
     font-size: 35px;
 }
+
+.fsz-12{
+  font-size: 12px;
+
+}
 .fsz-14{
     font-size: 14px;
 }
 
-
+.fsz-20{
+  font-size: 25px;
+}
 .fsz-25{
   font-size: 25px;
 }

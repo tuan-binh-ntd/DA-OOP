@@ -37,6 +37,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatCardModule } from '@angular/material/card';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 FullCalendarModule.registerPlugins([
   bootstrapPlugin,
@@ -75,11 +78,14 @@ FullCalendarModule.registerPlugins([
     MatDividerModule,
     FormsModule,
     CommonModule,
+    MatTabsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     DragDropModule,
+    MatInputModule,
+    MatSelectModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),

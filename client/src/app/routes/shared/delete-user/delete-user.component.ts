@@ -6,6 +6,7 @@ import { Permission } from 'src/app/helpers/PermisionEnum';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
+
 @Component({
   selector: 'app-delete-user',
   templateUrl: './delete-user.component.html',
@@ -28,16 +29,15 @@ export class DeleteUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.fetchUserData();
     this.initForm();
   }
 
-  fetchUserData() {
+  fetchUserData(user) {
     this.userService
       .getAllUser()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.users = response;
+        this.users = response.filter(u => u.departmentId == user.departmentId && u.appUserId != user.appUserId);;    
       });
   }
 
@@ -53,6 +53,7 @@ export class DeleteUserComponent implements OnInit {
 
   openDeleteUserModal(data: any) {
     this.data = data;
+    
     this.p = this.data.permissionCode;
     this.modalForm.reset();
     this.modalForm.patchValue(data);
@@ -60,6 +61,10 @@ export class DeleteUserComponent implements OnInit {
     this.modalForm.get('deletedUserId')?.setValue(this.data.appUserId);
     this.modalForm.get('deleteUserPermission')?.setValue(this.user.permissionCode);
     this.modalForm.get('deletedUserPermission')?.setValue(this.data.permissionCode);
+    this.fetchUserData(this.data);
+    if(this.data.permissionCode === 2){
+      this.modalForm.controls['newLeaderId'].setValidators(Validators.required)
+    }
   }
 
   onSubmit() {

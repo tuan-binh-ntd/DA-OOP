@@ -27,7 +27,7 @@
         <tr>
           <th class="text-center align-middle" style="width: 5%;">Type</th>
           <th class="align-middle" style="width: 20%;">ProjectName</th>
-          <th class="align-middle" style="width: 10%;">Department</th>
+          <th class="align-middle" style="width: 20%;">Department</th>
           <th class="text-center align-middle" style="width: 10%;">Leader</th>
           <th class="text-center align-middle" style="width: 10%;">Deadline Date</th>
           <th class="text-center align-middle" style="width: 10%;">Complete Date</th>
@@ -41,7 +41,10 @@
           <td class="text-center align-middle" style="width: 5%;">
             <app-project-type-icon [projectType]="project.projectType"></app-project-type-icon>
           </td>
-          <td class="align-middle" style="width: auto;">{{ project.projectName }}</td>
+          <td class="align-middle" style="width: auto;" >
+            <a [routerLink]="['../tasks',project.id,'list']">{{ project.projectName }}
+            </a>
+            </td>
           <td class="align-middle" style="width: auto;">{{ getDepartmentName(project.departmentId) }}</td>
           <td class="text-center align-middle" style="width: 10%;">{{ getLeader(project.departmentId) }}</td>
           <td class="text-center align-middle" style="width: 10%;">{{ project.deadlineDate | date: 'dd/MM/yyyy' }}</td>

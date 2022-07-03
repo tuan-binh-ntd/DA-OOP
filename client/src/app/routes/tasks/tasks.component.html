@@ -10,7 +10,7 @@
       </button>
     </div>
   </div>
-  <div class="row no-gutters">
+  <div class="row no-gutters" *ngIf="tasks.length > 0">
     <div class="col col-11">
       <app-task-filter (onSubmitForm)="submitFormFilter($event)" (resetFilter)="onResetFilter()"
         (filterPriority)="onFilterPriority($event)" (filterStatus)="onFilterStatus($event)"

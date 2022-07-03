@@ -39,13 +39,12 @@
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of reOpenProject" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
-              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 20px;">
+              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 10px;">
                 <div class="row no-gutters">
   
-                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
-                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 27.6px;">
+                    <app-department-icon class="mb-2 text-truncate" [departmentName]="getDepartmentName(item.departmentId)">
                     </app-department-icon>
-  
                   </div>
                   <div class="col col-1">
                     <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
@@ -87,7 +86,7 @@
                 </div>
   
                 <div class="row no-gutters">
-                    <h5 class="card-title text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
+                    <h5 class="card-title fsz-16 text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
                 </div>
                 <div class="row no-gutters mb-1">
                   <div class="col col-6">
@@ -102,7 +101,7 @@
                   </div>
                 </div>
                 
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
                     <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
                       <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
@@ -133,9 +132,13 @@
                 </div>
                 
                 <hr />
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
-                    <span>{{ item.leaderName }}</span>
+                    <div class="col col-6 d-flex align-items-center">
+                      <span class="mr-2">Leader: 
+                      </span>
+                      <app-user-avatar [users]="getLeaderInfo(item.departmentId)"></app-user-avatar>
+                    </div>
                   </div>
                   <div class="col col-6">
                     <div class="progress">
@@ -169,11 +172,11 @@
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of openProjects" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
-              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 20px;">
+              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 10px;">
                 <div class="row no-gutters">
   
-                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
-                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 27.6px">
+                    <app-department-icon class="mb-2 text-truncate" [departmentName]="getDepartmentName(item.departmentId)">
                     </app-department-icon>
   
                   </div>
@@ -217,7 +220,7 @@
                 </div>
   
                 <div class="row no-gutters">
-                    <h5 class="card-title text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
+                    <h5 class="card-title fsz-16 text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
                 </div>
                 <div class="row no-gutters mb-1">
                   <div class="col col-6">
@@ -232,7 +235,7 @@
                   </div>
                 </div>
                 
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
                     <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
                       <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
@@ -259,13 +262,17 @@
                   </div>
                 </div>
                 <div class="row no-gutters">
-                  <p class="card-text">{{ item.description }}</p>
+                  <p class="card-text p-text">{{ item.description }}</p>
                 </div>
                 
                 <hr />
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
-                    <span>{{ item.leaderName }}</span>
+                    <div class="col col-6 d-flex align-items-center">
+                      <span class="mr-2">Leader: 
+                      </span>
+                      <app-user-avatar [users]="getLeaderInfo(item.departmentId)"></app-user-avatar>
+                    </div>
                   </div>
                   <div class="col col-6">
                     <div class="progress">
@@ -292,124 +299,128 @@
           <h6 class="mr-2 fw-700 list-wrap3" style="line-height:40px; letter-spacing: 2px;">INPROGRESS</h6>
           <span class="countProject">{{inProgressCount}}</span>
         </div>
-        <div cdkDropList id="inProgress" cdkDropListSortingDisabled #listProgress="cdkDropList"
-          [cdkDropListData]="inProgressProject" [cdkDropListAutoScrollDisabled]="false"
-          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let item of inProgressProject" cdkDrag [cdkDragDisabled]="isLoading">
-            <!-- <div class="card" style="display: inline-block"> -->
-              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 20px;">
-                <div class="row no-gutters">
-  
-                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
-                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
-                    </app-department-icon>
-  
-                  </div>
-                  <div class="col col-1">
-                    <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
-                      <button 
-                        class="btn-icon" 
-                        type="button" 
-                        id="dropdownMenuButton" 
-                        data-toggle="dropdown"
-                        aria-haspopup="true" 
-                        aria-expanded="false"
-                      >
-                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
-                      </button>
-                      <div 
-                        class="dropdown-menu mt-0" 
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <a 
-                          class="dropdown-item" 
-                          (click)="
-                            $event.stopPropagation();
-                            openDetailModal(item, 'detail', false)
-                          "
+        <div class="fixed__card">
+          <div cdkDropList id="inProgress" cdkDropListSortingDisabled #listProgress="cdkDropList"
+            [cdkDropListData]="inProgressProject" [cdkDropListAutoScrollDisabled]="false"
+            [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="fixed__card-content"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of inProgressProject" cdkDrag [cdkDragDisabled]="isLoading">
+              <!-- <div class="card" style="display: inline-block"> -->
+              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 10px;">
+                  <div class="row no-gutters">
+    
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 27.6px">
+                    <app-department-icon class="mb-2 text-truncate" [departmentName]="getDepartmentName(item.departmentId)">
+                      </app-department-icon>
+    
+                    </div>
+                    <div class="col col-1">
+                      <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
+                        <button 
+                          class="btn-icon" 
+                          type="button" 
+                          id="dropdownMenuButton" 
+                          data-toggle="dropdown"
+                          aria-haspopup="true" 
+                          aria-expanded="false"
                         >
-                          <i class="fa fa-eye mr-2" aria-hidden="true"></i>
-                          View</a>
-                        <a 
-                          class="dropdown-item" 
-                          (click)="
-                            $event.stopPropagation();
-                            openDetailModal(item, 'detail', true)
-                          "
+                          <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                        </button>
+                        <div 
+                          class="dropdown-menu mt-0" 
+                          aria-labelledby="dropdownMenuButton"
                         >
-                          <i class="fa fa-edit mr-2"></i>
-                          Update</a>
+                          <a 
+                            class="dropdown-item" 
+                            (click)="
+                              $event.stopPropagation();
+                              openDetailModal(item, 'detail', false)
+                            "
+                          >
+                            <i class="fa fa-eye mr-2" aria-hidden="true"></i>
+                            View</a>
+                          <a 
+                            class="dropdown-item" 
+                            (click)="
+                              $event.stopPropagation();
+                              openDetailModal(item, 'detail', true)
+                            "
+                          >
+                            <i class="fa fa-edit mr-2"></i>
+                            Update</a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-  
-                <div class="row no-gutters">
-                    <h5 class="card-title text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
-                </div>
-                <div class="row no-gutters mb-1">
-                  <div class="col col-6">
-                    <app-project-type-icon [projectType]="item.projectType" class="mr-2"></app-project-type-icon>
-                    <span>[{{ item.projectCode }}]</span>
+    
+                  <div class="row no-gutters">
+                      <h5 class="card-title fsz-16 text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
                   </div>
-                  <div class="col col-6">
-                    <span class="font-weight-light float-right">
-                      {{ item.taskCount }} Tasks
-                    </span>
-                    <app-priority-icon class="float-right mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                  <div class="row no-gutters mb-1">
+                    <div class="col col-6">
+                      <app-project-type-icon [projectType]="item.projectType" class="mr-2"></app-project-type-icon>
+                      <span>[{{ item.projectCode }}]</span>
+                    </div>
+                    <div class="col col-6">
+                      <span class="font-weight-light float-right">
+                        {{ item.taskCount }} Tasks
+                      </span>
+                      <app-priority-icon class="float-right mr-2" [priorityCode]="item.priorityCode"></app-priority-icon>
+                    </div>
                   </div>
-                </div>
-                
-                <div class="row no-gutters">
-                  <div class="col col-6">
-                    <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
-                      <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
-                      {{ item.completeDate | date: "dd/MM/yyyy" }}
-                    </p>
-                    <ng-template #notComplete>
-                      <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
-                        <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
-                        <span class="text-warning">{{ item.dayLefts }} Days</span>
-                      </ng-container>
-                    </ng-template>
-                    <ng-template #overtime>
-                      <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
-                        <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
-                        <span>Overtime</span>
+                  
+                  <div class="row no-gutters d-flex align-items-center">
+                    <div class="col col-6">
+                      <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
+                        <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
+                        {{ item.completeDate | date: "dd/MM/yyyy" }}
                       </p>
-                    </ng-template>
+                      <ng-template #notComplete>
+                        <ng-container *ngIf="item.dayLefts > 0; else overtime" class="card-text mt-2 text-warning">
+                          <i class="fa fa-clock-o mr-2 text-warning" aria-hidden="true"></i>
+                          <span class="text-warning">{{ item.dayLefts }} Days</span>
+                        </ng-container>
+                      </ng-template>
+                      <ng-template #overtime>
+                        <p *ngIf="item.dayLefts <= 0" class="card-text text-danger">
+                          <i class="fa fa-times-circle mr-2" aria-hidden="true"> </i>
+                          <span>Overtime</span>
+                        </p>
+                      </ng-template>
+                    </div>
+                    <div class="col col-6">
+                      <app-user-avatar
+                      class="float-right d-flex text-truncate"
+                      [users]="getUserInvolve(item.id)"
+                      ></app-user-avatar>
+                    </div>
                   </div>
-                  <div class="col col-6">
-                    <app-user-avatar
-                    class="float-right d-flex text-truncate"
-                    [users]="getUserInvolve(item.id)"
-                    ></app-user-avatar>
+                  <div class="row no-gutters">
+                    <p class="card-text p-text">{{ item.description }}</p>
                   </div>
-                </div>
-                <div class="row no-gutters">
-                  <p class="card-text">{{ item.description }}</p>
-                </div>
-                
-                <hr />
-                <div class="row no-gutters">
-                  <div class="col col-6">
-                    <span>{{ item.leaderName }}</span>
-                  </div>
-                  <div class="col col-6">
-                    <div class="progress">
-                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
-                      role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
-                        aria-valuemax="100">
-                        <span class="text-center">{{
-                          roundProgress(item.taskProgress)
-                          }}</span>
+                  
+                  <hr />
+                  <div class="row no-gutters d-flex align-items-center">
+                    <div class="col col-6 d-flex align-items-center">
+                      <span class="mr-2">Leader: 
+                      </span>
+                      <app-user-avatar [users]="getLeaderInfo(item.departmentId)"></app-user-avatar>
+                    </div>
+                    <div class="col col-6">
+                      <div class="progress">
+                        <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                        role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
+                          aria-valuemax="100">
+                          <span class="text-center">{{
+                            roundProgress(item.taskProgress)
+                            }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            <!-- </div> -->
+              <!-- </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -421,22 +432,24 @@
           <h6 class="mr-2 fw-700 list-wrap4" style="line-height:40px; letter-spacing: 2px;">COMPLETED</h6>
           <span class="countProject">{{resolvedCount}}</span>
         </div>
+        <div class="fixed__card" >
+
         <div cdkDropList id="resolved" cdkDropListSortingDisabled [cdkDropListAutoScrollDisabled]="false"
           #listResolve="cdkDropList" [cdkDropListData]="resolvedProject"
-          [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]" class="example-list"
+          [cdkDropListConnectedTo]="[listOpen,listResolve, listProgress]" class="fixed__card-content"
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of resolvedProject" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
-              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 20px;">
+              <div class="card-body" href="#" (click)="onViewTask(item.id)" style="padding: 5px 10px;">
                 <div class="row no-gutters">
   
-                  <div class="col col-11 d-flex align-items-center" style="line-height: 16px">
-                    <app-department-icon class="mb-2" [departmentName]="getDepartmentName(item.departmentId)">
+                  <div class="col col-11 d-flex align-items-center" style="line-height: 27.6px">
+                    <app-department-icon class="mb-2 text-truncate" [departmentName]="getDepartmentName(item.departmentId)">
                     </app-department-icon>
   
                   </div>
-                  <div class="col col-1">
-                    <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
+                  <div class="col col-1" style="margin-left:10px ;">
+                    <div class="float-right dropdown dropleft"  (click)="$event.stopPropagation()">
                       <button 
                         class="btn-icon" 
                         type="button" 
@@ -475,7 +488,7 @@
                 </div>
   
                 <div class="row no-gutters">
-                    <h5 class="card-title text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
+                    <h5 class="fsz-16 card-title text-truncate mb-2 text-primary fw-700" style="margin-bottom: 0;">{{ item.projectName }}</h5>
                 </div>
                 <div class="row no-gutters mb-1">
                   <div class="col col-6">
@@ -490,7 +503,7 @@
                   </div>
                 </div>
                 
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
                     <p *ngIf="item.completeDate; else notComplete" class="card-text text-success">
                       <i class="fa fa-check-square mr-2" aria-hidden="true"></i>
@@ -517,29 +530,39 @@
                   </div>
                 </div>
                 <div class="row no-gutters">
-                  <p class="card-text">{{ item.description }}</p>
+                  <p class="card-text p-text">{{ item.description }}</p>
                 </div>
                 
                 <hr />
-                <div class="row no-gutters">
+                <div class="row no-gutters d-flex align-items-center">
                   <div class="col col-6">
-                    <span>{{ item.leaderName }}</span>
+                    <div class="col col-6 d-flex align-items-center">
+                      <span class="mr-2">Leader: 
+                      </span>
+                      <app-user-avatar [users]="getLeaderInfo(item.departmentId)"></app-user-avatar>
+                    </div>
                   </div>
                   <div class="col col-6">
                     <div class="progress">
-                      <div style="display: flex" class="progress-bar progress-bar-striped bg-success"
+                      <div style="display: flex" class="progress-bar progress-bar-striped "
                       role="progressbar" [ngStyle]="{ width: roundProgress(item.taskProgress) }" aria-valuemin="0"
                         aria-valuemax="100">
                         <span class="text-center">{{
                           roundProgress(item.taskProgress)
                           }}</span>
                       </div>
+                      <script>
+  
+                        // Set the width to animate the progress bar
+                        // Along with time duration in milliseconds
+                    </script>
                     </div>
                   </div>
                 </div>
               </div>
             <!-- </div> -->
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -122,6 +122,11 @@ getUserInvolve(id:string){
  const userInvolve = this.users.filter(element => prj.userList.includes(element.appUserId));
   return userInvolve
 }
+
+  getLeaderInfo(id:string){
+    const dpm = this.departments.find(department => department.id === id);
+   return [this.users.find(user=> user.departmentId === dpm.id && user.permissionCode === Permission.Leader)]
+  }
   getDepartmentName(id: string) {
     return this.departments.find((department) => department.id === id)
       ?.departmentName;

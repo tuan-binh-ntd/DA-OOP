@@ -25,23 +25,25 @@ export class HomeV2Component implements OnInit {
   openProject: number = 0;
   inProgressProject: number = 0;
   resolvedProject: number = 0;
-  closedProject:number = 0;
+  closedProject: number = 0;
   reOpenTask: number = 0;
   openTask: number = 0;
   inProgressTask: number = 0;
   resolvedTask: number = 0;
-  closedTask:number = 0;
+  closedTask: number = 0;
+  totalThisMonthProjects: number = 0;
   getAllTask: GetAllTask = new GetAllTask();
   data: any[] = [];
   tasks: any[] = [];
   pieData: any[] = [];
-  taskData:any[] = [];
+  taskData: any[] = [];
   departments: any[] = [];
   constructor(
     private userSerivice: UserService,
     private projectService: ProjectService,
     private taskService: TaskService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    public datepipe: DatePipe,
   ) {}
 
   async ngOnInit() {
@@ -49,6 +51,7 @@ export class HomeV2Component implements OnInit {
     this.getAllProject.departmentId = this.user.departmentId;
     this.fetchDepartmentData();
     await this.fetchProjectData();
+    await this.fetchDeadlineProjectData();
     this.fetchTaskData();
     // this.divideProjectData();
   }
@@ -64,10 +67,10 @@ export class HomeV2Component implements OnInit {
   }
 
   getDepartmentName() {
-    return this.departments.find((department) => department.id === this.user.departmentId)
-      ?.departmentName;
+    return this.departments.find(
+      (department) => department.id === this.user.departmentId
+    )?.departmentName;
   }
- 
 
   fetchTaskData() {
     this.isLoading = true;
@@ -78,7 +81,9 @@ export class HomeV2Component implements OnInit {
         this.tasks = response;
         this.tasks = this.tasks.filter((t) => t.createUserId !== t.appUserId);
         this.pushTaskChartData();
-        this.tasks.sort((a, b) => parseFloat(a.priorityCode) - parseFloat(b.priorityCode));
+        this.tasks.sort(
+          (a, b) => parseFloat(a.priorityCode) - parseFloat(b.priorityCode)
+        );
         this.tasks.reverse();
         this.isLoading = false;
       });
@@ -94,13 +99,31 @@ export class HomeV2Component implements OnInit {
       .then((response) => {
         this.projects = response;
         this.totalProjects = response.length;
-        this.pushLineChartData();
+        // this.pushLineChartData();
+        this.isLoading = false;
+      });
+  }
+  async fetchDeadlineProjectData() {
+    var today = new Date();
+    var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const payload = {
+      deadlineDateTo:  this.datepipe.transform(lastDayOfMonth)
+    };
+    this.isLoading = true;
+    this.getAllProject.departmentId = this.user?.departmentId;
+    await this.projectService
+      .getAllProject(payload)
+      .pipe(catchError((err) => of(err)))
+      .toPromise()
+      .then((response) => {
+        this.totalThisMonthProjects = response.length;
+        // this.pushLineChartData();
         this.pushPieChartData();
         this.isLoading = false;
       });
   }
 
-  pushTaskChartData(){
+  pushTaskChartData() {
     this.reOpenTask = this.tasks.filter(
       (task) => task.statusCode === StatusCode.Reopened
     ).length;
@@ -123,19 +146,19 @@ export class HomeV2Component implements OnInit {
       },
       {
         name: 'Open',
-        value:   this.openTask,
+        value: this.openTask,
       },
       {
         name: 'InProgress',
-        value:   this.inProgressTask,
+        value: this.inProgressTask,
       },
       {
         name: 'Completed',
-        value:   this.resolvedTask,
+        value: this.resolvedTask,
       },
       {
         name: 'Closed',
-        value:   this.closedTask,
+        value: this.closedTask,
       },
     ];
   }
@@ -163,19 +186,19 @@ export class HomeV2Component implements OnInit {
       },
       {
         name: 'Open',
-        value:   this.openProject,
+        value: this.openProject,
       },
       {
         name: 'InProgress',
-        value:   this.inProgressProject,
+        value: this.inProgressProject,
       },
       {
         name: 'Completed',
-        value:   this.resolvedProject,
+        value: this.resolvedProject,
       },
       {
         name: 'Closed',
-        value:   this.closedProject,
+        value: this.closedProject,
       },
     ];
   }

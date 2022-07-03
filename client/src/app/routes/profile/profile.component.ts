@@ -1,7 +1,9 @@
 import { environment } from 'src/environments/environment';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload';
-import { catchError, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, of, finalize } from 'rxjs';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { Photo } from 'src/app/models/photo';
 import { PhotoInput } from 'src/app/models/photo-input';
@@ -25,7 +27,15 @@ export class ProfileComponent implements OnInit {
   uploader: FileUploader;
   photoInput: PhotoInput = new PhotoInput();
   hasBaseDropZoneOver: false;
+<<<<<<< HEAD
   baseUrl = environment.apiUrl
+=======
+  profileForm!: FormGroup;
+  changePasswordForm!: FormGroup;
+  index: number = 0;
+  isEdit: boolean = false;
+  baseUrl = "https://localhost:5001/api";
+>>>>>>> origin/main
 
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
@@ -34,17 +44,43 @@ export class ProfileComponent implements OnInit {
   ];
   constructor(
     private userService: UserService,
+    private fb: FormBuilder,
     private departmentService: DepartmentService,
     private authenticationService: AuthenticationService,
-  ) {}
-
+    private toastr: ToastrService
+    ) {}
+  
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.fetchUserData();
     this.fetchDepartmentData();
     this.initializeUploader();
+    this.initForm();
+    this.checkEditForm();
   }
 
+  initForm() {
+    this.profileForm = this.fb.group({
+      id: [Validators.required],
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      address: [null, Validators.required],
+      email: [null, Validators.required],
+      phone: [null, Validators.required],
+      password: [null, Validators.required],
+      departmentId: [null, Validators.required],
+      permissionCode: [null, Validators.required],
+      permissionCreator: [null]
+    });
+    this.changePasswordForm = this.fb.group({
+      id: [Validators.required],
+      email: [null, Validators.required],
+      password: [null, Validators.required],
+      newPassword: [null, Validators.required],
+      passwordConfirm: [null, Validators.required],
+    });
+  }
+  
   fetchUserData() {
     this.isLoading = true;
     this.showLoading();
@@ -53,11 +89,24 @@ export class ProfileComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.currentUser = response;
+        this.profileForm.get('id')?.setValue(this.currentUser.id);
+        this.profileForm.get('firstName')?.setValue(this.currentUser.firstName);
+        this.profileForm.get('lastName')?.setValue(this.currentUser.lastName);
+        this.profileForm.get('email')?.setValue(this.currentUser.email);
+        this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+        this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
+        this.profileForm.get('phone')?.setValue(this.currentUser.phone);
+        this.profileForm.get('address')?.setValue(this.currentUser.address);
+        this.profileForm.get('password')?.setValue(this.currentUser.password);
+        this.profileForm.get('permissionCreator')?.setValue(this.currentUser.permissionCode);
+        this.changePasswordForm.get('id')?.setValue(this.currentUser.id);
+        this.changePasswordForm.get('email')?.setValue(this.currentUser.email);
+        this.changePasswordForm.controls['email'].disable();
         this.hideLoading();
         this.isLoading = false;
       });
-  }
-
+    }
+    
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();
@@ -144,5 +193,83 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  checkEditForm() {
+    if (this.isEdit) {
+      this.profileForm.enable();
+    } else {
+      this.profileForm.disable();
+    }
+  }
 
+  onChangeEdit(ev: any) {
+    this.isEdit = ev;
+      this.checkEditForm();
+  }
+
+  onSubmit() {
+    this.isLoading = true;
+    for (const i in this.profileForm.controls) {
+      this.profileForm.controls[i].markAsDirty();
+      this.profileForm.controls[i].updateValueAndValidity();
+    }
+    if (this.profileForm.valid) {
+        this.userService
+          .updateUser(this.profileForm.value)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            }), finalize(() => this.isLoading = false)
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+              this.isEdit = false;
+              this.checkEditForm();
+            } else {
+              this.toastr.error("You must had permission or department had leader")
+            }
+          });
+    } else {
+      this.toastr.warning("Invalid data")
+      this.isLoading = false;
+    }
+  }
+
+  checkPassword(){
+    if(this.changePasswordForm.value.passwordConfirm == this.changePasswordForm.value.newPassword && this.changePasswordForm.value.password == this.currentUser.password){
+      this.changePassword();
+    } else if(this.changePasswordForm.value.passwordConfirm !== this.changePasswordForm.value.newPassword) {
+      this.toastr.warning("PasswordConfirm is incorrected");
+    } else {
+      this.toastr.warning("Password is incorrected");
+    }
+  }
+
+  changePassword() {
+    this.isLoading = true;
+    for (const i in this.changePasswordForm.controls) {
+      this.changePasswordForm.controls[i].markAsDirty();
+      this.changePasswordForm.controls[i].updateValueAndValidity();
+    }
+    this.changePasswordForm.value.password = this.changePasswordForm.value.passwordConfirm;
+    if (this.changePasswordForm.valid) {
+        this.userService
+          .changePassword(this.changePasswordForm.value)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            }), finalize(() => this.isLoading = false)
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+            } else {
+              this.toastr.error('Failed');
+            }
+          });
+    } else {
+      this.toastr.warning("Invalid data");
+      this.isLoading = false;
+    }
+  }
 }
