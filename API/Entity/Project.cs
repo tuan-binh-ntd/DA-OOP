@@ -10,7 +10,7 @@ namespace API.Entity
     {
         [Key]
         public Guid Id { get; set; }
-        [Required, StringLength(50)]
+        [Required, StringLength(1024)]
         public string ProjectName { get; set; }
         public string Description { get; set; }
         [Required, StringLength(50)]
