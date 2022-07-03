@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of, finalize } from 'rxjs';
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private departmentService: DepartmentService,
     private authenticationService: AuthenticationService,
+    private router: Router,
     private toastr: ToastrService
     ) {}
   
@@ -258,6 +260,7 @@ export class ProfileComponent implements OnInit {
           .subscribe((response) => {
             if (response) {
               this.toastr.success('Successfully!');
+              this.router.navigate(['login']);
             } else {
               this.toastr.error('Failed');
             }
