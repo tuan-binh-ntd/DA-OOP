@@ -38,7 +38,6 @@ export class DeleteUserComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.users = response.filter(u => u.departmentId == user.departmentId && u.appUserId != user.appUserId);;    
-        console.log("user", this.users);   
       });
   }
 

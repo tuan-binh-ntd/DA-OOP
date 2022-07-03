@@ -1,7 +1,7 @@
 <div class="container-fluid" style="position: relative;">
   <div class="row no-gutters mt-4">
     <div class="col col-6 d-flex">
-      <h2 class="mb-3 text-primary fw-700">Your Profile</h2>
+      <h2 class="mb-3 text-primary fw-700">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h2>
     </div>
   </div>
   <div class="my-box d-flex justify-content-center">
@@ -15,56 +15,237 @@
       <img src="{{user.photoUrl}}" alt="{{user.email}}" class="avatar">
     </div>
     <div class="col col-8">
-      <div class="row no-gutters">
-        <div class="col col-6">
-          <h3 class="text-primary fw-700">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h3>
-          <p>{{getDepartmentName(currentUser.departmentId)}}</p>
-          <div class="d-flex">
-            <app-permission-icon [permission]="currentUser.permissionCode"></app-permission-icon>
-            <p>{{getPermission(currentUser.permissionCode)}}</p>
-          </div>
-        </div>
-        <div class="col col-6">
-          <div class="d-flex">
-            <i class="fa fa-envelope mr-2"></i>
-            <p>{{currentUser.email}}</p>
-          </div>
-          <div class="d-flex">
-            <i class="fa fa-phone mr-2"></i>
-            <p>{{currentUser.phone}}</p>
-          </div>
-          <div class="d-flex">
-            <i class="fa fa-map-marker mr-2"></i>
-            <p>{{currentUser.address}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col col-10">
-          <div class="example-container">
-            <div class="row" style="padding: 0px 20px;">
-              <div *ngFor="let photo of currentUser.photos" class="mr-2">
-                <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
-                <div class="mt-2">
-                  <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
-                    [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm mb-2">
-                    Main</button>
-                  <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
-                    <i class="fa fa-trash mr-2"></i></button>
+      <form [formGroup]="profileForm">
+      <mat-tab-group
+        dynamicHeight
+        headerPosition="above"
+      >
+        <mat-tab label="Profile">
+          <mat-card>
+            <mat-card-content>
+              <div class="row no-gutters">
+                <div class="col col-10">
+                  <div class="example-container">
+                    <div class="row" style="padding: 0px 20px;">
+                      <div *ngFor="let photo of currentUser.photos" class="mr-2">
+                        <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
+                        <div class="mt-2">
+                          <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
+                            [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm mb-2">
+                            Main</button>
+                          <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
+                            <i class="fa fa-trash mr-2"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-2">
+                  <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                    [uploader]="uploader" class="float-right card p-2 text-center mb-3 mr-4 my-drop-zone">
+                    <i class="fa fa-upload fa-3x mr-2"></i>
+                    Add photos here
+                  </div>
+                  <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br />
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col col-2">
-          <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-            [uploader]="uploader" class="float-right card p-2 text-center mb-3 mr-4 my-drop-zone">
-            <i class="fa fa-upload fa-3x mr-2"></i>
-            Add photos here
-          </div>
-          <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br />
-        </div>
-      </div>
+              <div class="row mt-2">
+                <div class="col col-6">
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Name</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <input
+                          matInput
+                          placeholder="Name"
+                          disabled
+                          value="{{currentUser.firstName}} {{currentUser.lastName}}"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Permission</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <mat-select placeholder="Permission" formControlName="permissionCode">
+                          <mat-option *ngFor="let code of permission" [value]="code.value">
+                              {{ code.viewValue }}
+                          </mat-option>
+                      </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Department</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <mat-select placeholder="Department" formControlName="departmentId">
+                          <mat-option *ngFor="let department of departments" [value]="department.id">
+                              {{ department.departmentName }}
+                          </mat-option>
+                      </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col col-6">
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Email</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <input
+                          matInput
+                          placeholder="Email"
+                          formControlName="email"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Phone</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <input
+                          matInput
+                          placeholder="Phone"
+                          formControlName="phone"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <h6 class="col col-3" style="margin-top: 12px;">Address</h6>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <input
+                          matInput
+                          placeholder="Address"
+                          formControlName="address"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-100">
+                <button
+                  *ngIf="!isEdit"
+                  type="button"
+                  class="btn mr-2 btn-info float-right"
+                  (click)="onChangeEdit(true)"
+                >
+                  <i class="fa fa-edit mr-2"></i>
+                  Edit
+                </button>
+                <button
+                  *ngIf="isEdit"
+                  [busyText]="'Loading...'"
+                  [buttonBusy]="isLoading"
+                  type="button"
+                  class="btn ml-2 btn-primary float-right"
+                  (click)="onSubmit()"
+                >
+                  <i class="fa fa-save mr-2"></i>
+                  Save changes
+                </button>
+                <button
+                  *ngIf="isEdit"
+                  type="button"
+                  class="btn btn-secondary float-right"
+                  (click)="onChangeEdit(false)"
+                >
+                  <i class="fa fa-undo mr-2"></i>
+                  Cancel
+                </button>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="ChangePassword">
+          <mat-card>
+            <mat-card-content style="height: 430px">
+              <form [formGroup]="changePasswordForm">
+                <div class="form-group row">
+                  <h6 class="col col-2" style="margin-top: 12px;">Email</h6>
+                  <div class="col-10">
+                    <mat-form-field class="w-100">
+                      <input
+                        matInput
+                        placeholder="Email"
+                        formControlName="email"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <h6 class="col col-2" style="margin-top: 12px;">Password</h6>
+                  <div class="col-10">
+                    <mat-form-field class="w-100">
+                      <input
+                        matInput
+                        type="password"
+                        placeholder="Password"
+                        formControlName="password"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <h6 class="col col-2" style="margin-top: 12px;">New Password</h6>
+                  <div class="col-10">
+                    <mat-form-field class="w-100">
+                      <input
+                        matInput
+                        type="password"
+                        placeholder="New Password"
+                        formControlName="newPassword"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <h6 class="col col-2" style="margin-top: 12px;">Confirm Password</h6>
+                  <div class="col-10">
+                    <mat-form-field class="w-100">
+                      <input
+                        matInput
+                        type="password"
+                        placeholder="Confirm Password"
+                        formControlName="passwordConfirm"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+
+              <div class="w-100">
+                <button
+                  [busyText]="'Loading...'"
+                  [buttonBusy]="isLoading"
+                  type="button"
+                  class="btn ml-2 btn-primary float-right"
+                  (click)="checkPassword()"
+                >
+                  <i class="fa fa-save mr-2"></i>
+                  Save changes
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
     </div>
   </div>
   <!-- <div class="col col-12" style="background-color:rgb(70, 55, 124)">
@@ -74,66 +255,3 @@
     <i class="fa fa-globe mr-2"></i>
   </div> -->
 </div>
-
-
-<!-- ádasdasdasdsa -->
-
-
-    <!-- <div class="col col-4">
-      <div class="row">
-      </div>
-
-      <div class="row mt-3">
-        <div class="col-md-3">
-          <h3>Add Photos</h3>
-          Multiple
-          Single
-          <input type="file" ng2FileSelect [uploader]="uploader" />
-        </div>
-
-        <div class="col-md-9" style="margin-bottom: 40px">
-          <h3>Upload queue</h3>
-          <p>Queue length: {{ uploader?.queue?.length }}</p>
-          <table class="table">
-            <thead>
-              <tr>
-                <th width="50%">Name</th>
-                <th>Size</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of uploader.queue">
-                <td><strong>{{ item?.file?.name }}</strong></td>
-                <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                <td *ngIf="uploader.options.isHTML5"></td>
-                <td class="text-center">
-                  <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                  <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                  <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div>
-            <div>
-              Queue progress:
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
-              [disabled]="!uploader.getNotUploadedItems().length">
-              <span class="glyphicon glyphicon-upload"></span> Upload all
-            </button>
-            <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
-              [disabled]="!uploader.isUploading">
-              <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-            </button>
-            <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
-              [disabled]="!uploader.queue.length">
-              <span class="glyphicon glyphicon-trash"></span> Remove all
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
