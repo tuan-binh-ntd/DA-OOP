@@ -27,15 +27,12 @@ export class ProfileComponent implements OnInit {
   uploader: FileUploader;
   photoInput: PhotoInput = new PhotoInput();
   hasBaseDropZoneOver: false;
-<<<<<<< HEAD
   baseUrl = environment.apiUrl
-=======
+
   profileForm!: FormGroup;
   changePasswordForm!: FormGroup;
   index: number = 0;
   isEdit: boolean = false;
-  baseUrl = "https://localhost:5001/api";
->>>>>>> origin/main
 
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
