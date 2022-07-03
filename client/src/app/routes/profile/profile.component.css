@@ -23,8 +23,9 @@ input[type=file] {
 }
 
 .avatar {
-  width: 80%;
-  margin: 0px 30px;
+  width: 50%;
+  margin: 35px 100px;
+  margin-bottom: 20px;
   border: 5px #d4d4d4 solid;
   padding: 7px;
   border-radius: 50%;
