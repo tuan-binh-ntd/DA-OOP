@@ -109,20 +109,20 @@ namespace API.Controllers
                      LeaderName = p.user.FirstName + " " + p.user.LastName,
                  }).AsNoTracking().ToListAsync();
 
-            /*var taskList = await (from p in _dataContext.Project
+            var taskList = await (from p in _dataContext.Project
                                   join t in _dataContext.Task on p.Id equals t.ProjectId
                                   select new
                                   {
                                       ProjectId = t.ProjectId
                                   }).AsNoTracking().ToListAsync();
-             var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });*/
+            var countTask = taskList.GroupBy(e => e.ProjectId).Select(e => new TaskNumDto { ProjectId = e.Key, TaskNum = e.Count() });
 
-            var dp_params = new DynamicParameters();
+            /*var dp_params = new DynamicParameters();
             dp_params.Add("@statusCode", 0, DbType.Int32);
             var countTask = await Task.FromResult(_dapper.GetAll<TaskNumDto>("GetTask", dp_params, 
-                commandType: System.Data.CommandType.StoredProcedure));
+                commandType: System.Data.CommandType.StoredProcedure));*/
 
-            /*var taskListComplete = await (from p in _dataContext.Project
+            var taskListComplete = await (from p in _dataContext.Project
                                           join t in _dataContext.Task
                                           on p.Id equals t.ProjectId
                                           where t.StatusCode == Enum.StatusCode.Closed
@@ -130,14 +130,14 @@ namespace API.Controllers
                                           {
                                               ProjectId = t.ProjectId
                                           }).AsNoTracking().ToListAsync();
-            var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new { ProjectId = e.Key, Count = e.Count() });*/
+            var countTaskComplete = taskListComplete.GroupBy(e => e.ProjectId).Select(e => new TaskNumDto { ProjectId = e.Key, TaskNum = e.Count() });
 
-            dp_params = new DynamicParameters();
+            /*dp_params = new DynamicParameters();
             dp_params.Add("@statusCode", Enum.StatusCode.Closed, DbType.Int32);
             var countTaskComplete = await Task.FromResult(_dapper.GetAll<TaskNumDto>("GetTask", dp_params,
-                commandType: System.Data.CommandType.StoredProcedure));
+                commandType: System.Data.CommandType.StoredProcedure));*/
 
-            
+
 
 
             foreach (var project in projectList)
@@ -158,11 +158,21 @@ namespace API.Controllers
                         break;
                     }
                 }
-                dp_params = new DynamicParameters();
+                var userList = await (from p in _dataContext.Project
+                                      join t in _dataContext.Task on p.Id equals t.ProjectId
+                                      join u in _dataContext.AppUser on t.AppUserId equals u.Id
+                                      where p.Id == project.Id
+                                      select new GetAllUserForProjectDto
+                                      {
+                                          UserId = u.Id
+                                      }).AsNoTracking().ToListAsync();
+
+                /*dp_params = new DynamicParameters();
                 dp_params.Add("@projectId", project.Id, DbType.Guid);
                 var userList = await Task.FromResult(_dapper.GetAll<Guid>("GetAllUserForProject", dp_params,
-                    commandType: System.Data.CommandType.StoredProcedure));
-                project.UserList = new List<Guid>();
+                    commandType: System.Data.CommandType.StoredProcedure));*/
+
+                project.UserList = new List<GetAllUserForProjectDto>();
                 project.UserList = userList;
             }
             return Ok(projectList);

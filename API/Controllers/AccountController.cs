@@ -155,6 +155,7 @@ namespace API.Controllers
                 };
                 await _dataContext.AppUser.AddAsync(user);
                 await _dataContext.SaveChangesAsync();
+                await AddPhoto((IFormFile)PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "BasePhoto", "anonymous.jpg"), "text/HTML"));
                 return new AppUserDto
                 {
                     Id = user.Id,
@@ -181,6 +182,7 @@ namespace API.Controllers
                 };
                 await _dataContext.AppUser.AddAsync(user);
                 await _dataContext.SaveChangesAsync();
+                await AddPhoto((IFormFile)PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "BasePhoto", "anonymous.jpg"), "text/HTML"));
                 return new AppUserDto
                 {
                     Id = user.Id,
@@ -252,7 +254,6 @@ namespace API.Controllers
                     user.DepartmentId = input.DepartmentId;
                     _dataContext.AppUser.Update(user);
                     await _dataContext.SaveChangesAsync();
-                    await AddPhoto((IFormFile)PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "BasePhoto", "anonymous.jpg"), "text/HTML"));
                     return Ok(user);
                 }
                 else

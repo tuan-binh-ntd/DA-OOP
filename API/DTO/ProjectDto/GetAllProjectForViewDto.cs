@@ -1,4 +1,5 @@
-﻿using API.Enum;
+﻿using API.DTO.ProjectDto;
+using API.Enum;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +23,6 @@ namespace API.DTO
         public string LeaderName { get; set; }
         public int TaskCount { get; set; } = 0;
         public decimal TaskProgress { get; set; } = 0;
-        public List<Guid> UserList { get; set; }
+        public List<GetAllUserForProjectDto> UserList { get; set; }
     }
 }
