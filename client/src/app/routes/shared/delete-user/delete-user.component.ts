@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./delete-user.component.css']
 })
 export class DeleteUserComponent implements OnInit {
-  @Output() onChangeUser = new EventEmitter();
+  @Output() onDeleteUser = new EventEmitter();
   modalForm!: FormGroup;
   data: any;
   p: any;
@@ -62,6 +62,9 @@ export class DeleteUserComponent implements OnInit {
     this.modalForm.get('deleteUserPermission')?.setValue(this.user.permissionCode);
     this.modalForm.get('deletedUserPermission')?.setValue(this.data.permissionCode);
     this.fetchUserData(this.data);
+    if(this.data.permissionCode === 2){
+      this.modalForm.controls['newLeaderId'].setValidators(Validators.required)
+    }
   }
 
   onSubmit() {
@@ -81,7 +84,7 @@ export class DeleteUserComponent implements OnInit {
           .subscribe((response) => {
             if (response) {
               this.toastr.success('Successfully!');
-              this.onChangeUser.emit();
+              this.onDeleteUser.emit();
             } else {
               this.toastr.error("You must had permission or department had leader")
             }
