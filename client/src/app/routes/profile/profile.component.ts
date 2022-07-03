@@ -224,6 +224,7 @@ export class ProfileComponent implements OnInit {
               this.toastr.success('Successfully!');
               this.isEdit = false;
               this.checkEditForm();
+              this.fetchUserData();
             } else {
               this.toastr.error("You must had permission or department had leader")
             }
