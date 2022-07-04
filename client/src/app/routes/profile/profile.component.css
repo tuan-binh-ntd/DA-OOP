@@ -24,7 +24,7 @@ input[type=file] {
 
 .avatar {
   width: 50%;
-  margin: 35px 100px;
+  margin: 35px 75px;
   margin-bottom: 20px;
   border: 5px #d4d4d4 solid;
   padding: 7px;
@@ -34,13 +34,13 @@ input[type=file] {
 
 .example-container {
   max-height:165px;
-  
+
   /* max-height: 100px; */
   padding:5px ;
   border-radius: 4px;
   overflow-y: scroll;
   overflow-x: hidden;
-  margin: 0 25px 25px 0; 
+  margin: 0 25px 25px 0;
   display: block;
   height: 56vh;
   /* vertical-align: top; */

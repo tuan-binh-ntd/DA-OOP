@@ -8,13 +8,14 @@
   <div class="row mb-3" style="height: 80%;">
     <div class="col col-3">
       <img src="{{user.photoUrl}}" alt="{{user.email}}" class="avatar">
-      <h3 class="mb-2 text-primary fw-700" style="text-align: center;">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h3>
+      <h3 class="mb-2 text-primary fw-700" style="text-align: center;">{{ currentUser.firstName + ' ' +
+        currentUser.lastName }}</h3>
       <h6 style="text-align: center;">
         {{ getPermission(currentUser.permissionCode) }}
         <app-permission-icon [permission]="currentUser.permissionCode" class="mr-2"></app-permission-icon>
         {{ getDepartmentName(currentUser.departmentId) }}
       </h6>
-      <hr/>
+      <hr />
       <div class="row">
         <div class="col col-2"></div>
         <div class="col col-10">
@@ -45,281 +46,257 @@
     </div>
     <div class="col col-9">
       <form [formGroup]="profileForm">
-      <mat-tab-group
-        dynamicHeight
-        headerPosition="above"
-      >
-        <mat-tab label="Edit Profile">
-          <mat-card>
-            <mat-card-content style="height: 475px;">
-              <div class="row no-gutters">
-                <div class="col col-10">
-                  <div class="example-container">
-                    <div class="row" style="padding: 0px 20px;">
-                      <div *ngFor="let photo of currentUser.photos" class="mr-2">
-                        <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
-                        <div class="mt-2">
-                          <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
-                            [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' class="btn btn-sm mb-2">
-                            Main</button>
-                          <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger float-right">
-                            <i class="fa fa-trash mr-2"></i></button>
+        <mat-tab-group dynamicHeight headerPosition="above">
+          <mat-tab label="Edit Profile">
+            <mat-card>
+              <mat-card-content style="height: 475px;">
+                <div class="row no-gutters">
+                  <div class="col col-8">
+                    <div class="example-container">
+                      <div class="row" style="padding: 0px 20px;">
+                        <div *ngFor="let photo of currentUser.photos" class="mr-2">
+                          <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
+                          <div class="mt-2">
+                            <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
+                              [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"'
+                              class="btn btn-sm mb-2">
+                              Main</button>
+                            <button [disabled]="photo.isMain" (click)="deletePhoto(photo)"
+                              class="btn btn-sm btn-danger float-right">
+                              <i class="fa fa-trash mr-2"></i></button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col col-2">
-                  <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-                    [uploader]="uploader" class="float-right card p-2 text-center mb-3 mr-4 my-drop-zone">
-                    <i class="fa fa-upload fa-3x mr-2"></i>
-                    Add photos here
+                  <div class="col col-4">
+                    <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                      [uploader]="uploader" class="card p-3 text-center mb-3 my-drop-zone">
+                      <i class="fa fa-upload fa-3x mr-2"></i>
+                      Add photos here
+                    </div>
+                    <input type="file" ng2FileSelect [uploader]="uploader" /><br />
+
+                    <button type="button mb-1" class="btn btn-success btn-sm" (click)="uploader.uploadAll()"
+                      *ngIf="uploader.getNotUploadedItems().length">
+                      <i class="fa fa-upload mr-1"></i>
+                      <span>Upload</span>
+                    </button>
+                    <button type="button mb-1" class="btn btn-warning btn-sm" (click)="uploader.cancelAll()"
+                      *ngIf="uploader.isUploading">
+                      <i class="fa fa-ban mr-1"></i>
+                      <span>Cancel</span>
+                    </button>
+                    <button type="button mb-1" class="btn btn-danger btn-sm" (click)="uploader.clearQueue()"
+                      *ngIf="uploader.queue.length">
+                      <i class="fa fa-trash mr-1"></i>
+                      <span>Remove</span>
+                    </button>
+
                   </div>
-                  <input type="file" ng2FileSelect [uploader]="uploader" multiple style="margin: 0 30%"/><br />
                 </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col col-6">
-                  <div class="form-group row">
-                    <h6 class="col col-3" style="margin-top: 12px;">Name</h6>
-                    <div class="col-5">
-                      <mat-form-field class="w-100">
-                        <input
-                          matInput
-                          placeholder="First Name"
-                          formControlName="firstName"
-                        />
-                      </mat-form-field>
+                <div class="row mt-2">
+                  <div class="col col-6">
+                    <div class="form-group row">
+                      <h6 class="col col-3" style="margin-top: 12px;">Name</h6>
+                      <div class="col-5">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="First Name" formControlName="firstName" />
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-4">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="Last Name" formControlName="lastName" />
+                        </mat-form-field>
+                      </div>
                     </div>
 
-                    <div class="col-4">
-                      <mat-form-field class="w-100">
-                        <input
-                          matInput
-                          placeholder="Last Name"
-                          formControlName="lastName"
-                        />
-                      </mat-form-field>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <h6 class="col col-3" style="margin-top: 12px;">Permission</h6>
-                    <div class="col-9">
-                      <mat-form-field class="w-100">
-                        <mat-select placeholder="Permission" formControlName="permissionCode">
-                          <mat-option *ngFor="let code of permission" [value]="code.value">
+                    <div class="form-group row">
+                      <h6 class="col col-3" style="margin-top: 12px;">Permission</h6>
+                      <div class="col-9">
+                        <mat-form-field class="w-100">
+                          <mat-select placeholder="Permission" formControlName="permissionCode">
+                            <mat-option *ngFor="let code of permission" [value]="code.value">
                               {{ code.viewValue }}
-                          </mat-option>
-                      </mat-select>
-                      </mat-form-field>
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="form-group row">
-                    <h6 class="col col-3" style="margin-top: 12px;">Department</h6>
-                    <div class="col-9">
-                      <mat-form-field class="w-100">
-                        <mat-select placeholder="Department" formControlName="departmentId">
-                          <mat-option *ngFor="let department of departments" [value]="department.id">
+                    <div class="form-group row">
+                      <h6 class="col col-3" style="margin-top: 12px;">Department</h6>
+                      <div class="col-9">
+                        <mat-form-field class="w-100">
+                          <mat-select placeholder="Department" formControlName="departmentId">
+                            <mat-option *ngFor="let department of departments" [value]="department.id">
                               {{ department.departmentName }}
-                          </mat-option>
-                      </mat-select>
-                      </mat-form-field>
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col col-6">
+                    <div class="form-group row">
+                      <h6 class="col col-2" style="margin-top: 12px;">Email</h6>
+                      <div class="col-10">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="Email" formControlName="email" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <h6 class="col col-2" style="margin-top: 12px;">Phone</h6>
+                      <div class="col-10">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="Phone" formControlName="phone" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <h6 class="col col-2" style="margin-top: 12px;">Address</h6>
+                      <div class="col-10">
+                        <mat-form-field class="w-100">
+                          <input matInput placeholder="Address" formControlName="address" />
+                        </mat-form-field>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="col col-6">
+                <div class="w-100">
+                  <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right"
+                    (click)="onChangeEdit(true)">
+                    <i class="fa fa-edit mr-2"></i>
+                    Edit
+                  </button>
+                  <button *ngIf="isEdit" [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button"
+                    class="btn ml-2 btn-primary float-right" (click)="onSubmit()">
+                    <i class="fa fa-save mr-2"></i>
+                    Save changes
+                  </button>
+                  <button *ngIf="isEdit" type="button" class="btn btn-secondary float-right"
+                    (click)="onChangeEdit(false)">
+                    <i class="fa fa-undo mr-2"></i>
+                    Cancel
+                  </button>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab label="Change Password">
+            <mat-card>
+              <mat-card-content style="height: 475px">
+                <form [formGroup]="changePasswordForm">
                   <div class="form-group row">
-                    <h6 class="col col-2" style="margin-top: 12px;">Email</h6>
+                    <h6 class="col col-2" style="margin-top: 12px;">Email Address</h6>
                     <div class="col-10">
                       <mat-form-field class="w-100">
-                        <input
-                          matInput
-                          placeholder="Email"
-                          formControlName="email"
-                        />
+                        <input matInput placeholder="Email" formControlName="email" />
                       </mat-form-field>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <h6 class="col col-2" style="margin-top: 12px;">Phone</h6>
+                    <h6 class="col col-2" style="margin-top: 12px;">Old Password</h6>
                     <div class="col-10">
                       <mat-form-field class="w-100">
-                        <input
-                          matInput
-                          placeholder="Phone"
-                          formControlName="phone"
-                        />
+                        <input matInput type="password" placeholder="Password" formControlName="password" />
                       </mat-form-field>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <h6 class="col col-2" style="margin-top: 12px;">Address</h6>
+                    <h6 class="col col-2" style="margin-top: 12px;">New Password</h6>
                     <div class="col-10">
                       <mat-form-field class="w-100">
-                        <input
-                          matInput
-                          placeholder="Address"
-                          formControlName="address"
-                        />
+                        <input matInput type="password" placeholder="New Password" formControlName="newPassword" />
                       </mat-form-field>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="w-100">
-                <button
-                  *ngIf="!isEdit"
-                  type="button"
-                  class="btn mr-2 btn-info float-right"
-                  (click)="onChangeEdit(true)"
-                >
-                  <i class="fa fa-edit mr-2"></i>
-                  Edit
-                </button>
-                <button
-                  *ngIf="isEdit"
-                  [busyText]="'Loading...'"
-                  [buttonBusy]="isLoading"
-                  type="button"
-                  class="btn ml-2 btn-primary float-right"
-                  (click)="onSubmit()"
-                >
-                  <i class="fa fa-save mr-2"></i>
-                  Save changes
-                </button>
-                <button
-                  *ngIf="isEdit"
-                  type="button"
-                  class="btn btn-secondary float-right"
-                  (click)="onChangeEdit(false)"
-                >
-                  <i class="fa fa-undo mr-2"></i>
-                  Cancel
-                </button>
-              </div>
-
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
-        <mat-tab label="Change Password">
-          <mat-card>
-            <mat-card-content style="height: 475px">
-              <form [formGroup]="changePasswordForm">
-                <div class="form-group row">
-                  <h6 class="col col-2" style="margin-top: 12px;">Email Address</h6>
-                  <div class="col-10">
-                    <mat-form-field class="w-100">
-                      <input
-                        matInput
-                        placeholder="Email"
-                        formControlName="email"
-                      />
-                    </mat-form-field>
+                  <div class="form-group row">
+                    <h6 class="col col-2" style="margin-top: 12px;">Confirm Password</h6>
+                    <div class="col-10">
+                      <mat-form-field class="w-100">
+                        <input matInput type="password" placeholder="Confirm Password"
+                          formControlName="passwordConfirm" />
+                      </mat-form-field>
+                    </div>
                   </div>
+                </form>
+
+                <div class="w-100">
+                  <button [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button"
+                    class="btn ml-2 btn-primary float-right" (click)="checkPassword()">
+                    <i class="fa fa-save mr-2"></i>
+                    Save changes
+                  </button>
                 </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
 
-                <div class="form-group row">
-                  <h6 class="col col-2" style="margin-top: 12px;">Old Password</h6>
-                  <div class="col-10">
-                    <mat-form-field class="w-100">
-                      <input
-                        matInput
-                        type="password"
-                        placeholder="Password"
-                        formControlName="password"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <h6 class="col col-2" style="margin-top: 12px;">New Password</h6>
-                  <div class="col-10">
-                    <mat-form-field class="w-100">
-                      <input
-                        matInput
-                        type="password"
-                        placeholder="New Password"
-                        formControlName="newPassword"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <h6 class="col col-2" style="margin-top: 12px;">Confirm Password</h6>
-                  <div class="col-10">
-                    <mat-form-field class="w-100">
-                      <input
-                        matInput
-                        type="password"
-                        placeholder="Confirm Password"
-                        formControlName="passwordConfirm"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
-              </form>
-
-              <div class="w-100">
-                <button
-                  [busyText]="'Loading...'"
-                  [buttonBusy]="isLoading"
-                  type="button"
-                  class="btn ml-2 btn-primary float-right"
-                  (click)="checkPassword()"
-                >
-                  <i class="fa fa-save mr-2"></i>
-                  Save changes
-                </button>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
-
-        <mat-tab label="Introduce">
-          <mat-card>
-            <mat-card-content style="height: 475px;">
-              <p style="font-weight: normal;">Quản lý công việc luôn là một vấn đề bất cập đối với nhiều cá nhân nói chung và doanh nghiệp nó riêng. Trong thời đại công nghệ số như hiện nay, yêu cầu hiệu quả, nhanh chóng và chính xác luôn cần thiết. Vậy giải pháp nào cho nhà quản trị có thể kiểm soát công việc và đảm bảo hiệu quả? Thông qua bài biết dưới đây sẽ giúp các nhà quản lý giải đáp các vấn đề liên quan đến quy trình quản lý doanh nghiệp.</p>
-              <p>Vì sao doanh nghiệp cần phải có quy trình quản lý công việc hiệu quả?</p>  
-              <p style="font-weight: normal;">
-                Quản lý công việc hiệu quả được xem là một trong những kỹ năng mà bất cứ cá nhân hay doanh nghiệp nào cũng cần phải có. Việc quản lý công việc hiệu quả sẽ đảm bảo độ chính xác và tiến độ của công việc bao gồm:</p>
-              <p style="font-weight: normal;">
-                <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
-                Giúp cá nhân/doanh nghiệp hoàn thành các mục tiêu đề ra một cách nhanh chóng và hiệu quả – giảm khả năng trì hoãn các công việc.</p>
-              <p style="font-weight: normal;">
-                <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
-                Giảm thiểu tối đa trạng thái căng thẳng, lo lắng trong công việc. Đặc biệt khi phải đối mặt với các thời gian để hoàn thành một số lượng lớn công việc.</p>          
-              <p style="font-weight: normal;">
-                <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
-                Khi kiểm soát công việc hiệu quả, cá nhân/ doanh nghiệp sẽ cập nhật tiến độ công việc liên tục. Từ đó, cải thiện, nâng cao hiệu suất và chất lượng công việc một cách rõ rệt.</p>
-              <p style="font-weight: normal;">
-                <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
-                Giúp ích cho các cấp quản lý kiểm soát tiến độ và chất lượng công việc do nhân viên thực hiện</p>
-              <p style="font-weight: normal;">
-                <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
-                Giúp cho các thành viên phối hợp với nhau một cách ăn khớp và đúng trình tự mà không bị nhầm lẫn công việc giữa nhiều bộ phận, phòng ban</p>
-              <p style="font-weight: normal;">Quy trình quản lý công việc hiệu quả sẽ giúp doanh nghiệp tiết kiệm tối đa thời gian và nguồn lực.</p>
-              <p style="font-weight: normal;">Để đáp ứng nhu cầu này thì việc xây dựng website Quản lý công việc là cần thiết, tiện ích cho cá nhân/doanh nghiệp.</p>
-              <p style="font-weight: normal;">Nếu có vấn đề gì có thể liên hệ với chúng tôi thông qua 
-                <a href="https://www.facebook.com/quynhanxinhgai">https://www.facebook.com/linhdepzais/</a>
-              </p>
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
-      </mat-tab-group>
-    </form>
+          <mat-tab label="Introduce">
+            <mat-card>
+              <mat-card-content style="height: 475px;">
+                <p style="font-weight: normal;">Quản lý công việc luôn là một vấn đề bất cập đối với nhiều cá nhân nói
+                  chung và doanh nghiệp nó riêng. Trong thời đại công nghệ số như hiện nay, yêu cầu hiệu quả, nhanh
+                  chóng và chính xác luôn cần thiết. Vậy giải pháp nào cho nhà quản trị có thể kiểm soát công việc và
+                  đảm bảo hiệu quả? Thông qua bài biết dưới đây sẽ giúp các nhà quản lý giải đáp các vấn đề liên quan
+                  đến quy trình quản lý doanh nghiệp.</p>
+                <p>Vì sao doanh nghiệp cần phải có quy trình quản lý công việc hiệu quả?</p>
+                <p style="font-weight: normal;">
+                  Quản lý công việc hiệu quả được xem là một trong những kỹ năng mà bất cứ cá nhân hay doanh nghiệp nào
+                  cũng cần phải có. Việc quản lý công việc hiệu quả sẽ đảm bảo độ chính xác và tiến độ của công việc bao
+                  gồm:</p>
+                <p style="font-weight: normal;">
+                  <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
+                  Giúp cá nhân/doanh nghiệp hoàn thành các mục tiêu đề ra một cách nhanh chóng và hiệu quả – giảm khả
+                  năng trì hoãn các công việc.
+                </p>
+                <p style="font-weight: normal;">
+                  <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
+                  Giảm thiểu tối đa trạng thái căng thẳng, lo lắng trong công việc. Đặc biệt khi phải đối mặt với các
+                  thời gian để hoàn thành một số lượng lớn công việc.
+                </p>
+                <p style="font-weight: normal;">
+                  <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
+                  Khi kiểm soát công việc hiệu quả, cá nhân/ doanh nghiệp sẽ cập nhật tiến độ công việc liên tục. Từ đó,
+                  cải thiện, nâng cao hiệu suất và chất lượng công việc một cách rõ rệt.
+                </p>
+                <p style="font-weight: normal;">
+                  <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
+                  Giúp ích cho các cấp quản lý kiểm soát tiến độ và chất lượng công việc do nhân viên thực hiện
+                </p>
+                <p style="font-weight: normal;">
+                  <i class="fa fa-circle mr-1" style="font-size: 60%;"></i>
+                  Giúp cho các thành viên phối hợp với nhau một cách ăn khớp và đúng trình tự mà không bị nhầm lẫn công
+                  việc giữa nhiều bộ phận, phòng ban
+                </p>
+                <p style="font-weight: normal;">Quy trình quản lý công việc hiệu quả sẽ giúp doanh nghiệp tiết kiệm tối
+                  đa thời gian và nguồn lực.</p>
+                <p style="font-weight: normal;">Để đáp ứng nhu cầu này thì việc xây dựng website Quản lý công việc là
+                  cần thiết, tiện ích cho cá nhân/doanh nghiệp.</p>
+                <p style="font-weight: normal;">Nếu có vấn đề gì có thể liên hệ với chúng tôi thông qua
+                  <a href="https://www.facebook.com/quynhanxinhgai">https://www.facebook.com/linhdepzais/</a>
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
     </div>
   </div>
-  
+
   <div class="col col-12">
-    <hr/>
+    <hr />
     <div class="row">
       <div class="row no-gutters">
         <a [routerLink]="['../home']" class="mr-2">#Headup</a>
