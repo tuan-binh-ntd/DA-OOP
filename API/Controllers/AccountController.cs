@@ -256,11 +256,11 @@ namespace API.Controllers
                 }
                 else
                 {
-                    user.FirstName = user.FirstName;
-                    user.LastName = user.LastName;
-                    user.Address = user.Address;
-                    user.Email = user.Email;
-                    user.Phone = user.Phone;
+                    user.FirstName = input.FirstName;
+                    user.LastName = input.LastName;
+                    user.Address = input.Address;
+                    user.Email = input.Email;
+                    user.Phone = input.Phone;
                     user.Password = input.Password;
                     user.DepartmentId = user.DepartmentId;
                     _dataContext.AppUser.Update(user);
