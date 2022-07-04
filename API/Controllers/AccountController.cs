@@ -238,7 +238,18 @@ namespace API.Controllers
                     user.Email = input.Email;
                     user.Phone = input.Phone;
                     user.Password = input.Password;
-                    user.DepartmentId = input.DepartmentId;
+                    if (user.DepartmentId != input.DepartmentId)
+                    {
+                        var oldLeader = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.DepartmentId == user.DepartmentId && e.PermissionCode == Permission.Leader);
+                        var taskList = await _dataContext.Task.Where(e => e.AppUserId == input.Id && e.CreateUserId == oldLeader.Id).ToListAsync();
+                        foreach(var task in taskList)
+                        {
+                            task.AppUserId = oldLeader.Id;
+                        }
+                        _dataContext.Task.UpdateRange(taskList);
+                        await _dataContext.SaveChangesAsync();
+                        user.DepartmentId = input.DepartmentId;
+                    }
                     _dataContext.AppUser.Update(user);
                     await _dataContext.SaveChangesAsync();
                     return Ok(user);
