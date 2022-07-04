@@ -90,18 +90,12 @@ export class ProfileComponent implements OnInit {
         this.profileForm.get('firstName')?.setValue(this.currentUser.firstName);
         this.profileForm.get('lastName')?.setValue(this.currentUser.lastName);
         this.profileForm.get('email')?.setValue(this.currentUser.email);
-        this.profileForm
-          .get('permissionCode')
-          ?.setValue(this.currentUser.permissionCode);
-        this.profileForm
-          .get('departmentId')
-          ?.setValue(this.currentUser.departmentId);
+        this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+        this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
         this.profileForm.get('phone')?.setValue(this.currentUser.phone);
         this.profileForm.get('address')?.setValue(this.currentUser.address);
         this.profileForm.get('password')?.setValue(this.currentUser.password);
-        this.profileForm
-          .get('permissionCreator')
-          ?.setValue(this.currentUser.permissionCode);
+        this.profileForm.get('permissionCreator')?.setValue(this.currentUser.permissionCode);
         this.changePasswordForm.get('id')?.setValue(this.currentUser.id);
         this.changePasswordForm.get('email')?.setValue(this.currentUser.email);
         this.changePasswordForm.controls['email'].disable();
@@ -124,14 +118,11 @@ export class ProfileComponent implements OnInit {
   }
 
   getDepartmentName(id: string) {
-    return this.departments.find((department) => department.id === id)
-      ?.departmentName;
+    return this.departments.find((department) => department.id === id)?.departmentName;
   }
 
   getPermission(permission: Permission) {
-    return this.permission.find(
-      (permissionCode) => permissionCode.value == permission
-    )?.viewValue;
+    return this.permission.find((permissionCode) => permissionCode.value == permission)?.viewValue;
   }
 
   hideLoading() {
@@ -200,12 +191,10 @@ export class ProfileComponent implements OnInit {
   checkEditForm() {
     if (this.isEdit) {
       this.profileForm.enable();
-      this.currentUser.permissionCode == Permission.Employee
-        ? this.profileForm.controls['departmentId'].disable()
-        : null;
-      this.currentUser.permissionCode == Permission.Employee
-        ? this.profileForm.controls['permissionCode'].disable()
-        : null;
+      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
+        this.profileForm.controls['departmentId'].disable();
+        this.profileForm.controls['permissionCode'].disable();
+      }
     } else {
       this.profileForm.disable();
     }
@@ -223,12 +212,10 @@ export class ProfileComponent implements OnInit {
       this.profileForm.controls[i].updateValueAndValidity();
     }
     if (this.profileForm.valid) {
-      this.profileForm
-        .get('departmentId')
-        ?.setValue(this.currentUser.departmentId);
-      this.profileForm
-        .get('permissionCode')
-        ?.setValue(this.currentUser.permissionCode);
+      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
+        this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
+        this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+      }
       this.userService
         .updateUser(this.profileForm.value)
         .pipe(
@@ -257,14 +244,12 @@ export class ProfileComponent implements OnInit {
 
   checkPassword() {
     if (
-      this.changePasswordForm.value.passwordConfirm ==
-        this.changePasswordForm.value.newPassword &&
-      this.changePasswordForm.value.password == this.currentUser.password
+      this.changePasswordForm.value.passwordConfirm == this.changePasswordForm.value.newPassword 
+      && this.changePasswordForm.value.password == this.currentUser.password
     ) {
       this.changePassword();
     } else if (
-      this.changePasswordForm.value.passwordConfirm !==
-      this.changePasswordForm.value.newPassword
+      this.changePasswordForm.value.passwordConfirm !== this.changePasswordForm.value.newPassword
     ) {
       this.toastr.warning('PasswordConfirm is incorrected');
     } else {

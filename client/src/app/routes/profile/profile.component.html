@@ -51,10 +51,10 @@
             <mat-card>
               <mat-card-content style="height: 475px;">
                 <div class="row no-gutters">
-                  <div class="col col-8">
+                  <div class="col col-10">
                     <div class="example-container">
                       <div class="row" style="padding: 0px 20px;">
-                        <div *ngFor="let photo of currentUser.photos" class="mr-2">
+                        <div *ngFor="let photo of currentUser.photos" class="mr-3">
                           <img src="{{photo.url}}" alt="{{photo.id}}" style="height: 120px">
                           <div class="mt-2">
                             <button [disabled]="photo.isMain" (click)="setMainPhoto(photo)"
@@ -63,36 +63,26 @@
                               Main</button>
                             <button [disabled]="photo.isMain" (click)="deletePhoto(photo)"
                               class="btn btn-sm btn-danger float-right">
-                              <i class="fa fa-trash mr-2"></i></button>
+                              <i class="fa fa-trash"></i></button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col col-4">
+                  <div class="col col-2">
                     <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
                       [uploader]="uploader" class="card p-3 text-center mb-3 my-drop-zone">
                       <i class="fa fa-upload fa-3x mr-2"></i>
                       Add photos here
                     </div>
-                    <input type="file" ng2FileSelect [uploader]="uploader" /><br />
-
-                    <button type="button mb-1" class="btn btn-success btn-sm" (click)="uploader.uploadAll()"
-                      *ngIf="uploader.getNotUploadedItems().length">
-                      <i class="fa fa-upload mr-1"></i>
-                      <span>Upload</span>
-                    </button>
-                    <button type="button mb-1" class="btn btn-warning btn-sm" (click)="uploader.cancelAll()"
-                      *ngIf="uploader.isUploading">
-                      <i class="fa fa-ban mr-1"></i>
-                      <span>Cancel</span>
-                    </button>
-                    <button type="button mb-1" class="btn btn-danger btn-sm" (click)="uploader.clearQueue()"
-                      *ngIf="uploader.queue.length">
-                      <i class="fa fa-trash mr-1"></i>
-                      <span>Remove</span>
-                    </button>
-
+                    <div class="row">
+                      <input type="file" ng2FileSelect [uploader]="uploader" class="mt-1 ml-2" style="width: 110px;"/>
+                      <button type="button" class="btn btn-success btn-sm" (click)="uploader.uploadAll()"
+                        *ngIf="uploader.getNotUploadedItems().length">
+                        <i class="fa fa-upload mr-1"></i>
+                        <span>Upload</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div class="row mt-2">
