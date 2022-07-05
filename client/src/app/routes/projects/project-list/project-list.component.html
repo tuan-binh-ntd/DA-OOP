@@ -42,7 +42,7 @@
             <app-project-type-icon [projectType]="project.projectType"></app-project-type-icon>
           </td>
           <td class="align-middle" style="width: auto;" >
-            <a [routerLink]="['../tasks',project.id,'list']">{{ project.projectName }}
+            <a style="color:#0077b6" [routerLink]="['../tasks',project.id,'list']">{{ project.projectName }}
             </a>
             </td>
           <td class="align-middle" style="width: auto;">{{ getDepartmentName(project.departmentId) }}</td>
