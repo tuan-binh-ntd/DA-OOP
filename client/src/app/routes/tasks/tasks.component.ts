@@ -297,22 +297,6 @@ export class TasksComponent implements OnInit {
   }
 
   copyLink(){
-    if(this.projectId){
-      if(document.location.pathname.endsWith('list')){
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/" + this.projectId + "/list");
-      } else if(document.location.pathname.endsWith('status')) {
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/" + this.projectId + "/status");
-      } else {
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/" + this.projectId + "/calendar");
-      }
-    } else {
-      if(document.location.pathname.endsWith('list')){
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/list");
-      } else if(document.location.pathname.endsWith('status')) {
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/status");
-      } else {
-        navigator.clipboard.writeText("http://localhost:4200/projects/tasks/calendar");
-      }
-    }
+    navigator.clipboard.writeText(document.location.href);
   }
 }
