@@ -13,7 +13,7 @@
       mdePopoverTriggerOn="click"
       #popoverTrigger="mdePopoverTrigger"
       >
-      <i class="fa fa-filter mr-2" style="color: #696eff;" aria-hidden="true"></i>
+      <i class="fa fa-filter mr-2" style="color: #0077b6;" aria-hidden="true"></i>
       Filter
     </button>
     
@@ -171,7 +171,7 @@
     </mde-popover>
     
     <button class="button-filter ml-2" [matMenuTriggerFor]="projectMenu">
-      <i class="fa fa-bookmark mr-2" style="color: #696eff;"aria-hidden="true"></i>
+      <i class="fa fa-bookmark mr-2" style="color: #0077b6;"aria-hidden="true"></i>
       {{ projectName }}</button>
     <mat-menu #projectMenu="matMenu">
       <button mat-menu-item *ngFor="let project of projects" (click)="onFilterProject(project)">
@@ -180,7 +180,7 @@
     </mat-menu>
 
     <button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
-      <i class="fa fa-list mr-2" style="color: #696eff;" aria-hidden="true"></i>
+      <i class="fa fa-list mr-2" style="color: #0077b6;" aria-hidden="true"></i>
       {{ typeName }}</button>
     <mat-menu #typeMenu="matMenu">
       <button mat-menu-item *ngFor="let type of taskTypes" (click)="onFilterType(type)">
@@ -189,7 +189,7 @@
     </mat-menu>
     
     <button class="button-filter ml-2" [matMenuTriggerFor]="statusMenu">
-      <i class="fa fa-signal mr-2"  style="color: #696eff;" aria-hidden="true"></i>
+      <i class="fa fa-signal mr-2"  style="color: #0077b6;" aria-hidden="true"></i>
       {{ statusName }}</button>
     <mat-menu #statusMenu="matMenu">
       <button mat-menu-item *ngFor="let status of statusCode" (click)="onFilterStatus(status)">
@@ -198,7 +198,7 @@
     </mat-menu>
     
     <button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
-      <i class="fa fa-chevron-up mr-2"  style="color: #696eff;" aria-hidden="true"></i>
+      <i class="fa fa-chevron-up mr-2"  style="color: #0077b6;" aria-hidden="true"></i>
       {{priorityName}}
       </button>
     <mat-menu #priorityMenu="matMenu">
