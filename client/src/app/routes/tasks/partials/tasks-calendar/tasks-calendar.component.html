@@ -48,8 +48,8 @@
     </div>
     <div class="col col-1">
       <button *ngIf="right" class="button float-right" (click)="onFilterUser(); this.isMyTask = !isMyTask">
-        <i  *ngIf="isMyTask == false" class="fa fa-file-text mr-2"></i>
-        <i *ngIf="isMyTask == true" class="fa fa-file-text-o mr-2"></i>
+        <i  *ngIf="isMyTask == false" class="fa fa-file-text mr-2" style="color: #696eff;"></i>
+        <i *ngIf="isMyTask == true" class="fa fa-file-text-o mr-2" style="color: #696eff;"></i>
         <span>{{ filterUserTask }}</span>
       </button>
     </div>
