@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of, finalize } from 'rxjs';
@@ -30,7 +31,7 @@ export class ProfileComponent implements OnInit {
   changePasswordForm!: FormGroup;
   index: number = 0;
   isEdit: boolean = false;
-  baseUrl = "https://localhost:5001/api";
+  baseUrl = 'https://localhost:5001/api';
 
   permission: any[] = [
     { value: Permission.ProjectManager, viewValue: 'ProjectManager' },
@@ -42,9 +43,10 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private departmentService: DepartmentService,
     private authenticationService: AuthenticationService,
+    private router: Router,
     private toastr: ToastrService
-    ) {}
-  
+  ) {}
+
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.fetchUserData();
@@ -65,7 +67,7 @@ export class ProfileComponent implements OnInit {
       password: [null, Validators.required],
       departmentId: [null, Validators.required],
       permissionCode: [null, Validators.required],
-      permissionCreator: [null]
+      permissionCreator: [null],
     });
     this.changePasswordForm = this.fb.group({
       id: [Validators.required],
@@ -75,7 +77,7 @@ export class ProfileComponent implements OnInit {
       passwordConfirm: [null, Validators.required],
     });
   }
-  
+
   fetchUserData() {
     this.isLoading = true;
     this.showLoading();
@@ -100,8 +102,8 @@ export class ProfileComponent implements OnInit {
         this.hideLoading();
         this.isLoading = false;
       });
-    }
-    
+  }
+
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();
@@ -116,14 +118,11 @@ export class ProfileComponent implements OnInit {
   }
 
   getDepartmentName(id: string) {
-    return this.departments.find((department) => department.id === id)
-      ?.departmentName;
+    return this.departments.find((department) => department.id === id)?.departmentName;
   }
 
   getPermission(permission: Permission) {
-    return this.permission.find(
-      (permissionCode) => permissionCode.value == permission
-    )?.viewValue;
+    return this.permission.find((permissionCode) => permissionCode.value == permission)?.viewValue;
   }
 
   hideLoading() {
@@ -136,9 +135,8 @@ export class ProfileComponent implements OnInit {
 
   fileOverBase(e: any) {
     this.hasBaseDropZoneOver = e;
-    this.uploader.uploadAll()
+    this.uploader.uploadAll();
   }
-
 
   setMainPhoto(photo: Photo) {
     this.photoInput.id = this.user.id;
@@ -147,11 +145,11 @@ export class ProfileComponent implements OnInit {
       this.user.photoUrl = photo.url;
       this.authenticationService.setCurrentUser(this.user);
       this.user.photoUrl = photo.url;
-      this.currentUser.photos.map(p => {
+      this.currentUser.photos.map((p) => {
         if (p.isMain) p.isMain = false;
         if (p.id === photo.id) p.isMain = true;
-      })
-    })
+      });
+    });
   }
 
   initializeUploader() {
@@ -162,12 +160,12 @@ export class ProfileComponent implements OnInit {
       allowedFileType: ['image'],
       removeAfterUpload: true,
       autoUpload: false,
-      maxFileSize: 10 * 1024 * 1024
+      maxFileSize: 10 * 1024 * 1024,
     });
 
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
-    }
+    };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       const photo: Photo = JSON.parse(response);
@@ -177,20 +175,26 @@ export class ProfileComponent implements OnInit {
         this.user.photoUrl = photo.url;
         this.authenticationService.setCurrentUser(this.user);
       }
-    }
+    };
   }
 
   deletePhoto(photo: Photo) {
     this.photoInput.id = this.user.id;
     this.photoInput.photoId = photo.id;
     this.userService.deletePhoto(this.photoInput).subscribe(() => {
-      this.currentUser.photos = this.currentUser.photos.filter(x => x.id != this.photoInput.photoId);
-    })
+      this.currentUser.photos = this.currentUser.photos.filter(
+        (x) => x.id != this.photoInput.photoId
+      );
+    });
   }
 
   checkEditForm() {
     if (this.isEdit) {
       this.profileForm.enable();
+      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
+        this.profileForm.controls['departmentId'].disable();
+        this.profileForm.controls['permissionCode'].disable();
+      }
     } else {
       this.profileForm.disable();
     }
@@ -198,7 +202,7 @@ export class ProfileComponent implements OnInit {
 
   onChangeEdit(ev: any) {
     this.isEdit = ev;
-      this.checkEditForm();
+    this.checkEditForm();
   }
 
   onSubmit() {
@@ -208,35 +212,48 @@ export class ProfileComponent implements OnInit {
       this.profileForm.controls[i].updateValueAndValidity();
     }
     if (this.profileForm.valid) {
-        this.userService
-          .updateUser(this.profileForm.value)
-          .pipe(
-            catchError((err) => {
-              return of(err);
-            }), finalize(() => this.isLoading = false)
-          )
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!');
-              this.isEdit = false;
-              this.checkEditForm();
-            } else {
-              this.toastr.error("You must had permission or department had leader")
-            }
-          });
+      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
+        this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
+        this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+      }
+      this.userService
+        .updateUser(this.profileForm.value)
+        .pipe(
+          catchError((err) => {
+            return of(err);
+          }),
+          finalize(() => (this.isLoading = false))
+        )
+        .subscribe((response) => {
+          if (response) {
+            this.toastr.success('Successfully!');
+            this.isEdit = false;
+            this.checkEditForm();
+            this.fetchUserData();
+          } else {
+            this.toastr.error(
+              'You must had permission or department had leader'
+            );
+          }
+        });
     } else {
-      this.toastr.warning("Invalid data")
+      this.toastr.warning('Invalid data');
       this.isLoading = false;
     }
   }
 
-  checkPassword(){
-    if(this.changePasswordForm.value.passwordConfirm == this.changePasswordForm.value.newPassword && this.changePasswordForm.value.password == this.currentUser.password){
+  checkPassword() {
+    if (
+      this.changePasswordForm.value.passwordConfirm == this.changePasswordForm.value.newPassword 
+      && this.changePasswordForm.value.password == this.currentUser.password
+    ) {
       this.changePassword();
-    } else if(this.changePasswordForm.value.passwordConfirm !== this.changePasswordForm.value.newPassword) {
-      this.toastr.warning("PasswordConfirm is incorrected");
+    } else if (
+      this.changePasswordForm.value.passwordConfirm !== this.changePasswordForm.value.newPassword
+    ) {
+      this.toastr.warning('PasswordConfirm is incorrected');
     } else {
-      this.toastr.warning("Password is incorrected");
+      this.toastr.warning('Password is incorrected');
     }
   }
 
@@ -246,24 +263,27 @@ export class ProfileComponent implements OnInit {
       this.changePasswordForm.controls[i].markAsDirty();
       this.changePasswordForm.controls[i].updateValueAndValidity();
     }
-    this.changePasswordForm.value.password = this.changePasswordForm.value.passwordConfirm;
+    this.changePasswordForm.value.password =
+      this.changePasswordForm.value.passwordConfirm;
     if (this.changePasswordForm.valid) {
-        this.userService
-          .changePassword(this.changePasswordForm.value)
-          .pipe(
-            catchError((err) => {
-              return of(err);
-            }), finalize(() => this.isLoading = false)
-          )
-          .subscribe((response) => {
-            if (response) {
-              this.toastr.success('Successfully!');
-            } else {
-              this.toastr.error('Failed');
-            }
-          });
+      this.userService
+        .changePassword(this.changePasswordForm.value)
+        .pipe(
+          catchError((err) => {
+            return of(err);
+          }),
+          finalize(() => (this.isLoading = false))
+        )
+        .subscribe((response) => {
+          if (response) {
+            this.toastr.success('Successfully!');
+            this.router.navigate(['login']);
+          } else {
+            this.toastr.error('Failed');
+          }
+        });
     } else {
-      this.toastr.warning("Invalid data");
+      this.toastr.warning('Invalid data');
       this.isLoading = false;
     }
   }

@@ -37,10 +37,10 @@ export class ProjectTypeObject {
 }
 
 export const ProjectColors = {
-  ['MRP']: '#0080FF',
-  ['CTP']: '#00FF00',
-  ['MNP']: '#FF8000',
-  ['RSP']: '#FF0000',
+  ['MRP']: '#59d102',
+  ['CTP']: '#ae10f9',
+  ['MNP']: '#e60b09',
+  ['RSP']: '#183182',
 };
 
 export const ProjectIcon = {

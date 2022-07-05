@@ -51,6 +51,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   maxDate: Date = new Date();
   messages: any[] = [];
+  TaskOfProject: any;
   pId: string = '';
   taskTypes: any[] = [
     { value: 'bug', viewValue: 'Bug' },
@@ -143,6 +144,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
             (p) => p.departmentId == this.currentUserInfo.departmentId
           );
         }
+        this.TaskOfProject = this.projects.find(p => p.Id === this.pId)
       });
   }
 
@@ -198,7 +200,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       content: [null],
     });
   }
-
+  
   async openModal(data: any, mode: string, isEdit: boolean) {
     this.index = 0;
     this.isEdit = isEdit;
@@ -207,6 +209,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     this.modalForm.reset();
     this.messageForm.reset();
     this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
+    this.maxDate = this.TaskOfProject.deadlineDate;
     if (mode === 'create') {
       this.modalForm.enable();
       this.title = 'New Task';
@@ -215,9 +218,6 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.get('createDate')?.setValue(new Date());
       this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
       this.modalForm.get('projectId').setValue(this.pId);
-      const projectOfTask = this.projects.find(prj => prj.id === this.pId);
-      this.maxDate = projectOfTask.deadlineDate;
-
       if (this.pId) {
         this.modalForm.controls['projectId'].disable();
       }
@@ -231,33 +231,33 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       if (this.currentUserInfo.departmentId) {
         this.leaderInfo = this.users.find(
           (user) =>
-            user.departmentId === this.currentUserInfo.departmentId &&
-            user.permissionCode === Permission.Leader
-        );
-        this.employeeInfo = this.users.find(
-          (user) =>
+          user.departmentId === this.currentUserInfo.departmentId &&
+          user.permissionCode === Permission.Leader
+          );
+          this.employeeInfo = this.users.find(
+            (user) =>
             user.departmentId === this.currentUserInfo.departmentId &&
             user.permissionCode === Permission.Employee &&
             user.appUserId === this.data.appUserId
-        );
-        this.users = this.users.filter(
-          (u) =>
-            u.departmentId == this.currentUserInfo.departmentId &&
-            Number(u.permissionCode) !== Permission.ProjectManager
-        );
-      } else {
-        this.leaderInfo = this.users.find(
-          (user) => user.permissionCode === Permission.Leader
-        );
-        this.employeeInfo = this.users.find(
-          (user) =>
-            user.permissionCode === Permission.Employee &&
-            user.appUserId === this.data.appUserId
-        );
-        this.users = this.users.filter(
-          (u) => Number(u.permissionCode) !== Permission.ProjectManager
-        );
-      }
+            );
+            this.users = this.users.filter(
+              (u) =>
+              u.departmentId == this.currentUserInfo.departmentId &&
+              Number(u.permissionCode) !== Permission.ProjectManager
+              );
+            } else {
+              this.leaderInfo = this.users.find(
+                (user) => user.permissionCode === Permission.Leader
+                );
+                this.employeeInfo = this.users.find(
+                  (user) =>
+                  user.permissionCode === Permission.Employee &&
+                  user.appUserId === this.data.appUserId
+                  );
+                  this.users = this.users.filter(
+                    (u) => Number(u.permissionCode) !== Permission.ProjectManager
+                    );
+                  }
       this.departmentName = this.getDepartmentName(
         this.leaderInfo.departmentId
       );
