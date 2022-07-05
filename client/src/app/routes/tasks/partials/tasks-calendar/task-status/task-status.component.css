@@ -206,4 +206,11 @@ transition: all .4s ease-in-out;
     pointer-events: none;
 }
 
+.fa-link {
+  transform:scale(-2,2);
+  opacity: 0.1;
+  width: 25px;
+  height: 0px;
+}
+
 

@@ -330,3 +330,10 @@ height: 100%;
 visibility: visible;
 }
 
+.fa-link {
+  transform:scale(-2,2);
+  opacity: 0.1;
+  width: 25px;
+  height: 0px;
+}
+

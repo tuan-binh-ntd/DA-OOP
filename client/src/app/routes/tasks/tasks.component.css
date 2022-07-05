@@ -133,8 +133,10 @@ tr {
 }
 
 .fa-link {
-  transform: rotate(90deg);
-  opacity: 0.3;
+  transform:scale(-2,2);
+  opacity: 0.1;
+  width: 25px;
+  height: 0px;
 }
 
 

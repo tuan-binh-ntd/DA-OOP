@@ -289,4 +289,12 @@ getUserInvolve(id:string){
       // this.spinner.hide();
     }
   }
+
+  copyLink(){
+    if(document.location.pathname.endsWith('list')){
+      navigator.clipboard.writeText("http://localhost:4200/projects/list");
+    } else {
+      navigator.clipboard.writeText("http://localhost:4200/projects/status");
+    }
+  }
 }
