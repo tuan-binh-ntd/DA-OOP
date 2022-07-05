@@ -291,10 +291,6 @@ getUserInvolve(id:string){
   }
 
   copyLink(){
-    if(document.location.pathname.endsWith('list')){
-      navigator.clipboard.writeText("http://localhost:4200/projects/list");
-    } else {
-      navigator.clipboard.writeText("http://localhost:4200/projects/status");
-    }
+    navigator.clipboard.writeText(document.location.href);
   }
 }

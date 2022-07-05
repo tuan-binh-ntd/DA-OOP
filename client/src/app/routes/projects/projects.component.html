@@ -47,7 +47,19 @@
                     <app-department-icon class="mb-2 text-truncate" [departmentName]="getDepartmentName(item.departmentId)">
                     </app-department-icon>
                   </div>
-                  <div class="col col-1">
+                  <div *ngIf="this.user.permissionCode == 3" class="col col-1">
+                    <button 
+                        class="btn-icon" 
+                        type="button" 
+                        (click)="
+                            $event.stopPropagation();
+                            openDetailModal(item, 'detail', false)
+                          "
+                      >
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div *ngIf="this.user.permissionCode !== 3"  class="col col-1">
                     <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
                       <button 
                         class="btn-icon" 
@@ -181,7 +193,19 @@
                     </app-department-icon>
   
                   </div>
-                  <div class="col col-1">
+                  <div *ngIf="this.user.permissionCode == 3" class="col col-1">
+                    <button 
+                        class="btn-icon" 
+                        type="button" 
+                        (click)="
+                            $event.stopPropagation();
+                            openDetailModal(item, 'detail', false)
+                          "
+                      >
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div *ngIf="this.user.permissionCode !== 3"  class="col col-1">
                     <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
                       <button 
                         class="btn-icon" 
@@ -315,7 +339,19 @@
                       </app-department-icon>
     
                     </div>
-                    <div class="col col-1">
+                    <div *ngIf="this.user.permissionCode == 3" class="col col-1">
+                      <button 
+                          class="btn-icon" 
+                          type="button" 
+                          (click)="
+                              $event.stopPropagation();
+                              openDetailModal(item, 'detail', false)
+                            "
+                        >
+                          <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="this.user.permissionCode !== 3"  class="col col-1">
                       <div class="float-right dropdown dropleft" (click)="$event.stopPropagation()">
                         <button 
                           class="btn-icon" 
@@ -449,7 +485,19 @@
                     </app-department-icon>
   
                   </div>
-                  <div class="col col-1" style="margin-left:10px ;">
+                  <div *ngIf="this.user.permissionCode == 3" class="col col-1">
+                    <button 
+                        class="btn-icon" 
+                        type="button" 
+                        (click)="
+                            $event.stopPropagation();
+                            openDetailModal(item, 'detail', false)
+                          "
+                      >
+                        <i class="fa fa-ellipsis-h p-text" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div *ngIf="this.user.permissionCode !== 3"  class="col col-1">
                     <div class="float-right dropdown dropleft"  (click)="$event.stopPropagation()">
                       <button 
                         class="btn-icon" 
