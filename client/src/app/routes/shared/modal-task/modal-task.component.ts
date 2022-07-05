@@ -102,9 +102,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     this.fetchProjectData();
     this.fetchUserData();
     this.initForm();
-    Number(this.currentUserInfo.permissionCode) === Permission.Employee
-      ? this.statusCode.shift() && this.statusCode.pop()
-      : null;
+    // Number(this.currentUserInfo.permissionCode) === Permission.Employee
+    //   ? this.statusCode.shift() && this.statusCode.pop()
+    //   : null;
       if(this.data !== undefined) {
         this.userService.getUser(this.data.appUserId).subscribe((res) => {
           this.employeeInfo = res;
