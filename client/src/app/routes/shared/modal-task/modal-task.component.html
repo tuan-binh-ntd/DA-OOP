@@ -441,15 +441,21 @@
                       <ngx-avatar [round]="false" class="d-inline-block"  size="120" [name]="leaderInfo?.firstName + leaderInfo?.lastName" [src]="leaderInfo?.photoUrl"
                      ></ngx-avatar>
                     </div>
-                    <span>Email: </span>
-                    <br />
-                    <p class="fw-500">{{ leaderInfo?.email }}</p>
-                    <span>Phone: </span>
-                    <br />
-                    <p class="fw-500">{{ leaderInfo?.phone }}</p>
-                    <span>Address: </span>
-                    <br />
-                    <p class="fw-500">{{ leaderInfo?.address }}</p>
+                    <span class="row no-gutters mb-2" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-envelope mr-2 mt-1"></i>
+                      Email Address:
+                    </span>
+                    <p class="fw-500 mb-2">{{ leaderInfo?.email }}</p>
+                    <span class="mt-2 mb-2 row no-gutters" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-phone-square mr-2 mt-1"></i>
+                      Phone Number:
+                    </span>
+                    <p class="fw-500 mb-2">{{ leaderInfo?.phone }}</p>
+                    <span class="mt-2 mb-2 row no-gutters" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-globe mr-2 mt-1"></i>
+                      Address:
+                    </span>
+                    <p class="fw-500 mb-2">{{ leaderInfo?.address }}</p>
                   </div>
                 </div>
 
@@ -473,15 +479,21 @@
                       <ngx-avatar [round]="false" class="d-inline-block"  size="120" [name]="employeeInfo?.firstName + employeeInfo?.lastName" [src]="employeeInfo?.photoUrl"
                      ></ngx-avatar>
                     </div>
-                    <span>Email: </span>
-                    <br />
-                    <p class="fw-500">{{ employeeInfo?.email }}</p>
-                    <span>Phone: </span>
-                    <br />
-                    <p class="fw-500">{{ employeeInfo?.phone }}</p>
-                    <span>Address: </span>
-                    <br />
-                    <p class="fw-500">{{ employeeInfo?.address }}</p>
+                    <span class="row no-gutters mb-2" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-envelope mr-2 mt-1"></i>
+                      Email Address:
+                    </span>
+                    <p class="fw-500 mb-2">{{ employeeInfo?.email }}</p>
+                    <span class="mt-2 row no-gutters mb-2" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-phone-square mr-2 mt-1"></i>
+                      Phone Number:
+                    </span>
+                    <p class="fw-500 mb-2">{{ employeeInfo?.phone }}</p>
+                    <span class="mt-2 row no-gutters mb-2" style="color: rgba(0, 0, 0, 0.400);">
+                      <i class="fa fa-globe mr-2 mt-1"></i>
+                      Address:
+                    </span>
+                    <p class="fw-500 mb-2">{{ employeeInfo?.address }}</p>
                   </div>
                 </div>
               </div>

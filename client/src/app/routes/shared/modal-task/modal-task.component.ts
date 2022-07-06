@@ -209,7 +209,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     this.modalForm.reset();
     this.messageForm.reset();
     this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
-    this.maxDate = this.TaskOfProject.deadlineDate;
+    this.maxDate = this.TaskOfProject?.deadlineDate;
     if (mode === 'create') {
       this.modalForm.enable();
       this.title = 'New Task';

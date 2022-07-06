@@ -39,9 +39,11 @@
           <h6 class="mr-2 fw-700 list-wrap1" style="line-height:40px; letter-spacing: 2px;">REOPEN</h6>
           <div class="countProject">{{reOpendCount}}</div>
         </div>
+        <div class="fixed__card">
+
         <div cdkDropList id="reopen" cdkDropListSortingDisabled #listReopen="cdkDropList"
           [cdkDropListAutoScrollDisabled]="false" [cdkDropListData]="reOpenProject"
-          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="fixed__card-content"
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of reOpenProject" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
@@ -175,6 +177,7 @@
   
           </div>
         </div>
+        </div>
       </div>
     </div>
     
@@ -184,9 +187,11 @@
           <h6 class="mr-2 fw-700 list-wrap2" style="line-height:40px; letter-spacing: 2px;">OPEN</h6>
           <div class="countProject">{{openCount}}</div>
         </div>
+        <div class="fixed__card">
+
         <div cdkDropList id="open" #listOpen="cdkDropList" cdkDropListSortingDisabled
           [cdkDropListAutoScrollDisabled]="false" [cdkDropListData]="openProjects"
-          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="example-list"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="fixed__card-content"
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of openProjects" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
@@ -319,6 +324,7 @@
               </div>
             <!-- </div> -->
           </div>
+        </div>
         </div>
       </div>
     </div>
