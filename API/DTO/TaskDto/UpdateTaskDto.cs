@@ -18,5 +18,6 @@ namespace API.DTO
         public Guid ProjectId { get; set; }
         public Guid AppUserId { get; set; }
         public Permission PermissionCode { get; set; }
+        public string ReasonForDelay { get; set; }
     }
 }
