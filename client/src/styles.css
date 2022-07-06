@@ -310,14 +310,22 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; font-weight: 600;}
   background-color: transparent;
 }
 
-  .btn-icon:hover,
-  .btn-icon:active
+  .btn-icon:hover
   {
     color: rgba(0, 0, 0, 0.85);
     border: none;
     outline: none;
     background-color: rgba(0, 0, 0, 0.08);
   }
+  .btn-icon:active{
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-icon:focus{
+    border: none;
+    outline: none;
+  }
+
 
 
 

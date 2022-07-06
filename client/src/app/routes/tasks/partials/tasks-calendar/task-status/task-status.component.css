@@ -206,10 +206,5 @@ transition: all .4s ease-in-out;
     pointer-events: none;
 }
 
-.fa-link {
-  transform:scale(-1,1);
-  margin: 10px 4px;
-  opacity: 0.1;
-}
 
 

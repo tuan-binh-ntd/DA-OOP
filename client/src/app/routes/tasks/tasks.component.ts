@@ -297,6 +297,9 @@ export class TasksComponent implements OnInit {
   }
 
   copyLink(){
+    this.toastr.success("Coppied to clipboard", '', {
+      timeOut: 500,
+    });
     navigator.clipboard.writeText(document.location.href);
   }
 }

@@ -315,7 +315,6 @@ transition: all .4s ease-in-out;
   /*Without this, clicking will make it sticky*/
     pointer-events: none;
 }
-
 .fixed__card{
   height: 75vh;
   max-height: calc(60vh - 35px);
@@ -330,9 +329,4 @@ height: 100%;
 visibility: visible;
 }
 
-.fa-link {
-  transform:scale(-1,1);
-  margin: 10px 4px;
-  opacity: 0.1;
-}
 

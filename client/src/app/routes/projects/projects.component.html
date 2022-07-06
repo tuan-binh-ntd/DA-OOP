@@ -1,8 +1,13 @@
 <div class="container-fluid" style="position: relative">
   <div class="row no-gutters mt-4">
-    <div class="col col-6 p-0 d-flex">
+    <div class="col col-6 p-0 d-flex" style="align-items: baseline;">
       <h4 class="mb-3 text-primary fw-700">Projects</h4>
-      <i role="button" class="fa fa-link" (click)="copyLink()"></i>
+      <button class="btn-icon  ml-2">
+        <i
+          class="fa fa-link fw-700 fsz-16 text-dark"
+          (click)="copyLink()"
+        ></i>
+      </button>
       </div>
     <div *ngIf="right" class="col col-6">
       <button *ngIf="right" class="btn--fab fixedButton color-1 float-right" data-toggle="modal"
