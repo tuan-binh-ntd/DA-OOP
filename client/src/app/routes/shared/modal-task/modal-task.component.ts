@@ -144,7 +144,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
             (p) => p.departmentId == this.currentUserInfo.departmentId
           );
         }
-        this.TaskOfProject = this.projects.find(p => p.Id === this.pId)
+        this.TaskOfProject = this.projects.find(p => p.id === this.pId)
       });
   }
 
