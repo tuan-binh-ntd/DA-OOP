@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  baseUrl = "https://localhost:5001/api/task";
+  baseUrl = environment.baseUrl + 'task';
   constructor(private http: HttpClient) { }
   getAllTask(payload?: any): Observable<any> {
     let taskType, userId, projectId, keyWord, createUserId, priorityCode, statusCode, createDateFrom, createDateTo, deadlineDateFrom, deadlineDateTo, completeDateFrom, completeDateTo
