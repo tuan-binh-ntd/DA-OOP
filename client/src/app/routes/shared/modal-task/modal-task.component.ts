@@ -23,6 +23,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { PresenceService } from 'src/app/services/presence.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -81,8 +82,8 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     public messageService: MessageService,
-    public presenceService: PresenceService
-
+    public presenceService: PresenceService,
+    public datepipe: DatePipe
   ) {}
 
   ngAfterViewChecked() {
@@ -195,6 +196,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       description: [null],
       completeDate: [null],
       permissionCode: [null],
+      reasonForDelay: [null],
     });
     this.messageForm = this.fb.group({
       content: [null],
@@ -402,6 +404,16 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           //this.fetchMessage();
           this.messageForm.reset();
         });
+    }
+  }
+
+  checkDelay() {
+    if( this.modalForm.value.statusCode == 5 && 
+      this.modalForm.value.deadlineDate <= this.datepipe.transform(Date(), 'YYYY-MM-dd')) {
+      this.modalForm.controls['reasonForDelay'].setValidators(Validators.required);
+      this.submitForm();
+    } else {
+      this.submitForm();
     }
   }
 

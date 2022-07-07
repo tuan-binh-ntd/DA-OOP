@@ -128,7 +128,7 @@
                 <div class="col col-6">
                   <div class="form-group row">
                     <label class="form-label col-3">Status</label>
-                    <div class="col-9">
+                    <div class="col-4">
                       <mat-form-field class="w-100">
                         <mat-select
                           placeholder="Enter task status"
@@ -143,11 +143,9 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
-                  </div>
 
-                  <div class="form-group row">
-                    <label class="form-label col-3">Priority</label>
-                    <div class="col-9">
+                    <label class="form-label col-2" style="text-align: center;">Priority</label>
+                    <div class="col-3">
                       <mat-form-field class="w-100">
                         <mat-select
                           placeholder="Enter task priority"
@@ -230,6 +228,27 @@
                           matInput
                           placeholder="Description"
                           formControlName="description"
+                          cdkTextareaAutosize
+                          cdkAutosizeMinRows="2"
+                          cdkAutosizeMaxRows="5"
+                          #autosize="cdkTextareaAutosize"
+                        >
+                        </textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div *ngIf="this.modalForm.value.statusCode == 5 && 
+                  this.modalForm.value.deadlineDate <= this.datepipe.transform(todayDate, 'YYYY-MM-dd')" 
+                  class="form-group row"
+                  style="margin-top: -15px;">
+                    <label class="form-label col-3" for="name">Reason Delay</label>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <textarea
+                          matInput
+                          placeholder="Why are you delay :("
+                          formControlName="reasonForDelay"
                           cdkTextareaAutosize
                           cdkAutosizeMinRows="2"
                           cdkAutosizeMaxRows="5"
@@ -533,7 +552,7 @@
         [buttonBusy]="isLoading"
         type="button"
         class="btn ml-2 btn-primary float-right"
-        (click)="submitForm()"
+        (click)="checkDelay()"
       >
         <i class="fa fa-save mr-2"></i>
         Save changes
