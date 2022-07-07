@@ -53,8 +53,4 @@ export class MessageService {
     return this.hubConnection.invoke('SendMessage', payload)
     .catch(error => console.log(error));
   }
-
-  createMessage(payload:any):Observable<any>{
-    return this.http.post(this.baseUrl + '/create', payload);
-  }
 }

@@ -1,8 +1,10 @@
 ﻿using API.Data;
+using API.DTO;
 using API.DTO.MessageDto;
 using API.Entity;
 using API.Interfaces;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -12,11 +14,19 @@ namespace API.SignalR
     {
         private readonly IMessageRepository _messageRepository;
         private readonly DataContext _dataContext;
+        private readonly IHubContext<PresenceHub> _presenceHub;
+        private readonly PresenceTracker _tracker;
 
-        public MessageHub(IMessageRepository messageRepository, DataContext dataContext)
-        {
+        public MessageHub(
+            IMessageRepository messageRepository,
+            DataContext dataContext, 
+            IHubContext<PresenceHub> presenceHub,
+            PresenceTracker tracker)
+{
             _messageRepository = messageRepository;
             _dataContext = dataContext;
+            _presenceHub = presenceHub;
+            _tracker = tracker;
         }
 
         public override async Task OnConnectedAsync()
@@ -66,9 +76,21 @@ namespace API.SignalR
                 RecipientUserName = recipient.FirstName + " " + recipient.LastName,
                 Content = createMessageDto.Content,
             };
-            var group = GetGroupName(sender.FirstName + " " + sender.LastName, recipient.FirstName + " " + recipient.LastName);
-            await Clients.Group(group).SendAsync("NewMessage", result);
+            var groupName = GetGroupName(sender.FirstName + " " + sender.LastName, recipient.FirstName + " " + recipient.LastName);
+
+            var connections = await _tracker.GetConnectionsForUser(recipient.FirstName + " " + recipient.LastName);
+            if(connections != null)
+            {
+                await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
+                    new
+                    {
+                        username = sender.FirstName + " " + sender.LastName,
+                    });
+            }
+            await Clients.Group(groupName).SendAsync("NewMessage", result);
         }
+
+        
 
         private string GetGroupName(string caller, string other)
         {

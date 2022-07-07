@@ -85,14 +85,14 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
 
   ) {}
 
-  ngAfterViewChecked() {        
-      this.scrollToBottom();        
-  } 
+  ngAfterViewChecked() {
+      this.scrollToBottom();
+  }
 
   scrollToBottom(): void {
       try {
           this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
-      } catch(err) { }                 
+      } catch(err) { }
   }
   async ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -200,7 +200,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       content: [null],
     });
   }
-  
+
   async openModal(data: any, mode: string, isEdit: boolean) {
     this.index = 0;
     this.isEdit = isEdit;
@@ -308,22 +308,27 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         if (this.pId) {
           this.modalForm.value.projectId = this.pId;
         }
-        this.taskService
-          .createTask(this.modalForm.value)
-          .pipe(
-            catchError((err) => {
-              return of(err);
-            }),
-            finalize(() => (this.isLoading = false))
-          )
-          .subscribe((response) => {
-            if (response.id) {
-              this.toastr.success('Successfully!');
-              this.onChangeTask.emit();
-            } else {
-              this.toastr.error(response.error);
-            }
-          });
+        // this.taskService
+        //   .createTask(this.modalForm.value)
+        //   .pipe(
+        //     catchError((err) => {
+        //       return of(err);
+        //     }),
+        //     finalize(() => (this.isLoading = false))
+        //   )
+        //   .subscribe((response) => {
+        //     if (response.id) {
+        //       this.toastr.success('Successfully!');
+        //       this.onChangeTask.emit();
+        //     } else {
+        //       this.toastr.error(response.error);
+        //     }
+        //   });
+        this.presenceService
+        .createTask(this.modalForm.value)
+        .then(() => {
+          this.isLoading = false;
+        });
       } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode =
           this.currentUserInfo.permissionCode;
@@ -394,7 +399,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         .sendMessage(payload)
         .then(() => {
           // this.messages.push(payload);
-          this.fetchMessage();
+          //this.fetchMessage();
           this.messageForm.reset();
         });
     }
