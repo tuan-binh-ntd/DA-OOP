@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, ReplaySubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { PresenceService } from './presence.service';
 
@@ -8,7 +9,7 @@ import { PresenceService } from './presence.service';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  baseUrl = "https://localhost:5001/api/user";
+  baseUrl = environment.baseUrl + 'user';
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser = this.currentUserSource.asObservable();
 

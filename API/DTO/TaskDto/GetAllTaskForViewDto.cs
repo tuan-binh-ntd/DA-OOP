@@ -18,5 +18,6 @@ namespace API.DTO
         public Guid ProjectId { get; set; }
         public Guid? AppUserId { get; set; }
         public int DayLefts { get; set; }
+        public string ReasonForDelay { get; set; }
     }
 }

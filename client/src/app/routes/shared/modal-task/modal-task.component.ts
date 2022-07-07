@@ -23,6 +23,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Permission } from 'src/app/helpers/PermisionEnum';
 import { PresenceService } from 'src/app/services/presence.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-modal-task',
   templateUrl: './modal-task.component.html',
@@ -81,18 +82,18 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     public messageService: MessageService,
-    public presenceService: PresenceService
-
+    public presenceService: PresenceService,
+    public datepipe: DatePipe
   ) {}
 
-  ngAfterViewChecked() {        
-      this.scrollToBottom();        
-  } 
+  ngAfterViewChecked() {
+      this.scrollToBottom();
+  }
 
   scrollToBottom(): void {
       try {
           this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
-      } catch(err) { }                 
+      } catch(err) { }
   }
   async ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -195,12 +196,13 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       description: [null],
       completeDate: [null],
       permissionCode: [null],
+      reasonForDelay: [null],
     });
     this.messageForm = this.fb.group({
       content: [null],
     });
   }
-  
+
   async openModal(data: any, mode: string, isEdit: boolean) {
     this.index = 0;
     this.isEdit = isEdit;
@@ -308,22 +310,27 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         if (this.pId) {
           this.modalForm.value.projectId = this.pId;
         }
-        this.taskService
-          .createTask(this.modalForm.value)
-          .pipe(
-            catchError((err) => {
-              return of(err);
-            }),
-            finalize(() => (this.isLoading = false))
-          )
-          .subscribe((response) => {
-            if (response.id) {
-              this.toastr.success('Successfully!');
-              this.onChangeTask.emit();
-            } else {
-              this.toastr.error(response.error);
-            }
-          });
+        // this.taskService
+        //   .createTask(this.modalForm.value)
+        //   .pipe(
+        //     catchError((err) => {
+        //       return of(err);
+        //     }),
+        //     finalize(() => (this.isLoading = false))
+        //   )
+        //   .subscribe((response) => {
+        //     if (response.id) {
+        //       this.toastr.success('Successfully!');
+        //       this.onChangeTask.emit();
+        //     } else {
+        //       this.toastr.error(response.error);
+        //     }
+        //   });
+        this.presenceService
+        .createTask(this.modalForm.value)
+        .then(() => {
+          this.isLoading = false;
+        });
       } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode =
           this.currentUserInfo.permissionCode;
@@ -394,9 +401,19 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         .sendMessage(payload)
         .then(() => {
           // this.messages.push(payload);
-          this.fetchMessage();
+          //this.fetchMessage();
           this.messageForm.reset();
         });
+    }
+  }
+
+  checkDelay() {
+    if( this.modalForm.value.statusCode == 5 && 
+      this.modalForm.value.deadlineDate <= this.datepipe.transform(Date(), 'YYYY-MM-dd')) {
+      this.modalForm.controls['reasonForDelay'].setValidators(Validators.required);
+      this.submitForm();
+    } else {
+      this.submitForm();
     }
   }
 

@@ -128,7 +128,7 @@
                 <div class="col col-6">
                   <div class="form-group row">
                     <label class="form-label col-3">Status</label>
-                    <div class="col-9">
+                    <div class="col-4">
                       <mat-form-field class="w-100">
                         <mat-select
                           placeholder="Enter task status"
@@ -143,11 +143,9 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
-                  </div>
 
-                  <div class="form-group row">
-                    <label class="form-label col-3">Priority</label>
-                    <div class="col-9">
+                    <label class="form-label col-2" style="text-align: center;">Priority</label>
+                    <div class="col-3">
                       <mat-form-field class="w-100">
                         <mat-select
                           placeholder="Enter task priority"
@@ -239,6 +237,27 @@
                       </mat-form-field>
                     </div>
                   </div>
+
+                  <div *ngIf="this.modalForm.value.statusCode == 5 && 
+                  this.modalForm.value.deadlineDate <= this.datepipe.transform(todayDate, 'YYYY-MM-dd')" 
+                  class="form-group row"
+                  style="margin-top: -15px;">
+                    <label class="form-label col-3" for="name">Reason Delay</label>
+                    <div class="col-9">
+                      <mat-form-field class="w-100">
+                        <textarea
+                          matInput
+                          placeholder="Why are you delay :("
+                          formControlName="reasonForDelay"
+                          cdkTextareaAutosize
+                          cdkAutosizeMinRows="2"
+                          cdkAutosizeMaxRows="5"
+                          #autosize="cdkTextareaAutosize"
+                        >
+                        </textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
                 </div>
               </div>
             </mat-card-content>
@@ -279,7 +298,7 @@
                           {{ leaderInfo?.firstName }}
                           {{ leaderInfo?.lastName }}
                           <br>
-                          <span  
+                          <span
                           [class.is-online]=" (presenceService.onlineUsers | async).includes(
                             employeeInfo?.firstName +
                               ' ' +
@@ -312,7 +331,7 @@
                               )
                             "
                           >
-                          <span  
+                          <span
                           [class.is-online]=" (presenceService.onlineUsers | async).includes(
                             employeeInfo?.firstName +
                               ' ' +
@@ -324,11 +343,11 @@
                               ' ' +
                               employeeInfo?.lastName
                           )
-                          ;else noneActive">Active
+                          ;else noneActive">Online
                         <i class="fa fa-circle ml-1" aria-hidden="true"></i>
                       </span>
                           <ng-template #noneActive>
-                            <span>InActive</span>
+                            <span>Offline</span>
                             </ng-template>
                         </span>
                         </span>
@@ -345,7 +364,7 @@
                     <div class="chat-wrapper" #chatContent>
                       <ng-container
                         *ngFor="
-                          let message of messages
+                          let message of (messageService.messageThread | async)
                         "
                       >
                         <div class="row">
@@ -432,7 +451,7 @@
                     </h5>
                     <div class="d-flex justify-content-center">
                       <p class="text-center mb-2 mr-2 fw-500">
-                        Leader: 
+                        Leader:
                       </p>
                       <app-department-icon [departmentName]="departmentName"></app-department-icon>
                     </div>
@@ -470,7 +489,7 @@
                     </h5>
                     <div class="d-flex justify-content-center">
                       <p class="text-center mb-2 mr-2 fw-500">
-                        Employee: 
+                        Employee:
                       </p>
                       <app-department-icon [departmentName]="departmentName"></app-department-icon>
                     </div>
@@ -533,7 +552,7 @@
         [buttonBusy]="isLoading"
         type="button"
         class="btn ml-2 btn-primary float-right"
-        (click)="submitForm()"
+        (click)="checkDelay()"
       >
         <i class="fa fa-save mr-2"></i>
         Save changes
