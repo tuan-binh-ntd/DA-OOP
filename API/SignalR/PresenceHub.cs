@@ -85,6 +85,7 @@ namespace API.SignalR
                     await Clients.Clients(connections).SendAsync("NewTaskReceived",
                         new
                         {
+                            taskName = newTask.TaskName,
                             username = leader.FirstName + " " + leader.LastName,
                         });
                 }

@@ -49,6 +49,7 @@ namespace API.SignalR
         {
             var sender = await _dataContext.AppUser.FindAsync(createMessageDto.SenderId);
             var recipient = await _dataContext.AppUser.FindAsync(createMessageDto.RecipientId);
+            var task = await _dataContext.Task.FindAsync(createMessageDto.TaskId);
 
             if (recipient == null) throw new HubException("Not found user");
 
@@ -84,6 +85,7 @@ namespace API.SignalR
                 await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
                     new
                     {
+                        taskName = task.TaskName,
                         username = sender.FirstName + " " + sender.LastName,
                     });
             }

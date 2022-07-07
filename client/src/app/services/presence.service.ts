@@ -44,14 +44,14 @@ export class PresenceService {
       this.onlineUserSource.next(usernames);
     })
 
-    this.hubConnection.on('NewMessageReceived', ({username}) => {
-      this.toastr.info(username + ' has sent you a new message!')
+    this.hubConnection.on('NewMessageReceived', ({username, taskName}) => {
+      this.toastr.info(username + ' has sent you a new message in ' + taskName)
       .onTap
       .pipe(take(1)).subscribe();
     })
 
-    this.hubConnection.on('NewTaskReceived', ({username}) => {
-      this.toastr.info(username + ' has assign you a new task!').onTap.pipe(take(1)).subscribe()
+    this.hubConnection.on('NewTaskReceived', ({username, taskName}) => {
+      this.toastr.info(username + ' has assign you a new task: ' + taskName).onTap.pipe(take(1)).subscribe()
     })
   }
 
