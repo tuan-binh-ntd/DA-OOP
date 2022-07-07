@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="HeadUpOOP" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\DA-OOP\\API\\obj\\Release\\net5\.0\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="API.Data.DataContext" description="" value="Data Source=tcp:taskmanagementdb.database.windows.net,1433;Initial Catalog=API_db;User Id=hoangbinh@taskmanagementdb;Password=Sieunhan221" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^D:\\DA-OOP\\API\\obj\\Release\\net5\.0\\PubTmp\\EFSQLScripts\\API\.Data\.DataContext\.sql$" />
+  </parameter>
+</parameters>
