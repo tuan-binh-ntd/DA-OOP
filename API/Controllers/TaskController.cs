@@ -96,7 +96,8 @@ namespace API.Controllers
                      StatusCode = t.StatusCode,
                      ProjectId = t.ProjectId,
                      AppUserId = t.AppUserId,
-                     CreateUserId = t.CreateUserId
+                     CreateUserId = t.CreateUserId,
+                     ReasonForDelay = t.ReasonForDelay
                  }).AsNoTracking().ToListAsync(); ;
             return Ok(taskListForView);
         }
@@ -183,6 +184,10 @@ namespace API.Controllers
                     }
                     else if (input.StatusCode == Enum.StatusCode.Resolve)
                     {
+                        if (DateTime.Now > task.DeadlineDate)
+                        {
+                            task.ReasonForDelay = input.ReasonForDelay;
+                        }
                         task.StatusCode = input.StatusCode;
                         task.CompleteDate = DateTime.Now;
                     }

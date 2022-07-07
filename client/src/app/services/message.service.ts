@@ -10,7 +10,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class MessageService {
-  baseUrl = "https://localhost:5001/api/message";
+  baseUrl = environment.baseUrl + 'message';
   hubUrl = environment.hubUrl;
   private hubConnection: HubConnection;
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
@@ -52,9 +52,5 @@ export class MessageService {
   async sendMessage(payload: any) {
     return this.hubConnection.invoke('SendMessage', payload)
     .catch(error => console.log(error));
-  }
-
-  createMessage(payload:any):Observable<any>{
-    return this.http.post(this.baseUrl + '/create', payload);
   }
 }
