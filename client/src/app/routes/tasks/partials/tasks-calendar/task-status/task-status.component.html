@@ -14,7 +14,6 @@
     </div>
     <div class="col col-11">
       <app-task-filter
-      *ngIf="tasks.length > 0"
         (onSubmitForm)="submitFormFilter($event)"
         (resetFilter)="onResetFilter()"
         (filterPriority)="onFilterPriority($event)"
