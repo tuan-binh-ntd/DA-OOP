@@ -210,6 +210,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     this.data = data;
     this.modalForm.reset();
     this.messageForm.reset();
+    this.modalForm.controls['reasonForDelay'].setValidators(null);
     this.modalForm.get('createUserId').setValue(this.currentUserInfo.id);
     this.maxDate = this.TaskOfProject?.deadlineDate;
     if (mode === 'create') {
@@ -273,9 +274,10 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.patchValue(data);
     }
   }
-
+  
   checkEditForm() {
     this.modalForm.patchValue(this.data);
+    this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
     if (this.isEdit) {
       this.modalForm.enable();
       this.title = 'Update: ' + this.data.taskName;
@@ -295,6 +297,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
       this.modalForm.controls['description'].disable();
       this.modalForm.controls['priorityCode'].disable();
       this.modalForm.controls['deadlineDate'].disable();
+      this.modalForm.value.deadlineDate = this.data.deadlineDate;
     }
   }
 
@@ -313,9 +316,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         // this.taskService
         //   .createTask(this.modalForm.value)
         //   .pipe(
-        //     catchError((err) => {
-        //       return of(err);
-        //     }),
+          //     catchError((err) => {
+            //       return of(err);
+            //     }),
         //     finalize(() => (this.isLoading = false))
         //   )
         //   .subscribe((response) => {
@@ -332,12 +335,10 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         });
       } else if (this.mode === 'detail') {
-        this.modalForm.value.permissionCode =
-          this.currentUserInfo.permissionCode;
         this.modalForm.value.projectId = this.data.projectId;
         this.taskService
-          .updateTask(this.modalForm.value)
-          .pipe(
+        .updateTask(this.modalForm.value)
+        .pipe(
             catchError((err) => {
               return of(err);
             }),
@@ -353,8 +354,8 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
             }
             this.onChangeTask.emit();
           });
-      }
-    } else {
+        }
+      } else {
       this.toastr.warning('Invalid data');
       this.isLoading = false;
     }
@@ -365,9 +366,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           catchError((err) => {
             return of(err);
           })
-        )
-        .subscribe((response) => {
-          if (response) {
+          )
+          .subscribe((response) => {
+            if (response) {
             this.toastr.success('Successfully!', '', {
               timeOut: 1000,
             });
@@ -376,23 +377,23 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
             this.toastr.error('You not permission');
           }
         });
-    }
+      }
   }
-
+  
   onChangeEdit(ev: any) {
     this.isEdit = ev;
     if (this.mode === 'detail') {
       this.checkEditForm();
     }
   }
-
+  
   onChat(ev: any) {
     if (ev.key === 'Enter' && ev.target.value) {
       const payload = {
         taskId: this.data.id,
         senderId: this.currentUserInfo.id,
         recipientId:
-          this.currentUserInfo.permissionCode === Permission.Leader
+        this.currentUserInfo.permissionCode === Permission.Leader
             ? this.employeeInfo.appUserId
             : this.leaderInfo.appUserId,
         content: this.messageForm.value.content,
@@ -408,7 +409,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   }
 
   checkDelay() {
-    if( this.modalForm.value.statusCode == 5 && 
+    this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
+    this.modalForm.value.deadlineDate = this.data.deadlineDate;
+    if( this.modalForm.value.statusCode == 4 && this.modalForm.value.permissionCode == 3 &&
       this.modalForm.value.deadlineDate <= this.datepipe.transform(Date(), 'YYYY-MM-dd')) {
       this.modalForm.controls['reasonForDelay'].setValidators(Validators.required);
       this.submitForm();
