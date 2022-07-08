@@ -43,7 +43,7 @@
 
         <div cdkDropList id="reopen" cdkDropListSortingDisabled #listReopen="cdkDropList"
           [cdkDropListAutoScrollDisabled]="false" [cdkDropListData]="reOpenProject"
-          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress]" class="fixed__card-content"
+          [cdkDropListConnectedTo]="[listReopen,listOpen,listResolve, listProgress, listResolve]" class="fixed__card-content"
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of reOpenProject" cdkDrag [cdkDragDisabled]="isLoading">
             <!-- <div class="card" style="display: inline-block"> -->
