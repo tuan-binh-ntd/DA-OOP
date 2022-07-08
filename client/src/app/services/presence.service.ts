@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
 import { BehaviorSubject, take } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +13,13 @@ export class PresenceService {
   private hubConnection: HubConnection;
   private onlineUserSource = new BehaviorSubject<string[]>([]);
   onlineUsers = this.onlineUserSource.asObservable();
-  constructor(private toastr: ToastrService) { }
+  private notifyUserSource = new BehaviorSubject<Notification[]>([]);
+  notifyUser = this.notifyUserSource.asObservable();
+  constructor() { }
 
-  createHubConnection(user:User) {
-    this.hubConnection= new HubConnectionBuilder()
-      .withUrl(this.hubUrl + 'presence', {
+  createHubConnection(user: User) {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'presence?userId=' + user.id, {
         accessTokenFactory: () => user.token
       })
       .withAutomaticReconnect()
@@ -44,23 +45,32 @@ export class PresenceService {
       this.onlineUserSource.next(usernames);
     })
 
-    this.hubConnection.on('NewMessageReceived', ({username, taskName}) => {
-      this.toastr.info(username + ' has sent you a new message in ' + taskName)
-      .onTap
-      .pipe(take(1)).subscribe();
+    this.hubConnection.on('Notification', notifies => {
+      this.notifyUserSource.next(notifies);
+      console.log(notifies);
     })
 
-    this.hubConnection.on('NewTaskReceived', ({username, taskName}) => {
-      this.toastr.info(username + ' has assign you a new task: ' + taskName).onTap.pipe(take(1)).subscribe()
+    this.hubConnection.on('NewMessageReceived', (notify) => {
+      this.notifyUser.pipe(take(1)).subscribe(notifies => {
+        this.notifyUserSource.next([...notifies, notify]);
+        console.log(notifies);
+      })
+    })
+
+    this.hubConnection.on('NewTaskReceived', (notify) => {
+      this.notifyUser.pipe(take(1)).subscribe(notifies => {
+        this.notifyUserSource.next([...notifies, notify]);
+        console.log(notifies);
+      })
     })
   }
 
-   stopHubConnection() {
+  stopHubConnection() {
     this.hubConnection.stop().catch(error => console.log(error));
-   }
+  }
 
-   async createTask(payload: any) {
+  async createTask(payload: any) {
     return this.hubConnection.invoke('CreateTask', payload)
-    .catch(error => console.log(error));
+      .catch(error => console.log(error));
   }
 }

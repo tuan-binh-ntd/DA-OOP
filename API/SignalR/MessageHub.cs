@@ -1,10 +1,8 @@
 ﻿using API.Data;
-using API.DTO;
 using API.DTO.MessageDto;
 using API.Entity;
 using API.Interfaces;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -67,6 +65,21 @@ namespace API.SignalR
             };
             await _dataContext.Messages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
+
+            var notify = new Notification
+            {
+                Id = new Guid(),
+                Content = "You have a new message in " + task.TaskName + " task",
+                AppUserId = recipient.Id,
+                CreateDate = DateTime.Now,
+                IsRead = false,
+                ProjectId = null,
+                TasksId = task.Id
+            };
+
+            await _dataContext.Notifications.AddAsync(notify);
+            await _dataContext.SaveChangesAsync();
+
             var result = new MessageForViewDto
             {
                 Id = message.Id,
@@ -82,12 +95,7 @@ namespace API.SignalR
             var connections = await _tracker.GetConnectionsForUser(recipient.FirstName + " " + recipient.LastName);
             if(connections != null)
             {
-                await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
-                    new
-                    {
-                        taskName = task.TaskName,
-                        username = sender.FirstName + " " + sender.LastName,
-                    });
+                await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived", notify);
             }
             await Clients.Group(groupName).SendAsync("NewMessage", result);
         }
