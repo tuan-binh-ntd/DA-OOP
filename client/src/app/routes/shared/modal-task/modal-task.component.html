@@ -238,8 +238,8 @@
                     </div>
                   </div>
 
-                  <div *ngIf="this.modalForm.value.statusCode == 5 && 
-                  this.modalForm.value.deadlineDate <= this.datepipe.transform(todayDate, 'YYYY-MM-dd')" 
+                  <div *ngIf="modalForm.value.statusCode == 4 &&
+                  modalForm.value.deadlineDate <= datepipe.transform(todayDate, 'YYYY-MM-dd')" 
                   class="form-group row"
                   style="margin-top: -15px;">
                     <label class="form-label col-3" for="name">Reason Delay</label>
