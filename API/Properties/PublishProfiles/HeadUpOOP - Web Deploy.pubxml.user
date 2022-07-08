@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAvZomF2LPokqU/1x95bQgiQAAAAACAAAAAAAQZgAAAAEAACAAAAC9AA7RPMgxz48R2X0s/P+e6bNn07NG1i27aLaV5gLgrwAAAAAOgAAAAAIAACAAAAAnla67zbVkE4XEO6wB6Eb+JAWKPii9T9+N14d5GUWOroAAAACTaCUiUh+QhvW83F/63MYJk3mpDUWs1ivIzhxRA2wKS07CRjOeoezCTskdWNVtmU3389hRu2o6RVxXW4zYCtVOzI0nIS5PpgY4fdf6mIKo8u3p6qDRESTKqILnwXSkdmnUFi4WxeSmXwaKQKa4Obi80p3GW0Kg72KI2iAB/f4TeEAAAABe5AWgS6Kb2f/wVFUW5OjL92xBpujsGyWqjpHB59t+OKEaTyekQI/nQLuVatEPL1q9k58GsceQiysOgwAp0QeY</EncryptedPassword>
+    <History>True|2022-07-07T12:16:00.8932108Z;True|2022-07-07T19:14:58.4279182+07:00;True|2022-07-07T19:13:42.1474707+07:00;True|2022-07-07T19:11:48.6887234+07:00;True|2022-07-06T18:52:09.8939024+07:00;False|2022-07-06T18:50:51.5799230+07:00;True|2022-07-06T18:07:50.4277558+07:00;False|2022-07-06T18:05:36.7805244+07:00;False|2022-07-06T18:04:28.5032586+07:00;False|2022-07-06T18:03:52.7978251+07:00;False|2022-07-06T18:02:27.2299610+07:00;False|2022-07-06T18:01:16.2934273+07:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="API.Data.DataContext">
+      <Value>Data Source=tcp:taskmanagementdb.database.windows.net,1433%3bInitial Catalog=API_db%3bUser Id=hoangbinh%40taskmanagementdb%3bPassword=Sieunhan221</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
