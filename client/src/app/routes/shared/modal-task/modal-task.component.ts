@@ -335,7 +335,8 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         });
       } else if (this.mode === 'detail') {
-        this.modalForm.value.projectId = this.data.projectId;
+    this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
+    this.modalForm.value.projectId = this.data.projectId;
         this.taskService
         .updateTask(this.modalForm.value)
         .pipe(
