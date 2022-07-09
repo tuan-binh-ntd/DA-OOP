@@ -167,7 +167,7 @@
       <button *ngIf="!isEdit" type="button" class="btn mr-2 btn-info float-right" (click)="onChangeEdit(true)">
         <i class="fa fa-edit mr-1"></i>
         Edit</button>
-      <button *ngIf="!isEdit" type="button" class="btn btn-danger mr-2 btn-info float-right" (click)="delete=!delete">
+      <button *ngIf="!isEdit && user.permissionCode == 1" type="button" class="btn btn-danger mr-2 btn-info float-right" (click)="delete=!delete">
         <i class="fa fa-trash mr-1"></i>
         Delete</button>
       <button *ngIf="isEdit" [busyText]="'Loading...'" [buttonBusy]="isLoading" type="button" class="btn ml-2 btn-primary float-right" (click)="submitForm()">
