@@ -13,6 +13,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { UserService } from 'src/app/services/user.service';
+import { TaskService } from 'src/app/services/task.service';
+import { GetAllTask } from 'src/app/models/getalltask';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -22,6 +24,7 @@ export class ProjectsComponent implements OnInit {
 
   constructor(
     protected projectService: ProjectService,
+    protected taskService: TaskService,
     protected userService: UserService,
     protected departmentService: DepartmentService,
     protected router: Router,
@@ -35,6 +38,7 @@ export class ProjectsComponent implements OnInit {
   departments: any[] = [];
   allRecord: number = 0;
   users: any[] = [];
+  tasks: any[] = [];
   resolvedRecord: number = 0;
   inProgressRecord: number = 0;
   closedRecord: number = 0;
@@ -44,6 +48,7 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+  left: boolean = false;
   openProjects: any[] = [];
   inProgressProject: any[] = [];
   resolvedProject: any[] = [];
@@ -54,14 +59,20 @@ export class ProjectsComponent implements OnInit {
   reOpendCount: number = 0;
   user: User;
   assigneeInfo:any;
+  p: any[]=[];
   getAllProject: GetAllProject = new GetAllProject();
+  getAllTask: GetAllTask = new GetAllTask();
  async ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
     if (user?.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
-   await this.fetchUserData();
+    if (user?.permissionCode === Permission.Employee) {
+      this.left = true
+    }
+    await this.fetchUserData();
+    this.fetchTaskData();
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
@@ -80,6 +91,20 @@ export class ProjectsComponent implements OnInit {
       });
   }
  
+  fetchTaskData() {
+    this.isLoading = true;
+    this.showLoading();
+    this.taskService
+      .getAllTask(this.getAllTask)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.tasks = response;
+        this.tasks = this.tasks.filter(t => t.appUserId == this.user.id)
+        this.hideLoading();
+        this.isLoading = false;
+      });
+  }
+
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();
@@ -104,6 +129,15 @@ export class ProjectsComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.projects = response;
+        // if(this.left == true){
+        //   for(let t of this.tasks){
+        //     this.p.push(this.projects.filter(p => p.id == t.projectId));
+        //   }
+        //   delete this.projects
+        //   for(let n of this.p) {
+        //     this.projects.push(n);
+        //   }
+        // }
         this.allRecord = this.projects.length;
         this.reOpenProject = this.projects.filter(project=> project.statusCode === StatusCode.Reopened);
         this.reOpendCount = this.reOpenProject.length;

@@ -106,6 +106,7 @@ export class ModalProjectComponent implements OnInit {
     this.leader = this.users.filter(e => Number(e.permissionCode) == Permission.Leader);
     this.isEdit = isEdit;
     this.mode = mode;
+    this.delete = false;
     this.data = data;
     this.modalForm.reset();
     if (mode === 'create') {
