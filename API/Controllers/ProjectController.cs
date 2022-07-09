@@ -250,10 +250,18 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateStatus(UpdateProjectStatusDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.ProjectId);
-            project.StatusCode = input.StatusCode;
+            if (input.StatusCode == Enum.StatusCode.InProgress || input.StatusCode == Enum.StatusCode.Reopened)
+            {
+                project.StatusCode = input.StatusCode;
+            }
+            else if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+            {
+                project.StatusCode = input.StatusCode;
+                project.CompleteDate = DateTime.Now;
+            }
             _dataContext.Update(project);
             await _dataContext.SaveChangesAsync();
-            return Ok("Successfully");
+            return Ok(project);
         }
 
         [HttpDelete("delete")]
