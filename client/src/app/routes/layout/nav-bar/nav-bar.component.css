@@ -33,6 +33,11 @@
   .nav-active:hover::after{
    width: 90%;
   }
+
+  .vertical-align{
+    height: 72px;
+    line-height: 36px;
+  }
 @keyframes DropDown{
   0%{
     transform: scaleY(0);

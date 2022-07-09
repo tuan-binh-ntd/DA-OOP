@@ -310,11 +310,11 @@
                               ' ' +
                               employeeInfo?.lastName
                           )
-                          ;else noneActive">Active
+                          ;else noneActive">Online
                         <i class="fa fa-circle ml-1" aria-hidden="true"></i>
                       </span>
                           <ng-template #noneActive>
-                            <span>InActive</span>
+                            <span>Offline</span>
                             </ng-template>
                         </span>
                         <span *ngIf="currentUserInfo.permissionCode === 2">

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.SignalR
@@ -23,11 +24,25 @@ namespace API.SignalR
 
         public override async Task OnConnectedAsync()
         {
+            var httpContext = Context.GetHttpContext();
+            var userId = httpContext.Request.Query["userId"].ToString();
+            var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId)).ToListAsync();
+            var unread = notifies.Where(n => n.IsRead == false).ToList();
+            if (unread.Any())
+            {
+                foreach (var notify in unread)
+                {
+                    notify.IsRead = true;
+                }
+                await _dataContext.SaveChangesAsync();
+            }
             var isOnline = await _tracker.UserConnected(Context.User.Identity.Name, Context.ConnectionId);
-            if(isOnline)
+            if (isOnline)
             {
                 await Clients.Others.SendAsync("UserIsOnline", Context.User.Identity.Name);
             }
+
+            await Clients.All.SendAsync("Notification", notifies);
 
             var currentUsers = await _tracker.GetOnlineUsers();
             await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
@@ -35,9 +50,9 @@ namespace API.SignalR
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            
+
             var isOffline = await _tracker.UserDisconnected(Context.User.Identity.Name, Context.ConnectionId);
-            if(isOffline)
+            if (isOffline)
             {
                 await Clients.Others.SendAsync("UserIsOffline", Context.User.Identity.Name);
             }
@@ -77,17 +92,26 @@ namespace API.SignalR
                 await _dataContext.Task.AddAsync(newTask);
                 await _dataContext.SaveChangesAsync();
 
+                var notify = new Notification
+                {
+                    Id = new Guid(),
+                    Content = "You have a new task in " + project.ProjectName + " project",
+                    AppUserId = newTask.AppUserId,
+                    CreateDate = DateTime.Now,
+                    IsRead = false,
+                    ProjectId = project.Id,
+                    TasksId = null
+                };
+
+                await _dataContext.Notifications.AddAsync(notify);
+                await _dataContext.SaveChangesAsync();
+
                 var groupName = GetGroupName(leader.FirstName + " " + leader.LastName, emp.FirstName + " " + emp.LastName);
 
                 var connections = await _tracker.GetConnectionsForUser(emp.FirstName + " " + emp.LastName);
                 if (connections != null)
                 {
-                    await Clients.Clients(connections).SendAsync("NewTaskReceived",
-                        new
-                        {
-                            taskName = newTask.TaskName,
-                            username = leader.FirstName + " " + leader.LastName,
-                        });
+                    await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
                 }
             }
         }

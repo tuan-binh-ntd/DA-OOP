@@ -1,0 +1,69 @@
+<div
+  style="
+    width: 320px;
+    height: 300px;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  "
+   *ngIf="notifies?.length > 0"
+>
+  <div
+    class="notify notify-item"
+    *ngFor="let notify of notifies"
+    (click)="onViewTask(notify.projectId, notify.tasksId)"
+  >
+    <li class="nav-item nav-active dropdown">
+      <a *ngIf="notify.isRead == true">
+        <div class="row">
+          <div class="col col-11">
+            <p>
+              {{ getContentMessage(notify.content) }} in
+              <span class="text-primary">{{
+                getTaskMessageName(notify.content)
+              }}</span>
+            </p>
+            <h6>
+              {{ notify.createDate | date: "hh:mm:ss" }} in
+              {{ notify.createDate | date: "dd/MM/yyyy" }}
+            </h6>
+          </div>
+        </div>
+        <div class="col col-1"></div>
+      </a>
+      <a *ngIf="notify.isRead == false">
+        <div class="row">
+          <div class="col col-11">
+            <p>
+              {{ getContentMessage(notify.content) }} in
+              <span class="text-primary fw-700">{{
+                getTaskMessageName(notify.content)
+              }}</span>
+            </p>
+            <h6>
+              {{ notify.createDate | date: "hh:mm:ss" }} in
+              {{ notify.createDate | date: "dd/MM/yyyy" }}
+            </h6>
+          </div>
+          <div class="col col-1">
+            <i
+              class="fa fa-circle ml-1"
+              class="text-primary"
+              aria-hidden="true"
+            ></i>
+          </div>
+        </div>
+      </a>
+    </li>
+  </div>
+</div>
+<div *ngIf="notifies?.length === 0"  style="
+width: 320px;
+height: 300px;
+max-height: 300px;
+overflow: hidden;
+">
+  <li class="nav-item nav-active dropdown">
+    <img width="100%" src="assets/no-noti.jpg" alt="" />
+  </li>
+</div>
