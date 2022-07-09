@@ -56,7 +56,8 @@ export class LoginComponent implements OnInit {
               this.spinner.show();
               setTimeout(() => {
               // this.spinner.hide();
-              this.router.navigateByUrl('home');
+              document.location.href = 'home'
+              //this.router.navigateByUrl('home');
               }, 2500);
             }
             else{

@@ -10,10 +10,10 @@ import { BehaviorSubject, take } from 'rxjs';
 })
 export class PresenceService {
   hubUrl = environment.hubUrl;
-  private hubConnection: HubConnection;
-  private onlineUserSource = new BehaviorSubject<string[]>([]);
+  public hubConnection: HubConnection;
+  public onlineUserSource = new BehaviorSubject<string[]>([]);
   onlineUsers = this.onlineUserSource.asObservable();
-  private notifyUserSource = new BehaviorSubject<Notification[]>([]);
+  public notifyUserSource = new BehaviorSubject<Notification[]>([]);
   notifyUser = this.notifyUserSource.asObservable();
   constructor() { }
 
@@ -47,20 +47,17 @@ export class PresenceService {
 
     this.hubConnection.on('Notification', notifies => {
       this.notifyUserSource.next(notifies);
-      console.log(notifies);
     })
 
     this.hubConnection.on('NewMessageReceived', (notify) => {
       this.notifyUser.pipe(take(1)).subscribe(notifies => {
         this.notifyUserSource.next([...notifies, notify]);
-        console.log(notifies);
       })
     })
 
     this.hubConnection.on('NewTaskReceived', (notify) => {
       this.notifyUser.pipe(take(1)).subscribe(notifies => {
         this.notifyUserSource.next([...notifies, notify]);
-        console.log(notifies);
       })
     })
   }

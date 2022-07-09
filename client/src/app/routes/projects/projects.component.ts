@@ -142,7 +142,7 @@ getUserInvolve(id:string){
   }
 
   onViewTask(projectId: string): any {
-    document.location.href= 'projects/tasks/' + projectId + '/list';
+    this.router.navigate(['../projects/tasks', projectId, 'list']);
   }
 
   onChangeProject() {
