@@ -335,6 +335,9 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         .then(() => {
           this.isLoading = false;
           this.onChangeTask.emit();
+          this.toastr.success('Successfully!', '', {
+            timeOut: 1000,
+          });
         });
       } else if (this.mode === 'detail') {
         this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;

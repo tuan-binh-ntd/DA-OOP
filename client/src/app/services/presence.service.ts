@@ -14,6 +14,8 @@ export class PresenceService {
   onlineUsers = this.onlineUserSource.asObservable();
   public notifyUserSource = new BehaviorSubject<Notification[]>([]);
   notifyUser = this.notifyUserSource.asObservable();
+  public unreadNotificationNum = new BehaviorSubject<Number>(0);
+  unreadNotifyNum = this.unreadNotificationNum.asObservable();
   constructor() { }
 
   createHubConnection(user: User) {
@@ -59,6 +61,12 @@ export class PresenceService {
         this.notifyUserSource.next([...notifies, notify]);
       })
     })
+
+    this.hubConnection.on('UnreadNotificationNumber', (count) => {
+      this.unreadNotifyNum.pipe(take(1)).subscribe(() => {
+        this.unreadNotificationNum.next(count);
+      })
+    })
   }
 
   stopHubConnection() {
@@ -71,7 +79,7 @@ export class PresenceService {
   }
 
   async readNotification(payload: any) {
-    return this.hubConnection.invoke('ReadNotifycation', payload)
+    return this.hubConnection.invoke('ReadNotification', payload)
       .catch (error => console.log(error));
   }
 }

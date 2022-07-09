@@ -51,11 +51,6 @@ export class NavBarComponent implements OnInit {
     this.right = user.permissionCode == Permission.ProjectManager;
     this.left = user.permissionCode == Permission.Employee;
     this.fetchUserData();
-    let list = [];
-    this.presenceService.notifyUserSource.forEach(n => {
-      list = n.filter(e => e.isRead == false);
-      this.count = list.length;
-    })
   }
   logout() {
     this.authenticationService.logout();

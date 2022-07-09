@@ -75,7 +75,7 @@
         <a class="nav-link font-weight-bold" role="button" data-toggle="dropdown2" aria-haspopup="true"
         aria-expanded="false" id="navbarDropdown2" data-target="target2">
         <div class="mr-2 notBtn">
-          <div class = "number">{{count}}</div>
+          <div class = "number">{{(presenceService.unreadNotificationNum | async)}}</div>
           <i class="fa fas fa-bell"></i>
         </div>
         </a>

@@ -1,3 +1,4 @@
+import { UnreadNotifies } from './../../../models/unreadnotifies';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, of, take } from 'rxjs';
@@ -17,6 +18,7 @@ export class NotifyComponent implements OnInit {
   projectId: string;
   @Output() emitCountMessage = new EventEmitter();
   getAllTask: GetAllTask = new GetAllTask();
+  unreadNotifies: UnreadNotifies = new UnreadNotifies();
   constructor(
     public presenceService: PresenceService,
     private taskService: TaskService,
@@ -37,8 +39,11 @@ export class NotifyComponent implements OnInit {
       });
   }
 
-  onViewTask(projectId?: string, taskId?: string, id?: string):any {
-    this.presenceService.readNotification(id).then(() => {});
+  onViewTask(projectId?: string, taskId?: string, id?: string, appUserId?: string):any {
+    this.unreadNotifies.id = id;
+    this.unreadNotifies.appUserId = appUserId;
+    this.presenceService.readNotification(this.unreadNotifies).then(() => {});
+
     if(projectId != null) {
       this.projectId = projectId;
     } else {

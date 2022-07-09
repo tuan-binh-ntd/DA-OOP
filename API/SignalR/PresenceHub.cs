@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.DTO;
+using API.DTO.NotificationDto;
 using API.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -33,8 +34,11 @@ namespace API.SignalR
                 await Clients.Others.SendAsync("UserIsOnline", Context.User.Identity.Name);
             }
 
-            var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId)).ToListAsync();
+            var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId)).OrderByDescending(n => n.CreateDate).ToListAsync();
             await Clients.Caller.SendAsync("Notification", notifies);
+
+            var count = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId) && n.IsRead == false).CountAsync();
+            await Clients.Caller.SendAsync("UnreadNotificationNumber", count);
 
             var currentUsers = await _tracker.GetOnlineUsers();
             await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
@@ -104,15 +108,26 @@ namespace API.SignalR
                 if (connections != null)
                 {
                     await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
+                    var count = await _dataContext.Notifications.Where(n => n.AppUserId == input.AppUserId && n.IsRead == false).CountAsync();
+                    await Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
                 }
             }
         }
 
-        public async Task ReadNotifycation(Guid id)
+        public async Task ReadNotification(UnreadNotifiesDto input)
         {
-            var notify = await _dataContext.Notifications.FindAsync(id);
+            var notify = await _dataContext.Notifications.FindAsync(input.Id);
+            var user = await _dataContext.AppUser.FindAsync(input.AppUserId);
             notify.IsRead = true;
             await _dataContext.SaveChangesAsync();
+
+            var connections = await _tracker.GetConnectionsForUser(user.FirstName + " " + user.LastName);
+            if (connections != null)
+            {
+                await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
+                var count = await _dataContext.Notifications.Where(n => n.AppUserId == input.AppUserId && n.IsRead == false).CountAsync();
+                await Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
+            }
         }
 
         private string GetGroupName(string caller, string other)
@@ -122,3 +137,4 @@ namespace API.SignalR
         }
     }
 }
+    

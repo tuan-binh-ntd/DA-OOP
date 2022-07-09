@@ -11,7 +11,7 @@
   <div
     class="notify notify-item"
     *ngFor="let notify of (presenceService.notifyUser | async)"
-    (click)="onViewTask(notify.projectId, notify.tasksId)"
+    (click)="onViewTask(notify.projectId, notify.tasksId, notify.id, notify.appUserId)"
   >
     <li class="nav-item nav-active dropdown">
       <a *ngIf="notify.isRead == true">
