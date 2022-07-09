@@ -211,10 +211,18 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateStatus(UpdateStatusDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.TaskId);
-            task.StatusCode = input.StatusCode;
+            if(input.StatusCode == Enum.StatusCode.InProgress || input.StatusCode == Enum.StatusCode.Reopened)
+            {
+                task.StatusCode = input.StatusCode;
+            }
+            else if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+            {
+                task.StatusCode = input.StatusCode;
+                task.CompleteDate = DateTime.Now;
+            }
             _dataContext.Update(task);
             await _dataContext.SaveChangesAsync();
-            return Ok("Successfully");
+            return Ok(task);
         }
 
         [HttpDelete("delete")]
