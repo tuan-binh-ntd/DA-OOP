@@ -1,3 +1,4 @@
+import { PresenceService } from 'src/app/services/presence.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
@@ -23,11 +24,13 @@ export class NavBarComponent implements OnInit {
   users: any[] = [];
   isShowModal: boolean = false;
   user: User;
+  count: number;
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UserService,
     protected route: ActivatedRoute,
     private router: Router,
+    public presenceService: PresenceService,
   ) {
 
    }
@@ -39,6 +42,7 @@ export class NavBarComponent implements OnInit {
       .subscribe((response) => {
         this.users = response;
       });
+
   }
 
   ngOnInit(): void {
@@ -47,6 +51,11 @@ export class NavBarComponent implements OnInit {
     this.right = user.permissionCode == Permission.ProjectManager;
     this.left = user.permissionCode == Permission.Employee;
     this.fetchUserData();
+    let list = [];
+    this.presenceService.notifyUserSource.forEach(n => {
+      list = n.filter(e => e.isRead == false);
+      this.count = list.length;
+    })
   }
   logout() {
     this.authenticationService.logout();
