@@ -6,11 +6,11 @@
     overflow-x: hidden;
     overflow-y: scroll;
   "
-   *ngIf="notifies?.length > 0"
+   *ngIf="(presenceService.notifyUser | async).length > 0"
 >
   <div
     class="notify notify-item"
-    *ngFor="let notify of notifies"
+    *ngFor="let notify of (presenceService.notifyUser | async)"
     (click)="onViewTask(notify.projectId, notify.tasksId)"
   >
     <li class="nav-item nav-active dropdown">
@@ -57,7 +57,7 @@
     </li>
   </div>
 </div>
-<div *ngIf="notifies?.length === 0"  style="
+<div *ngIf="(presenceService.notifyUser | async).length === 0"  style="
 width: 320px;
 height: 300px;
 max-height: 300px;

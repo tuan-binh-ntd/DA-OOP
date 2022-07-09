@@ -9,34 +9,23 @@ import { TaskService } from 'src/app/services/task.service';
 @Component({
   selector: 'app-notify',
   templateUrl: './notify.component.html',
-  styleUrls: ['./notify.component.css'],
+  styleUrls: ['./notify.component.css']
 })
 export class NotifyComponent implements OnInit {
   user: User;
-  notifies: any;
   tasks: any[] = [];
   projectId: string;
   @Output() emitCountMessage = new EventEmitter();
   getAllTask: GetAllTask = new GetAllTask();
   constructor(
-    private presenceService: PresenceService,
+    public presenceService: PresenceService,
     private taskService: TaskService,
-    protected router: Router
-  ) {}
+    protected router: Router,
+    ) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.notify();
     this.fetchTaskData();
-  }
-
-  notify() {
-    this.presenceService.hubConnection.on('Notification', (notifies) => {
-      this.presenceService.notifyUserSource.next(notifies);
-      this.notifies = notifies;
-      this.notifies.reverse();
-      console.log(notifies);
-    });
   }
 
   fetchTaskData() {
@@ -48,8 +37,9 @@ export class NotifyComponent implements OnInit {
       });
   }
 
-  onViewTask(projectId?: string, taskId?: string): any {
-    if (projectId != null) {
+  onViewTask(projectId?: string, taskId?: string, id?: string):any {
+    this.presenceService.readNotification(id).then(() => {});
+    if(projectId != null) {
       this.projectId = projectId;
     } else {
       this.projectId = this.tasks.find((t) => t.id == taskId)?.projectId;

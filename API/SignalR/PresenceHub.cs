@@ -26,23 +26,15 @@ namespace API.SignalR
         {
             var httpContext = Context.GetHttpContext();
             var userId = httpContext.Request.Query["userId"].ToString();
-            var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId)).ToListAsync();
-            var unread = notifies.Where(n => n.IsRead == false).ToList();
-            if (unread.Any())
-            {
-                foreach (var notify in unread)
-                {
-                    notify.IsRead = true;
-                }
-                await _dataContext.SaveChangesAsync();
-            }
+
             var isOnline = await _tracker.UserConnected(Context.User.Identity.Name, Context.ConnectionId);
             if (isOnline)
             {
                 await Clients.Others.SendAsync("UserIsOnline", Context.User.Identity.Name);
             }
 
-            await Clients.All.SendAsync("Notification", notifies);
+            var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == Guid.Parse(userId)).ToListAsync();
+            await Clients.Caller.SendAsync("Notification", notifies);
 
             var currentUsers = await _tracker.GetOnlineUsers();
             await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
@@ -114,6 +106,13 @@ namespace API.SignalR
                     await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
                 }
             }
+        }
+
+        public async Task ReadNotifycation(Guid id)
+        {
+            var notify = await _dataContext.Notifications.FindAsync(id);
+            notify.IsRead = true;
+            await _dataContext.SaveChangesAsync();
         }
 
         private string GetGroupName(string caller, string other)

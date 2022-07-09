@@ -1,10 +1,9 @@
-import { ToastrService } from 'ngx-toastr';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
 import { BehaviorSubject, take } from 'rxjs';
-
+import { Notification } from '../models/notification';
 @Injectable({
   providedIn: 'root'
 })
@@ -69,5 +68,10 @@ export class PresenceService {
   async createTask(payload: any) {
     return this.hubConnection.invoke('CreateTask', payload)
       .catch(error => console.log(error));
+  }
+
+  async readNotification(payload: any) {
+    return this.hubConnection.invoke('ReadNotifycation', payload)
+      .catch (error => console.log(error));
   }
 }
