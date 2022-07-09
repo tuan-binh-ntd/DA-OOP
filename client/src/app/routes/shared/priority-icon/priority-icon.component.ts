@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import * as $ from 'jquery';// import Jquery here   
 @Component({
   selector: 'app-priority-icon',
   templateUrl: './priority-icon.component.html',

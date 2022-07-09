@@ -13,6 +13,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { UserService } from 'src/app/services/user.service';
+import * as $ from 'jquery';// import Jquery here   
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
