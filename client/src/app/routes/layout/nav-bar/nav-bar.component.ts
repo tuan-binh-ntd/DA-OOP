@@ -15,6 +15,7 @@ import { ChangePasswordComponent } from '../../shared/change-password/change-pas
 export class NavBarComponent implements OnInit {
   @ViewChild('modalChangePassword') modalChangePassword!: ChangePasswordComponent;
   userName!: string;
+  countMessage:number = 0;
   projectId: string = '';
   loggedIn: boolean = false;
   right: boolean = true;
@@ -93,6 +94,10 @@ export class NavBarComponent implements OnInit {
           this.router.navigate(['projects/tasks/status']);
         }
     }
+  }
+
+  getCountMessage(ev:any){
+    this.countMessage = ev;
   }
 }
 
