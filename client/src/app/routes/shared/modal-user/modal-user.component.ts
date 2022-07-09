@@ -85,7 +85,10 @@ export class ModalUserComponent implements OnInit {
     if (mode === 'create') {
       this.title = 'New Employee';
       this.modalForm.get('permissionCode')?.setValue(Permission.Employee);
-      this.modalForm.get('departmentId')?.setValue(this.user.departmentId);
+      if (this.user.permissionCode !== 1) {
+        this.modalForm.get('departmentId')?.setValue(this.user.departmentId);
+        this.modalForm.controls['departmentId'].disable();
+      }
     } else {
       this.modalForm.patchValue(data);
       this.checkEditForm();
@@ -112,6 +115,7 @@ export class ModalUserComponent implements OnInit {
     if (this.modalForm.valid) {
       this.modalForm.value.permissionCreator = this.user.permissionCode
       if (this.mode === 'create') {
+        this.modalForm.value.departmentId = this.user.departmentId
         this.authenticationService
           .register(this.modalForm.value)
           .pipe(
