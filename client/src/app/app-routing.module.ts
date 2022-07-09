@@ -23,13 +23,13 @@ const routes: Routes = [
   {
     path: '', component: SiteLayoutComponent,
     children: [
-      { path: 'home', component: HomeV2Component, canActivate: [AuthGuard] },
     ],
   },
-
+  
   {
     path: '', component: ContentLayoutComponent,
     children: [
+      { path: 'home', component: HomeV2Component, canActivate: [AuthGuard] },
       { path: 'projects/tasks/list', component: TasksComponent },
       { path: 'projects/tasks/status', component: TaskStatusComponent },
       { path: 'projects/tasks/calendar', component: TasksCalendarComponent },

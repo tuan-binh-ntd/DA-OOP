@@ -1,0 +1,16 @@
+.notify:hover {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.notify:active, .no:active {
+    background-color: var(--primary-color);
+    color: #ffff;
+}
+
+.notify {
+    margin: 0;
+    cursor: pointer;
+    border: 10px;
+    padding: 10px;
+}

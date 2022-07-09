@@ -35,6 +35,7 @@ import { AvatarModule } from 'ngx-avatar';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { PermissionIconComponent } from './permission-icon/permission-icon.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { NotifyComponent } from './notify/notify.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     UserAvatarComponent,
     PermissionIconComponent,
     DeleteUserComponent,
+    NotifyComponent,
   ],
   imports: [
     CommonModule,
@@ -99,6 +101,7 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     TaskTypeIconComponent,
     PermissionIconComponent,
     DeleteUserComponent,
+    NotifyComponent,
     UserAvatarComponent
   ],
   providers:[
