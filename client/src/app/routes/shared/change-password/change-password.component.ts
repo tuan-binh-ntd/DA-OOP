@@ -58,9 +58,9 @@ export class ChangePasswordComponent implements OnInit {
     if(this.modalForm.value.passwordConfirm == this.modalForm.value.newPassword && this.modalForm.value.password == this.users.find(u => u.appUserId == this.data.id).password){
       this.submitForm();
     } else if(this.modalForm.value.passwordConfirm !== this.modalForm.value.newPassword) {
-      this.toastr.warning("PasswordConfirm is incorrected");
+      this.toastr.warning("PasswordConfirm is uncorrected");
     } else {
-      this.toastr.warning("Password is incorrected");
+      this.toastr.warning("Password is uncorrected");
     }
   }
 
