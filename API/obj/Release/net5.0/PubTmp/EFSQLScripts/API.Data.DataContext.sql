@@ -351,3 +351,64 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708084413_AddNotificationToDB')
+BEGIN
+    CREATE TABLE [Notifications] (
+        [Id] uniqueidentifier NOT NULL,
+        [Content] nvarchar(1024) NOT NULL,
+        [AppUserId] uniqueidentifier NOT NULL,
+        CONSTRAINT [PK_Notifications] PRIMARY KEY ([Id])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708084413_AddNotificationToDB')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20220708084413_AddNotificationToDB', N'5.0.16');
+END;
+GO
+
+COMMIT;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708105728_ModifyNotificationToDB')
+BEGIN
+    ALTER TABLE [Notifications] ADD [CreateDate] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708105728_ModifyNotificationToDB')
+BEGIN
+    ALTER TABLE [Notifications] ADD [IsRead] bit NOT NULL DEFAULT CAST(0 AS bit);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708105728_ModifyNotificationToDB')
+BEGIN
+    ALTER TABLE [Notifications] ADD [ProjectId] uniqueidentifier NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708105728_ModifyNotificationToDB')
+BEGIN
+    ALTER TABLE [Notifications] ADD [TasksId] uniqueidentifier NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20220708105728_ModifyNotificationToDB')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20220708105728_ModifyNotificationToDB', N'5.0.16');
+END;
+GO
+
+COMMIT;
+GO
+

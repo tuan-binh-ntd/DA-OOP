@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5JOHktVQnxX5b+pRYLrFI5og0DjAzplPVqwb648qHBISJutPWqyCcfwtCKUFUjGsy0JrtA+xh/bUaAPqkYBsAQ==",
+  "dgSpecHash": "htoZRBuYRVQZvqQBPRUfy2H7iqYPZx1C/B6Gvc2vK1mPdEAKeS+n5pm3KpR4+MI8jajzHERyBK7rxZzbmhR2sg==",
   "success": true,
   "projectFilePath": "D:\\DA-OOP\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -37,7 +37,6 @@
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "C:\\Users\\DELL\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.16.1\\microsoft.visualstudio.azure.containers.tools.targets.1.16.1.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",

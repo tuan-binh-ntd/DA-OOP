@@ -66,7 +66,10 @@ namespace API
                         }
                     };
                 });
-            services.AddSignalR();
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
 
             services.AddSwaggerGen(c =>
             {
