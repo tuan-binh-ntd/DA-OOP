@@ -191,8 +191,10 @@ export class ProfileComponent implements OnInit {
   checkEditForm() {
     if (this.isEdit) {
       this.profileForm.enable();
-      this.profileForm.controls['departmentId'].disable();
-      this.profileForm.controls['permissionCode'].disable();
+      if(this.currentUser.permissionCode != 1) {
+        this.profileForm.controls['departmentId'].disable();
+        this.profileForm.controls['permissionCode'].disable();
+      } 
     } else {
       this.profileForm.disable();
     }
@@ -209,9 +211,9 @@ export class ProfileComponent implements OnInit {
       this.profileForm.controls[i].markAsDirty();
       this.profileForm.controls[i].updateValueAndValidity();
     }
-    if (this.profileForm.valid) {
-      this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
+    if (this.profileForm) {
       this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+      this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
       this.userService
         .updateUser(this.profileForm.value)
         .pipe(

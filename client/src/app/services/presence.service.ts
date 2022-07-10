@@ -47,7 +47,6 @@ export class PresenceService {
     })
 
     this.hubConnection.on('Notification', notifies => {
-      console.log(notifies)
       this.notifyUserSource.next(notifies);
     })
 
