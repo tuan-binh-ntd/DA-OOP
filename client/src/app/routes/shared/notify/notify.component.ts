@@ -49,7 +49,8 @@ export class NotifyComponent implements OnInit {
     } else {
       this.projectId = this.tasks.find((t) => t.id == taskId)?.projectId;
     }
-    this.router.navigate(['../projects/tasks', this.projectId, 'list']);
+    document.location.href = 'projects/tasks/' + this.projectId + '/list';
+    //this.router.navigate(['../projects/tasks', this.projectId, 'list']);
   }
 
   getTaskMessageName(msg: string) {
