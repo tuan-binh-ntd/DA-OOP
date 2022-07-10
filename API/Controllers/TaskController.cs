@@ -167,7 +167,7 @@ namespace API.Controllers
                         task.StatusCode = input.StatusCode;
                         task.CompleteDate = DateTime.Now;
                     }
-                    else if (input.StatusCode == Enum.StatusCode.Reopened)
+                    else if (input.StatusCode == Enum.StatusCode.Reopened || input.StatusCode == Enum.StatusCode.Open)
                     {
                         task.StatusCode = input.StatusCode;
                         task.DeadlineDate = input.DeadlineDate;
@@ -178,7 +178,12 @@ namespace API.Controllers
                 }
                 else if (input.PermissionCode == Permission.Employee)
                 {
-                    if(input.StatusCode == Enum.StatusCode.InProgress)
+                    if (input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Open
+                        || input.StatusCode == Enum.StatusCode.Reopened)
+                    {
+                        return BadRequest("Yow not permission");
+                    }
+                    if (input.StatusCode == Enum.StatusCode.InProgress)
                     {
                         task.StatusCode = input.StatusCode;
                     }

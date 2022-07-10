@@ -300,15 +300,15 @@
                           <br>
                           <span
                           [class.is-online]=" (presenceService.onlineUsers | async).includes(
-                            employeeInfo?.firstName +
+                            leaderInfo?.firstName +
                               ' ' +
-                              employeeInfo?.lastName
+                              leaderInfo?.lastName
                           )"
                           *ngIf="
                           (presenceService.onlineUsers | async).includes(
-                            employeeInfo?.firstName +
+                            leaderInfo?.firstName +
                               ' ' +
-                              employeeInfo?.lastName
+                              leaderInfo?.lastName
                           )
                           ;else noneActive">Online
                         <i class="fa fa-circle ml-1" aria-hidden="true"></i>

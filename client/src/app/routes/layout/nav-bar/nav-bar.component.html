@@ -72,11 +72,11 @@
         </div>
       </li>
       <li class="nav-item nav-active dropdown">
-        <a class="nav-link font-weight-bold" role="button" data-toggle="dropdown2" aria-haspopup="true"
+        <a class="nav-link " role="button" data-toggle="dropdown2" aria-haspopup="true"
         aria-expanded="false" id="navbarDropdown2" data-target="target2">
-        <div class="mr-2 notBtn">
-          <div class = "number">{{count}}</div>
-          <i class="fa fas fa-bell"></i>
+        <div class="mr-2 notBtn ">
+          <div class = "number">{{(presenceService.unreadNotificationNum | async)}}</div>
+          <i class="fa fa-bell" aria-hidden="true"></i>
         </div>
         </a>
           <app-notify #target2 class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown2"></app-notify>

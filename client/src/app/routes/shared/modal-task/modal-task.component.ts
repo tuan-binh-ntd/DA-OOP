@@ -310,7 +310,7 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
     if (this.modalForm.valid) {
       this.modalForm.value.createUserId = this.currentUserInfo.id;
       if (this.mode === 'create') {
-        if (this.pId) {
+      if (this.pId) {
           this.modalForm.value.projectId = this.pId;
         }
         // this.taskService
@@ -329,12 +329,18 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
         //       this.toastr.error(response.error);
         //     }
         //   });
+        this.modalForm.value.deadlineDate = this.datepipe.transform(this.modalForm.value.deadlineDate, 'YYYY-MM-dd')
         this.presenceService
         .createTask(this.modalForm.value)
         .then(() => {
           this.isLoading = false;
+          this.onChangeTask.emit();
+          this.toastr.success('Successfully!', '', {
+            timeOut: 1000,
+          });
         });
       } else if (this.mode === 'detail') {
+        this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
         this.modalForm.value.projectId = this.data.projectId;
         this.taskService
         .updateTask(this.modalForm.value)
@@ -409,14 +415,18 @@ export class ModalTaskComponent implements OnInit, OnDestroy {
   }
 
   checkDelay() {
-    this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
-    this.modalForm.value.deadlineDate = this.data.deadlineDate;
-    if( this.modalForm.value.statusCode == 4 && this.modalForm.value.permissionCode == 3 &&
-      this.modalForm.value.deadlineDate <= this.datepipe.transform(Date(), 'YYYY-MM-dd')) {
-      this.modalForm.controls['reasonForDelay'].setValidators(Validators.required);
-      this.submitForm();
+    if(this.mode == 'detail'){
+      this.modalForm.value.permissionCode = this.currentUserInfo.permissionCode;
+      this.modalForm.value.deadlineDate = this.data.deadlineDate;
+      if( this.modalForm.value.statusCode == 4 && this.modalForm.value.permissionCode == 3 &&
+        this.modalForm.value.deadlineDate <= this.datepipe.transform(Date(), 'YYYY-MM-dd')) {
+        this.modalForm.controls['reasonForDelay'].setValidators(Validators.required);
+        this.submitForm();
+      } else {
+        this.submitForm();
+      }
     } else {
-      this.submitForm();
+        this.submitForm();
     }
   }
 

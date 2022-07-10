@@ -14,6 +14,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { UserService } from 'src/app/services/user.service';
 import * as $ from 'jquery';// import Jquery here   
+import { TaskService } from 'src/app/services/task.service';
+import { GetAllTask } from 'src/app/models/getalltask';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -23,6 +25,7 @@ export class ProjectsComponent implements OnInit {
 
   constructor(
     protected projectService: ProjectService,
+    protected taskService: TaskService,
     protected userService: UserService,
     protected departmentService: DepartmentService,
     protected router: Router,
@@ -36,6 +39,7 @@ export class ProjectsComponent implements OnInit {
   departments: any[] = [];
   allRecord: number = 0;
   users: any[] = [];
+  tasks: any[] = [];
   resolvedRecord: number = 0;
   inProgressRecord: number = 0;
   closedRecord: number = 0;
@@ -45,6 +49,7 @@ export class ProjectsComponent implements OnInit {
   isClosedRecord: boolean = false;
   isShowModal: boolean = false;
   right: boolean = false;
+  left: boolean = false;
   openProjects: any[] = [];
   inProgressProject: any[] = [];
   resolvedProject: any[] = [];
@@ -56,13 +61,17 @@ export class ProjectsComponent implements OnInit {
   user: User;
   assigneeInfo:any;
   getAllProject: GetAllProject = new GetAllProject();
+  getAllTask: GetAllTask = new GetAllTask();
  async ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user'))
     this.user = JSON.parse(localStorage.getItem('user'))
     if (user?.permissionCode === Permission.ProjectManager) {
       this.right = true
     }
-   await this.fetchUserData();
+    if (user?.permissionCode === Permission.Employee) {
+      this.left = true
+    }
+    await this.fetchUserData();
     this.fetchDepartmentData();
     this.fetchProjectData();
   }
@@ -80,7 +89,7 @@ export class ProjectsComponent implements OnInit {
         this.isLoading = false;
       });
   }
- 
+
   fetchDepartmentData() {
     this.isLoading = true;
     this.showLoading();
@@ -224,70 +233,75 @@ getUserInvolve(id:string){
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      this.isLoading = true;
-      this.spinner.show();
-      let payload;
-      if(event.container.id === 'reopen') {
-         payload = {
-          // @ts-ignore
-          projectId:  event.previousContainer.data[event.previousIndex].id,
-         statusCode: StatusCode.Reopened
+    if(this.user.permissionCode == 3 ){
+      this.toastr.error('You not permission');
+    }
+    else {
+      if (event.previousContainer === event.container) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      } else {
+        this.isLoading = true;
+        this.spinner.show();
+        let payload;
+        if(event.container.id === 'reopen') {
+           payload = {
+            // @ts-ignore
+            projectId:  event.previousContainer.data[event.previousIndex].id,
+           statusCode: StatusCode.Reopened
+          }
         }
+        else if(event.container.id === 'open') {
+           payload = {
+            // @ts-ignore
+            projectId:  event.previousContainer.data[event.previousIndex].id,
+           statusCode: StatusCode.Open
+          }
+        }
+        else if(event.container.id === 'inProgress') {
+           payload = {
+            // @ts-ignore
+            projectId:  event.previousContainer.data[event.previousIndex].id,
+           statusCode: StatusCode.InProgress
+          }
+        }
+        else{
+  
+           payload = {
+            // @ts-ignore
+            projectId:  event.previousContainer.data[event.previousIndex].id,
+           statusCode: StatusCode.Resolved
+          }
+        }
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+        this.showLoading();
+        this.projectService
+        .patchProject(payload)
+        .pipe(
+          catchError((err) => {
+            return of(err);
+          })
+        )
+        .subscribe((response) => {
+          if (response) {
+            this.toastr.success('Successfully!');
+            this.hideLoading();
+            this.isLoading = false;
+            setTimeout(()=>{
+              this.toastr.clear()
+            },700)
+          } else {
+            this.toastr.error('Failed');
+            this.hideLoading();
+            this.isLoading = false;
+          }
+        });
+        // this.spinner.hide();
       }
-      else if(event.container.id === 'open') {
-         payload = {
-          // @ts-ignore
-          projectId:  event.previousContainer.data[event.previousIndex].id,
-         statusCode: StatusCode.Open
-        }
-      }
-      else if(event.container.id === 'inProgress') {
-         payload = {
-          // @ts-ignore
-          projectId:  event.previousContainer.data[event.previousIndex].id,
-         statusCode: StatusCode.InProgress
-        }
-      }
-      else{
-
-         payload = {
-          // @ts-ignore
-          projectId:  event.previousContainer.data[event.previousIndex].id,
-         statusCode: StatusCode.Resolved
-        }
-      }
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-      this.showLoading();
-      this.projectService
-      .patchProject(payload)
-      .pipe(
-        catchError((err) => {
-          return of(err);
-        })
-      )
-      .subscribe((response) => {
-        if (response) {
-          this.toastr.success('Successfully!');
-          this.hideLoading();
-          this.isLoading = false;
-          setTimeout(()=>{
-            this.toastr.clear()
-          },700)
-        } else {
-          this.toastr.error('Failed');
-          this.hideLoading();
-          this.isLoading = false;
-        }
-      });
-      // this.spinner.hide();
     }
   }
 

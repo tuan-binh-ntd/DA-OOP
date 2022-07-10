@@ -3,7 +3,9 @@ using API.DTO.MessageDto;
 using API.Entity;
 using API.Interfaces;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.SignalR
@@ -95,7 +97,11 @@ namespace API.SignalR
             var connections = await _tracker.GetConnectionsForUser(recipient.FirstName + " " + recipient.LastName);
             if(connections != null)
             {
+                var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id).OrderByDescending(n => n.CreateDate).ToListAsync();
+                await _presenceHub.Clients.Clients(connections).SendAsync("Notification", notifies);
                 await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived", notify);
+                var count = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id && n.IsRead == false).CountAsync();
+                await _presenceHub.Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
             }
             await Clients.Group(groupName).SendAsync("NewMessage", result);
         }

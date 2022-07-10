@@ -49,6 +49,9 @@ export class HomeV2Component implements OnInit {
   async ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.getAllProject.departmentId = this.user.departmentId;
+    if(this.user.permissionCode != 1) {
+      this.getAllTask.userId = this.user.id;
+    }
     this.fetchDepartmentData();
     await this.fetchProjectData();
     await this.fetchDeadlineProjectData();
@@ -79,7 +82,7 @@ export class HomeV2Component implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.tasks = response;
-        this.tasks = this.tasks.filter((t) => t.createUserId !== t.appUserId);
+        //this.tasks = this.tasks.filter((t) => t.createUserId !== t.appUserId);
         this.pushTaskChartData();
         this.tasks.sort(
           (a, b) => parseFloat(a.priorityCode) - parseFloat(b.priorityCode)

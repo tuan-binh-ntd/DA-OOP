@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
       email: [null, Validators.required],
       phone: [null, Validators.required],
       password: [null, Validators.required],
-      departmentId: [null, Validators.required],
+      departmentId: [null],
       permissionCode: [null, Validators.required],
       permissionCreator: [null],
     });
@@ -191,10 +191,10 @@ export class ProfileComponent implements OnInit {
   checkEditForm() {
     if (this.isEdit) {
       this.profileForm.enable();
-      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
+      if(this.currentUser.permissionCode != 1) {
         this.profileForm.controls['departmentId'].disable();
         this.profileForm.controls['permissionCode'].disable();
-      }
+      } 
     } else {
       this.profileForm.disable();
     }
@@ -211,11 +211,9 @@ export class ProfileComponent implements OnInit {
       this.profileForm.controls[i].markAsDirty();
       this.profileForm.controls[i].updateValueAndValidity();
     }
-    if (this.profileForm.valid) {
-      if(this.currentUser.permissionCode !== Permission.ProjectManager) {
-        this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
-        this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
-      }
+    if (this.profileForm) {
+      this.profileForm.get('permissionCode')?.setValue(this.currentUser.permissionCode);
+      this.profileForm.get('departmentId')?.setValue(this.currentUser.departmentId);
       this.userService
         .updateUser(this.profileForm.value)
         .pipe(
@@ -277,7 +275,6 @@ export class ProfileComponent implements OnInit {
         .subscribe((response) => {
           if (response) {
             this.toastr.success('Successfully!');
-            this.router.navigate(['login']);
           } else {
             this.toastr.error('Failed');
           }

@@ -1,68 +1,56 @@
-<div
-  style="
+<div style="
     width: 320px;
     height: 300px;
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: scroll;
-  "
-   *ngIf="(presenceService.notifyUser | async).length > 0"
->
-  <div
-    class="notify notify-item"
-    *ngFor="let notify of (presenceService.notifyUser | async)"
-    (click)="onViewTask(notify.projectId, notify.tasksId)"
-  >
-    <li class="nav-item nav-active dropdown">
-      <a *ngIf="notify.isRead == true">
-        <div class="row">
-          <div class="col col-11">
-            <p>
-              {{ getContentMessage(notify.content) }} in
-              <span class="text-primary">{{
-                getTaskMessageName(notify.content)
-              }}</span>
-            </p>
-            <h6>
-              {{ notify.createDate | date: "hh:mm:ss" }} in
-              {{ notify.createDate | date: "dd/MM/yyyy" }}
-            </h6>
+  " *ngIf="(presenceService.notifyUser | async).length > 0">
+  <div *ngFor="let notify of (presenceService.notifyUser | async) | slice: 0:10"
+  (click)="onViewTask(notify.projectId, notify.tasksId, notify.id, notify.appUserId)">
+    <div class="notify notify-item" *ngIf="notify.isRead == true">
+      <li class="nav-item nav-active dropdown">
+        <a>
+          <div class="row">
+            <div class="col col-12">
+              <p>
+                {{ getContentMessage(notify.content) }} in
+                <span class="text-primary">{{
+                  getTaskMessageName(notify.content)
+                  }}</span>
+              </p>
+              <h6>
+                {{ notify.createDate | date: "hh:mm:ss a" }} in
+                {{ notify.createDate | date: "dd/MM/yyyy" }}
+              </h6>
+            </div>
           </div>
-        </div>
-        <div class="col col-1"></div>
-      </a>
-      <a *ngIf="notify.isRead == false">
-        <div class="row">
-          <div class="col col-11">
-            <p>
-              {{ getContentMessage(notify.content) }} in
-              <span class="text-primary fw-700">{{
-                getTaskMessageName(notify.content)
-              }}</span>
-            </p>
-            <h6>
-              {{ notify.createDate | date: "hh:mm:ss" }} in
-              {{ notify.createDate | date: "dd/MM/yyyy" }}
-            </h6>
+        </a>
+      </li>
+    </div>
+    <div class="notify notify-item" *ngIf="notify.isRead == false" style="font-weight: bold;">
+      <li class="nav-item nav-active dropdown">
+        <a>
+          <div class="row">
+            <div class="col col-12">
+              <p>
+                {{ getContentMessage(notify.content) }} in
+                <span class="text-primary">{{
+                  getTaskMessageName(notify.content)
+                  }}</span>
+              </p>
+              <h6>
+                {{ notify.createDate | date: "hh:mm:ss a" }} in
+                {{ notify.createDate | date: "dd/MM/yyyy" }}
+              </h6>
+            </div>
           </div>
-          <div class="col col-1">
-            <i
-              class="fa fa-circle ml-1"
-              class="text-primary"
-              aria-hidden="true"
-            ></i>
-          </div>
-        </div>
-      </a>
-    </li>
+        </a>
+      </li>
+    </div>
   </div>
 </div>
-<div *ngIf="(presenceService.notifyUser | async).length === 0"  style="
-width: 320px;
-height: 300px;
-max-height: 300px;
-overflow: hidden;
-">
+<div *ngIf="(presenceService.notifyUser | async).length === 0"
+  style="width: 320px;height: 300px;max-height: 300px;overflow: hidden;">
   <li class="nav-item nav-active dropdown">
     <img width="100%" src="assets/no-noti.jpg" alt="" />
   </li>
