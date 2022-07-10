@@ -222,7 +222,12 @@ namespace API.Controllers
 
                 else if (input.PermissionCode == Permission.Leader)
                 {
-                    if(input.StatusCode == Enum.StatusCode.InProgress)
+                    if(input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Open 
+                        || input.StatusCode == Enum.StatusCode.Reopened)
+                    {
+                        return BadRequest("Yow not permission");
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.InProgress)
                     {
                         project.StatusCode = input.StatusCode;
                     }
