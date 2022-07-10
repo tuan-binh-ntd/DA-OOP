@@ -13,6 +13,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StatusCode } from 'src/app/helpers/StatusCodeEnum';
 import { UserService } from 'src/app/services/user.service';
+import * as $ from 'jquery';// import Jquery here   
 import { TaskService } from 'src/app/services/task.service';
 import { GetAllTask } from 'src/app/models/getalltask';
 @Component({
