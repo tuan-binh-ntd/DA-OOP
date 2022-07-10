@@ -22,8 +22,8 @@
         <th class="align-middle">Name</th>
         <th class="align-middle">Address</th>
         <th class="align-middle">Email</th>
-        <th class="text-center align-middle">Phone</th>
-        <th class="text-center align-middle">Department</th>
+        <th class="align-middle">Phone</th>
+        <th class="align-middle">Department</th>
         <th class="text-center align-middle">Permission</th>
         <th class="text-center align-middle">Operator</th>
       </tr>
@@ -40,7 +40,7 @@
         </td>
         <td class="align-middle">{{ item.address }}</td>
         <td class="align-middle">{{ item.email }}</td>
-        <td class="text-center align-middle">{{ item.phone }}</td>
+        <td class="align-middle">{{ item.phone }}</td>
         <td class="align-middle">{{ getDepartmentName(item.departmentId) }}</td>
         <td class="text-center align-middle">
             <app-permission-icon [permission]="item.permissionCode" class="mr-2"></app-permission-icon>
