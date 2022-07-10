@@ -97,6 +97,8 @@ namespace API.SignalR
             var connections = await _tracker.GetConnectionsForUser(recipient.FirstName + " " + recipient.LastName);
             if(connections != null)
             {
+                var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id).OrderByDescending(n => n.CreateDate).ToListAsync();
+                await _presenceHub.Clients.Clients(connections).SendAsync("Notification", notifies);
                 await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived", notify);
                 var count = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id && n.IsRead == false).CountAsync();
                 await _presenceHub.Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
