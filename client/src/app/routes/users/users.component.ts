@@ -8,7 +8,7 @@ import { PresenceService } from 'src/app/services/presence.service';
 import { UserService } from 'src/app/services/user.service';
 import { DeleteUserComponent } from '../shared/delete-user/delete-user.component';
 import { ModalUserComponent } from '../shared/modal-user/modal-user.component';
-import * as $ from 'jquery';// import Jquery here   
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
