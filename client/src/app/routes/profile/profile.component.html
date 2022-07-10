@@ -115,18 +115,15 @@
                       </div>
                     </div>
 
-                    <div *ngIf="user.permissionCode != 1" class="form-group row">
-                      <h6 class="col col-3" style="margin-top: 12px;">Department</h6>
-                      <div class="col-9">
+                    <div class="form-group row">
+                      <h6 class="col col-2" style="margin-top: 12px;">Address</h6>
+                      <div class="col-10">
                         <mat-form-field class="w-100">
-                          <mat-select placeholder="Department" formControlName="departmentId">
-                            <mat-option *ngFor="let department of departments" [value]="department.id">
-                              {{ department.departmentName }}
-                            </mat-option>
-                          </mat-select>
+                          <input matInput placeholder="Address" formControlName="address" />
                         </mat-form-field>
                       </div>
                     </div>
+
                   </div>
 
                   <div class="col col-6">
@@ -148,14 +145,21 @@
                       </div>
                     </div>
 
-                    <div class="form-group row">
-                      <h6 class="col col-2" style="margin-top: 12px;">Address</h6>
-                      <div class="col-10">
+
+
+                    <div *ngIf="user.permissionCode != 1" class="form-group row">
+                      <h6 class="col col-3" style="margin-top: 12px;">Department</h6>
+                      <div class="col-9">
                         <mat-form-field class="w-100">
-                          <input matInput placeholder="Address" formControlName="address" />
+                          <mat-select placeholder="Department" formControlName="departmentId">
+                            <mat-option *ngFor="let department of departments" [value]="department.id">
+                              {{ department.departmentName }}
+                            </mat-option>
+                          </mat-select>
                         </mat-form-field>
                       </div>
                     </div>
+
                   </div>
                 </div>
 
