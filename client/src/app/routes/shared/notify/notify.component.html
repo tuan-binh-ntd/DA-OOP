@@ -5,29 +5,48 @@
     overflow-x: hidden;
     overflow-y: scroll;
   " *ngIf="(presenceService.notifyUser | async).length > 0">
-  <div class="notify notify-item" *ngFor="let notify of (presenceService.notifyUser | async) | slice: 0:10"
-    (click)="onViewTask(notify.projectId, notify.tasksId, notify.id, notify.appUserId)">
-    <li class="nav-item nav-active dropdown">
-      <a>
-        <div class="row">
-          <div class="col col-10">
-            <p>
-              {{ getContentMessage(notify.content) }} in
-              <span class="text-primary">{{
-                getTaskMessageName(notify.content)
-                }}</span>
-            </p>
-            <h6>
-              {{ notify.createDate | date: "hh:mm:ss a" }} in
-              {{ notify.createDate | date: "dd/MM/yyyy" }}
-            </h6>
+  <div *ngFor="let notify of (presenceService.notifyUser | async) | slice: 0:10"
+  (click)="onViewTask(notify.projectId, notify.tasksId, notify.id, notify.appUserId)">
+    <div class="notify notify-item" *ngIf="notify.isRead == true">
+      <li class="nav-item nav-active dropdown">
+        <a>
+          <div class="row">
+            <div class="col col-12">
+              <p>
+                {{ getContentMessage(notify.content) }} in
+                <span class="text-primary">{{
+                  getTaskMessageName(notify.content)
+                  }}</span>
+              </p>
+              <h6>
+                {{ notify.createDate | date: "hh:mm:ss a" }} in
+                {{ notify.createDate | date: "dd/MM/yyyy" }}
+              </h6>
+            </div>
           </div>
-          <div *ngIf="notify.isRead === false" class="col col-2">
-            <i class="fa fa-bell mr-1 text-primary" aria-hidden="true"></i>
+        </a>
+      </li>
+    </div>
+    <div class="notify notify-item" *ngIf="notify.isRead == false" style="font-weight: bold;">
+      <li class="nav-item nav-active dropdown">
+        <a>
+          <div class="row">
+            <div class="col col-12">
+              <p>
+                {{ getContentMessage(notify.content) }} in
+                <span class="text-primary">{{
+                  getTaskMessageName(notify.content)
+                  }}</span>
+              </p>
+              <h6>
+                {{ notify.createDate | date: "hh:mm:ss a" }} in
+                {{ notify.createDate | date: "dd/MM/yyyy" }}
+              </h6>
+            </div>
           </div>
-        </div>
-      </a>
-    </li>
+        </a>
+      </li>
+    </div>
   </div>
 </div>
 <div *ngIf="(presenceService.notifyUser | async).length === 0"
