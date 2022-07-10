@@ -275,7 +275,6 @@ export class ProfileComponent implements OnInit {
         .subscribe((response) => {
           if (response) {
             this.toastr.success('Successfully!');
-            this.changePasswordForm.reset();
           } else {
             this.toastr.error('Failed');
           }

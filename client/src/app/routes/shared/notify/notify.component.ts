@@ -43,14 +43,13 @@ export class NotifyComponent implements OnInit {
     this.unreadNotifies.id = id;
     this.unreadNotifies.appUserId = appUserId;
     this.presenceService.readNotification(this.unreadNotifies).then(() => {});
-
+    
     if(projectId != null) {
       this.projectId = projectId;
     } else {
       this.projectId = this.tasks.find((t) => t.id == taskId)?.projectId;
     }
     document.location.href = 'projects/tasks/' + this.projectId + '/list';
-    //this.router.navigate(['../projects/tasks', this.projectId, 'list']);
   }
 
   getTaskMessageName(msg: string) {
