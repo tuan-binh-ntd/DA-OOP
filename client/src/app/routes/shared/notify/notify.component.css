@@ -1,4 +1,4 @@
-.notify:active, .no:active {
+.notify-item:active {
     background-color: var(--primary-color);
 }
 
