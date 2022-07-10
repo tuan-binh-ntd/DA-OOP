@@ -49,7 +49,9 @@ export class HomeV2Component implements OnInit {
   async ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.getAllProject.departmentId = this.user.departmentId;
-    this.getAllTask.userId = this.user.id;
+    if(this.user.permissionCode != 1) {
+      this.getAllTask.userId = this.user.id;
+    }
     this.fetchDepartmentData();
     await this.fetchProjectData();
     await this.fetchDeadlineProjectData();
