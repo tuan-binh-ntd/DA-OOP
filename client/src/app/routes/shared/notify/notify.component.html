@@ -8,7 +8,7 @@
   <div class="notify notify-item" *ngFor="let notify of (presenceService.notifyUser | async) | slice: 0:10"
     (click)="onViewTask(notify.projectId, notify.tasksId, notify.id, notify.appUserId)">
     <li class="nav-item nav-active dropdown">
-      <a *ngIf="notify.isRead === true">
+      <a>
         <div class="row">
           <div class="col col-10">
             <p>
@@ -22,25 +22,8 @@
               {{ notify.createDate | date: "dd/MM/yyyy" }}
             </h6>
           </div>
-        </div>
-        <div class="col col-2"></div>
-      </a>
-      <a *ngIf="notify.isRead === false">
-        <div class="row align-items-center">
-          <div class="col col-10">
-            <p>
-              {{ getContentMessage(notify.content) }} in
-              <span class="text-primary fw-700">{{
-                getTaskMessageName(notify.content)
-                }}</span>
-            </p>
-            <h6>
-              {{ notify.createDate | date: "hh:mm:ss a" }} in
-              {{ notify.createDate | date: "dd/MM/yyyy" }}
-            </h6>
-          </div>
-          <div class="col col-2">
-            <i class="fa fa-circle mr-1 text-primary" ></i>
+          <div *ngIf="notify.isRead === false" class="col col-2">
+            <i class="fa fa-bell mr-1 text-primary" aria-hidden="true"></i>
           </div>
         </div>
       </a>
