@@ -105,6 +105,8 @@ namespace API.SignalR
                 var connections = await _tracker.GetConnectionsForUser(emp.FirstName + " " + emp.LastName);
                 if (connections != null)
                 {
+                    var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == emp.Id).OrderByDescending(n => n.CreateDate).ToListAsync();
+                    await Clients.Caller.SendAsync("Notification", notifies);
                     await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
                     var count = await _dataContext.Notifications.Where(n => n.AppUserId == input.AppUserId && n.IsRead == false).CountAsync();
                     await Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
@@ -122,7 +124,9 @@ namespace API.SignalR
             var connections = await _tracker.GetConnectionsForUser(user.FirstName + " " + user.LastName);
             if (connections != null)
             {
-                /*await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);*/
+                var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == input.AppUserId).OrderByDescending(n => n.CreateDate).ToListAsync();
+                await Clients.Clients(connections).SendAsync("Notification", notifies);
+                await Clients.Clients(connections).SendAsync("NewTaskReceived", notify);
                 var count = await _dataContext.Notifications.Where(n => n.AppUserId == input.AppUserId && n.IsRead == false).CountAsync();
                 await Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
             }
