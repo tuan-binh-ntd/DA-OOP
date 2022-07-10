@@ -16,7 +16,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalTaskComponent } from '../shared/modal-task/modal-task.component';
-
+import * as $ from 'jquery';// import Jquery here   
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
