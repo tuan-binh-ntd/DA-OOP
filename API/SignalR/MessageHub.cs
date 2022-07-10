@@ -19,10 +19,10 @@ namespace API.SignalR
 
         public MessageHub(
             IMessageRepository messageRepository,
-            DataContext dataContext, 
+            DataContext dataContext,
             IHubContext<PresenceHub> presenceHub,
             PresenceTracker tracker)
-{
+        {
             _messageRepository = messageRepository;
             _dataContext = dataContext;
             _presenceHub = presenceHub;
@@ -95,8 +95,10 @@ namespace API.SignalR
             var groupName = GetGroupName(sender.FirstName + " " + sender.LastName, recipient.FirstName + " " + recipient.LastName);
 
             var connections = await _tracker.GetConnectionsForUser(recipient.FirstName + " " + recipient.LastName);
-            if(connections != null)
+            if (connections != null)
             {
+                var notifies = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id).OrderByDescending(n => n.CreateDate).ToListAsync();
+                await _presenceHub.Clients.Clients(connections).SendAsync("Notification", notifies);
                 await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived", notify);
                 var count = await _dataContext.Notifications.Where(n => n.AppUserId == recipient.Id && n.IsRead == false).CountAsync();
                 await _presenceHub.Clients.Clients(connections).SendAsync("UnreadNotificationNumber", count);
@@ -104,7 +106,7 @@ namespace API.SignalR
             await Clients.Group(groupName).SendAsync("NewMessage", result);
         }
 
-        
+
 
         private string GetGroupName(string caller, string other)
         {
