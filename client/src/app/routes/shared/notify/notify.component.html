@@ -25,6 +25,21 @@
           <div class="col col-2" *ngIf="notify.isRead == false">
             <i *ngIf="notify.isRead == false" class="fas fa fa-bell text-primary"
               aria-hidden="true"></i>
+        <div class="row align-items-center">
+          <div class="col col-10">
+            <p>
+              {{ getContentMessage(notify.content) }} in
+              <span class="text-primary fw-700">{{
+                getTaskMessageName(notify.content)
+                }}</span>
+            </p>
+            <h6>
+              {{ notify.createDate | date: "hh:mm:ss a" }} in
+              {{ notify.createDate | date: "dd/MM/yyyy" }}
+            </h6>
+          </div>
+          <div class="col col-2">
+            <i class="fa fa-circle text-primary mr-1"></i>
           </div>
         </div>
       </a>
