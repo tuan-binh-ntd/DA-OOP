@@ -210,7 +210,17 @@ namespace API.Controllers
                     project.DepartmentId = input.DepartmentId;
                     project.StatusCode = input.StatusCode;
 
-                    if (input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Resolve)
+                    if(input.StatusCode == Enum.StatusCode.Reopened || input.StatusCode == Enum.StatusCode.Open)
+                    {
+                        project.StatusCode = input.StatusCode;
+                        project.DeadlineDate = input.DeadlineDate;
+                        project.CompleteDate = null;
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.InProgress)
+                    {
+                        project.StatusCode = input.StatusCode;
+                    }
+                    else if (input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Resolve)
                     {
                         project.StatusCode = input.StatusCode;
                         project.CompleteDate = DateTime.Now;
@@ -255,11 +265,16 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateStatus(UpdateProjectStatusDto input)
         {
             var project = await _dataContext.Project.FindAsync(input.ProjectId);
-            if (input.StatusCode == Enum.StatusCode.InProgress || input.StatusCode == Enum.StatusCode.Reopened)
+            if (input.StatusCode == Enum.StatusCode.Reopened || input.StatusCode == Enum.StatusCode.Open)
+            {
+                project.StatusCode = input.StatusCode;
+                project.CompleteDate = null;
+            }
+            else if (input.StatusCode == Enum.StatusCode.InProgress)
             {
                 project.StatusCode = input.StatusCode;
             }
-            else if (input.StatusCode == Enum.StatusCode.Resolve || input.StatusCode == Enum.StatusCode.Closed)
+            else if (input.StatusCode == Enum.StatusCode.Closed || input.StatusCode == Enum.StatusCode.Resolve)
             {
                 project.StatusCode = input.StatusCode;
                 project.CompleteDate = DateTime.Now;
