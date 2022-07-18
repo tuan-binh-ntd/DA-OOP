@@ -287,6 +287,7 @@ getUserInvolve(id:string){
         )
         .subscribe((response) => {
           if (response) {
+            this.fetchProjectData();
             this.toastr.success('Successfully!');
             this.hideLoading();
             this.isLoading = false;

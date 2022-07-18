@@ -72,6 +72,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
       .subscribe((response) => {
         if (response) {
           this.toastr.success('Successfully!');
+          this.fetchTaskData();
           this.hideLoading();
           this.isLoading = false;
           setTimeout(()=>{
