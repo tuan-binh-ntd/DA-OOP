@@ -171,6 +171,7 @@ namespace API.Controllers
                     {
                         task.StatusCode = input.StatusCode;
                         task.DeadlineDate = input.DeadlineDate;
+                        task.CompleteDate = null;
                     }
                     _dataContext.Task.Update(task);
                     await _dataContext.SaveChangesAsync();
@@ -211,7 +212,12 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateStatus(UpdateStatusDto input)
         {
             var task = await _dataContext.Task.FindAsync(input.TaskId);
-            if(input.StatusCode == Enum.StatusCode.InProgress || input.StatusCode == Enum.StatusCode.Reopened)
+            if(input.StatusCode == Enum.StatusCode.Open || input.StatusCode == Enum.StatusCode.Reopened)
+            {
+                task.StatusCode = input.StatusCode;
+                task.CompleteDate = null;
+            }
+            else if (input.StatusCode == Enum.StatusCode.InProgress)
             {
                 task.StatusCode = input.StatusCode;
             }

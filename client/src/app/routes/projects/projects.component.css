@@ -238,14 +238,12 @@ transition: all .4s ease-in-out;
     height: 75vh;
     max-height: calc(60vh - 35px);
     overflow:hidden scroll;
-    visibility: hidden;
 }
 
 .fixed__card-content,
 .fixed__card:hover,
 .fixed__card:focus {
   height: 100%;
-  visibility: visible;
 }
   .button{
     align-items: center;
@@ -319,14 +317,12 @@ transition: all .4s ease-in-out;
   height: 75vh;
   max-height: calc(60vh - 35px);
   overflow:hidden scroll;
-  visibility: hidden;
 }
 
 .fixed__card-content,
 .fixed__card:hover,
 .fixed__card:focus {
 height: 100%;
-visibility: visible;
 }
 
 
