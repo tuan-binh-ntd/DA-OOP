@@ -173,11 +173,13 @@
     <button class="button-filter ml-2" [matMenuTriggerFor]="projectMenu">
       <i class="fa fa-bookmark mr-2" style="color: #0077b6;"aria-hidden="true"></i>
       {{ projectName }}</button>
-    <mat-menu #projectMenu="matMenu">
-      <button mat-menu-item *ngFor="let project of projects" (click)="onFilterProject(project)">
-        {{ project.projectName }}
-      </button>
-    </mat-menu>
+      <mat-menu #projectMenu="matMenu">
+          <div style="max-height: 300px">
+          <button mat-menu-item *ngFor="let project of projects" (click)="onFilterProject(project)">
+            {{ project.projectName }}
+          </button>
+        </div>
+        </mat-menu>
 
     <button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
       <i class="fa fa-cube mr-2" style="color: #0077b6;" aria-hidden="true"></i>

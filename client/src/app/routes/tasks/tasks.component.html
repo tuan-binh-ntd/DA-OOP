@@ -50,7 +50,7 @@
         <th class="text-center align-middle" style="width: 10%;">Time Left</th>
         <th class="text-center align-middle" style="width: 5%;">Priority</th>
         <th class="text-center align-middle" style="width: 10%;">Status</th>
-        <th class="text-center align-middle" style="width: 10%;">Operation</th>
+        <th *ngIf="user.permissionCode != 1" class="text-center align-middle" style="width: 10%;">Operation</th>
       </tr>
     </thead>
     <tbody>
@@ -71,7 +71,7 @@
         <td class="text-center align-middle" style="width: 10%;">
           <app-status [statusCode]="task.statusCode"></app-status>
         </td>
-        <td class="text-center p-0 align-middle" style="width: 10%;">
+        <td *ngIf="user.permissionCode != 1" class="text-center p-0 align-middle" style="width: 10%;">
           <button class="btn btn-outline-primary mr-1" (click)="openDetailModal(task, 'detail', false)">
             <i class="fa fa-lg fa-edit"></i>
           </button>
