@@ -138,7 +138,7 @@
                             *ngFor="let code of statusCode"
                             [value]="code.value"
                             [disabled]="currentUserInfo.permissionCode == 3 && (
-                            code.value == 1 || code.value == 5)"
+                            code.value == 1 || code.value == 5 || code.value == 2)"
                           >
                             {{ code.viewValue }}
                           </mat-option>
