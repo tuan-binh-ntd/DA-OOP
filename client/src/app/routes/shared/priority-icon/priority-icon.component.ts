@@ -56,11 +56,11 @@ export const PriorityColors = {
 };
 
 export const PriorityIcon = {
-  [Priority.Normal]: 'fa fa-arrow-down',
-  [Priority.Low]: 'fa fa-arrow-down',
-  [Priority.Medium]: 'fa fa-arrow-up',
-  [Priority.High]: 'fa fa-arrow-up',
-  [Priority.Urgent]: 'fa fa-arrow-up',
+  [Priority.Normal]: 'fa fa-angle-down fa-2x',
+  [Priority.Low]: 'fa fa-angle-double-down fa-2x',
+  [Priority.Medium]: 'fa fa-angle-up fa-2x',
+  [Priority.High]: 'fa fa-angle-double-up fa-2x',
+  [Priority.Urgent]: 'fa fa-angle-double-up fa-2x',
 };
 
 export const PriorityLabel = {

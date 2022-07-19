@@ -180,11 +180,11 @@
     </mat-menu>
 
     <button class="button-filter ml-2" [matMenuTriggerFor]="typeMenu">
-      <i class="fa fa-list mr-2" style="color: #0077b6;" aria-hidden="true"></i>
+      <i class="fa fa-cube mr-2" style="color: #0077b6;" aria-hidden="true"></i>
       {{ typeName }}</button>
     <mat-menu #typeMenu="matMenu">
       <button mat-menu-item *ngFor="let type of taskTypes" (click)="onFilterType(type)">
-        {{ type.viewValue }}
+        <app-task-type-icon [taskType]="type.value" [isShowLabel]="true"></app-task-type-icon>
       </button>
     </mat-menu>
     
@@ -198,7 +198,7 @@
     </mat-menu>
     
     <button class="button-filter ml-2" [matMenuTriggerFor]="priorityMenu">
-      <i class="fa fa-chevron-up mr-2"  style="color: #0077b6;" aria-hidden="true"></i>
+      <i class="fa fa-bars mr-2"  style="color: #0077b6;" aria-hidden="true"></i>
       {{priorityName}}
       </button>
     <mat-menu #priorityMenu="matMenu">
