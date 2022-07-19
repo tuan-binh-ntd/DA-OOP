@@ -47,7 +47,7 @@ export class TaskStatusComponent extends TasksComponent implements OnInit {
          statusCode: StatusCode.InProgress
         }
       }
-      else{
+      else if (event.container.id === 'resolved'){
 
          payload = {
           // @ts-ignore
