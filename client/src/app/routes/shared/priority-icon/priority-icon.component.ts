@@ -52,14 +52,14 @@ export const PriorityColors = {
   [Priority.Low]: '#57A55A',
   [Priority.Medium]: '#E97F33',
   [Priority.High]: '#E9494A',
-  [Priority.Urgent]: '#b57bee',
+  [Priority.Urgent]: '#CD1317',
 };
 
 export const PriorityIcon = {
   [Priority.Normal]: 'fa fa-angle-down',
   [Priority.Low]: 'fa fa-angle-double-down',
-  [Priority.Medium]: 'fa fa-angle-up',
-  [Priority.High]: 'fa fa-angle-double-up',
+  [Priority.Medium]: 'fa fa-minus',
+  [Priority.High]: 'fa fa-angle-up',
   [Priority.Urgent]: 'fa fa-angle-double-up',
 };
 

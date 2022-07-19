@@ -242,14 +242,14 @@ getUserInvolve(id:string){
         this.isLoading = true;
         this.spinner.show();
         let payload;
-        if(event.container.id === 'reopen') {
+        if(event.container.id === 'reopen' && this.user.permissionCode == 1) {
            payload = {
             // @ts-ignore
             projectId:  event.previousContainer.data[event.previousIndex].id,
            statusCode: StatusCode.Reopened
           }
         }
-        else if(event.container.id === 'open') {
+        else if(event.container.id === 'open' && this.user.permissionCode == 1) {
            payload = {
             // @ts-ignore
             projectId:  event.previousContainer.data[event.previousIndex].id,
@@ -263,7 +263,7 @@ getUserInvolve(id:string){
            statusCode: StatusCode.InProgress
           }
         }
-        else{
+        else if(event.container.id === 'resolved') {
   
            payload = {
             // @ts-ignore
@@ -271,34 +271,39 @@ getUserInvolve(id:string){
            statusCode: StatusCode.Resolved
           }
         }
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-        this.showLoading();
-        this.projectService
-        .patchProject(payload)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
-        .subscribe((response) => {
-          if (response) {
-            this.toastr.success('Successfully!');
-            this.hideLoading();
-            this.isLoading = false;
-            setTimeout(()=>{
-              this.toastr.clear()
-            },700)
-          } else {
-            this.toastr.error('Failed');
-            this.hideLoading();
-            this.isLoading = false;
-          }
-        });
+        if(payload){
+          transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex,
+          );
+          this.showLoading();
+          this.projectService
+          .patchProject(payload)
+          .pipe(
+            catchError((err) => {
+              return of(err);
+            })
+          )
+          .subscribe((response) => {
+            if (response) {
+              this.toastr.success('Successfully!');
+              this.hideLoading();
+              this.isLoading = false;
+              setTimeout(()=>{
+                this.toastr.clear()
+              },700)
+            } else {
+              this.toastr.error('Failed');
+              this.hideLoading();
+              this.isLoading = false;
+            }
+          });
+        }
+        else {
+          this.toastr.error('You not permission')
+        }
         // this.spinner.hide();
       }
     }
