@@ -310,7 +310,9 @@ namespace API.Controllers
                 //Lấy danh sách công việc của employee
                 var taskOldEmployee = await _dataContext.Task.Where(e => e.AppUserId == deletedUserId).ToListAsync();
                 //Lấy leader của phòng có employee
-                var leader = await _dataContext.AppUser.FindAsync(deleteUserId);
+                var emp = await _dataContext.AppUser.FindAsync(deletedUserId);
+                var leader = await _dataContext.AppUser.FirstOrDefaultAsync(e => e.DepartmentId == emp.DepartmentId 
+                    && e.PermissionCode == Permission.Leader);
                 //Gán công việc cho leader và lưu
                 foreach(var item in taskOldEmployee)
                 {
